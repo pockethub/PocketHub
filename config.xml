@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson>
+  <disabledAdministrativeMonitors>
+    <string>hudson.diagnosis.ReverseProxySetupMonitor</string>
+  </disabledAdministrativeMonitors>
+  <version>2.78</version>
+  <numExecutors>2</numExecutors>
+  <mode>EXCLUSIVE</mode>
+  <useSecurity>true</useSecurity>
+  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+    <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+  </authorizationStrategy>
+  <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
+    <disableSignup>true</disableSignup>
+    <enableCaptcha>false</enableCaptcha>
+  </securityRealm>
+  <disableRememberMe>false</disableRememberMe>
+  <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
+  <workspaceDir>${JENKINS_HOME}/workspace/${ITEM_FULLNAME}</workspaceDir>
+  <buildsDir>${ITEM_ROOTDIR}/builds</buildsDir>
+  <jdks>
+    <jdk>
+      <name>Java8</name>
+      <home>/usr/lib/jvm/java-8-openjdk-amd64</home>
+      <properties/>
+    </jdk>
+  </jdks>
+  <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
+  <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
+  <clouds>
+    <hudson.plugins.ec2.EC2Cloud plugin="ec2@1.36">
+      <name>ec2-android</name>
+      <useInstanceProfileForCredentials>false</useInstanceProfileForCredentials>
+      <credentialsId>devops-admin</credentialsId>
+      <privateKey>
+        <privateKey>{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}</privateKey>
+      </privateKey>
+      <instanceCap>2</instanceCap>
+      <templates>
+        <hudson.plugins.ec2.SlaveTemplate>
+          <ami>ami-7f935106</ami>
+          <description>jenkins-slave</description>
+          <zone></zone>
+          <spotConfig>
+            <spotMaxBidPrice>0.14</spotMaxBidPrice>
+          </spotConfig>
+          <securityGroups>babylon-jenkins</securityGroups>
+          <remoteFS>/var/lib/jenkins</remoteFS>
+          <type>M3Large</type>
+          <ebsOptimized>false</ebsOptimized>
+          <labels>android-test</labels>
+          <mode>NORMAL</mode>
+          <initScript>#!/bin/bash
+
+sudo mkdir /var/lib/jenkins
+sudo chown ubuntu:ubuntu /var/lib/jenkins
+
+ANDROID_HOME=/usr/lib/android-sdk
+
+echo 8933bad161af4178b1185d1a37fbf41ea5269c55 &gt; ${ANDROID_HOME}/licenses/android-sdk-license
+
+echo 84831b9409646a918e30573bab4c9c91346d8abd &gt; ${ANDROID_HOME}/licenses/android-sdk-preview-license
+
+echo d975f751698a77b662f1254ddbeed3901e976f5a &gt; ${ANDROID_HOME}/licenses/intel-android-extra-license</initScript>
+          <tmpDir></tmpDir>
+          <userData></userData>
+          <numExecutors>1</numExecutors>
+          <remoteAdmin>ubuntu</remoteAdmin>
+          <jvmopts></jvmopts>
+          <subnetId></subnetId>
+          <idleTerminationMinutes>30</idleTerminationMinutes>
+          <iamInstanceProfile></iamInstanceProfile>
+          <useEphemeralDevices>false</useEphemeralDevices>
+          <customDeviceMapping></customDeviceMapping>
+          <instanceCap>5</instanceCap>
+          <stopOnTerminate>false</stopOnTerminate>
+          <tags>
+            <hudson.plugins.ec2.EC2Tag>
+              <name>id</name>
+              <value>jenkins-android-slave</value>
+            </hudson.plugins.ec2.EC2Tag>
+          </tags>
+          <usePrivateDnsName>false</usePrivateDnsName>
+          <associatePublicIp>false</associatePublicIp>
+          <useDedicatedTenancy>false</useDedicatedTenancy>
+          <amiType class="hudson.plugins.ec2.UnixData">
+            <rootCommandPrefix></rootCommandPrefix>
+            <sshPort>22</sshPort>
+          </amiType>
+          <launchTimeout>2147483647</launchTimeout>
+          <connectBySSHProcess>true</connectBySSHProcess>
+          <connectUsingPublicIp>false</connectUsingPublicIp>
+        </hudson.plugins.ec2.SlaveTemplate>
+      </templates>
+      <region>eu-west-1</region>
+    </hudson.plugins.ec2.EC2Cloud>
+  </clouds>
+  <quietPeriod>5</quietPeriod>
+  <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
+  <views>
+    <hudson.model.AllView>
+      <owner class="hudson" reference="../../.."/>
+      <name>all</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+    </hudson.model.AllView>
+  </views>
+  <primaryView>all</primaryView>
+  <slaveAgentPort>50000</slaveAgentPort>
+  <label>master</label>
+  <crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">
+    <excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>
+  </crumbIssuer>
+  <nodeProperties/>
+  <globalNodeProperties/>
+</hudson>

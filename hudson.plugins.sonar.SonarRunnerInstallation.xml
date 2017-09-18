@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.plugins.sonar.SonarRunnerInstallation_-DescriptorImpl plugin="sonar@2.6.1">
+  <installations>
+    <hudson.plugins.sonar.SonarRunnerInstallation>
+      <name>SonarQube</name>
+      <properties>
+        <hudson.tools.InstallSourceProperty>
+          <installers>
+            <hudson.plugins.sonar.SonarRunnerInstaller>
+              <id>3.0.3.778</id>
+            </hudson.plugins.sonar.SonarRunnerInstaller>
+          </installers>
+        </hudson.tools.InstallSourceProperty>
+      </properties>
+    </hudson.plugins.sonar.SonarRunnerInstallation>
+  </installations>
+</hudson.plugins.sonar.SonarRunnerInstallation_-DescriptorImpl>

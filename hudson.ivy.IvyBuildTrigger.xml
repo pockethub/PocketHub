@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.ivy.IvyBuildTrigger_-DescriptorImpl plugin="ivy@1.27.1">
+  <configurations/>
+  <extendedVersionMatching>false</extendedVersionMatching>
+</hudson.ivy.IvyBuildTrigger_-DescriptorImpl>

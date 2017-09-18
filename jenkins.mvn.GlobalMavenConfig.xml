@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.mvn.GlobalMavenConfig>
+  <settingsProvider class="jenkins.mvn.DefaultSettingsProvider"/>
+  <globalSettingsProvider class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+</jenkins.mvn.GlobalMavenConfig>

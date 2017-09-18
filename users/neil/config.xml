@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<user>
+  <fullName>neil</fullName>
+  <properties>
+    <jenkins.security.ApiTokenProperty>
+      <apiToken>{AQAAABAAAAAw/MF4F0BjJajZktjj05vuEVFjf91hvqo1PBm+FVvMNtRc2Iy+DFdfBNvC9JFEeffFbHT40S5qmvnJftLYdQh/sQ==}</apiToken>
+    </jenkins.security.ApiTokenProperty>
+    <com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty plugin="credentials@2.1.16">
+      <domainCredentialsMap class="hudson.util.CopyOnWriteMap$Hash"/>
+    </com.cloudbees.plugins.credentials.UserCredentialsProvider_-UserCredentialsProperty>
+    <hudson.plugins.emailext.watching.EmailExtWatchAction_-UserProperty plugin="email-ext@2.59">
+      <triggers/>
+    </hudson.plugins.emailext.watching.EmailExtWatchAction_-UserProperty>
+    <hudson.plugins.favorite.user.FavoriteUserProperty plugin="favorite@2.3.0">
+      <data class="concurrent-hash-map">
+        <entry>
+          <string>PocketHub/feature%2FMLP-23</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>PocketHub/feature%2FMLP-9</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>Pockthub2/PR-2</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>PocketHub/master</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>PocketHub/PR-1</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>PocketHub/PR-2</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>Pockthub2/master</string>
+          <boolean>true</boolean>
+        </entry>
+      </data>
+    </hudson.plugins.favorite.user.FavoriteUserProperty>
+    <hudson.model.MyViewsProperty>
+      <views>
+        <hudson.model.AllView>
+          <owner class="hudson.model.MyViewsProperty" reference="../../.."/>
+          <name>all</name>
+          <filterExecutors>false</filterExecutors>
+          <filterQueue>false</filterQueue>
+          <properties class="hudson.model.View$PropertyList"/>
+        </hudson.model.AllView>
+      </views>
+    </hudson.model.MyViewsProperty>
+    <org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty plugin="display-url-api@2.0">
+      <providerId>default</providerId>
+    </org.jenkinsci.plugins.displayurlapi.user.PreferredProviderUserProperty>
+    <hudson.model.PaneStatusProperties>
+      <collapsed/>
+    </hudson.model.PaneStatusProperties>
+    <hudson.search.UserSearchProperty>
+      <insensitiveSearch>true</insensitiveSearch>
+    </hudson.search.UserSearchProperty>
+    <hudson.tasks.Mailer_-UserProperty plugin="mailer@1.20">
+      <emailAddress>neil@winder-it.co.uk</emailAddress>
+    </hudson.tasks.Mailer_-UserProperty>
+  </properties>
+</user>

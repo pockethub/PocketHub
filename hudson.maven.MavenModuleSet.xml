@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.maven.MavenModuleSet_-DescriptorImpl plugin="maven-plugin@2.17">
+  <mavenValidationLevels class="linked-hash-map">
+    <entry>
+      <string>DEFAULT</string>
+      <int>-1</int>
+    </entry>
+    <entry>
+      <string>LEVEL_MINIMAL</string>
+      <int>0</int>
+    </entry>
+    <entry>
+      <string>LEVEL_MAVEN_2_0</string>
+      <int>20</int>
+    </entry>
+    <entry>
+      <string>LEVEL_MAVEN_3_0</string>
+      <int>30</int>
+    </entry>
+    <entry>
+      <string>LEVEL_MAVEN_3_1</string>
+      <int>31</int>
+    </entry>
+    <entry>
+      <string>LEVEL_STRICT</string>
+      <int>30</int>
+    </entry>
+  </mavenValidationLevels>
+  <localRepository class="hudson.maven.local_repo.DefaultLocalRepositoryLocator"/>
+</hudson.maven.MavenModuleSet_-DescriptorImpl>

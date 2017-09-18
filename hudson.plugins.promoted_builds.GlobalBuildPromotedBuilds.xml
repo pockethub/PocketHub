@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.plugins.promoted__builds.GlobalBuildPromotedBuilds plugin="promoted-builds@2.29.1">
+  <dateFormat></dateFormat>
+  <timeZone></timeZone>
+</hudson.plugins.promoted__builds.GlobalBuildPromotedBuilds>

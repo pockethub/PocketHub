@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.tasks.Mailer_-DescriptorImpl plugin="mailer@1.20">
+  <defaultSuffix>@devopsworks.io</defaultSuffix>
+  <smtpAuthUsername>AKIAI5M2FW2XSYYYZJDA</smtpAuthUsername>
+  <smtpAuthPassword>{AQAAABAAAAAwxkm8OeEJU91lR6ps0eAm0+2gjwfG5hwEeATmfrNY5t+S+cqDfubpEuyq+2vyBgeMlLL+dz3NzH0cxT42ukdL/w==}</smtpAuthPassword>
+  <smtpHost>email-smtp.eu-west-1.amazonaws.com</smtpHost>
+  <useSsl>false</useSsl>
+  <charset>UTF-8</charset>
+</hudson.tasks.Mailer_-DescriptorImpl>

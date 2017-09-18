@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.plugins.analysis.core.GlobalSettings_-DescriptorImpl plugin="analysis-core@1.92">
+  <isQuiet>false</isQuiet>
+  <failOnCorrupt>false</failOnCorrupt>
+  <noAuthors>false</noAuthors>
+</hudson.plugins.analysis.core.GlobalSettings_-DescriptorImpl>
