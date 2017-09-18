@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <hudson.plugins.scm__sync__configuration.ScmSyncConfigurationPlugin version="1">
   <scm class="hudson.plugins.scm_sync_configuration.scms.ScmSyncGitSCM"/>
-  <scmRepositoryUrl>scm:git:git@github.com:devopsworksio/jenkins-config.git</scmRepositoryUrl>
+  <scmRepositoryUrl>scm:git:https://c8c92f70b3eddd0b5858d14d6c59b20c9993b2a7@github.com/devopsworksio/PocketHub.git</scmRepositoryUrl>
   <noUserCommitMessage>false</noUserCommitMessage>
   <displayStatus>true</displayStatus>
   <commitMessagePattern>[Jenkins]</commitMessagePattern>
