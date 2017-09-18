@@ -69,7 +69,7 @@ def lint() {
             gitStatus.gitStatusEnabled(('Lint'), {
                 sh "./gradlew lintSuite ${common.gradleParameters()}"
             }, {
-                step([$class: 'LintPublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '0', pattern: '', unHealthy: '30', useStableBuildAsReference: true])
+                step([$class: 'LintPublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '9999', pattern: '', unHealthy: '9999', useStableBuildAsReference: true])
             })
 
             step([$class: 'WsCleanup', notFailBuild: true])

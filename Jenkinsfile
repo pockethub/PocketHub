@@ -4,6 +4,8 @@ node ('android-test') {
     step([$class: 'WsCleanup', notFailBuild: true])
     stage('Checkout') {
         // Check out code
+        properties([disableConcurrentBuilds()])
+        properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '7', artifactNumToKeepStr: '20', daysToKeepStr: '20', numToKeepStr: '20']]]);
 
 
         checkout scm
