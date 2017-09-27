@@ -48,7 +48,7 @@ def hockeyUpload(String apkName, String appId) {
 
 def getGitHubSHA(changeId) {
     try {
-        withCredentials([[$class: 'StringBinding', credentialsId: 'github', variable: 'GITHUB_TOKEN']]) {
+        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
 
             def apiUrl = "https://api.github.com/repos/babylonpartners/babylon-android/pulls/${changeId}"
             def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}").trim()
