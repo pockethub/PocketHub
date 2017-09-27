@@ -19,7 +19,7 @@ void reportGitStatus(String context, String description, String status) {
 
     if (env.CHANGE_ID) {
         try {
-            githubNotify account: 'Babylonpartners', context: "$context", credentialsId: 'GITHUB-PERSONAL-ACCESS-USER-PASS', description: "${description}", gitApiUrl: '', repo: 'babylon-android', sha: "${env.GIT_COMMIT}", status: "${status}", targetUrl: ''
+            githubNotify account: 'devopsworksio', context: "$context", credentialsId: 'GITHUB-PERSONAL-ACCESS-USER-PASS', description: "${description}", gitApiUrl: '', repo: 'babylon-android', sha: "${env.GIT_COMMIT}", status: "${status}", targetUrl: ''
         } catch (error) {
             echo ">>> Github reporting failed ... : ${error.message} <<<"
         }
