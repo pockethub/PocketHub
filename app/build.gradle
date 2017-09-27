@@ -68,8 +68,31 @@ android {
         resValue "string", "github_oauth_scheme", oauth.split("://")[0]
     }
 
+
+    productFlavors {
+        uk {
+            applicationId "com.thump"
+
+        }
+
+        bupa {
+            applicationId "com.thump.bupa"
+
+        }
+    }
+
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        qa {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
