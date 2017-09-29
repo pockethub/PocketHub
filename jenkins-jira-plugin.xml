@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<org.marvelution.jenkins.plugins.jira.JIRAPlugin plugin="jenkins-jira-plugin@2.3.1">
-  <jiraSites>
-    <org.marvelution.jenkins.plugins.jira.JIRASite>
-      <uri>http://jira.devopsworks.io:8080</uri>
-      <name>JIRA</name>
-    </org.marvelution.jenkins.plugins.jira.JIRASite>
-  </jiraSites>
-</org.marvelution.jenkins.plugins.jira.JIRAPlugin>

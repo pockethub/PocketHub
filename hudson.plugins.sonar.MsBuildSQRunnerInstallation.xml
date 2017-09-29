@@ -1,4 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<hudson.plugins.sonar.MsBuildSQRunnerInstallation_-DescriptorImpl plugin="sonar@2.6.1">
-  <installations class="hudson.plugins.sonar.MsBuildSQRunnerInstallation-array"/>
-</hudson.plugins.sonar.MsBuildSQRunnerInstallation_-DescriptorImpl>

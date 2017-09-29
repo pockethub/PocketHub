@@ -1,4 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<hudson.plugins.build__timeout.operations.BuildStepOperation_-DescriptorImpl plugin="build-timeout@1.18">
-  <enabled>false</enabled>
-</hudson.plugins.build__timeout.operations.BuildStepOperation_-DescriptorImpl>
