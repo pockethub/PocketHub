@@ -99,15 +99,11 @@ def archiveGradleCrashLogs() {
 }
 
 @NonCPS
-def buildCounter(jobName) {
-
-
+def buildCounter() {
     build 'build-counter'
     def job = Jenkins.instance.getItemByFullName('build-counter')
     def count = job.getLastSuccessfulBuild()
     return count.number
-
-
 }
 
 
