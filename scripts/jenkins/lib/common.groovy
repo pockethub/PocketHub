@@ -1,3 +1,6 @@
+
+import hudson.model.*
+
 config = [
         fastDexguardBuilds: false
 ]
@@ -94,5 +97,18 @@ def archiveCommonArtifacts() {
 def archiveGradleCrashLogs() {
     archive 'hs_err_*,**/hs_err_*'
 }
+
+@nonCPS
+def buildCounter(jobName) {
+
+
+    build 'build-counter'
+    def job = Jenkins.instance.getItemByFullName('build-counter')
+    def count = job.getLastSuccessfulBuild()
+    return count.number
+
+
+}
+
 
 return this
