@@ -97,7 +97,8 @@ def archiveGradleCrashLogs() {
     archive 'hs_err_*,**/hs_err_*'
 }
 
-@NonCPSdef buildCounter() {
+@NonCPS
+def buildCounter() {
     build 'build-counter'
     def job = Jenkins.instance.getItemByFullName('build-counter')
     def item = job.getLastSuccessfulBuild().number
