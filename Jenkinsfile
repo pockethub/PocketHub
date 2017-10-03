@@ -17,7 +17,9 @@ node ('android-test') {
         gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
         bupa = load 'scripts/jenkins/steps/bupa.groovy'
 
-        println common.buildCounter()
+        def counter = common.buildCounter()
+        println counter
+        error('Stop!')
 
         // Post-checkout prep
         checkout.exportGitEnvVars()
