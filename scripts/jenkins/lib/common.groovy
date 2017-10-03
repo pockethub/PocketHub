@@ -1,4 +1,3 @@
-
 import hudson.model.*
 
 config = [
@@ -45,14 +44,14 @@ def slackFeed() {
         result = 'failed!'
     }
 
-     try {
-         withCredentials([[$class: 'StringBinding', credentialsId: 'ANDROID_SLACK_INTEGRATION_KEY', variable: 'ANDROID_SLACK_INTEGRATION_KEY']]) {
-             slackSend channel: 'android_feed', color: color, message: "Build ${result} - ${env.GIT_BRANCH} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
-         }
-     } catch (error) {
-         // this is not fatal just annoying
-         echo "Slack feed updated failed!"
-     }
+    try {
+        withCredentials([[$class: 'StringBinding', credentialsId: 'ANDROID_SLACK_INTEGRATION_KEY', variable: 'ANDROID_SLACK_INTEGRATION_KEY']]) {
+            slackSend channel: 'android_feed', color: color, message: "Build ${result} - ${env.GIT_BRANCH} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
+        }
+    } catch (error) {
+        // this is not fatal just annoying
+        echo "Slack feed updated failed!"
+    }
 }
 
 def reportFinalBuildStatus() {
@@ -71,13 +70,13 @@ def reportFinalBuildStatus() {
         common.notifyJira(body, "${env.JIRA_ISSUE}")
     } else {
         gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'failure')
-        common.notifyJira("Build Failed!" , "${env.JIRA_ISSUE}")
+        common.notifyJira("Build Failed!", "${env.JIRA_ISSUE}")
     }
 }
 
 
 def notifyJira(String message, String key) {
-    if ( key != 'None' || key !=null) {
+    if (key != 'None' || key != null) {
         try {
             jiraComment body: message, issueKey: key
         } catch (error) {
@@ -100,13 +99,10 @@ def archiveGradleCrashLogs() {
 
 @NonCPS
 def buildCounter() {
-    def buildCounter() {
-        build 'build-counter'
-        def job = Jenkins.instance.getItemByFullName('build-counter')
-        def counter = job.getLastSuccessfulBuild().number
-        return counter.number
-    }
-
+    build 'build-counter'
+    def job = Jenkins.instance.getItemByFullName('build-counter')
+    def counter = job.getLastSuccessfulBuild().number
+    return counter.number
 }
 
 
