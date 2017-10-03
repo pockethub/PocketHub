@@ -18,7 +18,7 @@ node ('android-test') {
         bupa = load 'scripts/jenkins/steps/bupa.groovy'
 
         def counter = common.buildCounter()
-        println counter
+        println counter.number
         error('Stop!')
 
         // Post-checkout prep
