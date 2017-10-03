@@ -7,7 +7,7 @@ node ('android-test') {
         //properties([disableConcurrentBuilds()])
         properties([disableConcurrentBuilds(),[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '7', artifactNumToKeepStr: '20', daysToKeepStr: '20', numToKeepStr: '20']]]);
 
-        println common.buildCounter()
+
 
         checkout scm
 
@@ -16,6 +16,8 @@ node ('android-test') {
         common = load 'scripts/jenkins/lib/common.groovy'
         gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
         bupa = load 'scripts/jenkins/steps/bupa.groovy'
+
+        println common.buildCounter()
 
         // Post-checkout prep
         checkout.exportGitEnvVars()
