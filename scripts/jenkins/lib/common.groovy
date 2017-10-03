@@ -98,7 +98,7 @@ def archiveGradleCrashLogs() {
     archive 'hs_err_*,**/hs_err_*'
 }
 
-@nonCPS
+@NonCPS
 def buildCounter(jobName) {
 
 
