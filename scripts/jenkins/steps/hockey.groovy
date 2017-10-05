@@ -1,12 +1,7 @@
-def release() {
+def release(ukReleaseKeys) {
 
 
-    def ukReleaseKeys = [
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
-            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
-    ]
+
     parallel(
             'Build-uk-qa (release)': {
                 node('android') {
@@ -57,14 +52,9 @@ def release() {
 
 }
 
-def develop() {
+def develop(ukReleaseKeys) {
 
-    def ukReleaseKeys = [
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
-            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
-            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
-    ]
+
 
     parallel(
             'Build-uk-qa (develop)': {
@@ -114,7 +104,7 @@ def develop() {
     )
 }
 
-def pull_request() {
+def pull_request(ukReleaseKeys) {
 
     parallel(
 
