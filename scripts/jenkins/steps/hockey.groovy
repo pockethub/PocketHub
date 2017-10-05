@@ -117,16 +117,7 @@ def develop() {
 def pull_request() {
 
     parallel(
-            'Build-bupa-qa (PR)': {
-                node('android') {
-                    bupa.prepareWorkspace()
-                    gitStatus.gitStatusEnabled(('Build-bupa-qa'), {
-                        sh "./gradlew assembleBupaQa ${common.gradleParameters()}"
-                        common.archiveCommonArtifacts()
-                        common.hockeyUpload('**/*bupa-qa.apk', '3462c35a8cf145e39e573314d8fc632d')
-                    }, {})
-                }
-            },
+
             'Build-uk-qa (PR)': {
                 node('android') {
                     common.prepareWorkspace()
