@@ -104,19 +104,20 @@ def pullRequest(ukReleaseKeys) {
                     gitStatus.gitStatusEnabled(('Build-uk-qa'), {
                         sh "./gradlew assembleUkQa ${common.gradleParameters()}"
                         common.archiveCommonArtifacts()
-                        common.hockeyUpload('**/*uk-qa.apk', '64a9adf1beea41c292ca51a80abc11e2')
-                    }, {})
-                }
-            },
-            'Build-uk-release (PR)': {
-                node('android') {
-                    common.prepareWorkspace()
-                    gitStatus.gitStatusEnabled(('Build-uk-release'), {
-                        sh "./gradlew assembleUkRelease ${common.gradleParameters()}"
-                        archive '**/reports/profile/**/*'
+                        common.hockeyUpload('**/*.apk', 'cc0df4bdadd44e7ebfe0d4c0d3e34566')
                     }, {})
                 }
             }
+//            'Build-uk-release (PR)': {
+//                node('android') {
+//                    common.prepareWorkspace()
+//                    gitStatus.gitStatusEnabled(('Build-uk-release'), {
+//                        sh "./gradlew assembleUkRelease ${common.gradleParameters()}"
+//                        common.archiveCommonArtifacts()
+//                        common.hockeyUpload('**/*.apk', '64a9adf1beea41c292ca51a80abc11e2')
+//                    }, {})
+//                }
+//            }
     )
 }
 

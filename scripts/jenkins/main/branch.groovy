@@ -31,22 +31,22 @@ def execute() {
     }
 
     common.config.fastDexguardBuilds = true
-//
-//    parallel(
-//            'Unit tests': {
-//                checks.unitTests(false)
-//            },
-//            'Checkstyle': {
-//                checks.lint()
-//            },
-//            'Lint': {
-//                checks.checkstyle()
-//            }
-//    )
-//
-//    milestone(label: 'Finished testing!')
-//    checks.publishReports()
-//    echo "Job result : ${currentBuild.result}"
+
+    parallel(
+            'Unit tests': {
+                checks.unitTests(false)
+            },
+            'Checkstyle': {
+                checks.lint()
+            },
+            'Lint': {
+                checks.checkstyle()
+            }
+    )
+
+    milestone(label: 'Finished testing!')
+    checks.publishReports()
+    echo "Job result : ${currentBuild.result}"
 
     stage('Package') {
         switch (env.BRANCH_NAME) {
