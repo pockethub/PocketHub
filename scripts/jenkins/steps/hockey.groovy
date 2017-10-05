@@ -1,5 +1,12 @@
 def release() {
 
+
+    def ukReleaseKeys = [
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
+            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
+    ]
     parallel(
             'Build-uk-qa (release)': {
                 node('android') {
@@ -13,7 +20,7 @@ def release() {
             },
             'Build-uk-release (release)': {
                 node('android') {
-                    withCredentials(keys.ukReleaseKeys) {
+                    withCredentials(ukReleaseKeys) {
                         common.prepareWorkspace()
                         gitStatus.gitStatusEnabled(('Build-uk-release'), {
                             sh "./gradlew assembleUkRelease ${common.gradleParameters()} -PbuildForPlayStore=true"
@@ -35,7 +42,7 @@ def release() {
             },
             'Build-bupa-release (release)': {
                 node('android') {
-                    withCredentials(keys.ukReleaseKeys) {
+                    withCredentials(ukReleaseKeys) {
                         bupa.prepareWorkspace()
                         gitStatus.gitStatusEnabled(('Build-bupa-release'), {
                             sh "./gradlew assembleBupaRelease ${common.gradleParameters()} -PbuildForPlayStore=true"
@@ -52,6 +59,13 @@ def release() {
 
 def develop() {
 
+    def ukReleaseKeys = [
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
+            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
+    ]
+
     parallel(
             'Build-uk-qa (develop)': {
                 node('android') {
@@ -65,7 +79,7 @@ def develop() {
             },
             'Build-uk-release (develop)': {
                 node('android') {
-                    withCredentials(keys.ukReleaseKeys) {
+                    withCredentials(ukReleaseKeys) {
                         common.prepareWorkspace()
                         gitStatus.gitStatusEnabled(('Build-uk-release'), {
                             sh "./gradlew assembleUkRelease ${common.gradleParameters()} -PbuildForPlayStore=true"
@@ -87,7 +101,7 @@ def develop() {
             },
             'Build-bupa-release (develop)': {
                 node('android') {
-                    withCredentials(keys.ukReleaseKeys) {
+                    withCredentials(ukReleaseKeys) {
                         bupa.prepareWorkspace()
                         gitStatus.gitStatusEnabled(('Build-bupa-release'), {
                             sh "./gradlew assembleBupaRelease ${common.gradleParameters()} -PbuildForPlayStore=true"
