@@ -16,17 +16,17 @@ def execute() {
             [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
     ]
 
-        unstash 'sources'
-        gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-        gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
-        checks = load 'scripts/jenkins/steps/checks.groovy'
-        common = load 'scripts/jenkins/lib/common.groovy'
-        keys = load 'scripts/jenkins/lib/keys.groovy'
-        bupa = load 'scripts/jenkins/steps/bupa.groovy'
-        hockey = load 'scripts/jenkins/steps/hockey.groovy'
+    unstash 'sources'
+    gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+    gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+    checks = load 'scripts/jenkins/steps/checks.groovy'
+    common = load 'scripts/jenkins/lib/common.groovy'
+    keys = load 'scripts/jenkins/lib/keys.groovy'
+    bupa = load 'scripts/jenkins/steps/bupa.groovy'
+    hockey = load 'scripts/jenkins/steps/hockey.groovy'
 
-        step([$class: 'WsCleanup', notFailBuild: true])
-    }
+    step([$class: 'WsCleanup', notFailBuild: true])
+
 
     common.config.fastDexguardBuilds = true
 
@@ -48,9 +48,9 @@ def execute() {
 
     stage('Package') {
         switch (env.BRANCH_NAME) {
-            case ~/^release\/.*/ : hockey.release(releaseKeys); break;
-            case ~/^(v2|develop)/ : hockey.develop(releaseKeys); break;
-            case ~/^PR.*/ : hockey.pull_request() ; break;
+            case ~/^release\/.*/: hockey.release(releaseKeys); break;
+            case ~/^(v2|develop)/: hockey.develop(releaseKeys); break;
+            case ~/^PR.*/: hockey.pull_request(); break;
             default: error("Branch name is not right for pushing APKs to hockey!");
         }
         echo "Job result : ${currentBuild.result}"
