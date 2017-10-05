@@ -16,14 +16,19 @@ def execute() {
             [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
     ]
 
-    unstash 'sources'
-    gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-    gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
-    checks = load 'scripts/jenkins/steps/checks.groovy'
-    common = load 'scripts/jenkins/lib/common.groovy'
-    keys = load 'scripts/jenkins/lib/keys.groovy'
-    bupa = load 'scripts/jenkins/steps/bupa.groovy'
-    hockey = load 'scripts/jenkins/steps/hockey.groovy'
+
+    node('android') {
+        unstash 'sources'
+        gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+        gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+        checks = load 'scripts/jenkins/steps/checks.groovy'
+        common = load 'scripts/jenkins/lib/common.groovy'
+        keys = load 'scripts/jenkins/lib/keys.groovy'
+        bupa = load 'scripts/jenkins/steps/bupa.groovy'
+        hockey = load 'scripts/jenkins/steps/hockey.groovy'
+
+        step([$class: 'WsCleanup', notFailBuild: true])
+    }
 
     common.config.fastDexguardBuilds = true
 
