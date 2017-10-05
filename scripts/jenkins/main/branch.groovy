@@ -31,28 +31,28 @@ def execute() {
     }
 
     common.config.fastDexguardBuilds = true
-
-    parallel(
-            'Unit tests': {
-                checks.unitTests(false)
-            },
-            'Checkstyle': {
-                checks.lint()
-            },
-            'Lint': {
-                checks.checkstyle()
-            }
-    )
-
-    milestone(label: 'Finished testing!')
-    checks.publishReports()
-    echo "Job result : ${currentBuild.result}"
+//
+//    parallel(
+//            'Unit tests': {
+//                checks.unitTests(false)
+//            },
+//            'Checkstyle': {
+//                checks.lint()
+//            },
+//            'Lint': {
+//                checks.checkstyle()
+//            }
+//    )
+//
+//    milestone(label: 'Finished testing!')
+//    checks.publishReports()
+//    echo "Job result : ${currentBuild.result}"
 
     stage('Package') {
         switch (env.BRANCH_NAME) {
             case ~/^release\/.*/: hockey.release(releaseKeys); break;
             case ~/^(v2|develop)/: hockey.develop(releaseKeys); break;
-            case ~/^PR.*/: hockey.pull_request(); break;
+            case ~/^PR.*/: hockey.pullRequest(releaseKeys); break;
             default: error("Branch name is not right for pushing APKs to hockey!");
         }
         echo "Job result : ${currentBuild.result}"

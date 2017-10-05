@@ -96,7 +96,7 @@ def develop(ukReleaseKeys) {
     )
 }
 
-def pull_request(ukReleaseKeys) {
+def pullRequest(ukReleaseKeys) {
     parallel(
             'Build-uk-qa (PR)': {
                 node('android') {
