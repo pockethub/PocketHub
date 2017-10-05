@@ -3,13 +3,11 @@ def unitTests(boolean runMainTestsOnSecondaryVariants) {
         node('android') {
             step([$class: 'WsCleanup', notFailBuild: true])
             unstash 'sources'
-            //unstash 'backbone-babylon'
-
             def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
 
             def unzip = '''
             rm -fr app/src/main/assets/dist
-            unzip dist-babylon.zip -d app/src/main/assets
+            mkdir -p app/src/main/assets/dist
             '''
             try {
                 stdout = sh(returnStdout: true, script: unzip)
