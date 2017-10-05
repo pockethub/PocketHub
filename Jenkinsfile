@@ -29,7 +29,7 @@ node ('android-test') {
         // stash the entire checkout including .git dir
         stash(name: 'sources', useDefaultExcludes: false)
         stash(name: 'pipeline', includes: 'scripts/jenkins/**,scripts/git-status/*.jar')
-        gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'pending')
+        gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'PENDING')
 
 
 

@@ -40,10 +40,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
+            <meta-data android:name="net.hockeyapp.android.appIdentifier" android:value="${HOCKEYAPP_APP_ID}" />
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".ui.search.SearchActivity" />
+
+
         </activity>
         <activity
             android:name="com.github.pockethub.android.ui.gist.CreateGistActivity"

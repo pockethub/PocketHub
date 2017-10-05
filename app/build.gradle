@@ -66,6 +66,8 @@ android {
 
         resValue "string", "github_oauth", oauth
         resValue "string", "github_oauth_scheme", oauth.split("://")[0]
+
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "cc0df4bdadd44e7ebfe0d4c0d3e34566"]
     }
 
 
@@ -153,6 +155,7 @@ dependencies {
         exclude group: 'com.google.inject'
     }
     compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'net.hockeyapp.android:HockeySDK:5.0.2'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
