@@ -25,9 +25,6 @@ def execute() {
     bupa = load 'scripts/jenkins/steps/bupa.groovy'
     hockey = load 'scripts/jenkins/steps/hockey.groovy'
 
-    step([$class: 'WsCleanup', notFailBuild: true])
-
-
     common.config.fastDexguardBuilds = true
 
     parallel(
