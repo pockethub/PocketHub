@@ -20,9 +20,9 @@ def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
 void reportGitStatus(String context, String description, String status) {
 
     try {
-        githubNotify account: 'devopsworksio', context: "$context", credentialsId: 'devopsworksio', description: "${description}", gitApiUrl: '', repo: 'PocketHub', sha: "${env.GIT_COMMIT}", status: "${status}", targetUrl: ''
+        githubNotify account: 'devopsworksio', context: "$context", credentialsId: 'github', description: "${description}", gitApiUrl: '', repo: 'PocketHub', sha: "${env.GIT_COMMIT}", status: "${status}", targetUrl: ''
     } catch (error) {
-        echo "### Github reporting failed ... : ${error.message}"
+        echo ">>> Github reporting failed ... : ${error.message} <<<"
     }
 
 }
