@@ -7,7 +7,7 @@ node ('android-test') {
         //properties([disableConcurrentBuilds()])
         properties([disableConcurrentBuilds(),[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '7', artifactNumToKeepStr: '20', daysToKeepStr: '20', numToKeepStr: '20']]]);
 
-
+        def message='Hello World'
 
         checkout scm
 
@@ -19,7 +19,7 @@ node ('android-test') {
 
         def counter = common.buildCounter()
         println counter.number
-        error('Stop!')
+
 
         // Post-checkout prep
         checkout.exportGitEnvVars()

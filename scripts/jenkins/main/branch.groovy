@@ -12,6 +12,8 @@ def execute() {
 
     node('android') {
 
+        println ">>> ${message} <<<"
+
         unstash 'sources'
         gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
         gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
