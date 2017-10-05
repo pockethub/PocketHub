@@ -14,14 +14,14 @@ def getGitHubSHA(changeId) {
 
             def apiUrl = "https://api.github.com/repos/devopsworksio/PocketHub/pulls/${changeId}"
             def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}").trim()
-
+            echo "${response}"
             def jsonSlurper = new JsonSlurper()
             def data = jsonSlurper.parseText("${response}")
             return data.head['sha']
         }
     } catch (error) {
         echo "${error}"
-        echo "${response}"
+
         error("Failed to get GitHub SHA for PR")
     }
 }
