@@ -90,6 +90,7 @@ def reportFinalBuildStatus() {
         Git Commit: ${env.GIT_COMMIT}
        """
     echo "Job result : ${currentBuild.result}"
+    sh 'env | sort'
     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
         gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
 
