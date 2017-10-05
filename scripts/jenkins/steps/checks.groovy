@@ -67,7 +67,7 @@ def checkstyle() {
             gitStatus.gitStatusEnabled(('Checkstyle'), {
                 sh "./gradlew checkstyle ${common.gradleParameters()}"
             }, {
-                step([$class: 'CheckStylePublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', failedTotalAll: '0', healthy: '', pattern: '**/checkstyle.xml', unHealthy: '9999'])
+                step([$class: 'CheckStylePublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', failedTotalAll: '9999', healthy: '', pattern: '**/checkstyle.xml', unHealthy: '1'])
             })
 
 
