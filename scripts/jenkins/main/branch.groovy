@@ -18,7 +18,7 @@ def execute() {
         common = load 'scripts/jenkins/lib/common.groovy'
         keys = load 'scripts/jenkins/lib/keys.groovy'
         bupa = load 'scripts/jenkins/steps/bupa.groovy'
-        hockey = load 'scripts/steps/hockey.groovy'
+        hockey = load 'scripts/jenkins/steps/hockey.groovy'
 
         step([$class: 'WsCleanup', notFailBuild: true])
     }
