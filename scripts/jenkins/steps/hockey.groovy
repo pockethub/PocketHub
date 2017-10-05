@@ -1,4 +1,4 @@
-def release(Map ukReleaseKeys) {
+def release(ukReleaseKeys) {
     parallel(
             'Build-uk-qa (release)': {
                 node('android') {
@@ -45,13 +45,9 @@ def release(Map ukReleaseKeys) {
                 }
             }
     )
-
-
 }
 
-def develop(Map ukReleaseKeys) {
-
-
+def develop(ukReleaseKeys) {
     parallel(
             'Build-uk-qa (develop)': {
                 node('android') {
@@ -100,8 +96,7 @@ def develop(Map ukReleaseKeys) {
     )
 }
 
-def pull_request(Map ukReleaseKeys) {
-
+def pull_request(ukReleaseKeys) {
     parallel(
             'Build-uk-qa (PR)': {
                 node('android') {

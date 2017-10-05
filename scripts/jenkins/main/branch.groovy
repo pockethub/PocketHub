@@ -16,7 +16,6 @@ def execute() {
             [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
     ]
 
-
         unstash 'sources'
         gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
         gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
