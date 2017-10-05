@@ -106,8 +106,8 @@ def pullRequest(ukReleaseKeys) {
                             sh "./gradlew assembleUkQa ${common.gradleParameters()}"
                             common.archiveCommonArtifacts()
                             common.hockeyUpload('**/*.apk', 'cc0df4bdadd44e7ebfe0d4c0d3e34566')
-                        }
-                    }, {} )
+                        }, {})
+                    }
                 }
             }
 //            'Build-uk-release (PR)': {
