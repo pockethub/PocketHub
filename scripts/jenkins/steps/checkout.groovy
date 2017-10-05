@@ -33,7 +33,8 @@ def exportGitEnvVars() {
     // Java8 is configured in Manage Jenkins -> Global Tool Configuration
     env.JAVA_HOME = "${tool 'Java8'}"
     env.JAVA7_HOME = env.JAVA_HOME
-    env.ANDROID_HOME = '/opt/android-sdk-linux'
+    // TODO: parameterize
+    env.ANDROID_HOME = '/usr/lib/android-sdk'
 
 
 }

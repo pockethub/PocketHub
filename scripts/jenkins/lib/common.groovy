@@ -10,6 +10,7 @@ config = [
 
 def getGitHubSHA(changeId) {
     try {
+        // TODO: parameterize
         withCredentials([[$class: 'StringBinding', credentialsId: 'github', variable: 'GITHUB_TOKEN']]) {
 
             def apiUrl = "https://api.github.com/repos/devopsworksio/PocketHub/pulls/${changeId}"
