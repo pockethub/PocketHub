@@ -15,29 +15,22 @@ def getGitHubSHA(changeId) {
 
             def apiUrl = "https://api.github.com/repos/devopsworksio/PocketHub/pulls/${changeId}"
             def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}").trim()
-            echo "${response}"
             def jsonSlurper = new JsonSlurper()
             def data = jsonSlurper.parseText("${response}")
             return data.head['sha']
         }
     } catch (error) {
         echo "${error}"
-
+        echo "${response}"
         error("Failed to get GitHub SHA for PR")
     }
 }
 
 
-
 def prepareWorkspace() {
     deleteDir()
     unstash 'sources'
-    //unstash 'backbone-babylon'
-//    sh 'mv dist-babylon.zip app/src/main/assets/dist-babylon.zip'
-//    sh '''
-//        cd app/src/main/assets
-//        unzip dist-babylon.zip
-//    '''
+
 }
 
 def printDaemonStatus() {
@@ -48,12 +41,19 @@ def stashWorkspace() {
     stash(name: 'sources', excludes: 'backbone/**,**/dist/**')
 }
 
+
 def hockeyUpload(String apkName, String appId) {
-    def keys = load 'scripts/jenkins/lib/keys.groovy'
-    withCredentials(keys.hockeyUploadKey) {
-        step([$class: 'HockeyappRecorder', applications: [[apiToken: env.HOCKEY_API_TOKEN, downloadAllowed: true, filePath: apkName, mandatory: false, notifyTeam: false, releaseNotesMethod: [$class: 'ChangelogReleaseNotes'], uploadMethod: [$class: 'VersionCreation', appId: appId]]], debugMode: true, failGracefully: false])
+    withCredentials([string(credentialsId: 'HOCKEY_JENKINS_API_TOKEN', variable: 'HOCKEY_API_TOKEN')]) {
+        echo " >>> Hockeyapp uploading ${apkName} <<<"
+        try {
+            step([$class: 'HockeyappRecorder', applications: [[apiToken: env.HOCKEY_API_TOKEN, downloadAllowed: true, filePath: apkName, mandatory: false, notifyTeam: false, releaseNotesMethod: [$class: 'ChangelogReleaseNotes'], uploadMethod: [$class: 'VersionCreation', appId: appId]]], debugMode: true, failGracefully: false])
+        } catch (error) {
+            echo "Error! >>> Failed to upload ${apkName} - ${error} <<<"
+            throw new Exception()
+        }
     }
 }
+
 
 def slackFeed() {
     String color;
@@ -81,23 +81,23 @@ def slackFeed() {
 
 def reportFinalBuildStatus() {
 
-        unstash 'pipeline'
-        def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
-        def body = """
+    unstash 'pipeline'
+    def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+    def body = """
         Build Succeeded!...
         Build Number: ${env.BUILD_NUMBER}
         Jenkins URL: ${env.BUILD_URL}
         Git Commit: ${env.GIT_COMMIT}
        """
-        echo "Job result : ${currentBuild.result}"
-        if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-            gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
+    echo "Job result : ${currentBuild.result}"
+    if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+        gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
 
-            common.notifyJira(body, env.JIRA_ISSUE)
-        } else {
-            gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'FAILURE')
-            common.notifyJira("Build Failed!", env.JIRA_ISSUE)
-        }
+        common.notifyJira(body, env.JIRA_ISSUE)
+    } else {
+        gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'FAILURE')
+        common.notifyJira("Build Failed!", env.JIRA_ISSUE)
+    }
 
 }
 
