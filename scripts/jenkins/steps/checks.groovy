@@ -3,7 +3,7 @@ def unitTests(boolean runMainTestsOnSecondaryVariants) {
         node('android') {
             step([$class: 'WsCleanup', notFailBuild: true])
             unstash 'sources'
-            unstash 'backbone-babylon'
+            //unstash 'backbone-babylon'
 
             def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
 

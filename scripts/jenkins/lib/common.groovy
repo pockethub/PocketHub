@@ -32,12 +32,12 @@ def getGitHubSHA(changeId) {
 def prepareWorkspace() {
     deleteDir()
     unstash 'sources'
-    unstash 'backbone-babylon'
-    sh 'mv dist-babylon.zip app/src/main/assets/dist-babylon.zip'
-    sh '''
-        cd app/src/main/assets
-        unzip dist-babylon.zip
-    '''
+    //unstash 'backbone-babylon'
+//    sh 'mv dist-babylon.zip app/src/main/assets/dist-babylon.zip'
+//    sh '''
+//        cd app/src/main/assets
+//        unzip dist-babylon.zip
+//    '''
 }
 
 def printDaemonStatus() {

@@ -21,12 +21,12 @@ node ('android-test') {
 
         // Post-checkout prep
         checkout.exportGitEnvVars()
-        //checkout.checkoutBackbone()
+
         sh 'env | sort'
 
         // stash the entire checkout including .git dir
         stash(name: 'sources', useDefaultExcludes: false)
-        stash(name: 'pipeline', includes: 'scripts/jenkins/**,scripts/git-status/*.jar')
+        stash(name: 'pipeline', includes: 'scripts/jenkins/**')
         gitStatus.reportGitStatus('Jenkins Job', 'Running job...', 'PENDING')
 
 
