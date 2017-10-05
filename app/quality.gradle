@@ -3,7 +3,7 @@ apply plugin: 'checkstyle'
 check.dependsOn 'checkstyle'
 
 checkstyle {
-    toolVersion = '7.5.1'
+    toolVersion "7.6.1"
 }
 
 task checkstyle(type: Checkstyle) {
