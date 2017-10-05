@@ -51,7 +51,7 @@ def execute() {
         switch (env.BRANCH_NAME) {
             case ~/^release\/.*/ : hockey.release(releaseKeys); break;
             case ~/^(v2|develop)/ : hockey.develop(releaseKeys); break;
-            case ~/^PR.*/ : hockey.pull_request(releaseKeys) ; break;
+            case ~/^PR.*/ : hockey.pull_request() ; break;
             default: error("Branch name is not right for pushing APKs to hockey!");
         }
         echo "Job result : ${currentBuild.result}"
