@@ -1,10 +1,24 @@
 def unitTests(boolean runMainTestsOnSecondaryVariants) {
     stage('Unit tests') {
-        node('android-test') {
-
+        node('android') {
+            step([$class: 'WsCleanup', notFailBuild: true])
             unstash 'sources'
+            unstash 'backbone-babylon'
 
             def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+
+            def unzip = '''
+            rm -fr app/src/main/assets/dist
+            unzip dist-babylon.zip -d app/src/main/assets
+            '''
+            try {
+                stdout = sh(returnStdout: true, script: unzip)
+            } catch (error) {
+                echo "${error}"
+                println stdout
+                error('>>> Unzip failed! <<<')
+            }
+
             gitStatus.gitStatusEnabled(('Unit tests'), {
                 sh "./gradlew testSuiteWithCoverage ${common.gradleParameters()} -PrunMainTestsForSecondaryVariants=${runMainTestsOnSecondaryVariants.toString()}"
             }, {
@@ -20,7 +34,8 @@ def unitTests(boolean runMainTestsOnSecondaryVariants) {
 
 def publishReports() {
     stage('Publish reports') {
-        node('android-test') {
+        node('android') {
+            step([$class: 'WsCleanup', notFailBuild: true])
             try {
                 unstash 'junit-report'
                 step([$class: 'JUnitResultArchiver', testResults: '**/TEST*.xml'])
@@ -44,35 +59,36 @@ def publishReports() {
 
 def checkstyle() {
     stage('Checkstyle') {
-        node('android-test') {
+        node('android') {
+            step([$class: 'WsCleanup', notFailBuild: true])
 
             unstash 'sources'
             def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
             gitStatus.gitStatusEnabled(('Checkstyle'), {
                 sh "./gradlew checkstyle ${common.gradleParameters()}"
             }, {
-                step([$class: 'CheckStylePublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', failedTotalAll: '9999', healthy: '', pattern: '**/checkstyle.xml', unHealthy: '9999'])
+                step([$class: 'CheckStylePublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', failedTotalAll: '0', healthy: '', pattern: '**/checkstyle.xml', unHealthy: '9999'])
             })
 
-            step([$class: 'WsCleanup', notFailBuild: true])
+
         }
     }
 }
 
 def lint() {
     stage('Lint') {
-        node('android-test') {
+        node('android') {
+            step([$class: 'WsCleanup', notFailBuild: true])
             unstash 'sources'
 
-
-            def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+        def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
             gitStatus.gitStatusEnabled(('Lint'), {
                 sh "./gradlew lintSuite ${common.gradleParameters()}"
             }, {
-                step([$class: 'LintPublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '9999', pattern: '', unHealthy: '9999', useStableBuildAsReference: true])
+                step([$class: 'LintPublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', healthy: '0', pattern: '', unHealthy: '30', useStableBuildAsReference: true])
             })
 
-            step([$class: 'WsCleanup', notFailBuild: true])
+
         }
     }
 }

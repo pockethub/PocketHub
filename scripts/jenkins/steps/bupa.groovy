@@ -1,9 +1,9 @@
 def prepareWorkspace() {
-    deleteDir()
+    step([$class: 'WsCleanup', notFailBuild: true])
     unstash 'workspace'
     unstash 'backbone-bupa'
     sh 'rm -fr app/src/main/assets/dist'
-    sh 'unzip dist-bupa.zip -d app/src/main/assets'
+    sh 'unzip -o dist-bupa.zip -d app/src/main/assets'
 
 }
 

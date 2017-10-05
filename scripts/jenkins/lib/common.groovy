@@ -46,32 +46,34 @@ def slackFeed() {
 
     try {
         withCredentials([[$class: 'StringBinding', credentialsId: 'ANDROID_SLACK_INTEGRATION_KEY', variable: 'ANDROID_SLACK_INTEGRATION_KEY']]) {
-            slackSend channel: 'android_feed', color: color, message: "Build ${result} - ${env.GIT_BRANCH} #${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
+            slackSend channel: 'android_feed', color: color, message: "Build ${result} - ${env.BRANCH_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
         }
     } catch (error) {
         // this is not fatal just annoying
-        echo "Slack feed updated failed!"
+        echo ">>> Slack feed updated failed! <<<"
     }
 }
 
 def reportFinalBuildStatus() {
-    unstash 'pipeline'
-    def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
-    def body = """
+
+        unstash 'pipeline'
+        def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
+        def body = """
         Build Succeeded!...
         Build Number: ${env.BUILD_NUMBER}
         Jenkins URL: ${env.BUILD_URL}
         Git Commit: ${env.GIT_COMMIT}
-        Git Branch: ${env.GIT_BRANCH}
-        """
-    echo "Job result : ${currentBuild.result}"
-    if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-        gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'success')
-        common.notifyJira(body, "${env.JIRA_ISSUE}")
-    } else {
-        gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'failure')
-        common.notifyJira("Build Failed!", "${env.JIRA_ISSUE}")
-    }
+       """
+        echo "Job result : ${currentBuild.result}"
+        if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+            gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
+
+            common.notifyJira(body, env.JIRA_ISSUE)
+        } else {
+            gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'FAILURE')
+            common.notifyJira("Build Failed!", env.JIRA_ISSUE)
+        }
+
 }
 
 
@@ -80,13 +82,13 @@ def notifyJira(String message, String key) {
         try {
             jiraComment body: message, issueKey: key
         } catch (error) {
-            echo "Caught: ${error}"
+            echo ">>> JIRA Notification failed! ${error} <<<"
         }
     }
 }
 
 def gradleParameters() {
-    "-PcustomVersionCode=${env.BUILD_NUMBER} -PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} -Dorg.gradle.java.home=${env.JAVA_HOME} -Pandroid.enableBuildCache=true --project-cache-dir=${env.WORKSPACE}/.gradle/cache -PtestCoverageFlag=true --profile"
+    "-PcustomVersionCode=${env.BUILD_COUNTER} -PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} -Dorg.gradle.java.home=${env.JAVA_HOME} -Pandroid.enableBuildCache=false -PtestCoverageFlag=true --profile --no-daemon"
 }
 
 def archiveCommonArtifacts() {

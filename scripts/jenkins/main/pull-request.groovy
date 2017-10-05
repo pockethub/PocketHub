@@ -4,7 +4,7 @@ def execute() {
     def common
     def bupa
 
-    node('android-test') {
+    node('android') {
         unstash 'sources'
 
         // Load your utility scripts here
@@ -16,15 +16,14 @@ def execute() {
     }
     parallel(
             'Unit tests': {
-                node('android-test') {
+                node('android') {
                     common.prepareWorkspace()
                     checks.unitTests(false)
-                    //TODO add test coverage
                     common.stashWorkspace() // Save partial build artifacts
                 }
             },
             'Checkstyle & Lint': {
-                node('android-test') {
+                node('android') {
                     common.prepareWorkspace()
                     checks.checkstyle()
                     checks.lint()
@@ -34,7 +33,7 @@ def execute() {
     )
     parallel(
             'Build-bupa-qa': {
-                node('android-test') {
+                node('android') {
                     bupa.prepareWorkspace()
                     gitStatus.gitStatusEnabled(('Build-bupa-qa'), {
                         sh "./gradlew assembleBupaQa ${common.gradleParameters()}"
@@ -44,7 +43,7 @@ def execute() {
                 }
             },
             'Build-uk-qa': {
-                node('android-test') {
+                node('android') {
                     common.prepareWorkspace()
                     gitStatus.gitStatusEnabled(('Build-uk-qa'), {
                         sh "./gradlew assembleUkQa ${common.gradleParameters()}"
@@ -54,7 +53,7 @@ def execute() {
                 }
             },
             'Build-uk-release': {
-                node('android-test') {
+                node('android') {
                     common.prepareWorkspace()
                     gitStatus.gitStatusEnabled(('Build-uk-release'), {
                         sh "./gradlew assembleUkRelease ${common.gradleParameters()}"
@@ -63,7 +62,7 @@ def execute() {
                 }
             }
     )
-    node('android-test') { // Needs to be executed within a node context as it uses credentials
+    node('android') { // Needs to be executed within a node context as it uses credentials
         common.prepareWorkspace()
         common.reportFinalBuildStatus()
         common.slackFeed()

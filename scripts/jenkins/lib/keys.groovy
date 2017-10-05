@@ -6,7 +6,7 @@ ukReleaseKeys = [
 ]
 
 hockeyUploadKey = [
-        [$class: 'StringBinding', credentialsId: 'HOCKEY_API_TOKEN', variable: 'HOCKEY_API_TOKEN']
+        [$class: 'String', credentialsId: 'HOCKEY_JENKINS_API_TOKEN', variable: 'HOCKEY_API_TOKEN']
 ]
 
 return this
