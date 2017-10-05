@@ -17,6 +17,21 @@ def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
     }
 }
 
+def getGitHubSHA(changeId) {
+    try {
+        withCredentials([[$class: 'StringBinding', credentialsId: 'github', variable: 'GITHUB_TOKEN']]) {
+
+            def apiUrl = "https://api.github.com/repos/babylonpartners/babylon-android/pulls/${changeId}"
+            def response = sh(returnStdout: true, script: "curl -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}").trim()
+            def jsonSlurper = new JsonSlurper()
+            def data = jsonSlurper.parseText("${response}")
+            return data.head['sha']
+        }
+    } catch (error) {
+        echo "${error}"
+        error("Failed to get GitHub SHA for PR")
+    }
+
 void reportGitStatus(String context, String description, String status) {
 
     try {
