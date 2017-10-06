@@ -109,7 +109,7 @@ def pullRequest(ukReleaseKeys) {
                     }, {})
 
                 }
-            }
+            },
             'Build-uk-release (PR)': {
                 node('android') {
                     common.prepareWorkspace()
