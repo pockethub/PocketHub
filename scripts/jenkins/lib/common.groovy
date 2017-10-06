@@ -93,8 +93,8 @@ def reportFinalBuildStatus() {
     sh 'env | sort'
     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
         gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
-
         common.notifyJira(body, env.JIRA_ISSUE)
+
     } else {
         gitStatus.reportGitStatus('Jenkins Job', 'Job failed!', 'FAILURE')
         common.notifyJira("Build Failed!", env.JIRA_ISSUE)
