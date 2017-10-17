@@ -8,7 +8,7 @@ config = [
 ]
 
 
-def getGitHubSHA(changeId) {
+def getGitHubSHA(String changeId) {
     try {
         // TODO: parameterize
         withCredentials([[$class: 'StringBinding', credentialsId: 'github', variable: 'GITHUB_TOKEN']]) {
