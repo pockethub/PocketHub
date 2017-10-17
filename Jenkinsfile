@@ -1,3 +1,6 @@
 @Library('jenkins-pipeline@master') _
 
-jenkinsPipeline ()
+jenkinsPipeline {
+    someParam = 'value'
+
+}
