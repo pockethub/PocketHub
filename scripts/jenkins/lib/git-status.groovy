@@ -10,8 +10,7 @@ def gitStatusEnabled(String context, Closure buildStep, Closure postBuildStep) {
         currentBuild.result = 'FAILURE'
         println ">>> Step ${context} failed! <<<"
         // stops the pipeline
-        error
-
+        error('Stopping pipeline!')
     } finally {
         postBuildStep.call()
     }

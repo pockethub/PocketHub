@@ -6,8 +6,9 @@ node ('android-test') {
         // Check out code
         //properties([disableConcurrentBuilds()])
         properties([disableConcurrentBuilds(),[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '7', artifactNumToKeepStr: '20', daysToKeepStr: '20', numToKeepStr: '20']]]);
-
-        checkout scm
+        def scmVars = checkout scm
+        env.GIT_COMMIT=scmVars.GIT_COMMIT
+        println '>>> Git Commit HASH' + env.GIT_COMMIT  + '<<<'
 
         configuration = load 'scripts/jenkins/main/branch.groovy'
         checkout = load 'scripts/jenkins/steps/checkout.groovy'

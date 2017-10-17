@@ -9,7 +9,6 @@ def exportGitEnvVars() {
         get_issue = '''
         echo ${CHANGE_BRANCH} | grep -Po '(?!\\/)([a-zA-Z]+-[0-9]+)(?!\\d)'
         '''
-        env.GIT_COMMIT = common.getGitHubSHA(env.CHANGE_ID)
         echo ' >>> this is a PR build !<<<'
 
     } else {

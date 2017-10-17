@@ -9,15 +9,23 @@ def execute() {
     def keys
     def bupa
     def gitBranch
-    def releaseKeys = [
+
+    releaseKeys = [
             [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
             [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
             [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
-            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAY_STORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
+            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAYSTORE_UK_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
     ]
 
+    nhsKeys = [
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_NHS_STORE_PASS', variable: 'RELEASE_STORE_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_NHS_KEY_PASS', variable: 'RELEASE_KEY_PASS'],
+            [$class: 'StringBinding', credentialsId: 'ANDROID_PLAYSTORE_NHS_KEY_ALIAS', variable: 'RELEASE_KEY_ALIAS'],
+            [$class: 'FileBinding', credentialsId: 'ANDROID_PLAYSTORE_NHS_KEYSTORE', variable: 'RELEASE_KEYSTORE_LOCATION']
+    ]
 
     node('android') {
+
         unstash 'sources'
         gitBranch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
         gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
@@ -36,10 +44,10 @@ def execute() {
             'Unit tests': {
                 checks.unitTests(false)
             },
-            'Checkstyle': {
+            'Lint': {
                 checks.lint()
             },
-            'Lint': {
+            'Checkstyle': {
                 checks.checkstyle()
             }
     )
@@ -48,11 +56,17 @@ def execute() {
     checks.publishReports()
     echo "Job result : ${currentBuild.result}"
 
+    def uniqueBuildNumber = common.buildCounter().number
+    env.BUILD_COUNTER = uniqueBuildNumber
+    echo ">>> BUILD_COUNTER = ${env.BUILD_COUNTER} <<< "
+
+
+    def gradleArgs = common.gradleParametersWithVersion()
     stage('Package') {
         switch (env.BRANCH_NAME) {
-            case ~/^release\/.*/: hockey.release(releaseKeys); break;
-            case ~/^(v2|develop)/: hockey.develop(releaseKeys); break;
-            case ~/^PR.*/: hockey.pullRequest(releaseKeys); break;
+            case ~/^release\/.*/: hockey.release(releaseKeys, nhsKeys, gradleArgs); break;
+            case ~/^(v2|develop)/: hockey.develop( gradleArgs); break;
+            case ~/^(PR.*|feature\/.*)/: hockey.pullRequest(gradleArgs); break;
             default: error("Branch name is not right for pushing APKs to hockey!");
         }
         echo "Job result : ${currentBuild.result}"
@@ -62,13 +76,33 @@ def execute() {
     echo "Job result : ${currentBuild.result}"
     milestone(label: 'Finished packaging!')
 
-
     stage('Finish') {
         node('android') {
             unstash 'pipeline'
             echo "Job result : ${currentBuild.result}"
             common.reportFinalBuildStatus()
-            common.slackFeed()
+            common.slackFeed(currentBuild.result)
+        }
+    }
+    stage('QA Approval') {
+        node('android') {
+            try {
+                userInput = input(
+                        id: 'Proceed1', message: 'Approved by QA Engineer ?', parameters: [
+                        [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'QA Approval', name: 'Please approve this Pull Request']
+                ]
+                )
+            } catch (err) {
+                def user = err.getCauses()[0].getUser()
+            }
+        }
+
+        if (userInput == true) {
+            println ">>> User input: true <<<"
+            gitStatus.reportGitStatus('QA Approval', 'QA Approval', 'SUCCESS')
+        } else {
+            println ">>> User input: da <<<"
+            gitStatus.reportGitStatus('QA Approval', 'QA Approval', 'FAILURE')
         }
     }
 }

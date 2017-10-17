@@ -43,35 +43,74 @@ def stashWorkspace() {
 
 
 def hockeyUpload(String apkName, String appId) {
+
     withCredentials([string(credentialsId: 'HOCKEY_JENKINS_API_TOKEN', variable: 'HOCKEY_API_TOKEN')]) {
         echo " >>> Hockeyapp uploading ${apkName} <<<"
         try {
             step([$class: 'HockeyappRecorder', applications: [[apiToken: env.HOCKEY_API_TOKEN, downloadAllowed: true, filePath: apkName, mandatory: false, notifyTeam: false, releaseNotesMethod: [$class: 'ChangelogReleaseNotes'], uploadMethod: [$class: 'VersionCreation', appId: appId]]], debugMode: true, failGracefully: false])
         } catch (error) {
-            echo "Error! >>> Failed to upload ${apkName} - ${error} <<<"
-            throw new Exception()
+            error( "Error! >>> Failed to upload ${apkName} - ${error} <<<")
+
+        }
+        finally {
+            sh 'env | grep HOCKEY'
         }
     }
 }
 
+def getGitHubSHA(changeId) {
+    try {
+        withCredentials([[$class: 'StringBinding', credentialsId: 'github', variable: 'GITHUB_TOKEN']]) {
 
-def slackFeed() {
-    String color;
-    String result;
-    if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-        color = 'good'
-        result = 'successful'
-    } else if (currentBuild.result == 'UNSTABLE') {
-        color = 'warning'
-        result = 'unstable'
+            def apiUrl = "https://api.github.com/repos/babylonpartners/babylon-android/pulls/${changeId}"
+            def response = sh(returnStdout: true, script: "curl -m 5 -s -H \"Authorization: Token ${env.GITHUB_TOKEN}\" -H \"Accept: application/json\" -H \"Content-type: application/json\" -X GET ${apiUrl}").trim()
+            def jsonSlurper = new JsonSlurper()
+            def data = jsonSlurper.parseText("${response}")
+            return data.head['sha']
+        }
+    } catch (error) {
+        error("${error}")
+
+    }
+}
+
+def slackFeed(result) {
+    def color
+    def msg
+    def icon
+    switch (result) {
+        case 'SUCCESS':
+            color = 'good'
+            icon = ':beer:'
+            break
+        case 'UNSTABLE':
+            color = "warning"
+            break
+        case 'FAILED':
+            colour = 'danger'
+            icon = ':-1:'
+            break
+        default:
+            colour = 'danger'
+    }
+
+    // PRs have this URL  releases don't
+    if (env.CHANGE_URL) {
+        msg = """
+    Build  ${result} ${icon}
+    GitHub: <${env.CHANGE_URL}|${env.BRANCH_NAME}> 
+    Jenkins Build:  <${env.BUILD_URL}|(click)>
+    Jira Issue: <https://babylonpartners.atlassian.net/browse/${env.JIRA_ISSUE}|${env.JIRA_ISSUE}>
+    Hockey Version: ${env.BUILD_COUNTER}
+    """
+
     } else {
-        color = 'danger'
-        result = 'failed!'
+        msg = "Build ${result} - <${env.BUILD_URL}|Jenkins>"
     }
 
     try {
         withCredentials([[$class: 'StringBinding', credentialsId: 'ANDROID_SLACK_INTEGRATION_KEY', variable: 'ANDROID_SLACK_INTEGRATION_KEY']]) {
-            slackSend channel: 'android_feed', color: color, message: "Build ${result} - ${env.BRANCH_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
+            slackSend channel: 'android_feed', color: color, message: msg, teamDomain: 'babylonhealth', token: env.ANDROID_SLACK_INTEGRATION_KEY
         }
     } catch (error) {
         // this is not fatal just annoying
@@ -85,12 +124,12 @@ def reportFinalBuildStatus() {
     def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
     def body = """
         Build Succeeded!...
-        Build Number: ${env.BUILD_NUMBER}
+        Hockey Version: ${env.BUILD_COUNTER}
         Jenkins URL: ${env.BUILD_URL}
+        Git Hub URL: ${env.CHANGE_URL}
         Git Commit: ${env.GIT_COMMIT}
-       """
+        """
     echo "Job result : ${currentBuild.result}"
-    sh 'env | sort'
     if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
         gitStatus.reportGitStatus('Jenkins Job', 'Job successful!', 'SUCCESS')
         common.notifyJira(body, env.JIRA_ISSUE)
@@ -114,7 +153,20 @@ def notifyJira(String message, String key) {
 }
 
 def gradleParameters() {
-    "-PcustomVersionCode=${env.BUILD_COUNTER} -PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} -Dorg.gradle.java.home=${env.JAVA_HOME} -Pandroid.enableBuildCache=false -PtestCoverageFlag=true --profile --no-daemon"
+    return  "-PjenkinsFastDexguardBuildsEnabled=${config.fastDexguardBuilds} " +
+            "-Dorg.gradle.java.home=${env.JAVA_HOME} " +
+            "-Pandroid.enableBuildCache=false " +
+            "-PtestCoverageFlag=true " +
+            "--profile --no-daemon"
+}
+
+def gradleParametersWithVersion() {
+    if (env.BUILD_COUNTER == null) {
+        error (">>> env.BUILD_COUNTER can not be null. Stopping pipeline. Please consult the logs for the root cause. <<<")
+
+    }
+    params = gradleParameters()
+    return "-PcustomVersionCode=${env.BUILD_COUNTER}  " + params
 }
 
 def archiveCommonArtifacts() {
