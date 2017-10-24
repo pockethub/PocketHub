@@ -3,7 +3,9 @@ apply plugin: 'checkstyle'
 check.dependsOn 'checkstyle'
 
 checkstyle {
-    toolVersion = '7.5.1'
+    toolVersion '6.19'
+    ignoreFailures = true
+
 }
 
 task checkstyle(type: Checkstyle) {
@@ -12,12 +14,11 @@ task checkstyle(type: Checkstyle) {
     include '**/*.java'
     exclude '**/gen/**'
 
+
     classpath = files()
 
     reports {
-        html {
-            enabled true
-            destination "$project.buildDir/reports/checkstyle/checkstyle.html"
-        }
+        xml.enabled true
+
     }
 }

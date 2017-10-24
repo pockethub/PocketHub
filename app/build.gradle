@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
 apply from: 'quality.gradle'
-
+apply from: '../lib/gradle/jacoco-android.gradle'
+apply plugin: "org.sonarqube"
 repositories {
     flatDir {
         dirs 'libs'
@@ -19,6 +20,34 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 def clientIdIsNotSet = true;
 def clientSecretIsNotSet = true;
+
+
+sonarqube {
+    properties {
+        // TODO Update your android.jar path (with path and Android version)
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-25/android.jar" + ",build/intermediates/exploded-aar/lib/jars/classes.jar"
+
+
+        property "sonar.projectName" , "PocketHub"
+        property "sonar.branch", "sonar"
+        property "sonar.sources", "src/main/java"
+        property "sonar.host.url", "http://localhost:32768"
+        // Defines where the java files are
+        property "sonar.binaries","build/intermediates/classes/uk/debug"
+        property "sonar.libraries", libraries
+        // Defines where the xml files are
+        property "sonar.java.binaries","build/intermediates/classes/uk/debug"
+        property "sonar.java.libraries", libraries
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.java.test.binaries","build/intermediates/classes/uk/debug"
+        property "sonar.java.test.libraries", libraries
+        property "sonar.jacoco.reportPaths", "build/jacoco/testUkDebugUnitTest.exec"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/testUkDebugUnitTest"
+        property "sonar.android.lint.report", "build/reports/lint-results.xml"
+    }
+}
+
 
 android {
     compileSdkVersion 25
@@ -66,10 +95,26 @@ android {
 
         resValue "string", "github_oauth", oauth
         resValue "string", "github_oauth_scheme", oauth.split("://")[0]
+
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "cc0df4bdadd44e7ebfe0d4c0d3e34566"]
+    }
+
+
+    productFlavors {
+        uk {
+            applicationId "com.thump"
+
+        }
     }
 
     buildTypes {
-        release {
+
+        qa {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -88,7 +133,7 @@ android {
 
     lintOptions {
         warning 'MissingTranslation'
-        abortOnError true
+        abortOnError false
         check 'NewApi', 'InlinedApi'
         fatal 'NewApi', 'InlinedApi'
         checkReleaseBuilds true
@@ -130,6 +175,7 @@ dependencies {
         exclude group: 'com.google.inject'
     }
     compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'net.hockeyapp.android:HockeySDK:5.0.2'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
@@ -141,4 +187,6 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
+
+
 }
