@@ -63,7 +63,7 @@ def checkstyle() {
             unstash 'sources'
             def gitStatus = load 'scripts/jenkins/lib/git-status.groovy'
             gitStatus.gitStatusEnabled(('Checkstyle'), {
-                sh "./gradlew checkstyle ${common.gradleParameters()}"
+                sh "./gradlew println prettyPrint(toJson(config))${common.gradleParameters()}"
             }, {
                 step([$class: 'CheckStylePublisher', canComputeNew: false, canRunOnFailed: true, defaultEncoding: '', failedTotalAll: '9999', healthy: '', pattern: '**/checkstyle.xml', unHealthy: '1'])
             })

@@ -1,9 +1,10 @@
 apply plugin: 'jacoco'
 jacoco {
     toolVersion = "0.7.9"
+
 }
 
-project.apply{
+project.apply {
     project.extensions.create("coverage", CoverageExtension)
 }
 
@@ -77,7 +78,7 @@ project.afterEvaluate {
         }
     }
     task testCoverage {
-        coverageTasks.each {coverageTask ->
+        coverageTasks.each { coverageTask ->
             dependsOn coverageTask
         }
     }
