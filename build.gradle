@@ -3,12 +3,16 @@
 buildscript {
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5"
+
     }
 
     // Exclude the version that the android plugin depends on (for retrolambda-lombok purposes).
@@ -22,4 +26,14 @@ allprojects {
         maven { url "https://repo.eclipse.org/content/groups/releases" }
         maven { url "https://jitpack.io" }
     }
+
+}
+
+task lintSuite {
+    dependsOn ':app:lint'
+}
+
+
+task testSuiteWithCoverage {
+    dependsOn ':app:testCoverage'
 }
