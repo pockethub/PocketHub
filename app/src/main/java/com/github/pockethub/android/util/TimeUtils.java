@@ -18,6 +18,7 @@ package com.github.pockethub.android.util;
 import android.text.format.DateUtils;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static android.text.format.DateUtils.FORMAT_NUMERIC_DATE;
 import static android.text.format.DateUtils.FORMAT_SHOW_DATE;
@@ -37,11 +38,12 @@ public class TimeUtils {
      */
     public static CharSequence getRelativeTime(final Date date) {
         long now = System.currentTimeMillis();
-        if (Math.abs(now - date.getTime()) > 60000)
+        if (Math.abs(now - date.getTime()) > TimeUnit.MINUTES.toMillis(1)) {
             return DateUtils.getRelativeTimeSpanString(date.getTime(), now,
                     MINUTE_IN_MILLIS, FORMAT_SHOW_DATE | FORMAT_SHOW_YEAR
                             | FORMAT_NUMERIC_DATE);
-        else
+        } else {
             return "just now";
+        }
     }
 }

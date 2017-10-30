@@ -70,8 +70,9 @@ public class WebView extends android.webkit.WebView {
 
     @Override
     public boolean onTouchEvent(MotionEvent p_event) {
-        if (intercept && getParent() != null)
+        if (intercept && getParent() != null) {
             getParent().requestDisallowInterceptTouchEvent(true);
+        }
 
         return super.onTouchEvent(p_event);
     }
@@ -79,18 +80,15 @@ public class WebView extends android.webkit.WebView {
     private boolean canScrollCodeHorizontally(final int direction) {
         final int range = computeHorizontalScrollRange()
                 - computeHorizontalScrollExtent();
-        if (range == 0)
+        if (range == 0) {
             return false;
+        }
 
-        if (direction < 0)
+        if (direction < 0) {
             return computeHorizontalScrollOffset() > 0;
-        else
+        } else {
             return computeHorizontalScrollOffset() < range - 1;
-    }
-
-    @Override
-    public boolean canScrollHorizontally(final int direction) {
-        return super.canScrollHorizontally(direction);
+        }
     }
 
     public void startIntercept() {

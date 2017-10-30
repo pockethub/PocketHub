@@ -1,4 +1,4 @@
-# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub)  [![Join the chat at https://gitter.im/pockethub/PocketHub](https://badges.gitter.im/pockethub/PocketHub.svg)](https://gitter.im/pockethub/PocketHub?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
+# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
 
 This repository contains the source code for the PocketHub Android app.
 
@@ -44,6 +44,7 @@ Any contributions, large or small, major features, bug fixes, additional languag
 ### Callback URL
 - The callback URL needs to be in the format `your_schema://whatever_you_want`
 - Use a custom schema like `myawesomeschema` (not `http` or `https`)
+- The schema must be lowercase ([Reference](https://developer.android.com/guide/topics/manifest/data-element.html))
 
 ## Legacy Notes
 

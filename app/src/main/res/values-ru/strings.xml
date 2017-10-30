@@ -150,8 +150,6 @@
     <string name="select_milestone">Выбрать цель</string>
     <string name="select_labels">Выбрать тег</string>
     <string name="select_ref">Выбрать ветку или метку</string>
-    <string name="enter_otp_code_title">Код аутентификации</string>
-    <string name="enter_otp_code_message">Для вашего аккаунта включена двухэтапная аутентификация. Введите код аутентификации для подтверждения личности.</string>
     <string name="no_milestone">Нет целей</string>
     <string name="unassigned">Никто не ответственен</string>
     <string name="assigned">ответственен</string>

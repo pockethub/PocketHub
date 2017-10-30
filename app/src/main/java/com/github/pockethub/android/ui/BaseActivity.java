@@ -19,25 +19,22 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
-import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.ActivityLifecycleProvider;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Activity that display dialogs
  */
 public abstract class BaseActivity extends
-        RoboAppCompatActivity implements DialogResultListener, ActivityLifecycleProvider {
+        RoboAppCompatActivity implements DialogResultListener, LifecycleProvider<ActivityEvent> {
 
-    /**
-     * Finder bound to this activity's view
-     */
-    protected ViewFinder finder;
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 
     @CallSuper
@@ -45,23 +42,22 @@ public abstract class BaseActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
-        finder = new ViewFinder(this);
     }
 
 
     @Override
     public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject;
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilActivityEvent(lifecycleSubject, event);
+    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindActivity(lifecycleSubject);
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
     }
 
     @Override

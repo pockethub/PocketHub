@@ -20,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
@@ -58,8 +59,9 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
         super.onCreate(savedInstanceState);
 
         Bundle appData = getActivity().getIntent().getBundleExtra(APP_DATA);
-        if (appData != null)
+        if (appData != null) {
             repository = appData.getParcelable(EXTRA_REPOSITORY);
+        }
     }
 
     @Override
@@ -88,18 +90,25 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
     @Override
     public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
         return new ThrowableLoader<List<Issue>>(getActivity(), items) {
-
+            @Override
             public List<Issue> loadData() throws Exception {
-                if (repository == null)
+                if (repository == null) {
                     return Collections.emptyList();
+                }
                 List<Issue> matches = new ArrayList<>();
+                // We need to add the repo parameter to allow us to search only the repo issues
+                String searchQuery = query + "+repo:" + InfoUtils.createRepoId(repository);
 
-                SearchService service = ServiceGenerator.createService(getActivity(), SearchService.class);
+                SearchService service = ServiceGenerator.createService(getActivity(),
+                        SearchService.class);
 
                 int current = 1;
                 int last = 0;
-                while(current != last){
-                    SearchPage<Issue> page = service.searchIssues(query, null, null, current).toBlocking().first();
+                while (current != last) {
+                    SearchPage<Issue> page = service.searchIssues(searchQuery, null, null, current)
+                            .blockingGet()
+                            .body();
+
                     matches.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
@@ -124,6 +133,6 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
 
     @Override
     public int compare(Issue lhs, Issue rhs) {
-        return (int) (rhs.number() - lhs.number());
+        return rhs.number() - lhs.number();
     }
 }

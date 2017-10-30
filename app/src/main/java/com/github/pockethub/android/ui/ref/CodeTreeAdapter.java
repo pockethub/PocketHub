@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.format.Formatter;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.pockethub.android.R;
@@ -27,7 +26,6 @@ import com.github.pockethub.android.core.code.FullTree.Entry;
 import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.util.ServiceUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 
 /**
  * Adapter to display a source code tree
@@ -126,29 +124,18 @@ public class CodeTreeAdapter extends MultiTypeAdapter {
         paddingTop = view.getPaddingTop();
         paddingBottom = view.getPaddingBottom();
 
-        switch (type) {
-            case TYPE_BLOB:
-                TypefaceUtils.setOcticons((TextView) view
-                        .findViewById(R.id.tv_file_icon));
-                break;
-            case TYPE_TREE:
-                TypefaceUtils.setOcticons(
-                        (TextView) view.findViewById(R.id.tv_folder_icon),
-                        (TextView) view.findViewById(R.id.tv_folders_icon),
-                        (TextView) view.findViewById(R.id.tv_files_icon));
-        }
-
         return view;
     }
 
     @Override
     protected void update(final int position, final Object item, final int type) {
-        if (indented)
+        if (indented) {
             updater.view.setPadding(indentedPaddingLeft, paddingTop,
                     paddingRight, paddingBottom);
-        else
+        } else {
             updater.view.setPadding(paddingLeft, paddingTop, paddingRight,
                     paddingBottom);
+        }
 
         switch (type) {
             case TYPE_BLOB:

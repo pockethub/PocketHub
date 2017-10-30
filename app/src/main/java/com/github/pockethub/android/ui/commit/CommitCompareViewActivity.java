@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -74,7 +75,7 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         setContentView(R.layout.commit_compare);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -87,8 +88,9 @@ public class CommitCompareViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu optionsMenu) {
-        if (fragment != null)
+        if (fragment != null) {
             fragment.onCreateOptionsMenu(optionsMenu, getMenuInflater());
+        }
 
         return super.onCreateOptionsMenu(optionsMenu);
     }
@@ -102,10 +104,11 @@ public class CommitCompareViewActivity extends BaseActivity {
                 startActivity(intent);
                 return true;
             default:
-                if (fragment != null)
+                if (fragment != null) {
                     return fragment.onOptionsItemSelected(item);
-                else
+                } else {
                     return super.onOptionsItemSelected(item);
+                }
         }
     }
 }

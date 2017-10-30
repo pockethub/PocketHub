@@ -81,14 +81,12 @@ public class FullTree {
         /**
          * Sub folders
          */
-        public final Map<String, Folder> folders = new TreeMap<>(
-                CASE_INSENSITIVE_ORDER);
+        public final Map<String, Folder> folders = new TreeMap<>();
 
         /**
          * Files
          */
-        public final Map<String, Entry> files = new TreeMap<>(
-                CASE_INSENSITIVE_ORDER);
+        public final Map<String, Entry> files = new TreeMap<>();
 
         private Folder() {
             super();
@@ -104,8 +102,9 @@ public class FullTree {
                 files.put(file.name, file);
             } else {
                 Folder folder = folders.get(pathSegments[index]);
-                if (folder != null)
+                if (folder != null) {
                     folder.addFile(entry, pathSegments, index + 1);
+                }
             }
         }
 
@@ -115,22 +114,25 @@ public class FullTree {
                 folders.put(folder.name, folder);
             } else {
                 Folder folder = folders.get(pathSegments[index]);
-                if (folder != null)
+                if (folder != null) {
                     folder.addFolder(entry, pathSegments, index + 1);
+                }
             }
         }
 
         private void add(final GitTreeEntry entry) {
             String path = entry.path();
-            if (TextUtils.isEmpty(path))
+            if (TextUtils.isEmpty(path)) {
                 return;
+            }
 
             if (entry.type() == GitEntryType.blob) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
-                    if (folder != null)
+                    if (folder != null) {
                         folder.addFile(entry, segments, 1);
+                    }
                 } else if (segments.length == 1) {
                     Entry file = new Entry(entry, this);
                     files.put(file.name, file);
@@ -139,8 +141,9 @@ public class FullTree {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
-                    if (folder != null)
+                    if (folder != null) {
                         folder.addFolder(entry, segments, 1);
+                    }
                 } else if (segments.length == 1) {
                     Folder folder = new Folder(entry, this);
                     folders.put(folder.name, folder);
@@ -182,9 +185,10 @@ public class FullTree {
 
         root = new Folder();
         List<GitTreeEntry> entries = tree.tree();
-        if (entries != null && !entries.isEmpty())
+        if (entries != null && !entries.isEmpty()) {
             for (GitTreeEntry entry : entries) {
                 root.add(entry);
             }
+        }
     }
 }

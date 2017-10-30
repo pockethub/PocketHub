@@ -51,8 +51,9 @@ public class RepositoryUtils {
      * @return true if valid, false otherwise
      */
     public static boolean isValidOwner(final String name) {
-        if (TextUtils.isEmpty(name))
+        if (TextUtils.isEmpty(name)) {
             return false;
+        }
 
         return !("about".equals(name) //
                 || "account".equals(name) //
@@ -94,8 +95,9 @@ public class RepositoryUtils {
      * @return true if valid, false otherwise
      */
     public static boolean isValidRepo(final String name) {
-        if (TextUtils.isEmpty(name))
+        if (TextUtils.isEmpty(name)) {
             return false;
+        }
 
         return !("followers".equals(name) || "following".equals(name));
     }

@@ -23,15 +23,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import rx.Observable;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 public class PageIterator<V> implements Iterator<List>, Iterable<List> {
 
-    protected GitHubRequest<Page<V>> request;
+    protected GitHubRequest<Response<Page<V>>> request;
     protected Integer nextPage;
     protected Integer lastPage;
 
-    public PageIterator(GitHubRequest<Page<V>> request, int nextPage) {
+    public PageIterator(GitHubRequest<Response<Page<V>>> request, int nextPage) {
         this.request = request;
         this.nextPage = nextPage;
     }
@@ -44,20 +45,23 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         return this.lastPage;
     }
 
+    @Override
     public boolean hasNext() {
         return (this.nextPage != null && this.nextPage == 1) || this.lastPage != null;
     }
 
+    @Override
     public void remove() {
         throw new UnsupportedOperationException("Remove not supported");
     }
 
+    @Override
     public List<V> next() {
-        if(!this.hasNext()) {
+        if (!this.hasNext()) {
             throw new NoSuchElementException();
         } else {
-            Observable<Page<V>> client = request.execute(nextPage);
-            Page<V> response = client.toBlocking().first();
+            Single<Response<Page<V>>> client = request.execute(nextPage);
+            Page<V> response = client.blockingGet().body();
 
             ++this.nextPage;
             this.lastPage = response.last();
@@ -66,15 +70,16 @@ public class PageIterator<V> implements Iterator<List>, Iterable<List> {
         }
     }
 
-    public GitHubRequest<Page<V>> getRequest() {
+    public GitHubRequest<Response<Page<V>>> getRequest() {
         return this.request;
     }
 
+    @Override
     public Iterator<List> iterator() {
         return this;
     }
 
-    public interface GitHubRequest<V>{
-        Observable<V> execute(int page);
+    public interface GitHubRequest<V> {
+        Single<V> execute(int page);
     }
 }

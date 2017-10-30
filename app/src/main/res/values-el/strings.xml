@@ -151,8 +151,6 @@
     <string name="select_labels">Επέλεξε Ετικέτες</string>
     <string name="select_ref">Επέλεξε Κλάδο ή Tag</string>
     <string name="no_milestone">Δεν βρέθηκε ορόσημο</string>
-    <string name="enter_otp_code_title">Πιστοποιητικό Αναγνώρισης</string>
-    <string name="enter_otp_code_message">Η διπλή πιστοποίηση είναι ενεργοποιημένη για τον λογαριασμό σου. Εισάγετε το πιστοποιητικό αναγνώρισης σας για την επιβεβαίωση της ταυτότητας σας.</string>
     <string name="unassigned">Κανείς δεν είναι εντολοδόχος</string>
     <string name="assigned">έχετε γίνει εντολοδόχος</string>
     <string name="no_gists_found">Δεν βρέθηκαν Gists</string>

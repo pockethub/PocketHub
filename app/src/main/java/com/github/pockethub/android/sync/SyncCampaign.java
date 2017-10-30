@@ -87,8 +87,9 @@ public class SyncCampaign implements Runnable {
 
         Log.d(TAG, "Syncing " + orgs.size() + " users and orgs");
         for (User org : orgs) {
-            if (cancelled)
+            if (cancelled) {
                 return;
+            }
 
             Log.d(TAG, "Syncing repos for " + org.login());
             try {

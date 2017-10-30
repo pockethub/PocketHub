@@ -99,8 +99,6 @@
     <string name="home">Home</string>
     <string name="log_out">Log Out</string>
     <string name="news">News</string>
-    <string name="skip">Skip</string>
-    <string name="done">Done</string>
     <string name="issues">Issues</string>
     <string name="gists">Gists</string>
     <string name="commits">Commits</string>
@@ -159,8 +157,6 @@
     <string name="select_milestone">Select Milestone</string>
     <string name="select_labels">Select Labels</string>
     <string name="select_ref">Select Branch or Tag</string>
-    <string name="enter_otp_code_title">Authentication Code</string>
-    <string name="enter_otp_code_message">Two-factor authentication is enabled for your account. Enter your authentication code to verify your identity.</string>
     <string name="no_milestone">No milestone</string>
     <string name="unassigned">No one is assigned</string>
     <string name="assigned">is assigned</string>
@@ -284,6 +280,8 @@
     <string name="tab_starred">starred</string>
     <string name="tab_readme">readme</string>
     <string name="tab_all">all</string>
+    <string name="tab_unread">Unread</string>
+    <string name="tab_participating">Participating</string>
     <!--  -->
     <string name="share">Share</string>
     <string name="show_password">Show password</string>
@@ -315,17 +313,22 @@
     <string name="organizations">Organizations</string>
     <string name="error_oauth_not_configured">You won\'t be able to login, because the oauth client and secret aren\'t set
 Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</string>
+    <string name="error_image_upload">Unable to upload image</string>
+    <string name="read_permission_title">Let us explain</string>
+    <string name="read_permission_content">For us to for example upload images we need to be able to read your storage.</string>
+    <string name="no_notifications">No notifications found</string>
+    <string name="error_notifications_load">Error loading notifications</string>
+    <string name="releases_not_yet_in_app">Sorry, we don\'t support releases in the app yet</string>
+    <string name="error_edit_issue">Could not edit issue</string>
+    <string name="error_issue_state">Could not change state</string>
+    <string name="section_issue_sort_order">Sort order</string>
+    <string name="section_issue_sort_type">Sort by</string>
+    <string name="sort_order_ascending">Ascending</string>
+    <string name="sort_order_descending">Descending</string>
+    <string name="sort_created">Created</string>
+    <string name="sort_updated">Updated</string>
+    <string name="sort_comments">Comments</string>
+    <string name="parent_repo">Parent repository</string>
 
 
-    <string-array name="welcome_texts">
-        <item>So a while ago the GitHub app was discontinued and some of us wanted something new…</item>
-        <item>We move the app under a new name and are now PocketHub</item>
-        <item>Click done and we’ll get you logged in!</item>
-    </string-array>
-
-    <string-array name="welcome_titles">
-        <item>Welcome</item>
-        <item>Long story short</item>
-        <item>Let’s get started</item>
-    </string-array>
 </resources>

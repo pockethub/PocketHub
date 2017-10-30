@@ -20,7 +20,6 @@ import android.widget.ListView;
 
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.google.inject.Inject;
@@ -48,7 +47,6 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         User user = (User) l.getItemAtPosition(position);
-        if (!AccountUtils.isUser(getActivity(), user))
-            startActivity(UserViewActivity.createIntent(user));
+        startActivity(UserViewActivity.createIntent(user));
     }
 }

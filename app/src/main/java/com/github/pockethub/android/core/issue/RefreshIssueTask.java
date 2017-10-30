@@ -17,8 +17,9 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.github.pockethub.android.rx.ObserverAdapter;
+import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.util.HttpImageGetter;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.Issue;
@@ -31,20 +32,20 @@ import com.meisolsson.githubsdk.service.issues.IssueEventService;
 import com.google.inject.Inject;
 import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
-import rx.schedulers.Schedulers;
 
 /**
  * Task to load and store an {@link Issue}
  */
-public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
+public class RefreshIssueTask {
 
     private static final String TAG = "RefreshIssueTask";
 
@@ -63,13 +64,14 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
 
 
     /**
-     * Create task to refresh given issue
+     * Create task to refresh given issue.
      *
-     * @param repo
-     * @param issueNumber
-     * @param bodyImageGetter
+     * @param repo The repository to refresh issue from
+     * @param issueNumber The issue's number
+     * @param bodyImageGetter {@link HttpImageGetter} to fetch images for the bodies
      */
-    public RefreshIssueTask(Context context, Repository repo, int issueNumber, HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
+    public RefreshIssueTask(Context context, Repository repo, int issueNumber,
+                            HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
         this.repo = repo;
         this.issueNumber = issueNumber;
         this.bodyImageGetter = bodyImageGetter;
@@ -78,76 +80,76 @@ public class RefreshIssueTask implements Observable.OnSubscribe<FullIssue> {
         RoboGuice.getInjector(context).injectMembers(this);
     }
 
-    @Override
-    public void call(Subscriber<? super FullIssue> subscriber) {
-        try {
-            Issue issue = store.refreshIssue(repo, issueNumber);
+    /**
+     * Fetches an issue and it's comments, event and pull request if applicable.
+     *
+     * @return {@link Single} for a {@link FullIssue}
+     */
+    public Single<FullIssue> refresh() {
+        return store.refreshIssue(repo, issueNumber)
+                .flatMap(issue -> {
+                    if (issue.pullRequest() != null) {
+                        return getPullRequest(repo.owner().login(), repo.name(), issueNumber)
+                                .map(pullRequest -> issue.toBuilder()
+                                        .pullRequest(pullRequest)
+                                        .build());
+                    }
 
-            if (issue.pullRequest() != null) {
-                PullRequest pull = getPullRequest(repo.owner().login(), repo.name(), issueNumber);
-                issue = issue.toBuilder()
-                        .pullRequest(pull)
-                        .build();
-            }
-
-            bodyImageGetter.encode(issue.id(), issue.bodyHtml());
-
-            List<GitHubComment> comments;
-            if(issue.comments() > 0)
-                comments = getAllComments(repo.owner().login(), repo.name(), issueNumber);
-            else
-                comments = Collections.emptyList();
-
-            for (GitHubComment comment : comments)
-                commentImageGetter.encode(comment.id(), comment.bodyHtml());
-
-            List<IssueEvent> events = getAllEvents(repo.owner().login(), repo.name(), issueNumber);
-            subscriber.onNext(new FullIssue(issue, comments, events));
-        } catch (IOException e){
-            subscriber.onError(e);
-        }
+                    return Single.just(issue);
+                })
+                .flatMap(issue -> getAllComments(repo.owner().login(), repo.name(), issue)
+                        .zipWith(Single.just(issue),
+                                (comments, issue1) -> new FullIssue(issue1, comments, null)))
+                .zipWith(getAllEvents(repo.owner().login(), repo.name(), issueNumber),
+                        (fullIssue, issueEvents) -> new FullIssue(fullIssue.getIssue(),
+                                fullIssue.getComments(), issueEvents))
+                .map(fullIssue -> {
+                    Issue issue = fullIssue.getIssue();
+                    bodyImageGetter.encode(issue.id(), issue.bodyHtml());
+                    for (GitHubComment comment : fullIssue.getComments()) {
+                        commentImageGetter.encode(comment.id(), comment.bodyHtml());
+                    }
+                    return fullIssue;
+                });
     }
 
-    private List<GitHubComment> getAllComments(String login, String name, int issueNumber) {
-        List<GitHubComment> comments = new ArrayList<>();
-        int current = 1;
-        int last = -1;
-
-        while(current != last) {
-            Page<GitHubComment> page = ServiceGenerator.createService(context, IssueCommentService.class)
-                    .getIssueComments(login, name, issueNumber, current)
-                    .toBlocking()
-                    .first();
-            comments.addAll(page.items());
-            last = page.last() != null ? page.last() : -1;
-            current = page.next() != null ? page.next() : -1;
+    /**
+     * Fetches all comments for a given issue.
+     *
+     * @param login
+     * @param name
+     * @param issue
+     * @return {@link Single}
+     */
+    private Single<List<GitHubComment>> getAllComments(String login, String name, Issue issue) {
+        if (issue.comments() <= 0) {
+            return Single.just(Collections.emptyList());
         }
 
-        return comments;
+        IssueCommentService service = ServiceGenerator.createService(context,
+                IssueCommentService.class);
+        return RxPageUtil.getAllPages(page ->
+                service.getIssueComments(login, name, issue.number(), page), 1)
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toList();
     }
 
-    private List<IssueEvent> getAllEvents(String login, String name, int issueNumber) {
-        List<IssueEvent> events = new ArrayList<>();
-        int current = 1;
-        int last = -1;
+    private Single<List<IssueEvent>> getAllEvents(String login, String name, int issueNumber) {
+        IssueEventService service = ServiceGenerator
+                .createService(context, IssueEventService.class);
 
-        while(current != last) {
-            Page<IssueEvent> page = ServiceGenerator.createService(context, IssueEventService.class)
-                    .getIssueEvents(login, name, issueNumber, current)
-                    .toBlocking()
-                    .first();
-            events.addAll(page.items());
-            last = page.last() != null ? page.last() : -1;
-            current = page.next() != null ? page.next() : -1;
-        }
-
-        return events;
+        return RxPageUtil.getAllPages(page ->
+                service.getIssueEvents(login, name, issueNumber, page), 1)
+                .flatMap(page -> Observable.fromIterable(page.items()))
+                .toList();
     }
 
-    private PullRequest getPullRequest(String login, String name, int issueNumber) {
+    private Single<PullRequest> getPullRequest(String login, String name,
+                                                         int issueNumber) {
         return ServiceGenerator.createService(context, PullRequestService.class)
                 .getPullRequest(login, name, issueNumber)
-                .toBlocking()
-                .first();
+                .map(Response::body);
     }
+
+
 }

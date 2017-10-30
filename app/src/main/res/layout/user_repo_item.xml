@@ -18,7 +18,7 @@
     style="@style/ListItem"
     android:gravity="center_vertical" >
 
-    <TextView
+    <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_repo_icon"
         style="@style/PrimaryIcon"
         android:layout_alignParentLeft="true"

@@ -19,25 +19,20 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.github.pockethub.android.util.HttpImageGetter;
+import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.git.GitComment;
-import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-import java.util.List;
-
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Task to load a commit by SHA-1 id
  */
-public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
+public class RefreshCommitTask {
 
     private final Context context;
 
@@ -65,26 +60,25 @@ public class RefreshCommitTask implements Observable.OnSubscribe<FullCommit> {
         RoboGuice.injectMembers(activity, this);
     }
 
-    @Override
-    public void call(Subscriber<? super FullCommit> subscriber) {
-        try {
-            Commit commit = store.refreshCommit(repository, id);
-            GitCommit rawCommit = commit.commit();
-            if (rawCommit != null && rawCommit.commentCount() > 0) {
-                List<GitComment> comments = ServiceGenerator.createService(context, RepositoryCommentService.class)
-                        .getCommitComments(repository.owner().login(), repository.name(), commit.sha(), 1)
-                        .toBlocking()
-                        .first()
-                        .items();
+    /**
+     * Fetches a commit with it's comments.
+     *
+     * @return Single for a FullCommit
+     */
+    public Single<FullCommit> refresh() {
+        RepositoryCommentService commentService =
+                ServiceGenerator.createService(context, RepositoryCommentService.class);
 
-                for (GitComment comment : comments) {
-                    imageGetter.encode(comment, comment.bodyHtml());
-                }
-                subscriber.onNext(new FullCommit(commit, comments));
-            } else
-                subscriber.onNext(new FullCommit(commit));
-        }catch (IOException e){
-            subscriber.onError(e);
-        }
+        return store.refreshCommit(repository, id)
+                .flatMap(commit -> RxPageUtil.getAllPages((page) ->
+                        commentService.getCommitComments(repository.owner().login(),
+                                repository.name(), commit.sha(), page), 1)
+                        .flatMap(page -> Observable.fromIterable(page.items()))
+                        .map(comment -> {
+                            imageGetter.encode(comment, comment.bodyHtml());
+                            return comment;
+                        })
+                        .toList()
+                        .map(comments -> new FullCommit(commit, comments)));
     }
 }

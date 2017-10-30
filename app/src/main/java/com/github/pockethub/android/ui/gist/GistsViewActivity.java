@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -25,7 +26,7 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.MainActivity;
@@ -42,9 +43,8 @@ import com.google.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
-import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -83,8 +83,9 @@ public class GistsViewActivity extends PagerActivity implements
     public static Intent createIntent(List<Gist> gists, int position) {
         String[] ids = new String[gists.size()];
         int index = 0;
-        for (Gist gist : gists)
+        for (Gist gist : gists) {
             ids[index++] = gist.id();
+        }
         return new Builder("gists.VIEW")
             .add(EXTRA_GIST_IDS, (Serializable) ids)
             .add(EXTRA_POSITION, position).toIntent();
@@ -112,12 +113,12 @@ public class GistsViewActivity extends PagerActivity implements
 
         setContentView(R.layout.activity_pager);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = finder.find(R.id.vp_pages);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -126,8 +127,9 @@ public class GistsViewActivity extends PagerActivity implements
         if (gists == null && gist != null) {
             if (gist.createdAt() != null) {
                 Gist stored = store.getGist(gist.id());
-                if (stored == null)
+                if (stored == null) {
                     store.addGist(gist);
+                }
             }
             gists = new String[] { gist.id() };
         }
@@ -170,24 +172,15 @@ public class GistsViewActivity extends PagerActivity implements
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<Response<Boolean>>bindToLifecycle())
-                    .subscribe(new ProgressObserverAdapter<Response<Boolean>>(this, R.string.deleting_gist) {
-
-                        @Override
-                        public void onNext(Response<Boolean> response) {
-                            super.onNext(response);
-                            setResult(RESULT_OK);
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            super.onError(e);
-                            Log.d(TAG, "Exception deleting Gist", e);
-                            ToastUtils.show(GistsViewActivity.this, e.getMessage());
-                            dismissProgress();
-                        }
-                    }.start());
+                    .compose(this.bindToLifecycle())
+                    .compose(RxProgress.bindToLifecycle(this, R.string.deleting_gist))
+                    .subscribe(response -> {
+                        setResult(RESULT_OK);
+                        finish();
+                    }, e -> {
+                        Log.d(TAG, "Exception deleting Gist", e);
+                        ToastUtils.show(this, e.getMessage());
+                    });
             return;
         }
 
@@ -209,10 +202,11 @@ public class GistsViewActivity extends PagerActivity implements
     @Override
     public void startActivity(Intent intent) {
         Intent converted = UriLauncherActivity.convert(intent);
-        if (converted != null)
+        if (converted != null) {
             super.startActivity(converted);
-        else
+        } else {
             super.startActivity(intent);
+        }
     }
 
     @Override
@@ -239,7 +233,8 @@ public class GistsViewActivity extends PagerActivity implements
 
     @Override
     public void loaded(Gist gist) {
-        if (gists[pager.getCurrentItem()].equals(gist.id()))
+        if (gists[pager.getCurrentItem()].equals(gist.id())) {
             updateActionBar(gist, gist.id());
+        }
     }
 }

@@ -22,12 +22,14 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
 
-import com.trello.rxlifecycle.ActivityEvent;
-import com.trello.rxlifecycle.ActivityLifecycleProvider;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Base class for implementing an Activity that is used to help implement an
@@ -35,17 +37,17 @@ import rx.subjects.BehaviorSubject;
  * to handle the request then it can have the activity extend ActionBarAccountAuthenticatorActivity.
  * The AbstractAccountAuthenticator passes in the response to the intent using the following:
  * <pre>
- *      intent.putExtra({@link android.accounts.AccountManager#KEY_ACCOUNT_AUTHENTICATOR_RESPONSE}, response);
+ *      intent.putExtra({@link AccountManager#KEY_ACCOUNT_AUTHENTICATOR_RESPONSE}, response);
  * </pre>
  * The activity then sets the result that is to be handed to the response via
- * {@link #setAccountAuthenticatorResult(android.os.Bundle)}.
+ * {@link #setAccountAuthenticatorResult(Bundle)}.
  * This result will be sent as the result of the request when the activity finishes. If this
- * is never set or if it is set to null then error {@link android.accounts.AccountManager#ERROR_CODE_CANCELED}
+ * is never set or if it is set to null then error {@link AccountManager#ERROR_CODE_CANCELED}
  * will be called on the response.
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity implements ActivityLifecycleProvider {
+public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
@@ -53,17 +55,17 @@ public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity imp
 
     @Override
     public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject;
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilActivityEvent(lifecycleSubject, event);
+    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindActivity(lifecycleSubject);
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
     }
 
     @Override
@@ -132,6 +134,7 @@ public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity imp
     /**
      * Sends the result or a Constants.ERROR_CODE_CANCELED error if a result isn't present.
      */
+    @Override
     public void finish() {
         if (mAccountAuthenticatorResponse != null) {
             // send the result bundle back if set, otherwise send an error.

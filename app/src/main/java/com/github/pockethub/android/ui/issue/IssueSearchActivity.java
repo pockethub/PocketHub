@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -76,12 +77,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_search:
-                searchView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchView.setQuery(lastQuery, false);
-                    }
-                });
+                searchView.post(() -> searchView.setQuery(lastQuery, false));
                 return true;
             case R.id.m_clear:
                 IssueSearchSuggestionsProvider.clear(this);
@@ -103,7 +99,7 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
 
         setContentView(R.layout.activity_issue_search);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
@@ -131,8 +127,9 @@ public class IssueSearchActivity extends RoboAppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {
-        if (ACTION_SEARCH.equals(intent.getAction()))
+        if (ACTION_SEARCH.equals(intent.getAction())) {
             search(intent.getStringExtra(QUERY));
+        }
     }
 
     private void search(final String query) {

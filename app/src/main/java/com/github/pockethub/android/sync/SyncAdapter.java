@@ -72,7 +72,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void cancelCampaign() {
-        if (campaign != null)
+        if (campaign != null) {
             campaign.cancel();
+        }
     }
 }

@@ -15,9 +15,8 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_drawer_header"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_drawer_header_height">
@@ -28,41 +27,46 @@
         android:gravity="center"
         android:background="@color/primary_dark"/>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingTop="@dimen/toolbar_top_padding"
         android:layout_margin="16dp"
-        android:paddingBottom="8dp"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
-        >
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:id="@+id/user_picture"
-            android:contentDescription="@string/avatar"
-            />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/user_picture"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:contentDescription="@string/avatar" />
+
+            <ImageView
+                android:id="@+id/iv_notification"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="bottom|end"
+                android:tint="#fff"
+                app:srcCompat="@drawable/ic_notifications_black" />
+        </FrameLayout>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/user_real_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="#DEDEDE"
-            android:layout_marginTop="16dp"
-            />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#DEDEDE" />
+
+        <TextView
             android:id="@+id/user_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="#DEDEDE"
-            android:layout_marginTop="16dp"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#DEDEDE" />
 
     </LinearLayout>
 

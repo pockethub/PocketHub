@@ -15,32 +15,30 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 
 /**
  * Task to edit labels
  */
-public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
+public class EditLabelsTask {
 
     @Inject
     private IssueStore store;
@@ -53,9 +51,7 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
 
     private final int issueNumber;
 
-    private final ProgressObserverAdapter<Issue> observer;
-
-    private Label[] labels;
+    private final Consumer<Issue> observer;
 
     /**
      * Create task to edit labels
@@ -66,30 +62,15 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
      */
     public EditLabelsTask(final BaseActivity activity,
                           final Repository repositoryId, final int issueNumber,
-                          final ProgressObserverAdapter<Issue> observer) {
+                          final Consumer<Issue> observer) {
 
         this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         this.observer = observer;
-        observer.setContent(R.string.updating_labels);
         labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE,
                 repositoryId);
         RoboGuice.injectMembers(activity, this);
-    }
-
-    @Override
-    public void call(Subscriber<? super Issue> subscriber) {
-        try {
-            List<String> labelNames = new ArrayList<>(labels.length);
-            for (Label label : labels)
-                labelNames.add(label.name());
-
-            IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editIssue));
-        } catch (IOException e) {
-            subscriber.onError(e);
-        }
     }
 
     /**
@@ -105,18 +86,24 @@ public class EditLabelsTask implements Observable.OnSubscribe<Issue> {
     }
 
     /**
-     * Edit issue to have given labels
+     * Edit issue to have given labels.
      *
      * @param labels
      * @return this task
      */
     public EditLabelsTask edit(Label[] labels) {
-        this.labels = labels;
+        List<String> labelNames = new ArrayList<>(labels.length);
+        for (Label label : labels) {
+            labelNames.add(label.name());
+        }
 
-        Observable.create(this)
+        IssueRequest editIssue = IssueRequest.builder().labels(labelNames).build();
+
+        store.editIssue(repositoryId, issueNumber, editIssue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<Issue>bindToLifecycle())
+                .compose(activity.bindToLifecycle())
+                .compose(RxProgress.bindToLifecycle(activity, R.string.updating_labels))
                 .subscribe(observer);
         return this;
     }

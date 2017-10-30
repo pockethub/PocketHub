@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.VisibleForTesting;
@@ -45,6 +46,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
+import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,9 +56,11 @@ import com.github.pockethub.android.accounts.AccountsHelper;
 import com.github.pockethub.android.accounts.LoginActivity;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.persistence.CacheHelper;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
+import com.github.pockethub.android.ui.notification.NotificationActivity;
 import com.github.pockethub.android.ui.repo.OrganizationLoader;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -76,7 +80,6 @@ public class MainActivity extends BaseActivity implements
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-    public static final String PREF_FIRST_USE = "first_use";
 
     @Inject
     private AccountDataManager accountDataManager;
@@ -104,10 +107,6 @@ public class MainActivity extends BaseActivity implements
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-
-        if(sp.getBoolean(PREF_FIRST_USE, true)) {
-            openWelcomeScreen();
-        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -148,11 +147,6 @@ public class MainActivity extends BaseActivity implements
                 tokenStore.saveToken(AccountsHelper.getUserToken(this, account));
             }
         }
-    }
-
-    private void openWelcomeScreen() {
-        startActivity(new Intent(this, WelcomeActivity.class));
-        finish();
     }
 
     @Override
@@ -199,8 +193,9 @@ public class MainActivity extends BaseActivity implements
         // account
         List<User> currentOrgs = orgs;
         if (currentOrgs != null && !currentOrgs.isEmpty()
-                && !AccountUtils.isUser(this, currentOrgs.get(0)))
+                && !AccountUtils.isUser(this, currentOrgs.get(0))) {
             reloadOrgs();
+        }
     }
 
     @Override
@@ -213,8 +208,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
-        if (orgs.isEmpty())
+        if (orgs.isEmpty()) {
             return;
+        }
 
         org = orgs.get(0);
         this.orgs = orgs;
@@ -222,19 +218,18 @@ public class MainActivity extends BaseActivity implements
         setUpNavigationView();
 
         Window window = getWindow();
-        if (window == null)
+        if (window == null) {
             return;
+        }
         View view = window.getDecorView();
-        if (view == null)
+        if (view == null) {
             return;
+        }
 
-        view.post(new Runnable() {
-
-            @Override
-            public void run() {
-                MainActivity.this.switchFragment(new HomePagerFragment(), org);
-                if(!userLearnedDrawer)
-                    drawerLayout.openDrawer(GravityCompat.START);
+        view.post(() -> {
+            switchFragment(new HomePagerFragment(), org);
+            if(!userLearnedDrawer) {
+                drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
@@ -244,10 +239,15 @@ public class MainActivity extends BaseActivity implements
         ImageView userImage;
         TextView userRealName;
         TextView userName;
+
         View headerView = navigationView.getHeaderView(0);
         userImage = (ImageView) headerView.findViewById(R.id.user_picture);
+        ImageView notificationIcon = (ImageView) headerView.findViewById(R.id.iv_notification);
         userRealName = (TextView) headerView.findViewById(R.id.user_real_name);
         userName = (TextView) headerView.findViewById(R.id.user_name);
+
+        notificationIcon.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, NotificationActivity.class)));
 
         avatars.bind(userImage, org);
         userName.setText(org.login());
@@ -313,20 +313,8 @@ public class MainActivity extends BaseActivity implements
             getSupportActionBar().setTitle(menuItem.getTitle());
             return true;
         } else if (itemId == R.id.navigation_log_out) {
-            AccountManager accountManager = getAccountManager();
-            Account[] allGitHubAccounts = accountManager.getAccountsByType(getString(R.string.account_type));
-
-            for (Account account : allGitHubAccounts) {
-                accountManager.removeAccount(account, null, null);
-            }
-
-            Intent in = new Intent(this, LoginActivity.class);
-            in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(in);
-            finish();
+            logout();
             return false;
-
         } else if (menuItemOrganizationMap.containsKey(menuItem)) {
             switchFragment(new HomePagerFragment(), menuItemOrganizationMap.get(menuItem));
             navigationView.getMenu().findItem(R.id.navigation_home).setChecked(true);
@@ -334,6 +322,36 @@ public class MainActivity extends BaseActivity implements
         } else {
             throw new IllegalStateException("MenuItem " + menuItem + " not known");
         }
+    }
+
+    private void logout() {
+        AccountManager accountManager = getAccountManager();
+        String accountType = getString(R.string.account_type);
+        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
+
+        for (Account account : allGitHubAccounts) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                accountManager.removeAccount(account, this, null, null);
+            } else {
+                accountManager.removeAccount(account, null, null);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            CookieManager.getInstance().removeAllCookies(null);
+        } else {
+            CookieManager.getInstance().removeAllCookie();
+        }
+
+        CacheHelper helper = new CacheHelper(this);
+        helper.getWritableDatabase().delete("orgs", null, null);
+        helper.getWritableDatabase().delete("users", null, null);
+        helper.getWritableDatabase().delete("repos", null, null);
+
+        Intent in = new Intent(this, LoginActivity.class);
+        in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(in);
+        finish();
     }
 
     @VisibleForTesting

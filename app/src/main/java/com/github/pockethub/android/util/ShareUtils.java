@@ -38,8 +38,9 @@ public class ShareUtils {
             final CharSequence body) {
         Intent intent = new Intent(ACTION_SEND);
         intent.setType("text/plain");
-        if (!TextUtils.isEmpty(subject))
+        if (!TextUtils.isEmpty(subject)) {
             intent.putExtra(EXTRA_SUBJECT, subject);
+        }
         intent.putExtra(EXTRA_TEXT, body);
         return intent;
     }

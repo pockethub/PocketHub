@@ -20,21 +20,21 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -49,8 +49,8 @@ import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
 import com.google.inject.Inject;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_HEAD;
@@ -131,8 +131,8 @@ public class BranchFileViewActivity extends BaseActivity implements
         path = getStringExtra(EXTRA_PATH);
         branch = getStringExtra(EXTRA_HEAD);
 
-        loadingBar = finder.find(R.id.pb_loading);
-        codeView = finder.find(R.id.wv_code);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
+        codeView = (WebView) findViewById(R.id.wv_code);
 
         codeView.getSettings().setBuiltInZoomControls(true);
         codeView.getSettings().setUseWideViewPort(true);
@@ -143,7 +143,7 @@ public class BranchFileViewActivity extends BaseActivity implements
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(file);
@@ -158,20 +158,22 @@ public class BranchFileViewActivity extends BaseActivity implements
         getMenuInflater().inflate(R.menu.activity_file_view, optionsMenu);
 
         MenuItem wrapItem = optionsMenu.findItem(R.id.m_wrap);
-        if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false))
+        if (PreferenceUtils.getCodePreferences(this).getBoolean(WRAP, false)) {
             wrapItem.setTitle(R.string.disable_wrapping);
-        else
+        } else {
             wrapItem.setTitle(R.string.enable_wrapping);
+        }
 
         markdownItem = optionsMenu.findItem(R.id.m_render_markdown);
         if (isMarkdownFile) {
             markdownItem.setEnabled(blob != null);
             markdownItem.setVisible(true);
             if (PreferenceUtils.getCodePreferences(this).getBoolean(
-                    RENDER_MARKDOWN, true))
+                    RENDER_MARKDOWN, true)) {
                 markdownItem.setTitle(R.string.show_raw_markdown);
-            else
+            } else {
                 markdownItem.setTitle(R.string.render_markdown);
+            }
         }
 
         return true;
@@ -181,10 +183,11 @@ public class BranchFileViewActivity extends BaseActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_wrap:
-                if (editor.getWrap())
+                if (editor.getWrap()) {
                     item.setTitle(R.string.enable_wrapping);
-                else
+                } else {
                     item.setTitle(R.string.disable_wrapping);
+                }
                 editor.toggleWrap();
                 PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                         .edit().putBoolean(WRAP, editor.getWrap()));
@@ -202,10 +205,11 @@ public class BranchFileViewActivity extends BaseActivity implements
                 } else {
                     item.setTitle(R.string.show_raw_markdown);
                     editor.toggleMarkdown();
-                    if (renderedMarkdown != null)
+                    if (renderedMarkdown != null) {
                         editor.setSource(file, renderedMarkdown, false);
-                    else
+                    } else {
                         loadMarkdown();
+                    }
                 }
                 PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
                         .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown()));
@@ -226,16 +230,18 @@ public class BranchFileViewActivity extends BaseActivity implements
     @Override
     public void onLoadFinished(Loader<CharSequence> loader,
                                CharSequence rendered) {
-        if (rendered == null)
+        if (rendered == null) {
             ToastUtils.show(this, R.string.error_rendering_markdown);
+        }
 
-        ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(codeView, false);
+        loadingBar.setVisibility(View.GONE);
+        codeView.setVisibility(View.VISIBLE);
 
         if (!TextUtils.isEmpty(rendered)) {
             renderedMarkdown = rendered.toString();
-            if (markdownItem != null)
+            if (markdownItem != null) {
                 markdownItem.setEnabled(true);
+            }
             editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
         }
     }
@@ -251,8 +257,8 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void loadMarkdown() {
-        ViewUtils.setGone(loadingBar, false);
-        ViewUtils.setGone(codeView, true);
+        loadingBar.setVisibility(View.VISIBLE);
+        codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
         Bundle args = new Bundle();
@@ -262,45 +268,37 @@ public class BranchFileViewActivity extends BaseActivity implements
     }
 
     private void loadContent() {
-        ViewUtils.setGone(loadingBar, false);
-        ViewUtils.setGone(codeView, true);
+        loadingBar.setVisibility(View.VISIBLE);
+        codeView.setVisibility(View.GONE);
 
         ServiceGenerator.createService(this, GitService.class)
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitBlob>bindToLifecycle())
-                .subscribe(new ObserverAdapter<GitBlob>() {
+                .compose(this.bindToLifecycle())
+                .subscribe(response -> {
+                    blob = response.body();
 
-                    @Override
-                    public void onNext(GitBlob gitBlob) {
-                        BranchFileViewActivity.this.blob = gitBlob;
-
-                        if (markdownItem != null)
-                            markdownItem.setEnabled(true);
-
-                        if (isMarkdownFile
-                                && PreferenceUtils.getCodePreferences(
-                                BranchFileViewActivity.this).getBoolean(
-                                RENDER_MARKDOWN, true))
-                            loadMarkdown();
-                        else {
-                            ViewUtils.setGone(loadingBar, true);
-                            ViewUtils.setGone(codeView, false);
-
-                            editor.setMarkdown(false).setSource(file, blob);
-                        }
+                    if (markdownItem != null) {
+                        markdownItem.setEnabled(true);
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Loading file contents failed", e);
+                    if (isMarkdownFile
+                            && PreferenceUtils.getCodePreferences(this).getBoolean(
+                            RENDER_MARKDOWN, true)) {
+                        loadMarkdown();
+                    } else {
+                        loadingBar.setVisibility(View.GONE);
+                        codeView.setVisibility(View.VISIBLE);
 
-                        ViewUtils.setGone(loadingBar, true);
-                        ViewUtils.setGone(codeView, false);
-                        ToastUtils.show(BranchFileViewActivity.this, e,
-                                R.string.error_file_load);
+                        editor.setMarkdown(false).setSource(file, blob);
                     }
+                }, e -> {
+                    Log.d(TAG, "Loading file contents failed", e);
+
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
+                    ToastUtils.show(this, e, R.string.error_file_load);
                 });
     }
 

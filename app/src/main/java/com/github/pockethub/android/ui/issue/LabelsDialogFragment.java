@@ -20,14 +20,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
@@ -132,10 +130,13 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         boolean[] selectedChoices = arguments
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         List<String> selected = new ArrayList<>();
-        if (selectedChoices != null)
-            for (int i = 0; i < choices.size(); i++)
-                if (selectedChoices[i])
+        if (selectedChoices != null) {
+            for (int i = 0; i < choices.size(); i++) {
+                if (selectedChoices[i]) {
                     selected.add(choices.get(i).name());
+                }
+            }
+        }
         arguments.putStringArrayList(ARG_SELECTED, (ArrayList<String>) selected);
 
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -150,26 +151,11 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 .cancelable(true)
                 .cancelListener(this)
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                })
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .neutralText(R.string.clear)
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_NEUTRAL);
-                    }
-                })
+                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL))
                 .positiveText(R.string.apply)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        LabelsDialogFragment.this.onClick(dialog, BUTTON_POSITIVE);
-                    }
-                })
+                .onPositive((dialog, which) -> onClick(dialog, BUTTON_POSITIVE))
                 .title(getTitle())
                 .content(getMessage())
                 .customView(view, false)
@@ -189,9 +175,11 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
         if (selectedChoices != null) {
-            for (int i = 0; i < selectedChoices.length; i++)
-                if (selectedChoices[i])
+            for (int i = 0; i < selectedChoices.length; i++) {
+                if (selectedChoices[i]) {
                     selected.add(choices.get(i));
+                }
+            }
         }
         arguments.putParcelableArrayList(ARG_SELECTED, selected);
 

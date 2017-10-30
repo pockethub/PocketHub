@@ -26,10 +26,10 @@ import com.github.pockethub.android.ui.TabPagerFragment;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_ADD;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_BROADCAST;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_FOLLOW;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_WATCH;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_ADD;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_BROADCAST;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_FOLLOW;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_WATCH;
 
 /**
  * Dashboard activity for issues

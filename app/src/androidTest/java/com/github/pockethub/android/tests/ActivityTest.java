@@ -72,12 +72,7 @@ public abstract class ActivityTest<T extends Activity> extends
      * @throws Throwable
      */
     protected void focus(final View view) throws Throwable {
-        ui(new Runnable() {
-
-            public void run() {
-                view.requestFocus();
-            }
-        });
+        ui(view::requestFocus);
     }
 
     /**

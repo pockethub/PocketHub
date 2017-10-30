@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
@@ -33,8 +32,6 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.util.List;
-
-import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 import static com.github.pockethub.android.RequestCodes.REPOSITORY_VIEW;
@@ -72,13 +69,9 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
 
             @Override
             public PageIterator<Repository> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
-                    @Override
-                    public Observable<Page<Repository>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), RepositoryService.class)
-                                .getUserRepositories(user.login(), page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), RepositoryService.class)
+                                .getUserRepositories(user.login(), page1), page);
             }
         };
     }

@@ -23,12 +23,9 @@ import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.gist.GistPager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import rx.Observable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.RequestCodes.GIST_CREATE;
@@ -59,13 +56,9 @@ public class MyGistsFragment extends GistsFragment {
 
             @Override
             public PageIterator<Gist> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Gist>>() {
-                    @Override
-                    public Observable<Page<Gist>> execute(int page) {
-                        return ServiceGenerator.createService(getActivity(), GistService.class)
-                                .getUserGists(page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getActivity(), GistService.class)
+                                .getUserGists(page1), page);
             }
         };
     }

@@ -52,10 +52,11 @@ public class DiffStyler {
 
     private int nextLine(final String patch, final int start, final int length) {
         final int end = patch.indexOf('\n', start);
-        if (end != -1)
+        if (end != -1) {
             return end;
-        else
+        } else {
             return length;
+        }
     }
 
     /**
@@ -98,13 +99,15 @@ public class DiffStyler {
      */
     public DiffStyler setFiles(final Collection<GitHubFile> files) {
         diffs.clear();
-        if (files == null || files.isEmpty())
+        if (files == null || files.isEmpty()) {
             return this;
+        }
 
         for (GitHubFile file : files) {
             String patch = file.patch();
-            if (TextUtils.isEmpty(patch))
+            if (TextUtils.isEmpty(patch)) {
                 continue;
+            }
 
             int start = 0;
             int length = patch.length();
@@ -127,9 +130,10 @@ public class DiffStyler {
      * @return styled text
      */
     public List<CharSequence> get(final String file) {
-        if (TextUtils.isEmpty(file))
+        if (TextUtils.isEmpty(file)) {
             return Collections.emptyList();
+        }
         List<CharSequence> lines = diffs.get(file);
-        return lines != null ? lines : Collections.<CharSequence>emptyList();
+        return lines != null ? lines : Collections.emptyList();
     }
 }

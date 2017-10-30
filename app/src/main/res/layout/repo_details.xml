@@ -42,7 +42,7 @@
             android:paddingEnd="15dp"
             android:paddingRight="15dp" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_watchers_icon"
             style="@style/ListIcon"
             android:text="@string/icon_star" />
@@ -55,7 +55,7 @@
             android:paddingEnd="15dp"
             android:paddingRight="15dp" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.OcticonTextView
             android:id="@+id/tv_forks_icon"
             style="@style/ListIcon"
             android:text="@string/icon_fork" />

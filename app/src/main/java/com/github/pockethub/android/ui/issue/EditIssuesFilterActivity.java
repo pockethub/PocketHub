@@ -18,14 +18,13 @@ package com.github.pockethub.android.ui.issue;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Label;
@@ -91,101 +90,118 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
         setContentView(R.layout.activity_issues_filter_edit);
 
-        labelsText = finder.find(R.id.tv_labels);
-        milestoneText = finder.find(R.id.tv_milestone);
-        assigneeText = finder.find(R.id.tv_assignee);
-        avatarView = finder.find(R.id.iv_avatar);
+        labelsText = (TextView) findViewById(R.id.tv_labels);
+        milestoneText = (TextView) findViewById(R.id.tv_milestone);
+        assigneeText = (TextView) findViewById(R.id.tv_assignee);
+        avatarView = (ImageView) findViewById(R.id.iv_avatar);
 
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);
+        }
 
-        if (filter == null)
+        if (filter == null) {
             filter = getIntent().getParcelableExtra(EXTRA_ISSUE_FILTER);
+        }
 
         final Repository repository = filter.getRepository();
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.filter_issues_title);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
 
-        OnClickListener assigneeListener = new OnClickListener() {
-
-            public void onClick(View v) {
-                if (assigneeDialog == null)
-                    assigneeDialog = new AssigneeDialog(
-                        EditIssuesFilterActivity.this, REQUEST_ASSIGNEE,
-                        repository);
-                assigneeDialog.show(filter.getAssignee());
+        OnClickListener assigneeListener = v -> {
+            if (assigneeDialog == null) {
+                assigneeDialog = new AssigneeDialog(this, REQUEST_ASSIGNEE, repository);
             }
+            assigneeDialog.show(filter.getAssignee());
         };
 
-        findViewById(R.id.tv_assignee_label)
-            .setOnClickListener(assigneeListener);
+        findViewById(R.id.tv_assignee_label).setOnClickListener(assigneeListener);
         assigneeText.setOnClickListener(assigneeListener);
 
-        OnClickListener milestoneListener = new OnClickListener() {
-
-            public void onClick(View v) {
-                if (milestoneDialog == null)
-                    milestoneDialog = new MilestoneDialog(
-                        EditIssuesFilterActivity.this, REQUEST_MILESTONE,
-                        repository);
-                milestoneDialog.show(filter.getMilestone());
+        OnClickListener milestoneListener = v -> {
+            if (milestoneDialog == null) {
+                milestoneDialog = new MilestoneDialog(this, REQUEST_MILESTONE, repository);
             }
+            milestoneDialog.show(filter.getMilestone());
         };
 
-        findViewById(R.id.tv_milestone_label)
-            .setOnClickListener(milestoneListener);
+        findViewById(R.id.tv_milestone_label).setOnClickListener(milestoneListener);
         milestoneText.setOnClickListener(milestoneListener);
 
-        OnClickListener labelsListener = new OnClickListener() {
-
-            public void onClick(View v) {
-                if (labelsDialog == null)
-                    labelsDialog = new LabelsDialog(
-                        EditIssuesFilterActivity.this, REQUEST_LABELS,
-                        repository);
-                labelsDialog.show(filter.getLabels());
+        OnClickListener labelsListener = v -> {
+            if (labelsDialog == null) {
+                labelsDialog = new LabelsDialog(this, REQUEST_LABELS, repository);
             }
+            labelsDialog.show(filter.getLabels());
         };
 
-        findViewById(R.id.tv_labels_label)
-            .setOnClickListener(labelsListener);
+        findViewById(R.id.tv_labels_label).setOnClickListener(labelsListener);
         labelsText.setOnClickListener(labelsListener);
 
         updateAssignee();
         updateMilestone();
         updateLabels();
 
-        RadioButton openButton = (RadioButton) findViewById(R.id.rb_open);
+        RadioGroup status = (RadioGroup) findViewById(R.id.issue_filter_status);
+        RadioGroup sortOrder = (RadioGroup) findViewById(R.id.issue_sort_order);
+        RadioGroup sortType = (RadioGroup) findViewById(R.id.issue_sort_type);
 
-        openButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        status.setOnCheckedChangeListener((radioGroup, checkedId) ->
+                filter.setOpen(checkedId == R.id.rb_open));
 
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (isChecked)
-                    filter.setOpen(true);
+        if (filter.isOpen()) {
+            status.check(R.id.rb_open);
+        } else {
+            status.check(R.id.rb_closed);
+        }
+
+        sortOrder.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            if (checkedId == R.id.rb_asc) {
+                filter.setDirection(IssueFilter.DIRECTION_ASCENDING);
+            } else {
+                filter.setDirection(IssueFilter.DIRECTION_DESCENDING);
             }
         });
 
-        RadioButton closedButton = (RadioButton) findViewById(R.id.rb_closed);
+        if (filter.getDirection().equals(IssueFilter.DIRECTION_ASCENDING)) {
+            sortOrder.check(R.id.rb_asc);
+        } else {
+            sortOrder.check(R.id.rb_desc);
+        }
 
-        closedButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (isChecked)
-                    filter.setOpen(false);
+        sortType.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_created:
+                    filter.setSortType(IssueFilter.SORT_CREATED);
+                    break;
+                case R.id.rb_updated:
+                    filter.setSortType(IssueFilter.SORT_UPDATED);
+                    break;
+                case R.id.rb_comments:
+                    filter.setSortType(IssueFilter.SORT_COMMENTS);
+                    break;
+                default:
+                    break;
             }
         });
 
-        if (filter.isOpen())
-            openButton.setChecked(true);
-        else
-            closedButton.setChecked(true);
+        switch (filter.getSortType()) {
+            case IssueFilter.SORT_CREATED:
+                sortType.check(R.id.rb_created);
+                break;
+            case IssueFilter.SORT_UPDATED:
+                sortType.check(R.id.rb_updated);
+                break;
+            case IssueFilter.SORT_COMMENTS:
+                sortType.check(R.id.rb_comments);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -217,18 +233,20 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     private void updateLabels() {
         List<Label> selected = filter.getLabels();
-        if (selected != null)
+        if (selected != null) {
             LabelDrawableSpan.setText(labelsText, selected);
-        else
+        } else {
             labelsText.setText(R.string.none);
+        }
     }
 
     private void updateMilestone() {
         Milestone selected = filter.getMilestone();
-        if (selected != null)
+        if (selected != null) {
             milestoneText.setText(selected.title());
-        else
+        } else {
             milestoneText.setText(R.string.none);
+        }
     }
 
     private void updateAssignee() {
@@ -244,8 +262,9 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
             case REQUEST_LABELS:

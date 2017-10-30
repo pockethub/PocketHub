@@ -30,7 +30,6 @@ import android.webkit.WebView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.util.PreferenceUtils;
 import com.github.pockethub.android.util.SourceEditor;
@@ -42,10 +41,9 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_GIST_FILE;
 import static com.github.pockethub.android.Intents.EXTRA_GIST_ID;
@@ -87,8 +85,9 @@ public class GistFileFragment extends DialogFragment implements
 
         file = (GistFile) getArguments().get(EXTRA_GIST_FILE);
         gist = store.getGist(gistId);
-        if (gist == null)
+        if (gist == null) {
             gist = Gist.builder().id(gistId).build();
+        }
 
         codePrefs = PreferenceUtils.getCodePreferences(getActivity());
         codePrefs.registerOnSharedPreferenceChangeListener(this);
@@ -101,6 +100,7 @@ public class GistFileFragment extends DialogFragment implements
         codePrefs.unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
@@ -114,11 +114,13 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void updateWrapItem() {
-        if (wrapItem != null)
-            if (codePrefs.getBoolean(WRAP, false))
+        if (wrapItem != null) {
+            if (codePrefs.getBoolean(WRAP, false)) {
                 wrapItem.setTitle(R.string.disable_wrapping);
-            else
+            } else {
                 wrapItem.setTitle(R.string.enable_wrapping);
+            }
+        }
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -142,41 +144,29 @@ public class GistFileFragment extends DialogFragment implements
     }
 
     private void loadSource() {
-        Observable.create(new Observable.OnSubscribe<GistFile>() {
-            @Override
-            public void call(Subscriber<? super GistFile> subscriber) {
-                try {
-                    gist = store.refreshGist(gistId);
+        store.refreshGist(gistId)
+                .map(gist -> {
                     Map<String, GistFile> files = gist.files();
-                    if (files == null)
-                        subscriber.onError(new IOException());
+                    if (files == null) {
+                        throw new IOException();
+                    }
+
                     GistFile loadedFile = files.get(file.filename());
-                    if (loadedFile == null)
-                        subscriber.onError(new IOException());
-                    subscriber.onNext(loadedFile);
-                } catch (IOException e) {
-                    subscriber.onError(e);
-                }
-            }
-        }).subscribeOn(Schedulers.io())
+                    if (loadedFile == null) {
+                        throw new IOException();
+                    }
+
+                    return loadedFile;
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverAdapter<GistFile>() {
-                    @Override
-                    public void onNext(GistFile loadedFile) {
-                        if (loadedFile == null)
-                            return;
-
-                        file = loadedFile;
-                        getArguments().putParcelable(EXTRA_GIST_FILE, file);
-                        if (file.content() != null)
-                            showSource();
+                .subscribe(loadedFile -> {
+                    file = loadedFile;
+                    getArguments().putParcelable(EXTRA_GIST_FILE, file);
+                    if (file.content() != null) {
+                        showSource();
                     }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        ToastUtils.show(getActivity(), e, R.string.error_gist_file_load);
-                    }
-                });
+                }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_file_load));
     }
 
     private void showSource() {
@@ -193,16 +183,17 @@ public class GistFileFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        webView = finder.find(R.id.wv_code);
+        webView = (WebView) view.findViewById(R.id.wv_code);
 
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
                 .getBoolean(WRAP, false));
 
-        if (file.content() != null)
+        if (file.content() != null) {
             showSource();
-        else
+        } else {
             loadSource();
+        }
     }
 
     @Override

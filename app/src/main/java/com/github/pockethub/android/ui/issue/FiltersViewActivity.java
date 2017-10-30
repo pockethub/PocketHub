@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.issue;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,6 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
@@ -66,7 +66,7 @@ public class FiltersViewActivity extends BaseActivity implements
 
         setContentView(R.layout.issues_filter_list);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
@@ -82,14 +82,12 @@ public class FiltersViewActivity extends BaseActivity implements
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
             IssueFilter filter = arguments.getParcelable(ARG_FILTER);
-            cache.removeIssueFilter(filter, new RequestFuture<IssueFilter>() {
-
-                @Override
-                public void success(IssueFilter response) {
-                    if (fragment != null)
+            cache.removeIssueFilter(filter)
+                .subscribe(response -> {
+                    if (fragment != null) {
                         fragment.refresh();
-                }
-            });
+                    }
+                });
             return;
         }
 

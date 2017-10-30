@@ -68,14 +68,16 @@ public abstract class FragmentPagerAdapter extends
      * @return this adapter
      */
     public FragmentPagerAdapter clearAdapter() {
-        if (tags.isEmpty())
+        if (tags.isEmpty()) {
             return this;
+        }
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         for (String tag : tags) {
             Fragment fragment = fragmentManager.findFragmentByTag(tag);
-            if (fragment != null)
+            if (fragment != null) {
                 transaction.remove(fragment);
+            }
         }
         transaction.commit();
         tags.clear();
@@ -88,6 +90,7 @@ public abstract class FragmentPagerAdapter extends
         return selected;
     }
 
+    @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Object fragment = super.instantiateItem(container, position);
         containerId = container.getId();
@@ -127,8 +130,9 @@ public abstract class FragmentPagerAdapter extends
             selected = null;
         }
 
-        if (changed)
+        if (changed) {
             activity.invalidateOptionsMenu();
+        }
     }
 
     private String getFragmentTag(int viewPagerId, int fragmentPosition) {

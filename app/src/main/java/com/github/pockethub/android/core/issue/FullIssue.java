@@ -15,25 +15,20 @@
  */
 package com.github.pockethub.android.core.issue;
 
-
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueEvent;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Issue model with comments
  */
-public class FullIssue extends ArrayList<GitHubComment> implements Serializable {
-
-    private static final long serialVersionUID = 4586476132467323827L;
+public class FullIssue {
 
     private final Issue issue;
-
-    private Collection<IssueEvent> events;
+    private final Collection<GitHubComment> comments;
+    private final Collection<IssueEvent> events;
 
     /**
      * Create wrapper for issue, comments and events
@@ -43,17 +38,9 @@ public class FullIssue extends ArrayList<GitHubComment> implements Serializable 
      * @param events
      */
     public FullIssue(final Issue issue, final Collection<GitHubComment> comments, final Collection<IssueEvent> events) {
-        super(comments);
-
-        this.events = events;
         this.issue = issue;
-    }
-
-    /**
-     * Create empty wrapper
-     */
-    public FullIssue() {
-        this.issue = null;
+        this.comments = comments;
+        this.events = events;
     }
 
     /**
@@ -63,6 +50,12 @@ public class FullIssue extends ArrayList<GitHubComment> implements Serializable 
         return issue;
     }
 
+    /**
+     * @return comments
+     */
+    public Collection<GitHubComment> getComments() {
+        return comments;
+    }
 
     /**
      * @return events
@@ -70,5 +63,4 @@ public class FullIssue extends ArrayList<GitHubComment> implements Serializable 
     public Collection<IssueEvent> getEvents() {
         return events;
     }
-
 }

@@ -19,18 +19,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.gist.RefreshGistTask;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
@@ -38,9 +38,9 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.google.inject.Inject;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -96,34 +96,33 @@ public class GistFilesViewActivity extends PagerActivity {
 
         setContentView(R.layout.activity_pager_with_title);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        pager = finder.find(R.id.vp_pages);
-        loadingBar = finder.find(R.id.pb_loading);
-        tabs = finder.find(R.id.sliding_tabs_layout);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
+        tabs = (TabLayout) findViewById(R.id.sliding_tabs_layout);
 
-        if (initialPosition < 0)
+        if (initialPosition < 0) {
             initialPosition = 0;
+        }
 
         getSupportActionBar().setTitle(getString(R.string.gist_title) + gistId);
 
         gist = store.getGist(gistId);
-        if (gist != null)
+        if (gist != null) {
             configurePager();
-        else {
-            ViewUtils.setGone(loadingBar, false);
-            ViewUtils.setGone(pager, true);
-            ViewUtils.setGone(tabs, true);
-            Observable.create(new RefreshGistTask(this, gistId, imageGetter))
+        } else {
+            loadingBar.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.GONE);
+            tabs.setVisibility(View.GONE);
+            new RefreshGistTask(this, gistId, imageGetter)
+                    .refresh()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.<FullGist>bindToLifecycle())
-                    .subscribe(new ObserverAdapter<FullGist>() {
-                        @Override
-                        public void onNext(FullGist gist) {
-                            GistFilesViewActivity.this.gist = gist.getGist();
-                            configurePager();
-                        }
+                    .compose(this.bindToLifecycle())
+                    .subscribe(gist -> {
+                        this.gist = gist.getGist();
+                        configurePager();
                     });
         }
     }
@@ -135,12 +134,13 @@ public class GistFilesViewActivity extends PagerActivity {
         if (author != null) {
             actionBar.setSubtitle(author.login());
             avatars.bind(actionBar, author);
-        } else
+        } else {
             actionBar.setSubtitle(R.string.anonymous);
+        }
 
-        ViewUtils.setGone(loadingBar, true);
-        ViewUtils.setGone(pager, false);
-        ViewUtils.setGone(tabs, false);
+        loadingBar.setVisibility(View.GONE);
+        pager.setVisibility(View.VISIBLE);
+        tabs.setVisibility(View.VISIBLE);
 
         adapter = new GistFilesPagerAdapter(this, gist);
         pager.setAdapter(adapter);

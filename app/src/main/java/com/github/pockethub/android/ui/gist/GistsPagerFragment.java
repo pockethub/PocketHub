@@ -27,7 +27,7 @@ import android.view.View;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.ToastUtils;
@@ -37,74 +37,77 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.google.inject.Inject;
 
-import java.util.Collection;
+import java.util.Random;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_STAR;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_TEAM;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PERSON;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_STAR;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_TEAM;
 
 public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter> {
 
     private static final String TAG = "GistsPagerFragment";
     @Inject
     private GistStore store;
+    private Random rand;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        rand = new Random();
         configureTabPager();
     }
 
     private void randomGist() {
-        Observable<Gist> observable = Observable.create(new Observable.OnSubscribe<Gist>() {
-            @Override
-            public void call(Subscriber<? super Gist> subscriber) {
-                GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Page<Gist> p = service.getPublicGists(1).toBlocking().first();
-                int randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
+        GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-                Collection<Gist> gists = service.getPublicGists(randomPage).toBlocking().first().items();
+        service.getPublicGists(1)
+                .flatMap(response -> {
+                    Page<Gist> firstPage = response.body();
+                    int randomPage = (int) (Math.random() * (firstPage.last() - 1));
+                    randomPage = Math.max(1, randomPage);
 
-                // Make at least two tries since page numbers are volatile
-                if (gists.isEmpty()) {
-                    randomPage = 1 + (int) (Math.random() * ((p.last() - 1) + 1));
-                    gists = service.getPublicGists(randomPage).toBlocking().first().items();
-                }
+                    return service.getPublicGists(randomPage);
+                })
+                .flatMap(response -> {
+                    Page<Gist> gistPage = response.body();
+                    if (gistPage.items().isEmpty()) {
+                        int randomPage = (int) (Math.random() * (gistPage.last() - 1));
+                        randomPage = Math.max(1, randomPage);
 
-                if (gists.isEmpty())
-                    throw new IllegalArgumentException(getContext().getString(
-                            R.string.no_gists_found));
+                        return service.getPublicGists(randomPage);
+                    }
 
-                subscriber.onNext(store.addGist(gists.iterator().next()));
-            }
-        });
-
-        showProgressIndeterminate(R.string.random_gist);
-        observable.subscribeOn(Schedulers.io())
+                    return Single.just(response);
+                })
+                .map(response -> {
+                    Page<Gist> gistPage = response.body();
+                    if (response.isSuccessful()) {
+                        int size = gistPage.items().size();
+                        if (size > 0) {
+                            return store.addGist(gistPage.items().get(rand.nextInt(size)));
+                        } else {
+                            throw new IllegalArgumentException(getContext().getString(
+                                    R.string.no_gists_found));
+                        }
+                    } else {
+                        ToastUtils.show(getActivity(), R.string.error_gist_load);
+                        return null;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).<Gist>bindToLifecycle())
-                .subscribe(new ObserverAdapter<Gist>() {
-
-                    @Override
-                    public void onNext(Gist gist) {
-                        getActivity().startActivityForResult(
-                                GistsViewActivity.createIntent(gist), GIST_VIEW);
-                        dismissProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "Exception opening random Gist", e);
-                        ToastUtils.show((Activity) getContext(), e.getMessage());
-                        dismissProgress();
-                    }
+                .compose(((BaseActivity)getActivity()).bindToLifecycle())
+                .compose(RxProgress.bindToLifecycle(getActivity(), R.string.random_gist))
+                .subscribe(gist -> getActivity().startActivityForResult(
+                        GistsViewActivity.createIntent(gist), GIST_VIEW), e -> {
+                    Log.d(TAG, "Exception opening random Gist", e);
+                    ToastUtils.show((Activity) getContext(), e.getMessage());
                 });
     }
 

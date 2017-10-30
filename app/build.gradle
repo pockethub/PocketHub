@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
+apply from: 'quality.gradle'
 
 repositories {
     flatDir {
@@ -9,8 +11,8 @@ repositories {
 
 // Manifest version information!
 def versionMajor = 0
-def versionMinor = 2
-def versionPatch = 1
+def versionMinor = 4
+def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
@@ -20,7 +22,7 @@ def clientSecretIsNotSet = true;
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId 'com.github.pockethub.android'
@@ -73,6 +75,11 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -102,25 +109,27 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '25.0.0'
+    def supportVersion = '25.3.1'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:design:$supportVersion"
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.trello:rxlifecycle:0.4.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.7'
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.bugsnag:bugsnag-android:3.2.7'
     compile 'org.roboguice:roboguice:2.0'
 
-    compile 'com.github.meisolsson:githubsdk:0.1.8'
+    compile 'com.github.meisolsson:githubsdk:0.4.5'
 
     compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
         exclude group: 'com.google.inject'
     }
-    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.4'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')
@@ -128,7 +137,7 @@ dependencies {
     //Libs for testing
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile('org.robolectric:robolectric:3.0') {
+    testCompile('org.robolectric:robolectric:3.3.2') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

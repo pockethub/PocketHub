@@ -25,7 +25,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.Keyboard;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
@@ -57,8 +56,8 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progress = finder.find(R.id.pb_loading);
-        bodyText = finder.find(R.id.tv_comment_body);
+        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
+        bodyText = (TextView) view.findViewById(R.id.tv_comment_body);
     }
 
     /**
@@ -70,16 +69,22 @@ public class RenderedCommentFragment extends DialogFragment implements
     public void setText(final String raw, final Repository repo) {
         Bundle args = new Bundle();
         args.putCharSequence(ARG_TEXT, raw);
-        if (repo instanceof Serializable)
+        if (repo instanceof Serializable) {
             args.putParcelable(ARG_REPO, repo);
+        }
         getLoaderManager().restartLoader(0, args, this);
         Keyboard.hideSoftInput(bodyText);
         showLoading(true);
     }
 
     private void showLoading(final boolean loading) {
-        ViewUtils.setGone(progress, !loading);
-        ViewUtils.setGone(bodyText, loading);
+        if (loading) {
+            progress.setVisibility(View.VISIBLE);
+            bodyText.setVisibility(View.GONE);
+        } else {
+            progress.setVisibility(View.GONE);
+            bodyText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -99,8 +104,9 @@ public class RenderedCommentFragment extends DialogFragment implements
     @Override
     public void onLoadFinished(Loader<CharSequence> loader,
             CharSequence rendered) {
-        if (rendered == null)
+        if (rendered == null) {
             ToastUtils.show(getActivity(), R.string.error_rendering_markdown);
+        }
         bodyText.setText(rendered);
         showLoading(false);
     }

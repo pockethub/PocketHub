@@ -19,11 +19,7 @@ import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubEvent;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.activity.EventService;
-
-import rx.Observable;
-
 
 /**
  * News that a given user has received
@@ -36,14 +32,9 @@ public class UserReceivedNewsFragment extends UserNewsFragment {
 
             @Override
             public PageIterator<GitHubEvent> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
-
-                    @Override
-                    public Observable<Page<GitHubEvent>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), EventService.class)
-                                .getUserRecievedEvents(org.login(), page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), EventService.class)
+                                .getUserRecievedEvents(org.login(), page1), page);
             }
         };
     }

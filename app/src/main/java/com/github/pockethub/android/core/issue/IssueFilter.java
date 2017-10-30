@@ -156,6 +156,10 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
 
     private boolean open;
 
+    private String direction;
+
+    private String sortType;
+
     /**
      * Create filter
      *
@@ -164,6 +168,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     public IssueFilter(final Repository repository) {
         this.repository = repository;
         open = true;
+        direction = DIRECTION_DESCENDING;
+        sortType = SORT_CREATED;
     }
 
     protected IssueFilter(Parcel in) {
@@ -173,6 +179,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         milestone = in.readParcelable(Milestone.class.getClassLoader());
         assignee = in.readParcelable(User.class.getClassLoader());
         open = in.readByte() != 0;
+        direction = in.readString();
+        sortType = in.readString();
     }
 
     public static final Creator<IssueFilter> CREATOR = new Creator<IssueFilter>() {
@@ -206,10 +214,12 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
      * @return this filter
      */
     public IssueFilter addLabel(Label label) {
-        if (label == null)
+        if (label == null) {
             return this;
-        if (labels == null)
+        }
+        if (labels == null) {
             labels = new ArrayList<>();
+        }
         labels.add(label);
         return this;
     }
@@ -220,13 +230,15 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
      */
     public IssueFilter setLabels(Collection<Label> labels) {
         if (labels != null && !labels.isEmpty()) {
-            if (this.labels == null)
+            if (this.labels == null) {
                 this.labels = new ArrayList<>();
-            else
+            } else {
                 this.labels.clear();
+            }
             this.labels.addAll(labels);
-        } else
+        } else {
             this.labels = null;
+        }
         return this;
     }
 
@@ -270,6 +282,33 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     }
 
     /**
+     * @param direction Can be either {@value DIRECTION_ASCENDING} or {@value DIRECTION_ASCENDING}.
+     * @return this filter
+     */
+    public IssueFilter setDirection(String direction) {
+        this.direction = direction;
+        return this;
+    }
+
+    /**
+     * @param sortType Can be either {@value SORT_COMMENTS}, {@value SORT_CREATED}
+     *                 or {@value SORT_UPDATED}.
+     * @return this filter
+     */
+    public IssueFilter setSortType(String sortType) {
+        this.sortType = sortType;
+        return this;
+    }
+
+    public String getSortType() {
+        return sortType;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    /**
      * Are only open issues returned?
      *
      * @return true if open only, false if closed only
@@ -293,27 +332,31 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     public Map<String, Object> toFilterMap() {
         final Map<String, Object> filter = new HashMap<>();
 
-        filter.put(FIELD_SORT, SORT_CREATED);
-        filter.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
+        filter.put(FIELD_SORT, sortType);
+        filter.put(FIELD_DIRECTION, direction);
 
-        if (assignee != null)
+        if (assignee != null) {
             filter.put(FILTER_ASSIGNEE, assignee.login());
+        }
 
-        if (milestone != null)
+        if (milestone != null) {
             filter.put(FILTER_MILESTONE,
                     Integer.toString(milestone.number()));
+        }
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder labelsQuery = new StringBuilder();
-            for (Label label : labels)
+            for (Label label : labels) {
                 labelsQuery.append(label.name()).append(',');
+            }
             filter.put(FILTER_LABELS, labelsQuery.toString());
         }
 
-        if (open)
+        if (open) {
             filter.put(FILTER_STATE, STATE_OPEN);
-        else
+        } else {
             filter.put(FILTER_STATE, STATE_CLOSED);
+        }
         return filter;
     }
 
@@ -324,32 +367,38 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
      */
     public CharSequence toDisplay() {
         List<String> segments = new ArrayList<>();
-        if (open)
+        if (open) {
             segments.add("Open issues");
-        else
+        } else {
             segments.add("Closed issues");
+        }
 
-        if (assignee != null)
+        if (assignee != null) {
             segments.add("Assignee: " + assignee.login());
+        }
 
-        if (milestone != null)
+        if (milestone != null) {
             segments.add("Milestone: " + milestone.title());
+        }
 
         if (labels != null && !labels.isEmpty()) {
             StringBuilder builder = new StringBuilder("Labels: ");
-            for (Label label : labels)
+            for (Label label : labels) {
                 builder.append(label.name()).append(',').append(' ');
+            }
             builder.deleteCharAt(builder.length() - 1);
             builder.deleteCharAt(builder.length() - 1);
             segments.add(builder.toString());
         }
 
-        if (segments.isEmpty())
+        if (segments.isEmpty()) {
             return "";
+        }
 
         StringBuilder all = new StringBuilder();
-        for (String segment : segments)
+        for (String segment : segments) {
             all.append(segment).append(',').append(' ');
+        }
         all.deleteCharAt(all.length() - 1);
         all.deleteCharAt(all.length() - 1);
         return all;
@@ -361,24 +410,28 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
                 assignee != null ? assignee.id() : null,
                 milestone != null ? milestone.number() : null,
                 assignee != null ? assignee.id() : null,
-                repository != null ? repository.id() : null, labels });
+                repository != null ? repository.id() : null,
+                labels, direction, sortType });
     }
 
     private boolean isEqual(Object a, Object b) {
-        if (a == null && b == null)
+        if (a == null && b == null) {
             return true;
+        }
         return a != null && a.equals(b);
     }
 
     private boolean isEqual(Milestone a, Milestone b) {
-        if (a == null && b == null)
+        if (a == null && b == null) {
             return true;
+        }
         return a != null && b != null && a.number() == b.number();
     }
 
     private boolean isEqual(User a, User b) {
-        if (a == null && b == null)
+        if (a == null && b == null) {
             return true;
+        }
         return a != null && b != null && a.id() == b.id();
     }
 
@@ -388,16 +441,20 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this)
+        if (o == this) {
             return true;
-        if (!(o instanceof IssueFilter))
+        }
+        if (!(o instanceof IssueFilter)) {
             return false;
+        }
 
         IssueFilter other = (IssueFilter) o;
         return open == other.open && isEqual(milestone, other.milestone)
                 && isEqual(assignee, other.assignee)
                 && isEqual(repository, repository)
-                && isEqual(labels, other.labels);
+                && isEqual(labels, other.labels)
+                && isEqual(sortType, other.sortType)
+                && isEqual(direction, other.direction);
     }
 
     @Override
@@ -427,5 +484,7 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         dest.writeParcelable(milestone, flags);
         dest.writeParcelable(assignee, flags);
         dest.writeByte((byte) (open ? 1 : 0));
+        dest.writeString(direction);
+        dest.writeString(sortType);
     }
 }

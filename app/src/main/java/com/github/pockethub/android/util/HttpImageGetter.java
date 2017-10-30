@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.bugsnag.android.Bugsnag;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Content;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
@@ -43,13 +42,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import static android.util.Base64.DEFAULT;
 import static android.view.View.GONE;
@@ -113,8 +111,9 @@ public class HttpImageGetter implements ImageGetter {
     }
 
     private HttpImageGetter show(final TextView view, final CharSequence html) {
-        if (TextUtils.isEmpty(html))
+        if (TextUtils.isEmpty(html)) {
             return hide(view);
+        }
 
         view.setText(trim(html));
         view.setVisibility(VISIBLE);
@@ -131,8 +130,9 @@ public class HttpImageGetter implements ImageGetter {
 
     //All comments end with "\n\n" removing 2 chars
     private CharSequence trim(CharSequence val){
-        if(val.charAt(val.length()-1) == '\n' && val.charAt(val.length()-2) == '\n')
-            val = val.subSequence(0, val.length()-2);
+        if(val.charAt(val.length()-1) == '\n' && val.charAt(val.length()-2) == '\n') {
+            val = val.subSequence(0, val.length() - 2);
+        }
         return val;
     }
 
@@ -144,8 +144,9 @@ public class HttpImageGetter implements ImageGetter {
      * @return this image getter
      */
     public HttpImageGetter encode(final Object id, final String html) {
-        if (TextUtils.isEmpty(html))
+        if (TextUtils.isEmpty(html)) {
             return this;
+        }
 
         CharSequence encoded = HtmlUtils.encode(html, loading);
         // Use default encoding if no img tags
@@ -153,8 +154,9 @@ public class HttpImageGetter implements ImageGetter {
             CharSequence currentEncoded = rawHtmlCache.put(id, encoded);
             // Remove full html if raw html has changed
             if (currentEncoded == null
-                    || !currentEncoded.toString().equals(encoded.toString()))
+                    || !currentEncoded.toString().equals(encoded.toString())) {
                 fullHtmlCache.remove(id);
+            }
         } else {
             rawHtmlCache.remove(id);
             fullHtmlCache.put(id, encoded);
@@ -172,12 +174,14 @@ public class HttpImageGetter implements ImageGetter {
      */
     public HttpImageGetter bind(final TextView view, final String html,
             final Object id) {
-        if (TextUtils.isEmpty(html))
+        if (TextUtils.isEmpty(html)) {
             return hide(view);
+        }
 
         CharSequence encoded = fullHtmlCache.get(id);
-        if (encoded != null)
+        if (encoded != null) {
             return show(view, encoded);
+        }
 
         encoded = rawHtmlCache.get(id);
         if (encoded == null) {
@@ -190,17 +194,8 @@ public class HttpImageGetter implements ImageGetter {
                         .renderMarkdown(requestMarkdown)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new ObserverAdapter<String>() {
-                            @Override
-                            public void onNext(String data) {
-                                continueBind(view, data, id);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                continueBind(view, html, id);
-                            }
-                        });
+                        .subscribe(data -> continueBind(view, data.body(), id),
+                                e -> continueBind(view, html, id));
             } else {
                 return continueBind(view, html, id);
             }
@@ -208,36 +203,30 @@ public class HttpImageGetter implements ImageGetter {
         return continueBind(view, html, id);
     }
 
-    private HttpImageGetter continueBind(final TextView view, final String html, final Object id){
+    private HttpImageGetter continueBind(final TextView view, final String html, final Object id) {
         CharSequence encoded = HtmlUtils.encode(html, loading);
-        if (containsImages(html))
+        if (containsImages(html)) {
             rawHtmlCache.put(id, encoded);
-        else {
+        } else {
             rawHtmlCache.remove(id);
             fullHtmlCache.put(id, encoded);
             return show(view, encoded);
         }
 
-        if (TextUtils.isEmpty(encoded))
+        if (TextUtils.isEmpty(encoded)) {
             return hide(view);
+        }
 
         show(view, encoded);
         view.setTag(id);
-        Observable.just(html)
+        Single.just(html)
                 .subscribeOn(Schedulers.computation())
-                .map(new Func1<String, CharSequence>() {
-                    @Override
-                    public CharSequence call(String htmlString) {
-                        return HtmlUtils.encode(htmlString, HttpImageGetter.this);
-                    }
-                })
+                .map(htmlString -> HtmlUtils.encode(htmlString, this))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ObserverAdapter<CharSequence>() {@Override
-                    public void onNext(CharSequence htmlCharSequence) {
-                        fullHtmlCache.put(id, htmlCharSequence);
-                        if (id.equals(view.getTag())) {
-                            show(view, htmlCharSequence);
-                        }
+                .subscribe(htmlCharSequence -> {
+                    fullHtmlCache.put(id, htmlCharSequence);
+                    if (id.equals(view.getTag())) {
+                        show(view, htmlCharSequence);
                     }
                 });
         return this;
@@ -253,69 +242,81 @@ public class HttpImageGetter implements ImageGetter {
      */
     private Drawable requestRepositoryImage(final String source)
             throws IOException {
-        if (TextUtils.isEmpty(source))
+        if (TextUtils.isEmpty(source)) {
             return null;
+        }
 
         Uri uri = Uri.parse(source);
-        if (!HOST_DEFAULT.equals(uri.getHost()))
+        if (!HOST_DEFAULT.equals(uri.getHost())) {
             return null;
+        }
 
         List<String> segments = uri.getPathSegments();
-        if (segments.size() < 5)
+        if (segments.size() < 5) {
             return null;
+        }
 
         String prefix = segments.get(2);
         // Two types of urls supported:
         // github.com/github/android/raw/master/app/res/drawable-xhdpi/app_icon.png
         // github.com/github/android/blob/master/app/res/drawable-xhdpi/app_icon.png?raw=true
         if (!("raw".equals(prefix) || ("blob".equals(prefix) && !TextUtils
-                .isEmpty(uri.getQueryParameter("raw")))))
+                .isEmpty(uri.getQueryParameter("raw"))))) {
             return null;
+        }
 
         String owner = segments.get(0);
-        if (TextUtils.isEmpty(owner))
+        if (TextUtils.isEmpty(owner)) {
             return null;
+        }
         String name = segments.get(1);
-        if (TextUtils.isEmpty(name))
+        if (TextUtils.isEmpty(name)) {
             return null;
+        }
         String branch = segments.get(3);
-        if (TextUtils.isEmpty(branch))
+        if (TextUtils.isEmpty(branch)) {
             return null;
+        }
 
         StringBuilder path = new StringBuilder(segments.get(4));
         for (int i = 5; i < segments.size(); i++) {
             String segment = segments.get(i);
-            if (!TextUtils.isEmpty(segment))
+            if (!TextUtils.isEmpty(segment)) {
                 path.append('/').append(segment);
+            }
         }
 
-        if (TextUtils.isEmpty(path))
+        if (TextUtils.isEmpty(path)) {
             return null;
+        }
 
         Content contents = ServiceGenerator.createService(context, RepositoryContentService.class)
                 .getContents(owner, name, path.toString(), branch)
-                .toBlocking()
-                .first();
+                .blockingGet()
+                .body();
 
         if (contents.content() != null) {
             byte[] content = Base64.decode(contents.content(), DEFAULT);
             Bitmap bitmap = ImageUtils.getBitmap(content, width, MAX_VALUE);
-            if (bitmap == null)
+            if (bitmap == null) {
                 return loading.getDrawable(source);
+            }
             BitmapDrawable drawable = new BitmapDrawable(
                     context.getResources(), bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
             return drawable;
-        } else
+        } else {
             return null;
+        }
     }
 
     @Override
     public Drawable getDrawable(final String source) {
         try {
             Drawable repositoryImage = requestRepositoryImage(source);
-            if (repositoryImage != null)
+            if (repositoryImage != null) {
                 return repositoryImage;
+            }
         } catch (Exception e) {
             // Ignore and attempt request over regular HTTP request
         }
@@ -332,13 +333,15 @@ public class HttpImageGetter implements ImageGetter {
 
             Response response = okHttpClient.newCall(request).execute();
 
-            if (!response.isSuccessful())
+            if (!response.isSuccessful()) {
                 throw new IOException("Unexpected response code: " + response.code());
+            }
 
             Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
 
-            if (bitmap == null)
+            if (bitmap == null) {
                 return loading.getDrawable(source);
+            }
 
             BitmapDrawable drawable = new BitmapDrawable( context.getResources(), bitmap);
             drawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());

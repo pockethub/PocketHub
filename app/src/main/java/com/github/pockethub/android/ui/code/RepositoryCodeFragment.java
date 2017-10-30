@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,14 +32,12 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.code.FullTree;
 import com.github.pockethub.android.core.code.FullTree.Entry;
 import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
@@ -50,15 +47,14 @@ import com.github.pockethub.android.ui.ref.CodeTreeAdapter;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.ToastUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.LinkedList;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -109,10 +105,11 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (tree == null || folder == null)
+        if (tree == null || folder == null) {
             refreshTree(null);
-        else
+        } else {
             setFolder(tree, folder);
+        }
     }
 
     @Override
@@ -129,8 +126,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
                         .ref(tree.reference.ref())
                         .build();
                 refreshTree(ref);
-            }else
+            }else {
                 refreshTree(null);
+            }
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -138,69 +136,74 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     private void showLoading(final boolean loading) {
-        ViewUtils.setGone(progressView, !loading);
-        ViewUtils.setGone(listView, loading);
-        ViewUtils.setGone(branchFooterView, loading);
+        if (loading) {
+            progressView.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.GONE);
+            branchFooterView.setVisibility(View.GONE);
+        } else {
+            progressView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            branchFooterView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void refreshTree(final GitReference reference) {
         showLoading(true);
-        Observable.create(new RefreshTreeTask(getActivity(), repository, reference))
+        new RefreshTreeTask(getActivity(), repository, reference)
+                .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<FullTree>bindToLifecycle())
-                .subscribe(new ObserverAdapter<FullTree>() {
-                    @Override
-                    public void onNext(FullTree fullTree) {
-                        if (folder == null || folder.parent == null)
+                .compose(this.bindToLifecycle())
+                .subscribe(fullTree -> {
+                    if (folder == null || folder.parent == null) {
+                        setFolder(fullTree, fullTree.root);
+                    } else {
+                        // Look for current folder in new tree or else reset to root
+                        Folder current = folder;
+                        LinkedList<Folder> stack = new LinkedList<>();
+                        while (current.parent != null) {
+                            stack.addFirst(current);
+                            current = current.parent;
+                        }
+                        Folder refreshed = fullTree.root;
+                        while (!stack.isEmpty()) {
+                            refreshed = refreshed.folders
+                                    .get(stack.removeFirst().name);
+                            if (refreshed == null) {
+                                break;
+                            }
+                        }
+                        if (refreshed != null) {
+                            setFolder(fullTree, refreshed);
+                        } else {
                             setFolder(fullTree, fullTree.root);
-                        else {
-                            // Look for current folder in new tree or else reset to root
-                            Folder current = folder;
-                            LinkedList<Folder> stack = new LinkedList<>();
-                            while (current.parent != null) {
-                                stack.addFirst(current);
-                                current = current.parent;
-                            }
-                            Folder refreshed = fullTree.root;
-                            while (!stack.isEmpty()) {
-                                refreshed = refreshed.folders
-                                        .get(stack.removeFirst().name);
-                                if (refreshed == null)
-                                    break;
-                            }
-                            if (refreshed != null)
-                                setFolder(fullTree, refreshed);
-                            else
-                                setFolder(fullTree, fullTree.root);
                         }
                     }
+                }, e -> {
+                    Log.d(TAG, "Exception loading tree", e);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception loading tree", e);
-
-                        showLoading(false);
-                        ToastUtils.show(getActivity(), e, R.string.error_code_load);
-                    }
+                    showLoading(false);
+                    ToastUtils.show(getActivity(), e, R.string.error_code_load);
                 });
     }
 
     private void switchBranches() {
-        if (tree == null)
+        if (tree == null) {
             return;
+        }
 
-        if (dialog == null)
+        if (dialog == null) {
             dialog = new RefDialog((BaseActivity) getActivity(),
                     REF_UPDATE, repository);
+        }
         dialog.show(tree.reference);
     }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
-        if (RESULT_OK != resultCode)
+        if (RESULT_OK != resultCode) {
             return;
+        }
 
         switch (requestCode) {
         case REF_UPDATE:
@@ -219,34 +222,27 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressView = finder.find(R.id.pb_loading);
-        listView = finder.find(android.R.id.list);
+        progressView = (ProgressBar) view.findViewById(R.id.pb_loading);
+        listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(this);
 
         Activity activity = getActivity();
         adapter = new HeaderFooterListAdapter<>(listView,
                 new CodeTreeAdapter(activity));
 
-        branchFooterView = finder.find(R.id.rl_branch);
-        branchView = finder.find(R.id.tv_branch);
-        branchIconView = finder.find(R.id.tv_branch_icon);
-        branchFooterView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                switchBranches();
-            }
-        });
+        branchFooterView = view.findViewById(R.id.rl_branch);
+        branchView = (TextView) view.findViewById(R.id.tv_branch);
+        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
+        branchFooterView.setOnClickListener(v -> switchBranches());
 
         pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
                 null);
         pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
-        if (pathShowing)
+        if (pathShowing) {
             adapter.addHeader(pathHeaderView);
+        }
 
-        TypefaceUtils.setOcticons(branchIconView,
-                (TextView) pathHeaderView.findViewById(R.id.tv_folder_icon));
         listView.setAdapter(adapter);
     }
 
@@ -259,8 +255,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
         if (folder != null && folder.parent != null) {
             setFolder(tree, folder.parent);
             return true;
-        } else
+        } else {
             return false;
+        }
     }
 
     private void setFolder(final FullTree tree, final Folder folder) {
@@ -270,10 +267,11 @@ public class RepositoryCodeFragment extends DialogFragment implements
         showLoading(false);
 
         branchView.setText(tree.branch);
-        if (RefUtils.isTag(tree.reference))
+        if (RefUtils.isTag(tree.reference)) {
             branchIconView.setText(R.string.icon_tag);
-        else
+        } else {
             branchIconView.setText(R.string.icon_fork);
+        }
 
         adapter.getWrappedAdapter().setIndented(folder.entry != null);
 
@@ -283,18 +281,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
             StyledText text = new StyledText();
             for (int i = 0; i < segments.length - 1; i++) {
                 final int index = i;
-                text.url(segments[i], new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Folder clicked = folder;
-                        for (int i = index; i < segments.length - 1; i++) {
-                            clicked = clicked.parent;
-                            if (clicked == null)
-                                return;
+                text.url(segments[i], v -> {
+                    Folder clicked = folder;
+                    for (int i1 = index; i1 < segments.length - 1; i1++) {
+                        clicked = clicked.parent;
+                        if (clicked == null) {
+                            return;
                         }
-                        setFolder(tree, clicked);
                     }
+                    setFolder(tree, clicked);
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
             text.bold(segments[segments.length - 1]);
@@ -316,13 +311,15 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
-        if (tree == null || entry == null)
+        if (tree == null || entry == null) {
             return;
+        }
 
-        if (entry instanceof Folder)
+        if (entry instanceof Folder) {
             setFolder(tree, (Folder) entry);
-        else
+        } else {
             startActivity(BranchFileViewActivity.createIntent(repository,
                     tree.branch, entry.entry.path(), entry.entry.sha()));
+        }
     }
 }

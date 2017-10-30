@@ -16,13 +16,13 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -63,30 +63,34 @@ public class FilterListAdapter extends SingleTypeAdapter<IssueFilter> {
     protected void update(int position, IssueFilter filter) {
         avatars.bind(imageView(0), filter.getRepository().owner());
         setText(1, InfoUtils.createRepoId(filter.getRepository()));
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             setText(2, R.string.open_issues);
-        else
+        } else {
             setText(2, R.string.closed_issues);
+        }
 
         Collection<Label> labels = filter.getLabels();
         if (labels != null && !labels.isEmpty()) {
             TextView labelsText = textView(3);
             LabelDrawableSpan.setText(labelsText, labels);
-            ViewUtils.setGone(labelsText, false);
-        } else
+            labelsText.setVisibility(View.VISIBLE);
+        } else {
             setGone(3, true);
+        }
 
         Milestone milestone = filter.getMilestone();
-        if (milestone != null)
-            ViewUtils.setGone(setText(4, milestone.title()), false);
-        else
+        if (milestone != null) {
+            setText(4, milestone.title()).setVisibility(View.VISIBLE);
+        } else {
             setGone(4, true);
+        }
 
         User assignee = filter.getAssignee();
         if (assignee != null) {
             avatars.bind(imageView(7), assignee);
-            ViewUtils.setGone(setText(6, assignee.login()), false);
-        } else
+            setText(6, assignee.login()).setVisibility(View.VISIBLE);
+        } else {
             setGone(5, true);
+        }
     }
 }

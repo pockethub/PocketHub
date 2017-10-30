@@ -25,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 
 import static android.widget.TabHost.OnTabChangeListener;
@@ -51,17 +50,14 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     protected V adapter;
 
     @Override
-    public void onPageSelected(final int position) {
-        super.onPageSelected(position);
-    }
-
-    @Override
     public void onTabChanged(String tabId) {
     }
 
     @Override
     public View createTabContent(String tag) {
-        return ViewUtils.setGone(new View(getActivity().getApplication()), true);
+        View view = new View(getActivity().getApplication());
+        view.setVisibility(View.GONE);
+        return view;
     }
 
     /**
@@ -98,8 +94,13 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
      * @return this activity
      */
     protected TabPagerFragment<V> setGone(boolean gone) {
-        ViewUtils.setGone(slidingTabsLayout, gone);
-        ViewUtils.setGone(pager, gone);
+        if (gone) {
+            slidingTabsLayout.setVisibility(View.GONE);
+            pager.setVisibility(View.GONE);
+        } else {
+            slidingTabsLayout.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+        }
         return this;
     }
 
@@ -118,7 +119,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     }
 
     /**
-     * Get content view to be used when {@link #onCreate(android.os.Bundle)} is called
+     * Get content view to be used when {@link #onCreate(Bundle)} is called
      *
      * @return layout resource id
      */

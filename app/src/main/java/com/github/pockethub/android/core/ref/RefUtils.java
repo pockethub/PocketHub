@@ -43,8 +43,9 @@ public class RefUtils {
         if (ref != null) {
             String name = ref.ref();
             return !TextUtils.isEmpty(name) && name.startsWith(PREFIX_HEADS);
-        } else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -74,13 +75,15 @@ public class RefUtils {
      * @return full path
      */
     public static String getPath(final GitReference ref) {
-        if (ref == null)
+        if (ref == null) {
             return null;
+        }
         String name = ref.ref();
-        if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS))
+        if (!TextUtils.isEmpty(name) && name.startsWith(PREFIX_REFS)) {
             return name.substring(PREFIX_REFS.length());
-        else
+        } else {
             return name;
+        }
     }
 
     /**
@@ -90,10 +93,11 @@ public class RefUtils {
      * @return short name
      */
     public static String getName(final GitReference ref) {
-        if (ref != null)
+        if (ref != null) {
             return getName(ref.ref());
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -103,16 +107,18 @@ public class RefUtils {
      * @return short name
      */
     public static String getName(final String name) {
-        if (TextUtils.isEmpty(name))
+        if (TextUtils.isEmpty(name)) {
             return name;
-        if (name.startsWith(PREFIX_HEADS))
+        }
+        if (name.startsWith(PREFIX_HEADS)) {
             return name.substring(PREFIX_HEADS.length());
-        else if (name.startsWith(PREFIX_TAG))
+        } else if (name.startsWith(PREFIX_TAG)) {
             return name.substring(PREFIX_TAG.length());
-        else if (name.startsWith(PREFIX_REFS))
+        } else if (name.startsWith(PREFIX_REFS)) {
             return name.substring(PREFIX_REFS.length());
-        else
+        } else {
             return name;
+        }
     }
 
     /**
@@ -124,8 +130,9 @@ public class RefUtils {
      * @return true if valid, false otherwise
      */
     public static boolean isValid(final GitReference ref) {
-        if (ref == null)
+        if (ref == null) {
             return false;
+        }
 
         String name = ref.ref();
         return !TextUtils.isEmpty(name) && !name.startsWith(PREFIX_PULL);

@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.reactivex.Single;
+
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 /**
@@ -66,8 +68,9 @@ public class GistStore extends ItemStore {
      */
     protected Map<String, GistFile> sortFiles(final Gist gist) {
         Map<String, GistFile> files = gist.files();
-        if (files == null || files.size() < 2)
+        if (files == null || files.size() < 2) {
             return files;
+        }
 
         Map<String, GistFile> sorted = new TreeMap<>(CASE_INSENSITIVE_ORDER);
         sorted.putAll(files);
@@ -82,8 +85,9 @@ public class GistStore extends ItemStore {
      */
     public Gist addGist(Gist gist) {
         Gist current = getGist(gist.id());
-        if (current != null && current.equals(gist))
+        if (current != null && current.equals(gist)) {
             return current;
+        }
 
         gist = gist.toBuilder()
                 .files(sortFiles(gist))
@@ -93,30 +97,30 @@ public class GistStore extends ItemStore {
     }
 
     /**
-     * Refresh gist
+     * Refresh gist.
      *
-     * @param id
+     * @param id The id of the Gist to update
      * @return refreshed gist
-     * @throws IOException
      */
-    public Gist refreshGist(String id) throws IOException {
-        return ServiceGenerator.createService(context, GistService.class).getGist(id).toBlocking().first();
+    public Single<Gist> refreshGist(String id) {
+        return ServiceGenerator.createService(context, GistService.class).getGist(id)
+                .map(response -> addGist(response.body()));
     }
 
     /**
-     * Edit gist
+     * Edit gist.
      *
-     * @param gist
+     * @param gist The Gist to edit
      * @return edited gist
-     * @throws IOException
      */
-    public Gist editGist(Gist gist) throws IOException {
+    public Single<Gist> editGist(Gist gist) {
         CreateGist edit = CreateGist.builder()
                 .files(gist.files())
                 .description(gist.description())
                 .isPublic(gist.isPublic())
                 .build();
 
-        return ServiceGenerator.createService(context, GistService.class).editGist(edit).toBlocking().first();
+        return ServiceGenerator.createService(context, GistService.class).editGist(edit)
+                .map(response -> addGist(response.body()));
     }
 }

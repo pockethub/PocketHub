@@ -150,8 +150,6 @@
     <string name="select_milestone">Velja útgáfu</string>
     <string name="select_labels">Velja merki</string>
     <string name="select_ref">Velja greinar eða merki</string>
-    <string name="enter_otp_code_title">Auðkenniskóði</string>
-    <string name="enter_otp_code_message">Tveggja skrefa auðkenning hefur verið gerð virk fyrir aðganginn þinn. Sláðu inn auðkenniskóðann til að gera grein fyrir þér</string>
     <string name="no_milestone">Engin útgáfa</string>
     <string name="unassigned">Engin hefur verið útvaldur</string>
     <string name="assigned">er útvaldur</string>

@@ -22,32 +22,33 @@ import android.support.annotation.CallSuper;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.trello.rxlifecycle.FragmentEvent;
-import com.trello.rxlifecycle.FragmentLifecycleProvider;
-import com.trello.rxlifecycle.RxLifecycle;
+import com.trello.rxlifecycle2.LifecycleProvider;
+import com.trello.rxlifecycle2.LifecycleTransformer;
+import com.trello.rxlifecycle2.RxLifecycle;
+import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
-
-public abstract class RoboSupportFragment extends Fragment implements FragmentLifecycleProvider {
+public abstract class RoboSupportFragment extends Fragment implements LifecycleProvider<FragmentEvent> {
 
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
     @Override
     public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.asObservable();
+        return lifecycleSubject;
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindUntilEvent(FragmentEvent event) {
-        return RxLifecycle.bindUntilFragmentEvent(lifecycleSubject, event);
+    public final <T> LifecycleTransformer<T> bindUntilEvent(FragmentEvent event) {
+        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
     @Override
-    public final <T> Observable.Transformer<T, T> bindToLifecycle() {
-        return RxLifecycle.bindFragment(lifecycleSubject);
+    public final <T> LifecycleTransformer<T> bindToLifecycle() {
+        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
     }
 
     @Override

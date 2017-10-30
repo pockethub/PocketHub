@@ -39,24 +39,30 @@ public class IssueUriMatcher {
      */
     public static Issue getIssue(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null)
+        if (segments == null) {
             return null;
-        if (segments.size() < 4)
+        }
+        if (segments.size() < 4) {
             return null;
-        if (!"issues".equals(segments.get(2)) && !"pull".equals(segments.get(2)))
+        }
+        if (!"issues".equals(segments.get(2)) && !"pull".equals(segments.get(2))) {
             return null;
+        }
 
         String repoOwner = segments.get(0);
-        if (!RepositoryUtils.isValidOwner(repoOwner))
+        if (!RepositoryUtils.isValidOwner(repoOwner)) {
             return null;
+        }
 
         String repoName = segments.get(1);
-        if (!RepositoryUtils.isValidRepo(repoName))
+        if (!RepositoryUtils.isValidRepo(repoName)) {
             return null;
+        }
 
         String number = segments.get(3);
-        if (TextUtils.isEmpty(number))
+        if (TextUtils.isEmpty(number)) {
             return null;
+        }
 
         int issueNumber;
         try {
@@ -64,13 +70,22 @@ public class IssueUriMatcher {
         } catch (NumberFormatException nfe) {
             return null;
         }
-        if (issueNumber < 1)
+        if (issueNumber < 1) {
             return null;
+        }
 
         Repository repo = InfoUtils.createRepoFromData(repoOwner, repoName);
         return Issue.builder()
                 .repository(repo)
                 .number(issueNumber)
                 .build();
+    }
+
+    public static Issue getApiIssue(String url) {
+        url = url.replace("https://api.github.com/repos", "https://github.com/");
+        url = url.replaceFirst("/pulls/(\\d+)$", "/pull/$1");
+
+        Uri uri = Uri.parse(url);
+        return getIssue(uri);
     }
 }

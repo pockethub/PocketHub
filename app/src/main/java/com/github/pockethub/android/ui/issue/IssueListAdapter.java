@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -89,8 +88,9 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
     @SuppressWarnings("unchecked")
     private void computeNumberWidth(final Object[] items) {
         int[] numbers = new int[items.length];
-        for (int i = 0; i < numbers.length; i++)
+        for (int i = 0; i < numbers.length; i++) {
             numbers[i] = getNumber((V) items[i]);
+        }
         int digits = Math.max(TypefaceUtils.getMaxDigits(numbers), 4);
         numberWidth = TypefaceUtils.getWidth(numberView, digits)
                 + numberView.getPaddingLeft() + numberView.getPaddingRight();
@@ -115,10 +115,11 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
                                 int viewIndex) {
         TextView view = textView(viewIndex);
         view.setText(String.valueOf(number));
-        if (state.equals(IssueState.closed))
+        if (state.equals(IssueState.closed)) {
             view.setPaintFlags(flags | STRIKE_THRU_TEXT_FLAG);
-        else
+        } else {
             view.setPaintFlags(flags);
+        }
         view.getLayoutParams().width = numberWidth;
     }
 
@@ -152,14 +153,18 @@ public abstract class IssueListAdapter<V> extends SingleTypeAdapter<V> {
                 if (!TextUtils.isEmpty(color)) {
                     View view = view(viewIndex + i);
                     view.setBackgroundColor(Color.parseColor('#' + color));
-                    ViewUtils.setGone(view, false);
-                } else
+                    view.setVisibility(View.VISIBLE);
+                } else {
                     setGone(viewIndex + i, true);
+                }
             }
-            for (int i = size; i < MAX_LABELS; i++)
+            for (int i = size; i < MAX_LABELS; i++) {
                 setGone(viewIndex + i, true);
-        } else
-            for (int i = 0; i < MAX_LABELS; i++)
+            }
+        } else {
+            for (int i = 0; i < MAX_LABELS; i++) {
                 setGone(viewIndex + i, true);
+            }
+        }
     }
 }

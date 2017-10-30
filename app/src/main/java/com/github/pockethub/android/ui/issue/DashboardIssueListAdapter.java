@@ -17,12 +17,10 @@ package com.github.pockethub.android.ui.issue;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.Issue;
 
 /**
@@ -60,8 +58,6 @@ public class DashboardIssueListAdapter extends
         view = super.initialize(view);
 
         numberPaintFlags = textView(view, 1).getPaintFlags();
-        TypefaceUtils.setOcticons(textView(view, 6),
-                (TextView) view.findViewById(R.id.tv_comment_icon));
         return view;
     }
 
@@ -82,10 +78,11 @@ public class DashboardIssueListAdapter extends
 
         String[] segments = issue.url().split("/");
         int length = segments.length;
-        if (length >= 4)
+        if (length >= 4) {
             setText(0, segments[length - 4] + '/' + segments[length - 3]);
-        else
+        } else {
             setText(0, null);
+        }
 
         setGone(6, !IssueUtils.isPullRequest(issue));
 

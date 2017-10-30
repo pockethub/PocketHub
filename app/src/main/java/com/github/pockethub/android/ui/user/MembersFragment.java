@@ -26,7 +26,6 @@ import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
@@ -47,18 +46,21 @@ public class MembersFragment extends ItemListFragment<User> {
     @Inject
     private AvatarLoader avatars;
 
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (org != null)
+        if (org != null) {
             outState.putParcelable(EXTRA_USER, org);
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         org = getArguments().getParcelable("org");
-        if (org == null && savedInstanceState != null)
+        if (org == null && savedInstanceState != null) {
             org = savedInstanceState.getParcelable(EXTRA_USER);
+        }
         setEmptyText(R.string.no_members);
 
         super.onActivityCreated(savedInstanceState);
@@ -77,7 +79,7 @@ public class MembersFragment extends ItemListFragment<User> {
                 List<User> users = new ArrayList<>();
 
                 while (current != last){
-                    Page<User> page = service.getMembers(org.login(), current).toBlocking().first();
+                    Page<User> page = service.getMembers(org.login(), current).blockingGet().body();
                     users.addAll(page.items());
                     last = page.last() != null ? page.last() : -1;
                     current = page.next() != null ? page.next() : -1;
@@ -97,8 +99,7 @@ public class MembersFragment extends ItemListFragment<User> {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         User user = (User) l.getItemAtPosition(position);
-        if (!AccountUtils.isUser(getActivity(), user))
-            startActivity(UserViewActivity.createIntent(user));
+        startActivity(UserViewActivity.createIntent(user));
     }
 
     @Override

@@ -17,6 +17,7 @@
 package com.github.pockethub.android.ui.user;
 
 import android.text.TextUtils;
+import android.view.View;
 
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -27,7 +28,6 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.ReviewComment;
 import com.meisolsson.githubsdk.model.Team;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.TimeUtils;
@@ -63,18 +63,21 @@ public class IconAndViewTextManager {
 
     private void appendComment(final StyledText details,
             final GitHubComment comment) {
-        if (comment != null)
+        if (comment != null) {
             appendText(details, comment.body());
+        }
     }
 
     private void appendReviewComment(StyledText details, ReviewComment comment) {
-        if (comment == null)
+        if (comment == null) {
             return;
+        }
 
         String id = comment.commitId();
         if (!TextUtils.isEmpty(id)) {
-            if (id.length() > 10)
+            if (id.length() > 10) {
                 id = id.substring(0, 10);
+            }
             appendText(details, "Comment in");
             details.append(' ');
             details.monospace(id);
@@ -85,13 +88,15 @@ public class IconAndViewTextManager {
 
     private void appendCommitComment(final StyledText details,
             final GitComment comment) {
-        if (comment == null)
+        if (comment == null) {
             return;
+        }
 
         String id = comment.commitId();
         if (!TextUtils.isEmpty(id)) {
-            if (id.length() > 10)
+            if (id.length() > 10) {
                 id = id.substring(0, 10);
+            }
             appendText(details, "Comment in");
             details.append(' ');
             details.monospace(id);
@@ -101,11 +106,13 @@ public class IconAndViewTextManager {
     }
 
     private void appendText(final StyledText details, String text) {
-        if (text == null)
+        if (text == null) {
             return;
+        }
         text = text.trim();
-        if (text.length() == 0)
+        if (text.length() == 0) {
             return;
+        }
 
         details.append(text);
     }
@@ -115,15 +122,17 @@ public class IconAndViewTextManager {
     }
 
     private StyledText boldUser(final StyledText text, final User user) {
-        if (user != null)
+        if (user != null) {
             text.bold(user.login());
+        }
         return text;
     }
 
     private StyledText boldRepo(final StyledText text, final GitHubEvent event) {
         Repository repo = event.repo();
-        if (repo != null)
+        if (repo != null) {
             text.bold(repo.name());
+        }
         return text;
     }
 
@@ -134,8 +143,9 @@ public class IconAndViewTextManager {
             String name = repo.name();
             if (!TextUtils.isEmpty(name)) {
                 int slash = name.indexOf('/');
-                if (slash != -1 && slash + 1 < name.length())
+                if (slash != -1 && slash + 1 < name.length()) {
                     text.bold(name.substring(slash + 1));
+                }
             }
         }
         return text;
@@ -159,8 +169,9 @@ public class IconAndViewTextManager {
 
         ReleasePayload payload = (ReleasePayload) event.payload();
         Release download = payload.release();
-        if (download != null)
+        if (download != null) {
             appendText(details, download.name());
+        }
     }
 
     void formatCreate(GitHubEvent event, StyledText main,
@@ -177,8 +188,9 @@ public class IconAndViewTextManager {
             main.append(payload.ref());
             main.append(" at ");
             boldRepo(main, event);
-        } else
+        } else {
             boldRepoName(main, event);
+        }
     }
 
     void formatDelete(GitHubEvent event, StyledText main,
@@ -218,12 +230,13 @@ public class IconAndViewTextManager {
 
         main.append(' ');
         String action = payload.action();
-        if ("create".equals(action))
+        if ("create".equals(action)) {
             main.append("created");
-        else if ("update".equals(action))
+        } else if ("update".equals(action)) {
             main.append("updated");
-        else
+        } else {
             main.append(action);
+        }
         main.append(" Gist ");
         main.append(payload.gist().id());
     }
@@ -244,10 +257,11 @@ public class IconAndViewTextManager {
         IssueCommentPayload payload = (IssueCommentPayload) event.payload();
         Issue issue = payload.issue();
         String number;
-        if (IssueUtils.isPullRequest(issue))
+        if (IssueUtils.isPullRequest(issue)) {
             number = "pull request " + issue.number();
-        else
+        } else {
             number = "issue " + issue.number();
+        }
         main.bold(number);
 
         main.append(" on ");
@@ -317,8 +331,9 @@ public class IconAndViewTextManager {
         PullRequestPayload payload = (PullRequestPayload) event.payload();
 
         String action = payload.action();
-        if ("synchronize".equals(action))
+        if ("synchronize".equals(action)) {
             action = "updated";
+        }
         main.append(' ');
         main.append(action);
         main.append(' ');
@@ -331,8 +346,9 @@ public class IconAndViewTextManager {
             PullRequest request = payload.pullRequest();
             if (request != null) {
                 String title = request.title();
-                if (!TextUtils.isEmpty(title))
+                if (!TextUtils.isEmpty(title)) {
                     details.append(title);
+                }
             }
         }
     }
@@ -345,50 +361,57 @@ public class IconAndViewTextManager {
 
         main.append(" pushed to ");
         String ref = payload.ref();
-        if (ref.startsWith("refs/heads/"))
+        if (ref.startsWith("refs/heads/")) {
             ref = ref.substring(11);
+        }
         main.bold(ref);
         main.append(" at ");
 
         boldRepo(main, event);
 
         final List<GitCommit> commits = payload.commits();
-        int size = commits != null ? commits.size() : -1;
+        int size = commits.size();
         if (size > 0) {
-            if (size != 1)
+            if (size != 1) {
                 details.append(FORMAT_INT.format(size)).append(" new commits");
-            else
+            } else {
                 details.append("1 new commit");
+            }
 
             int max = 3;
             int appended = 0;
             for (GitCommit commit : commits) {
-                if (commit == null)
+                if (commit == null) {
                     continue;
+                }
 
                 String sha = commit.sha();
-                if (TextUtils.isEmpty(sha))
+                if (TextUtils.isEmpty(sha)) {
                     continue;
+                }
 
                 details.append('\n');
-                if (sha.length() > 7)
+                if (sha.length() > 7) {
                     details.monospace(sha.substring(0, 7));
-                else
+                } else {
                     details.monospace(sha);
+                }
 
                 String message = commit.message();
                 if (!TextUtils.isEmpty(message)) {
                     details.append(' ');
                     int newline = message.indexOf('\n');
-                    if (newline > 0)
+                    if (newline > 0) {
                         details.append(message.subSequence(0, newline));
-                    else
+                    } else {
                         details.append(message);
+                    }
                 }
 
                 appended++;
-                if (appended == max)
+                if (appended == max) {
                     break;
+                }
             }
         }
     }
@@ -402,15 +425,17 @@ public class IconAndViewTextManager {
         TeamAddPayload payload = (TeamAddPayload) event.payload();
         Repository repo = payload.repository();
         String repoName = repo != null ? repo.name() : null;
-        if (repoName != null)
+        if (repoName != null) {
             main.bold(repoName);
+        }
 
         main.append(" to team");
 
         Team team = payload.team();
         String teamName = team != null ? team.name() : null;
-        if (teamName != null)
+        if (teamName != null) {
             main.append(' ').bold(teamName);
+        }
     }
 
     protected void update(int position, GitHubEvent event) {
@@ -420,17 +445,19 @@ public class IconAndViewTextManager {
         StyledText details = new StyledText();
         String icon = setIconAndFormatStyledText(event, main, details);
 
-        if (icon != null)
-            ViewUtils.setGone(newsListAdapter.setTextAgent(3, icon), false);
-        else
+        if (icon != null) {
+            newsListAdapter.setTextAgent(3, icon).setVisibility(View.VISIBLE);
+        } else {
             newsListAdapter.setGoneAgent(3, true);
+        }
 
         newsListAdapter.setTextAgent(1, main);
 
-        if (!TextUtils.isEmpty(details))
-            ViewUtils.setGone(newsListAdapter.setTextAgent(2, details), false);
-        else
+        if (!TextUtils.isEmpty(details)) {
+            newsListAdapter.setTextAgent(2, details).setVisibility(View.VISIBLE);
+        } else {
             newsListAdapter.setGoneAgent(2, true);
+        }
 
         newsListAdapter.setTextAgent(4, TimeUtils.getRelativeTime(event.createdAt()));
     }

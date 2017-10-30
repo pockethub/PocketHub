@@ -17,13 +17,11 @@ package com.github.pockethub.android.ui.repo;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
-import com.github.pockethub.android.util.TypefaceUtils;
 
 /**
  * Adapter for a list of repositories
@@ -58,9 +56,6 @@ public class UserRepositoryListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
         descriptionColor = view.getResources().getColor(R.color.text_description);
         return view;
     }
@@ -74,9 +69,10 @@ public class UserRepositoryListAdapter extends
     @Override
     protected void update(int position, Repository repository) {
         StyledText name = new StyledText();
-        if (!login.equals(repository.owner().login()))
+        if (!login.equals(repository.owner().login())) {
             name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
+        }
         name.bold(repository.name());
         setText(5, name);
 

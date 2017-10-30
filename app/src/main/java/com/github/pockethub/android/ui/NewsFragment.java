@@ -20,11 +20,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
@@ -32,7 +32,6 @@ import com.meisolsson.githubsdk.model.Release;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistEventMatcher;
 import com.github.pockethub.android.core.issue.IssueEventMatcher;
@@ -131,19 +130,22 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
         }
 
         Repository repo = repoMatcher.getRepository(event);
-        if (repo != null)
+        if (repo != null) {
             viewRepository(repo);
+        }
 
         UserPair users = userMatcher.getUsers(event);
-        if (users != null)
+        if (users != null) {
             viewUser(users);
+        }
     }
 
     @Override
     public boolean onListItemLongClick(ListView l, View v, int position,
             long itemId) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
 
         final GitHubEvent event = (GitHubEvent) l.getItemAtPosition(position);
         final Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
@@ -158,24 +160,17 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
             View view = getActivity().getLayoutInflater().inflate(
                     R.layout.nav_dialog, null);
-            ViewFinder finder = new ViewFinder(view);
-            avatars.bind(finder.imageView(R.id.iv_user_avatar), user);
-            avatars.bind(finder.imageView(R.id.iv_repo_avatar), repo.owner());
-            finder.setText(R.id.tv_login, user.login());
-            finder.setText(R.id.tv_repo_name, InfoUtils.createRepoId(repo));
-            finder.onClick(R.id.ll_user_area, new OnClickListener() {
-
-                public void onClick(View v) {
-                    dialogHolder[0].dismiss();
-                    viewUser(user);
-                }
+            avatars.bind((ImageView) view.findViewById(R.id.iv_user_avatar), user);
+            avatars.bind((ImageView) view.findViewById(R.id.iv_repo_avatar), repo.owner());
+            ((TextView) view.findViewById(R.id.tv_login)).setText(user.login());
+            ((TextView) view.findViewById(R.id.tv_repo_name)).setText(InfoUtils.createRepoId(repo));
+            view.findViewById(R.id.ll_user_area).setOnClickListener(v1 -> {
+                dialogHolder[0].dismiss();
+                viewUser(user);
             });
-            finder.onClick(R.id.ll_repo_area, new OnClickListener() {
-
-                public void onClick(View v) {
-                    dialogHolder[0].dismiss();
-                    viewRepository(repo);
-                }
+            view.findViewById(R.id.ll_repo_area).setOnClickListener(v1 -> {
+                dialogHolder[0].dismiss();
+                viewRepository(repo);
             });
             builder.customView(view, false);
 
@@ -193,12 +188,14 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     // https://developer.github.com/v3/repos/downloads/#downloads-api-is-deprecated
     private void openDownload(GitHubEvent event) {
         Release release = ((ReleasePayload) event.payload()).release();
-        if (release == null)
+        if (release == null) {
             return;
+        }
 
         String url = release.htmlUrl();
-        if (TextUtils.isEmpty(url))
+        if (TextUtils.isEmpty(url)) {
             return;
+        }
 
         Intent intent = new Intent(ACTION_VIEW, Uri.parse(url));
         intent.addCategory(CATEGORY_BROWSABLE);
@@ -207,8 +204,9 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
     private void openCommitComment(GitHubEvent event) {
         Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
-        if (repo == null)
+        if (repo == null) {
             return;
+        }
 
         if(repo.name().contains("/")) {
             String[] repoId = repo.name().split("/");
@@ -217,34 +215,40 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
         CommitCommentPayload payload = ((CommitCommentPayload) event.payload());
         GitComment comment = payload.comment();
-        if (comment == null)
+        if (comment == null) {
             return;
+        }
 
         String sha = comment.commitId();
-        if (!TextUtils.isEmpty(sha))
+        if (!TextUtils.isEmpty(sha)) {
             startActivity(CommitViewActivity.createIntent(repo, sha));
+        }
     }
 
     private void openPush(GitHubEvent event) {
         Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
-        if (repo == null)
+        if (repo == null) {
             return;
+        }
 
         PushPayload payload = ((PushPayload) event.payload());
         List<GitCommit> commits = payload.commits();
-        if (commits == null || commits.isEmpty())
+        if (commits.isEmpty()) {
             return;
+        }
 
         if (commits.size() > 1) {
             String base = payload.before();
             String head = payload.head();
-            if (!TextUtils.isEmpty(base) && !TextUtils.isEmpty(head))
+            if (!TextUtils.isEmpty(base) && !TextUtils.isEmpty(head)) {
                 startActivity(CommitCompareViewActivity.createIntent(repo, base, head));
+            }
         } else {
             GitCommit commit = commits.get(0);
             String sha = commit != null ? commit.sha() : null;
-            if (!TextUtils.isEmpty(sha))
+            if (!TextUtils.isEmpty(sha)) {
                 startActivity(CommitViewActivity.createIntent(repo, sha));
+            }
         }
     }
 
@@ -284,10 +288,11 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
      * @param repository
      */
     protected void viewIssue(Issue issue, Repository repository) {
-        if (repository != null)
+        if (repository != null) {
             startActivity(IssuesViewActivity.createIntent(issue, repository));
-        else
+        } else {
             startActivity(IssuesViewActivity.createIntent(issue));
+        }
     }
 
     @Override

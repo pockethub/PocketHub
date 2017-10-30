@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui.gist;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
@@ -26,7 +25,6 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 
 import java.util.Collection;
 
@@ -69,9 +67,6 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(
-                (TextView) view.findViewById(R.id.tv_comment_icon),
-                (TextView) view.findViewById(R.id.tv_file_icon));
         anonymous = view.getResources().getString(R.string.anonymous);
         return view;
     }
@@ -81,19 +76,21 @@ public class GistListAdapter extends SingleTypeAdapter<Gist> {
         setText(0, gist.id());
 
         String description = gist.description();
-        if (!TextUtils.isEmpty(description))
+        if (!TextUtils.isEmpty(description)) {
             setText(1, description);
-        else
+        } else {
             setText(1, R.string.no_description_given);
+        }
 
         User user = gist.owner();
         avatars.bind(imageView(5), user);
 
         StyledText authorText = new StyledText();
-        if (user != null)
+        if (user != null) {
             authorText.bold(user.login());
-        else
+        } else {
             authorText.bold(anonymous);
+        }
         authorText.append(' ');
         authorText.append(gist.createdAt());
         setText(2, authorText);

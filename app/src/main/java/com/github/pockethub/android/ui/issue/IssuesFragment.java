@@ -35,11 +35,9 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.RequestFuture;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.issue.IssueFilter;
@@ -54,9 +52,6 @@ import com.google.inject.Inject;
 
 import java.util.Collection;
 import java.util.List;
-
-import rx.Observable;
-import rx.functions.Func1;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -112,8 +107,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (filter == null)
+        if (filter == null) {
             filter = new IssueFilter(repository);
+        }
     }
 
     @Override
@@ -141,32 +137,36 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     private void updateFilterSummary() {
-        if (filter.isOpen())
+        if (filter.isOpen()) {
             state.setText(R.string.open_issues);
-        else
+        } else {
             state.setText(R.string.closed_issues);
+        }
 
         Collection<Label> filterLabels = filter.getLabels();
         if (filterLabels != null && !filterLabels.isEmpty()) {
             LabelDrawableSpan.setText(labels, filterLabels);
             labels.setVisibility(VISIBLE);
-        } else
+        } else {
             labels.setVisibility(GONE);
+        }
 
         Milestone filterMilestone = filter.getMilestone();
         if (filterMilestone != null) {
             milestone.setText(filterMilestone.title());
             milestone.setVisibility(VISIBLE);
-        } else
+        } else {
             milestone.setVisibility(GONE);
+        }
 
         User user = filter.getAssignee();
         if (user != null) {
             avatars.bind(assigneeAvatar, user);
             assignee.setText(user.login());
             assigneeArea.setVisibility(VISIBLE);
-        } else
+        } else {
             assigneeArea.setVisibility(GONE);
+        }
     }
 
     @Override
@@ -178,14 +178,15 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 0)
+        if (position == 0) {
             startActivityForResult(
                     EditIssuesFilterActivity.createIntent(filter),
                     ISSUE_FILTER_EDIT);
-        else
+        } else {
             startActivityForResult(
                     IssuesViewActivity.createIntent(items, repository, position
                             - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+        }
     }
 
     @Override
@@ -204,9 +205,13 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isUsable())
+        if (!isUsable()) {
             return false;
+        }
         switch (item.getItemId()) {
+            case R.id.m_refresh:
+                forceRefresh();
+            return true;
         case R.id.create_issue:
             startActivityForResult(EditIssueActivity.createIntent(repository),
                     ISSUE_CREATE);
@@ -217,12 +222,8 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     ISSUE_FILTER_EDIT);
             return true;
         case R.id.m_bookmark:
-            cache.addIssueFilter(filter, new RequestFuture<IssueFilter>() {
-
-                public void success(IssueFilter response) {
-                    ToastUtils.show(getActivity(), R.string.message_filter_saved);
-                }
-            });
+            cache.addIssueFilter(filter)
+                .subscribe(response -> ToastUtils.show(getActivity(), R.string.message_filter_saved));
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -268,15 +269,10 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
-
-                    @Override
-                    public Observable<Page<Issue>> execute(int page) {
-                        return ServiceGenerator.createService(getActivity(), IssueService.class)
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getActivity(), IssueService.class)
                                 .getRepositoryIssues(repository.owner().login(),
-                                        repository.name(), filter.toFilterMap(), page);
-                    }
-                }, page);
+                                        repository.name(), filter.toFilterMap(), page1), page);
             }
         };
     }

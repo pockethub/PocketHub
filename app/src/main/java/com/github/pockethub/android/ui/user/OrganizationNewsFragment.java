@@ -20,10 +20,7 @@ import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubEvent;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.activity.EventService;
-
-import rx.Observable;
 
 /**
  * Fragment to display an organization's news
@@ -36,13 +33,10 @@ public class OrganizationNewsFragment extends UserNewsFragment {
 
             @Override
             public PageIterator<GitHubEvent> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<GitHubEvent>>() {
-                    @Override
-                    public Observable<Page<GitHubEvent>> execute(int page) {
-                        String account = AccountUtils.getLogin(getActivity());
-                        return ServiceGenerator.createService(getContext(), EventService.class)
-                                .getOrganizationEvents(account, org.login(), page);
-                    }
+                return new PageIterator<>(page1 -> {
+                    String account = AccountUtils.getLogin(getActivity());
+                    return ServiceGenerator.createService(getContext(), EventService.class)
+                            .getOrganizationEvents(account, org.login(), page1);
                 }, page);
             }
         };

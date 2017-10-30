@@ -15,23 +15,20 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueState;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_CLOSE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
@@ -39,45 +36,32 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
 /**
  * Task to close or reopen an issue
  */
-public class EditStateTask implements Observable.OnSubscribe<Issue> {
+public class EditStateTask {
 
     @Inject
     private IssueStore store;
 
     private final BaseActivity activity;
-    private final Repository repositoryId;
+    private final Repository repository;
 
     private final int issueNumber;
-    private final ProgressObserverAdapter<Issue> observer;
-
-    private boolean close;
+    private final Consumer<Issue> observer;
 
     /**
      * Create task to edit issue state
      *
      * @param activity
-     * @param repositoryId
+     * @param repository
      * @param issueNumber
      */
     public EditStateTask(final BaseActivity activity,
-                         final Repository repositoryId, final int issueNumber,
-                         final ProgressObserverAdapter<Issue> observer) {
+                         final Repository repository, final int issueNumber,
+                         final Consumer<Issue> observer) {
         this.activity = activity;
-        this.repositoryId = repositoryId;
+        this.repository = repository;
         this.issueNumber = issueNumber;
         this.observer = observer;
         RoboGuice.injectMembers(activity, this);
-    }
-
-    @Override
-    public void call(Subscriber<? super Issue> subscriber) {
-        try {
-            IssueState state = close ? IssueState.closed : IssueState.open;
-            subscriber.onNext(store.changeState(repositoryId, issueNumber, state));
-            subscriber.onCompleted();
-        } catch (IOException e) {
-            subscriber.onError(e);
-        }
     }
 
     /**
@@ -87,33 +71,37 @@ public class EditStateTask implements Observable.OnSubscribe<Issue> {
      * @return this task
      */
     public EditStateTask confirm(boolean close) {
-        if (close)
+        if (close) {
             ConfirmDialogFragment.show(activity, ISSUE_CLOSE, activity.getString(R.string.issue_confirm_close_title),
                     activity.getString(R.string.issue_confirm_close_message));
-        else
+        } else {
             ConfirmDialogFragment.show(activity, ISSUE_REOPEN, activity.getString(R.string.issue_confirm_reopen_title),
                     activity.getString(R.string.issue_confirm_reopen_message));
+        }
 
         return this;
     }
 
     /**
-     * Edit state of issue
+     * Edit state of issue.
      *
      * @param close
      * @return this task
      */
     public EditStateTask edit(boolean close) {
         int message = close ? R.string.closing_issue : R.string.reopening_issue;
-        this.close = close;
-        observer.setContent(message);
-        observer.start();
+        IssueState state = close ? IssueState.closed : IssueState.open;
 
-        Observable.create(this)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<Issue>bindToLifecycle())
-                .subscribe(observer);
+        try {
+            store.changeState(repository, issueNumber, state)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.bindToLifecycle())
+                    .compose(RxProgress.bindToLifecycle(activity, message))
+                    .subscribe(observer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return this;
     }

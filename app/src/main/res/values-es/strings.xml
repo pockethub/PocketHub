@@ -149,8 +149,6 @@
     <string name="select_milestone">Seleccionar hito</string>
     <string name="select_labels">Seleccionar etiquetas</string>
     <string name="select_ref">Seleccionar rama o etiqueta</string>
-    <string name="enter_otp_code_title">Codigo de autenticación</string>
-    <string name="enter_otp_code_message">La autenticación de doble factor está habilitada para su cuenta. Ingrese su código de autenticación para confirmar su identidad.</string>
     <string name="no_milestone">No hay hitos</string>
     <string name="unassigned">No hay nadie asignado</string>
     <string name="assigned">está asignado</string>

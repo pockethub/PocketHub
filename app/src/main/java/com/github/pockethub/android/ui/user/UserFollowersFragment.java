@@ -18,14 +18,11 @@ package com.github.pockethub.android.ui.user;
 import android.content.Context;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
-
-import rx.Observable;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 
@@ -49,13 +46,9 @@ public class UserFollowersFragment extends FollowersFragment {
 
             @Override
             public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<User>>() {
-                    @Override
-                    public Observable<Page<User>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), UserFollowerService.class)
-                                .getFollowers(user.login(), page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), UserFollowerService.class)
+                                .getFollowers(user.login(), page1), page);
             }
         };
     }

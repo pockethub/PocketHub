@@ -17,13 +17,11 @@ package com.github.pockethub.android.ui.repo;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
-import com.github.pockethub.android.util.TypefaceUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -99,9 +97,6 @@ public class DefaultRepositoryListAdapter extends
     protected View initialize(View view) {
         view = super.initialize(view);
 
-        TypefaceUtils.setOcticons(textView(view, 0),
-                (TextView) view.findViewById(R.id.tv_forks_icon),
-                (TextView) view.findViewById(R.id.tv_watchers_icon));
         descriptionColor = view.getResources().getColor(R.color.text_description);
         return view;
     }
@@ -119,15 +114,17 @@ public class DefaultRepositoryListAdapter extends
         if (headerValue != null) {
             setGone(5, false);
             setText(6, headerValue);
-        } else
+        } else {
             setGone(5, true);
+        }
 
         setGone(7, noSeparators.contains(repository.id()));
 
         StyledText name = new StyledText();
-        if (!account.get().login().equals(repository.owner().login()))
+        if (!account.get().login().equals(repository.owner().login())) {
             name.foreground(repository.owner().login(), descriptionColor)
                     .foreground('/', descriptionColor);
+        }
         name.bold(repository.name());
         setText(8, name);
 

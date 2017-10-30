@@ -19,21 +19,15 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.ArrayList;
@@ -69,19 +63,12 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
         }
 
         @Override
-        protected View initialize(View view) {
-            view = super.initialize(view);
-
-            TypefaceUtils.setOcticons(textView(0));
-            return view;
-        }
-
-        @Override
         protected void update(int position, GitReference item) {
-            if (RefUtils.isTag(item))
+            if (RefUtils.isTag(item)) {
                 setText(0, R.string.icon_tag);
-            else
+            } else {
                 setText(0, R.string.icon_fork);
+            }
             setText(1, RefUtils.getName(item));
             setChecked(2, selected == position);
         }
@@ -121,33 +108,23 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
 
         final MaterialDialog.Builder dialogBuilder = createDialogBuilder()
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        RefDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                });
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE));
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
-        view.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onClick(getDialog(), position);
-            }
-        });
+        view.setOnItemClickListener((parent, view1, position, id) ->
+                onClick(getDialog(), position));
 
         ArrayList<GitReference> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         RefListAdapter adapter = new RefListAdapter(inflater,
                 choices.toArray(new GitReference[choices.size()]), selected);
         view.setAdapter(adapter);
-        if (selected >= 0)
+        if (selected >= 0) {
             view.setSelection(selected);
+        }
         dialogBuilder.customView(view, false);
 
         return dialogBuilder.build();

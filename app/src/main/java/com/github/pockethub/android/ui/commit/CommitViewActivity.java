@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.commit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.meisolsson.githubsdk.model.Commit;
@@ -70,8 +71,9 @@ public class CommitViewActivity extends PagerActivity {
         final int position, final Collection<Commit> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
-        for (Commit commit : commits)
+        for (Commit commit : commits) {
             ids[index++] = commit.sha();
+        }
         return createIntent(repository, position, ids);
     }
 
@@ -111,9 +113,9 @@ public class CommitViewActivity extends PagerActivity {
 
         setContentView(R.layout.activity_pager);
 
-        setSupportActionBar((android.support.v7.widget.Toolbar) findViewById(R.id.toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
-        pager = finder.find(R.id.vp_pages);
+        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);

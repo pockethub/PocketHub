@@ -24,14 +24,10 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 import com.meisolsson.githubsdk.model.User;
@@ -74,14 +70,16 @@ public class AccountUtils {
         if (!AUTHENTICATOR_CHECKED) {
             final AuthenticatorDescription[] types = manager
                     .getAuthenticatorTypes();
-            if (types != null && types.length > 0)
-                for (AuthenticatorDescription descriptor : types)
+            if (types != null && types.length > 0) {
+                for (AuthenticatorDescription descriptor : types) {
                     if (descriptor != null
                             && ACCOUNT_TYPE.equals(descriptor.type)) {
                         HAS_AUTHENTICATOR = "com.github.pockethub.android"
                                 .equals(descriptor.packageName);
                         break;
                     }
+                }
+            }
             AUTHENTICATOR_CHECKED = true;
         }
 
@@ -96,12 +94,14 @@ public class AccountUtils {
      * @return true if default account user, false otherwise
      */
     public static boolean isUser(final Context context, final User user) {
-        if (user == null)
+        if (user == null) {
             return false;
+        }
 
         String login = user.login();
-        if (login == null)
+        if (login == null) {
             return false;
+        }
 
         return login.equals(getLogin(context));
     }
@@ -135,10 +135,11 @@ public class AccountUtils {
         final AccountManagerFuture<Account[]> future = manager
                 .getAccountsByTypeAndFeatures(ACCOUNT_TYPE, null, null, null);
         final Account[] accounts = future.getResult();
-        if (accounts != null && accounts.length > 0)
+        if (accounts != null && accounts.length > 0) {
             return getPasswordAccessibleAccounts(manager, accounts);
-        else
+        } else {
             return new Account[0];
+        }
     }
 
     /**
@@ -150,8 +151,9 @@ public class AccountUtils {
     public static Account getPasswordAccessibleAccount(final Context context) {
         AccountManager manager = AccountManager.get(context);
         Account[] accounts = manager.getAccountsByType(ACCOUNT_TYPE);
-        if (accounts == null || accounts.length == 0)
+        if (accounts == null || accounts.length == 0) {
             return null;
+        }
 
         try {
             accounts = getPasswordAccessibleAccounts(manager, accounts);
@@ -167,15 +169,17 @@ public class AccountUtils {
         final List<Account> accessible = new ArrayList<>(
                 candidates.length);
         boolean exceptionThrown = false;
-        for (Account account : candidates)
+        for (Account account : candidates) {
             try {
                 manager.getPassword(account);
                 accessible.add(account);
             } catch (SecurityException ignored) {
                 exceptionThrown = true;
             }
-        if (accessible.isEmpty() && exceptionThrown)
+        }
+        if (accessible.isEmpty() && exceptionThrown) {
             throw new AuthenticatorConflictException();
+        }
         return accessible.toArray(new Account[accessible.size()]);
     }
 
@@ -191,31 +195,37 @@ public class AccountUtils {
     public static Account getAccount(final AccountManager manager,
             final Activity activity) throws IOException, AccountsException {
         final boolean loggable = Log.isLoggable(TAG, DEBUG);
-        if (loggable)
+        if (loggable) {
             Log.d(TAG, "Getting account");
+        }
 
-        if (activity == null)
+        if (activity == null) {
             throw new IllegalArgumentException("Activity cannot be null");
+        }
 
-        if (activity.isFinishing())
+        if (activity.isFinishing()) {
             throw new OperationCanceledException();
+        }
 
         Account[] accounts;
         try {
-            if (!hasAuthenticator(manager))
+            if (!hasAuthenticator(manager)) {
                 throw new AuthenticatorConflictException();
+            }
 
             while ((accounts = getAccounts(manager)).length == 0) {
-                if (loggable)
+                if (loggable) {
                     Log.d(TAG, "No GitHub accounts for activity=" + activity);
+                }
 
                 Bundle result = manager.addAccount(ACCOUNT_TYPE, null, null,
                         null, activity, null, null).getResult();
 
-                if (loggable)
+                if (loggable) {
                     Log.d(TAG,
                             "Added account "
                                     + result.getString(KEY_ACCOUNT_NAME));
+                }
             }
         } catch (OperationCanceledException e) {
             Log.d(TAG, "Excepting retrieving account", e);
@@ -225,20 +235,16 @@ public class AccountUtils {
             Log.d(TAG, "Excepting retrieving account", e);
             throw e;
         } catch (AuthenticatorConflictException e) {
-            activity.runOnUiThread(new Runnable() {
-
-                public void run() {
-                    showConflictMessage(activity);
-                }
-            });
+            activity.runOnUiThread(() -> showConflictMessage(activity));
             throw e;
         } catch (IOException e) {
             Log.d(TAG, "Excepting retrieving account", e);
             throw e;
         }
 
-        if (loggable)
+        if (loggable) {
             Log.d(TAG, "Returning account " + accounts[0].name);
+        }
 
         return accounts[0];
     }
@@ -256,13 +262,15 @@ public class AccountUtils {
         synchronized (UPDATE_COUNT) {
             // Don't update the account if the account was successfully updated
             // while the lock was being waited for
-            if (count != UPDATE_COUNT.get())
+            if (count != UPDATE_COUNT.get()) {
                 return true;
+            }
 
             AccountManager manager = AccountManager.get(activity);
             try {
-                if (!hasAuthenticator(manager))
+                if (!hasAuthenticator(manager)) {
                     throw new AuthenticatorConflictException();
+                }
                 manager.updateCredentials(account, ACCOUNT_TYPE, null,
                         activity, null, null).getResult();
                 UPDATE_COUNT.incrementAndGet();
@@ -275,12 +283,7 @@ public class AccountUtils {
                 Log.d(TAG, "Excepting retrieving account", e);
                 return false;
             } catch (AuthenticatorConflictException e) {
-                activity.runOnUiThread(new Runnable() {
-
-                    public void run() {
-                        showConflictMessage(activity);
-                    }
-                });
+                activity.runOnUiThread(() -> showConflictMessage(activity));
                 return false;
             } catch (IOException e) {
                 Log.d(TAG, "Excepting retrieving account", e);
@@ -300,18 +303,8 @@ public class AccountUtils {
                 .title(R.string.authenticator_conflict_title)
                 .content(R.string.authenticator_conflict_message)
                 .positiveText(android.R.string.ok)
-                .cancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        activity.finish();
-                    }
-                })
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        activity.finish();
-                    }
-                })
+                .cancelListener(dialog -> activity.finish())
+                .onPositive((dialog, which) -> activity.finish())
                 .show();
     }
 
@@ -323,20 +316,24 @@ public class AccountUtils {
      */
     public static boolean isUnauthorized(final Exception e) {
         String message = null;
-        if (e instanceof IOException)
+        if (e instanceof IOException) {
             message = e.getMessage();
+        }
         final Throwable cause = e.getCause();
         if (cause instanceof IOException) {
             String causeMessage = cause.getMessage();
-            if (!TextUtils.isEmpty(causeMessage))
+            if (!TextUtils.isEmpty(causeMessage)) {
                 message = causeMessage;
+            }
         }
 
-        if (TextUtils.isEmpty(message))
+        if (TextUtils.isEmpty(message)) {
             return false;
+        }
 
-        if ("Received authentication challenge is null".equals(message))
+        if ("Received authentication challenge is null".equals(message)) {
             return true;
+        }
         return "No authentication challenges found".equals(message);
 
     }

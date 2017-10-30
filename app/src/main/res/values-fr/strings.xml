@@ -273,7 +273,6 @@
     <string name="deleting_comment">Suppression du commentaire…</string>
     <string name="deleting_repository">Suppression…</string>
     <string name="editing_comment">Édition du commentaire…</string>
-    <string name="enter_otp_code_title">Code d\'authentification</string>
     <string name="error_deleting_repository">Erreur lors de la suppression</string>
     <string name="error_forking_repository">Erreur lors du fork</string>
     <string name="fork">Fork</string>

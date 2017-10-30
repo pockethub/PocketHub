@@ -82,10 +82,11 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
 
     @Override
     public String getAuthTokenLabel(final String authTokenType) {
-        if (ACCOUNT_TYPE.equals(authTokenType))
+        if (ACCOUNT_TYPE.equals(authTokenType)) {
             return authTokenType;
-        else
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -105,8 +106,9 @@ public class AccountAuthenticator extends AbstractAccountAuthenticator {
         final Intent intent = new Intent(context, LoginActivity.class);
         intent.putExtra(PARAM_AUTHTOKEN_TYPE, authTokenType);
         intent.putExtra(KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        if (!TextUtils.isEmpty(account.name))
+        if (!TextUtils.isEmpty(account.name)) {
             intent.putExtra(PARAM_USERNAME, account.name);
+        }
 
         final Bundle bundle = new Bundle();
         bundle.putParcelable(KEY_INTENT, intent);

@@ -19,18 +19,13 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
@@ -72,10 +67,11 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
             setText(1, item.title());
 
             String description = item.description();
-            if (!TextUtils.isEmpty(description))
-                ViewUtils.setGone(setText(2, description), false);
-            else
+            if (!TextUtils.isEmpty(description)) {
+                setText(2, description).setVisibility(View.VISIBLE);
+            } else {
                 setGone(2, true);
+            }
 
             setChecked(0, selected == position);
         }
@@ -120,40 +116,25 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
 
         final MaterialDialog.Builder dialogBuilder = createDialogBuilder()
                 .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MilestoneDialogFragment.this.onClick(dialog, BUTTON_NEGATIVE);
-                    }
-                })
+                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .neutralText(R.string.clear)
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MilestoneDialogFragment.this.onClick(dialog, BUTTON_NEUTRAL);
-                    }
-                });
+                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL));
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
         ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
                 null);
-        view.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onClick(getDialog(), position);
-            }
-        });
+        view.setOnItemClickListener((parent, view1, position, id) ->
+                onClick(getDialog(), position));
 
         ArrayList<Milestone> choices = getChoices();
         int selected = arguments.getInt(ARG_SELECTED_CHOICE);
         MilestoneListAdapter adapter = new MilestoneListAdapter(inflater,
                 choices.toArray(new Milestone[choices.size()]), selected);
         view.setAdapter(adapter);
-        if (selected >= 0)
+        if (selected >= 0) {
             view.setSelection(selected);
+        }
         dialogBuilder.customView(view, false);
 
         return dialogBuilder.build();

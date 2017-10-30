@@ -19,10 +19,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.StringRes;
-import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.kevinsawicki.wishlist.ViewFinder;
 import com.github.pockethub.android.ui.roboactivities.RoboSupportFragment;
 
 /**
@@ -31,11 +29,6 @@ import com.github.pockethub.android.ui.roboactivities.RoboSupportFragment;
 public abstract class DialogFragment extends RoboSupportFragment implements
         DialogResultListener {
 
-    /**
-     * View finder bound to the value last specified to
-     * {@link #onViewCreated(android.view.View, Bundle)}
-     */
-    protected ViewFinder finder;
     private MaterialDialog progressDialog;
 
     /**
@@ -61,10 +54,11 @@ public abstract class DialogFragment extends RoboSupportFragment implements
     @SuppressWarnings("unchecked")
     protected <V extends Parcelable> V getParcelableExtra(final String name) {
         Activity activity = getActivity();
-        if (activity != null)
+        if (activity != null) {
             return (V) activity.getIntent().getParcelableExtra(name);
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -75,17 +69,11 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      */
     protected String getStringExtra(final String name) {
         Activity activity = getActivity();
-        if (activity != null)
+        if (activity != null) {
             return activity.getIntent().getStringExtra(name);
-        else
+        } else {
             return null;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        finder = new ViewFinder(view);
+        }
     }
 
     /**
@@ -118,11 +106,6 @@ public abstract class DialogFragment extends RoboSupportFragment implements
      * @param resId
      */
     protected void showProgressIndeterminate(@StringRes final int resId) {
-        dismissProgress();
-        progressDialog = new MaterialDialog.Builder(getActivity())
-                .content(resId)
-                .progress(true, 0)
-                .build();
-        progressDialog.show();
+        showProgressIndeterminate(getString(resId));
     }
 }

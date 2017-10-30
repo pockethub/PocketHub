@@ -155,8 +155,6 @@
     <string name="select_milestone">Meilenstein wählen</string>
     <string name="select_labels">Markierung wählen</string>
     <string name="select_ref">Branch oder Tag wählen</string>
-    <string name="enter_otp_code_title">Authentifizierungsschlüssel</string>
-    <string name="enter_otp_code_message">Zwei-Fakto Authentifizierung ist für Ihren Account aktiviert.Geben Sie Ihren Authentifizierungschlüssel zur Verifizierung Ihrer Identität ein.</string>
     <string name="no_milestone">Keine Meilensteine</string>
     <string name="unassigned">Niemand zugewiesen</string>
     <string name="assigned">ist zugewiesen</string>

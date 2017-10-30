@@ -15,30 +15,27 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.google.inject.Inject;
 
-import java.io.IOException;
-
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import roboguice.RoboGuice;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 
 /**
  * Task to edit a milestone
  */
-public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
+public class EditMilestoneTask {
 
     @Inject
     private IssueStore store;
@@ -53,7 +50,7 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
 
     private int milestoneNumber;
 
-    private final ProgressObserverAdapter<Issue> observer;
+    private final Consumer<Issue> observer;
 
     /**
      * Create task to edit a milestone
@@ -64,25 +61,14 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
      */
     public EditMilestoneTask(final BaseActivity activity,
                              final Repository repositoryId, final int issueNumber,
-                             final ProgressObserverAdapter<Issue> observer) {
+                             final Consumer<Issue> observer) {
         this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         this.observer = observer;
-        observer.setContent(R.string.updating_milestone);
         milestoneDialog = new MilestoneDialog(activity, ISSUE_MILESTONE_UPDATE,
                 repositoryId);
         RoboGuice.injectMembers(activity, this);
-    }
-
-    @Override
-    public void call(Subscriber<? super Issue> subscriber) {
-        try {
-            IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
-            subscriber.onNext(store.editIssue(repositoryId, issueNumber, editedIssue));
-        } catch (IOException e) {
-            subscriber.onError(e);
-        }
     }
 
     /**
@@ -103,13 +89,16 @@ public class EditMilestoneTask implements Observable.OnSubscribe<Issue> {
      * @return this task
      */
     public EditMilestoneTask edit(Milestone milestone) {
-        if (milestone != null)
+        if (milestone != null) {
+            IssueRequest editedIssue = IssueRequest.builder().milestone(milestoneNumber).build();
 
-            Observable.create(this)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.<Issue>bindToLifecycle())
-                .subscribe(observer);
+            store.editIssue(repositoryId, issueNumber, editedIssue)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(activity.bindToLifecycle())
+                    .compose(RxProgress.bindToLifecycle(activity, R.string.updating_milestone))
+                    .subscribe(observer);
+        }
 
         return this;
     }

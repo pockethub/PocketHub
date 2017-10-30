@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -29,7 +30,6 @@ import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.InfoUtils;
@@ -40,10 +40,9 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import java.text.MessageFormat;
 import java.util.List;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static android.app.SearchManager.QUERY;
 
@@ -64,25 +63,20 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
 
             @Override
             public PageIterator<Repository> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Repository>>() {
-                    @Override
-                    public Observable<Page<Repository>> execute(int page) {
-                        return ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchRepositories(query, null, null, page)
-                                .map(new Func1<SearchPage<Repository>, Page<Repository>>() {
-                                    @Override
-                                    public Page<Repository> call(SearchPage<Repository> repositorySearchPage) {
-                                        return Page.<Repository>builder()
-                                                .first(repositorySearchPage.first())
-                                                .last(repositorySearchPage.last())
-                                                .next(repositorySearchPage.next())
-                                                .prev(repositorySearchPage.prev())
-                                                .items(repositorySearchPage.items())
-                                                .build();
-                                    }
-                                });
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getContext(), SearchService.class)
+                                .searchRepositories(query, null, null, page1)
+                                .map(response -> {
+                                    SearchPage<Repository> repositorySearchPage = response.body();
+
+                                    return Response.success(Page.<Repository>builder()
+                                            .first(repositorySearchPage.first())
+                                            .last(repositorySearchPage.last())
+                                            .next(repositorySearchPage.next())
+                                            .prev(repositorySearchPage.prev())
+                                            .items(repositorySearchPage.items())
+                                            .build());
+                                }), page);
             }
         };
     }
@@ -123,15 +117,12 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Repository>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<Repository>(getActivity(),
-                        MessageFormat.format(getString(R.string.opening_repository), InfoUtils.createRepoId(result))) {
-                    @Override
-                    public void onNext(Repository repo) {
-                        super.onNext(repo);
-                        startActivity(RepositoryViewActivity.createIntent(repo));
-                    }
-                });
+                .compose(this.bindToLifecycle())
+                .compose(RxProgress.bindToLifecycle(getActivity(),
+                        MessageFormat.format(getString(R.string.opening_repository),
+                                InfoUtils.createRepoId(result))))
+                .subscribe(response ->
+                        startActivity(RepositoryViewActivity.createIntent(response.body())));
     }
 
     /**
@@ -142,23 +133,27 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
      * @return true if query opened as repository, false otherwise
      */
     private boolean openRepositoryMatch(final String query) {
-        if (TextUtils.isEmpty(query))
+        if (TextUtils.isEmpty(query)) {
             return false;
+        }
 
         Repository repoId = InfoUtils.createRepoFromUrl(query.trim());
-        if (repoId == null)
+        if (repoId == null) {
             return false;
+        }
 
-        Repository repo;
-        repo = ServiceGenerator.createService(getContext(), RepositoryService.class)
+        ServiceGenerator.createService(getContext(), RepositoryService.class)
                 .getRepository(repoId.owner().login(), repoId.name())
-                .toBlocking()
-                .first();
+                .subscribe(response -> {
+                    if (response.isSuccessful()) {
+                        startActivity(RepositoryViewActivity.createIntent(response.body()));
+                        final Activity activity = getActivity();
+                        if (activity != null) {
+                            activity.finish();
+                        }
+                    }
+                });
 
-        startActivity(RepositoryViewActivity.createIntent(repo));
-        final Activity activity = getActivity();
-        if (activity != null)
-            activity.finish();
         return true;
     }
 

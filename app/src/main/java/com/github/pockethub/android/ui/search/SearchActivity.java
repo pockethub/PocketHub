@@ -25,9 +25,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
@@ -37,8 +37,8 @@ import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PERSON;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_PUBLIC;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PERSON;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC;
 
 /**
  * Activity to view search results
@@ -59,7 +59,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadingBar = finder.find(R.id.pb_loading);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -84,12 +84,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.m_search:
-                searchView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchView.setQuery(lastQuery, false);
-                    }
-                });
+                searchView.post(() -> searchView.setQuery(lastQuery, false));
                 return true;
             case R.id.m_clear:
                 RepositorySearchSuggestionsProvider.clear(this);
@@ -134,8 +129,9 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     }
 
     private void handleIntent(Intent intent) {
-        if (ACTION_SEARCH.equals(intent.getAction()))
+        if (ACTION_SEARCH.equals(intent.getAction())) {
             search(intent.getStringExtra(QUERY));
+        }
     }
 
     private void search(final String query) {
@@ -156,7 +152,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
     private void configurePager() {
         configureTabPager();
-        ViewUtils.setGone(loadingBar, true);
+        loadingBar.setVisibility(View.GONE);
         setGone(false);
     }
 

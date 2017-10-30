@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 
+import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.Issue;
@@ -28,15 +29,14 @@ import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.rx.ProgressObserverAdapter;
 import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER;
@@ -108,26 +108,15 @@ public class EditCommentActivity extends
 
         ServiceGenerator.createService(this, IssueCommentService.class)
                 .editIssueComment(repositoryId.owner().login(), repositoryId.name(),
-                        issueNumber, comment.id(), commentRequest)
+                        comment.id(), commentRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<GitHubComment>bindToLifecycle())
-                .subscribe(new ProgressObserverAdapter<GitHubComment>(this, R.string.editing_comment) {
-
-                    @Override
-                    public void onNext(GitHubComment edited) {
-                        super.onNext(edited);
-                        dismissProgress();
-                        finish(edited);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.d(TAG, "Exception editing comment on issue", e);
-                        ToastUtils.show(EditCommentActivity.this, e.getMessage());
-                    }
-                }.start());
+                .compose(this.bindToLifecycle())
+                .compose(RxProgress.bindToLifecycle(this, R.string.editing_comment))
+                .subscribe(response -> finish(response.body()), e -> {
+                    Log.d(TAG, "Exception editing comment on issue", e);
+                    ToastUtils.show(this, e.getMessage());
+                });
     }
 
     @Override

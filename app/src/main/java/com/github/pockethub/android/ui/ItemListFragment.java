@@ -24,9 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -34,7 +31,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
-import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.util.ToastUtils;
@@ -94,8 +90,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (!items.isEmpty())
+        if (!items.isEmpty()) {
             setListShown(true, false);
+        }
 
         getLoaderManager().initLoader(0, null, this);
     }
@@ -137,23 +134,10 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
                 R.color.pager_title_background_end);
 
         listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                onListItemClick((ListView) parent, view, position, id);
-            }
-        });
-        listView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                return onListItemLongClick((ListView) parent, view, position,
-                        id);
-            }
-        });
+        listView.setOnItemClickListener((parent, view1, position, id) ->
+                onListItemClick((ListView) parent, view1, position, id));
+        listView.setOnItemLongClickListener((parent, view12, position, id) ->
+                onListItemLongClick((ListView) parent, view12, position, id));
         progressBar = (ProgressBar) view.findViewById(R.id.pb_loading);
 
         emptyView = (TextView) view.findViewById(android.R.id.empty);
@@ -188,8 +172,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     private void refresh(final Bundle args) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
+        }
 
         getLoaderManager().restartLoader(0, args, this);
     }
@@ -202,9 +187,11 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected abstract int getErrorMessage(Exception exception);
 
+    @Override
     public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
-        if (!isUsable())
+        if (!isUsable()) {
             return;
+        }
 
         swipeLayout.setRefreshing(false);
         Exception exception = getException(loader);
@@ -268,10 +255,11 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return exception or null if none provided
      */
     protected Exception getException(final Loader<List<E>> loader) {
-        if (loader instanceof ThrowableLoader)
+        if (loader instanceof ThrowableLoader) {
             return ((ThrowableLoader<List<E>>) loader).clearException();
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -299,11 +287,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     @SuppressWarnings("unchecked")
     protected HeaderFooterListAdapter<SingleTypeAdapter<E>> getListAdapter() {
-        if (listView != null)
+        if (listView != null) {
             return (HeaderFooterListAdapter<SingleTypeAdapter<E>>) listView
                     .getAdapter();
-        else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -315,8 +304,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         HeaderFooterListAdapter<SingleTypeAdapter<E>> root = getListAdapter();
         if (root != null) {
             SingleTypeAdapter<E> typeAdapter = root.getWrappedAdapter();
-            if (typeAdapter != null)
+            if (typeAdapter != null) {
                 typeAdapter.notifyDataSetChanged();
+            }
         }
         return this;
     }
@@ -328,28 +318,31 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return this fragment
      */
     protected ItemListFragment<E> setListAdapter(final ListAdapter adapter) {
-        if (listView != null)
+        if (listView != null) {
             listView.setAdapter(adapter);
+        }
         return this;
     }
 
     private ItemListFragment<E> fadeIn(final View view, final boolean animate) {
-        if (view != null)
-            if (animate)
+        if (view != null) {
+            if (animate) {
                 view.startAnimation(AnimationUtils.loadAnimation(getActivity(),
                         android.R.anim.fade_in));
-            else
+            } else {
                 view.clearAnimation();
+            }
+        }
         return this;
     }
 
     private ItemListFragment<E> show(final View view) {
-        ViewUtils.setGone(view, false);
+        view.setVisibility(View.VISIBLE);
         return this;
     }
 
     private ItemListFragment<E> hide(final View view) {
-        ViewUtils.setGone(view, true);
+        view.setVisibility(View.GONE);
         return this;
     }
 
@@ -372,32 +365,38 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     public ItemListFragment<E> setListShown(final boolean shown,
             final boolean animate) {
-        if (!isUsable())
+        if (!isUsable()) {
             return this;
+        }
 
         if (shown == listShown) {
             if (shown)
                 // List has already been shown so hide/show the empty view with
                 // no fade effect
-                if (items.isEmpty())
+            {
+                if (items.isEmpty()) {
                     hide(listView).show(emptyView);
-                else
+                } else {
                     hide(emptyView).show(listView);
+                }
+            }
             return this;
         }
 
         listShown = shown;
 
-        if (shown)
-            if (!items.isEmpty())
+        if (shown) {
+            if (!items.isEmpty()) {
                 hide(progressBar).hide(emptyView).fadeIn(listView, animate)
                         .show(listView);
-            else
+            } else {
                 hide(progressBar).hide(listView).fadeIn(emptyView, animate)
                         .show(emptyView);
-        else
+            }
+        } else {
             hide(listView).hide(emptyView).fadeIn(progressBar, animate)
                     .show(progressBar);
+        }
 
         return this;
     }
@@ -409,8 +408,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return this fragment
      */
     protected ItemListFragment<E> setEmptyText(final String message) {
-        if (emptyView != null)
+        if (emptyView != null) {
             emptyView.setText(message);
+        }
         return this;
     }
 
@@ -421,8 +421,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @return this fragment
      */
     protected ItemListFragment<E> setEmptyText(final int resId) {
-        if (emptyView != null)
+        if (emptyView != null) {
             emptyView.setText(resId);
+        }
         return this;
     }
 

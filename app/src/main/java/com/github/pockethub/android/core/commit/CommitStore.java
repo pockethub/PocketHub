@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Single;
+
 
 /**
  * Store of commits
@@ -68,8 +70,9 @@ public class CommitStore extends ItemStore {
      */
     public Commit addCommit(Repository repo, Commit commit) {
         Commit current = getCommit(repo, commit.sha());
-        if (current != null && current.equals(commit))
+        if (current != null && current.equals(commit)) {
             return current;
+        }
 
         String repoId = InfoUtils.createRepoId(repo);
         ItemReferences<Commit> repoCommits = commits.get(repoId);
@@ -82,19 +85,15 @@ public class CommitStore extends ItemStore {
     }
 
     /**
-     * Refresh commit
+     * Refresh commit.
      *
-     * @param repo
-     * @param id
+     * @param repo The repo which the commit is in
+     * @param id The id of the commit
      * @return refreshed commit
-     * @throws IOException
      */
-    public Commit refreshCommit(final Repository repo, final String id) throws IOException {
-        Commit commit = ServiceGenerator.createService(context, RepositoryCommitService.class)
+    public Single<Commit> refreshCommit(final Repository repo, final String id) {
+        return ServiceGenerator.createService(context, RepositoryCommitService.class)
                 .getCommit(repo.owner().login(), repo.name(), id)
-                .toBlocking()
-                .first();
-
-        return addCommit(repo, commit);
+                .map(response -> addCommit(repo, response.body()));
     }
 }

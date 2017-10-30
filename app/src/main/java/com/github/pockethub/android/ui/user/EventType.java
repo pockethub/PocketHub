@@ -17,7 +17,7 @@
 package com.github.pockethub.android.ui.user;
 
 import com.github.pockethub.android.ui.StyledText;
-import com.github.pockethub.android.util.TypefaceUtils;
+import com.github.pockethub.android.ui.view.OcticonTextView;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.payload.IssuesPayload;
 
@@ -26,70 +26,70 @@ public enum EventType {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatCommitComment(event, main, details);
-            return TypefaceUtils.ICON_COMMENT;
+            return OcticonTextView.ICON_COMMENT;
         }
     },
     CreateEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatCreate(event, main, details);
-            return TypefaceUtils.ICON_CREATE;
+            return OcticonTextView.ICON_CREATE;
         }
     },
     DeleteEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatDelete(event, main, details);
-            return TypefaceUtils.ICON_DELETE;
+            return OcticonTextView.ICON_DELETE;
         }
     },
     DownloadEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatDownload(event, main, details);
-            return TypefaceUtils.ICON_UPLOAD;
+            return OcticonTextView.ICON_UPLOAD;
         }
     },
     ReleaseEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatDownload(event, main, details);
-            return TypefaceUtils.ICON_UPLOAD;
+            return OcticonTextView.ICON_UPLOAD;
         }
     },
     FollowEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatFollow(event, main, details);
-            return TypefaceUtils.ICON_FOLLOW;
+            return OcticonTextView.ICON_FOLLOW;
         }
     },
     ForkEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatFork(event, main, details);
-            return TypefaceUtils.ICON_FORK;
+            return OcticonTextView.ICON_FORK;
         }
     },
     GistEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatGist(event, main, details);
-            return TypefaceUtils.ICON_GIST;
+            return OcticonTextView.ICON_GIST;
         }
     },
     GollumEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatWiki(event, main, details);
-            return TypefaceUtils.ICON_WIKI;
+            return OcticonTextView.ICON_WIKI;
         }
     },
     IssueCommentEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatIssueComment(event, main, details);
-            return TypefaceUtils.ICON_ISSUE_COMMENT;
+            return OcticonTextView.ICON_ISSUE_COMMENT;
         }
     },
     IssuesEvent {
@@ -99,12 +99,13 @@ public enum EventType {
 
             String action = ((IssuesPayload) event.payload()).action();
             String icon = null;
-            if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_OPEN;
-            else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_REOPEN;
-            else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED.equals(action))
-                icon = TypefaceUtils.ICON_ISSUE_CLOSE;
+            if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_OPENED.equals(action)) {
+                icon = OcticonTextView.ICON_ISSUE_OPEN;
+            } else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_REOPENED.equals(action)) {
+                icon = OcticonTextView.ICON_ISSUE_REOPEN;
+            } else if (IconAndViewTextManager.ISSUES_PAYLOAD_ACTION_CLOSED.equals(action)) {
+                icon = OcticonTextView.ICON_ISSUE_CLOSE;
+            }
             return icon;
         }
     },
@@ -112,7 +113,7 @@ public enum EventType {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatAddMember(event, main, details);
-            return TypefaceUtils.ICON_ADD_MEMBER;
+            return OcticonTextView.ICON_ADD_MEMBER;
         }
     },
     PublicEvent {
@@ -126,35 +127,35 @@ public enum EventType {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatPullRequest(event, main, details);
-            return TypefaceUtils.ICON_PULL_REQUEST;
+            return OcticonTextView.ICON_PULL_REQUEST;
         }
     },
     PullRequestReviewCommentEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatReviewComment(event, main, details);
-            return TypefaceUtils.ICON_COMMENT;
+            return OcticonTextView.ICON_COMMENT;
         }
     },
     PushEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatPush(event, main, details);
-            return TypefaceUtils.ICON_PUSH;
+            return OcticonTextView.ICON_PUSH;
         }
     },
     TeamAddEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatTeamAdd(event, main, details);
-            return TypefaceUtils.ICON_ADD_MEMBER;
+            return OcticonTextView.ICON_ADD_MEMBER;
         }
     },
     WatchEvent {
         @Override
         public String generateIconAndFormatStyledText(IconAndViewTextManager iconAndViewTextManager, GitHubEvent event, StyledText main, StyledText details) {
             iconAndViewTextManager.formatWatch(event, main, details);
-            return TypefaceUtils.ICON_STAR;
+            return OcticonTextView.ICON_STAR;
         }
     };
 

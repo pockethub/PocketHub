@@ -36,12 +36,11 @@ import com.google.inject.assistedinject.Assisted;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import rx.Observable;
+import retrofit2.Response;
 
 /**
  * Cache of repositories under a given organization
@@ -132,8 +131,9 @@ public class OrganizationRepositories implements
     public void store(SQLiteDatabase db, List<Repository> repos) {
         db.delete("repos", "orgId=?",
                 new String[] { Integer.toString(org.id()) });
-        if (repos.isEmpty())
+        if (repos.isEmpty()) {
             return;
+        }
 
         ContentValues values = new ContentValues(12);
         for (Repository repo : repos) {
@@ -170,52 +170,40 @@ public class OrganizationRepositories implements
     @Override
     public List<Repository> request() throws IOException {
         if (isAuthenticatedUser()) {
-            Set<Repository> all = new TreeSet<>(
-                    new Comparator<Repository>() {
-
-                        @Override
-                        public int compare(final Repository repo1,
-                                           final Repository repo2) {
-                            final long id1 = repo1.id();
-                            final long id2 = repo2.id();
-                            if (id1 > id2)
-                                return 1;
-                            if (id1 < id2)
-                                return -1;
-                            return 0;
-                        }
-                    });
-
-            all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Observable<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, RepositoryService.class).getUserRepositories(page);
+            Set<Repository> all = new TreeSet<>((repo1, repo2) -> {
+                final long id1 = repo1.id();
+                final long id2 = repo2.id();
+                if (id1 > id2) {
+                    return 1;
                 }
-            }));
-
-            all.addAll(getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Observable<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, WatchingService.class).getWatchedRepositories(page);
+                if (id1 < id2) {
+                    return -1;
                 }
-            }));
-            return new ArrayList<>(all);
-        } else
-            return getAllItems(new PageIterator.GitHubRequest<Page<Repository>>() {
-                @Override
-                public Observable<Page<Repository>> execute(int page) {
-                    return ServiceGenerator.createService(context, RepositoryService.class).getOrganizationRepositories(org.login(), page);
-                }
+                return 0;
             });
+
+            all.addAll(getAllItems(page ->
+                    ServiceGenerator.createService(context, RepositoryService.class)
+                            .getUserRepositories(page)));
+
+            all.addAll(getAllItems(page ->
+                    ServiceGenerator.createService(context, WatchingService.class)
+                            .getWatchedRepositories(page)));
+            return new ArrayList<>(all);
+        } else {
+            return getAllItems(page ->
+                    ServiceGenerator.createService(context, RepositoryService.class)
+                            .getOrganizationRepositories(org.login(), page));
+        }
     }
 
-    private List<Repository> getAllItems(PageIterator.GitHubRequest<Page<Repository>> request){
+    private List<Repository> getAllItems(PageIterator.GitHubRequest<Response<Page<Repository>>> request) {
         List<Repository> repos = new ArrayList<>();
         int current = 1;
         int last = -1;
 
         while(current != last) {
-            Page<Repository> page = request.execute(current).toBlocking().first();
+            Page<Repository> page = request.execute(current).blockingGet().body();
             repos.addAll(page.items());
             last = page.last() != null ? page.last() : -1;
             current = page.next() != null ? page.next() : -1;

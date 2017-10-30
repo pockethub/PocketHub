@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
 import com.meisolsson.githubsdk.model.payload.CreatePayload;
@@ -48,8 +47,9 @@ public class NewsListAdapter extends SingleTypeAdapter<GitHubEvent> {
      * @return true if renderable, false otherwise
      */
     public static boolean isValid(final GitHubEvent event) {
-        if (event == null || event.payload() == null)
+        if (event == null || event.payload() == null) {
             return false;
+        }
 
         final GitHubEventType type = event.type();
 
@@ -114,14 +114,6 @@ public class NewsListAdapter extends SingleTypeAdapter<GitHubEvent> {
     protected int[] getChildViewIds() {
         return new int[] { R.id.iv_avatar, R.id.tv_event, R.id.tv_event_details,
                 R.id.tv_event_icon, R.id.tv_event_date };
-    }
-
-    @Override
-    protected View initialize(View view) {
-        view = super.initialize(view);
-
-        TypefaceUtils.setOcticons(textView(view, 3));
-        return view;
     }
 
     @Override

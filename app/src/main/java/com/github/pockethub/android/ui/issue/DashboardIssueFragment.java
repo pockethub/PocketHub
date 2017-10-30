@@ -29,14 +29,11 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.google.inject.Inject;
 
 import java.util.List;
 import java.util.Map;
-
-import rx.Observable;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 
@@ -100,12 +97,9 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
 
             @Override
             public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(new PageIterator.GitHubRequest<Page<Issue>>() {
-                    @Override
-                    public Observable<Page<Issue>> execute(int page) {
-                        return ServiceGenerator.createService(getActivity(), IssueService.class).getIssues(filterData, page);
-                    }
-                }, page);
+                return new PageIterator<>(page1 ->
+                        ServiceGenerator.createService(getActivity(), IssueService.class)
+                                .getIssues(filterData, page1), page);
             }
         };
     }

@@ -87,19 +87,9 @@ public class GistFilesViewActivityTest extends
         final ViewPager pager = (ViewPager) getActivity().findViewById(
             id.vp_pages);
         assertEquals(0, pager.getCurrentItem());
-        ui(new Runnable() {
-
-            public void run() {
-                pager.setCurrentItem(1, true);
-            }
-        });
+        ui(() -> pager.setCurrentItem(1, true));
         assertEquals(1, pager.getCurrentItem());
-        ui(new Runnable() {
-
-            public void run() {
-                pager.setCurrentItem(0, true);
-            }
-        });
+        ui(() -> pager.setCurrentItem(0, true));
         assertEquals(0, pager.getCurrentItem());
     }
 }

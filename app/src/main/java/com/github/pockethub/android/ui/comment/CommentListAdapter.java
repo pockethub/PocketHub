@@ -20,17 +20,15 @@ import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.github.kevinsawicki.wishlist.MultiTypeAdapter;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.view.OcticonTextView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.TimeUtils;
-import com.github.pockethub.android.util.TypefaceUtils;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
@@ -122,14 +120,14 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
     @Override
     protected void update(int position, Object obj, int type) {
-        if(type == 0)
+        if(type == 0) {
             updateComment((GitHubComment) obj);
-        else
+        } else {
             updateEvent((IssueEvent) obj);
+        }
     }
 
     protected void updateEvent(final IssueEvent event) {
-        TypefaceUtils.setOcticons(textView(0));
         String message = String.format("<b>%s</b> %s", event.actor().login(), event.event());
         avatars.bind(imageView(2), event.actor());
 
@@ -138,56 +136,56 @@ public class CommentListAdapter extends MultiTypeAdapter {
         switch (eventType) {
             case assigned:
             case unassigned:
-                setText(0, TypefaceUtils.ICON_PERSON);
+                setText(0, OcticonTextView.ICON_PERSON);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case labeled:
             case unlabeled:
-                setText(0, TypefaceUtils.ICON_TAG);
+                setText(0, OcticonTextView.ICON_TAG);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case referenced:
-                setText(0, TypefaceUtils.ICON_BOOKMARK);
+                setText(0, OcticonTextView.ICON_BOOKMARK);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case milestoned:
             case demilestoned:
-                setText(0, TypefaceUtils.ICON_MILESTONE);
+                setText(0, OcticonTextView.ICON_MILESTONE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case closed:
-                setText(0, TypefaceUtils.ICON_ISSUE_CLOSE);
+                setText(0, OcticonTextView.ICON_ISSUE_CLOSE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_closed));
                 break;
             case reopened:
-                setText(0, TypefaceUtils.ICON_ISSUE_REOPEN);
+                setText(0, OcticonTextView.ICON_ISSUE_REOPEN);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_reopened));
                 break;
             case renamed:
-                setText(0, TypefaceUtils.ICON_EDIT);
+                setText(0, OcticonTextView.ICON_EDIT);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
             case merged:
                 message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commitId().substring(0, 6), issue.pullRequest().base().ref(),
                         issue.pullRequest().head().ref());
-                setText(0, TypefaceUtils.ICON_MERGE);
+                setText(0, OcticonTextView.ICON_MERGE);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_merged));
                 break;
             case locked:
-                setText(0, TypefaceUtils.ICON_LOCK);
+                setText(0, OcticonTextView.ICON_LOCK);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));
                 break;
             case unlocked:
-                setText(0, TypefaceUtils.ICON_KEY);
+                setText(0, OcticonTextView.ICON_KEY);
                 textView(0).setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));
                 break;
@@ -212,15 +210,11 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
         final ImageView ivMore = view(4);
 
-        if(!canEdit && !canDelete)
+        if(!canEdit && !canDelete) {
             ivMore.setVisibility(View.INVISIBLE);
-        else
-            ivMore.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMorePopup(ivMore, comment, canEdit, canDelete);
-            }
-        });
+        } else {
+            ivMore.setOnClickListener(v -> showMorePopup(ivMore, comment, canEdit, canDelete));
+        }
     }
 
     private void showMorePopup(View v, final GitHubComment comment, final boolean canEdit, final boolean canDelete ) {
@@ -230,47 +224,47 @@ public class CommentListAdapter extends MultiTypeAdapter {
         menu.getMenu().findItem(R.id.m_edit).setEnabled(canEdit);
         menu.getMenu().findItem(R.id.m_delete).setEnabled(canDelete);
 
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.m_edit:
-                        if (editCommentListener != null) {
-                            editCommentListener.onEditComment(comment);
-                        }
-                        break;
-                    case R.id.m_delete:
-                        if (deleteCommentListener != null) {
-                            deleteCommentListener.onDeleteComment(comment);
-                        }
-                        break;
-                }
-                return false;
+        menu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.m_edit:
+                    if (editCommentListener != null) {
+                        editCommentListener.onEditComment(comment);
+                    }
+                    break;
+                case R.id.m_delete:
+                    if (deleteCommentListener != null) {
+                        deleteCommentListener.onDeleteComment(comment);
+                    }
+                    break;
             }
+            return false;
         });
 
         menu.show();
     }
 
     public MultiTypeAdapter setItems(Collection<?> items) {
-        if (items == null)
+        if (items == null) {
             return this;
+        }
         return setItems(items.toArray());
     }
 
     public MultiTypeAdapter setItems(final Object[] items) {
-        if (items == null)
+        if (items == null) {
             return this;
+        }
 
         this.clear();
 
         for (Object item : items) {
-            if(item instanceof GitHubComment)
+            if(item instanceof GitHubComment) {
                 this.addItem(0, item);
-            else if(item instanceof GitHubEvent)
+            } else if(item instanceof GitHubEvent) {
                 this.addItem(1, item);
-            else if(item instanceof IssueEvent)
+            } else if(item instanceof IssueEvent) {
                 this.addItem(1, (item));
+            }
         }
 
         notifyDataSetChanged();
@@ -296,18 +290,20 @@ public class CommentListAdapter extends MultiTypeAdapter {
 
     @Override
     protected int getChildLayoutId(int type) {
-        if(type == 0)
+        if(type == 0) {
             return R.layout.comment_item;
-        else
+        } else {
             return R.layout.comment_event_item;
+        }
     }
 
     @Override
     protected int[] getChildViewIds(int type) {
-        if(type == 0)
-            return new int[] { R.id.tv_comment_body, R.id.tv_comment_author,
-                    R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more };
-        else
+        if(type == 0) {
+            return new int[]{R.id.tv_comment_body, R.id.tv_comment_author,
+                    R.id.tv_comment_date, R.id.iv_avatar, R.id.iv_more};
+        } else {
             return new int[]{R.id.tv_event_icon, R.id.tv_event, R.id.iv_avatar};
+        }
     }
 }

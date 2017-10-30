@@ -34,7 +34,6 @@ import com.meisolsson.githubsdk.model.Label;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 
 import static android.graphics.Color.WHITE;
 import static android.graphics.Typeface.DEFAULT_BOLD;
@@ -95,8 +94,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                     || (hsv[2] > 0.7 && hsv[0] > 40 && hsv[0] < 200)) {
                 hsv[2] = 0.4F;
                 textColor = Color.HSVToColor(hsv);
-            } else
+            } else {
                 textColor = WHITE;
+            }
 
             layers = (LayerDrawable) resources
                     .getDrawable(R.drawable.label_background);
@@ -145,14 +145,8 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
     public static void setText(final TextView view,
             final Collection<Label> labels) {
         final Label[] sortedLabels = labels.toArray(new Label[labels.size()]);
-        Arrays.sort(sortedLabels, new Comparator<Label>() {
-
-            @Override
-            public int compare(final Label lhs, final Label rhs) {
-                return CASE_INSENSITIVE_ORDER.compare(lhs.name(),
-                        rhs.name());
-            }
-        });
+        Arrays.sort(sortedLabels, (lhs, rhs) ->
+                CASE_INSENSITIVE_ORDER.compare(lhs.name(), rhs.name()));
         setText(view, sortedLabels);
     }
 
@@ -206,8 +200,9 @@ public class LabelDrawableSpan extends DynamicDrawableSpan {
                     labels[i].color(), paddingLeft, textHeight, bounds,
                     names[i]));
 
-            if (i + 1 < labels.length)
+            if (i + 1 < labels.length) {
                 text.append(' ');
+            }
         }
         view.setText(text);
     }

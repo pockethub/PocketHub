@@ -29,8 +29,8 @@ import com.meisolsson.githubsdk.model.git.GitComment;
 import com.google.inject.Inject;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_EDIT;
-import static com.github.pockethub.android.util.TypefaceUtils.ICON_WATCH;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_EDIT;
+import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_WATCH;
 
 /**
  * Base activity for creating comments
@@ -65,9 +65,10 @@ public abstract class CreateCommentActivity extends
     public void invalidateOptionsMenu() {
         super.invalidateOptionsMenu();
 
-        if (applyItem != null)
+        if (applyItem != null) {
             applyItem.setEnabled(adapter != null
-                && !TextUtils.isEmpty(adapter.getCommentText()));
+                    && !TextUtils.isEmpty(adapter.getCommentText()));
+        }
     }
 
     @Override

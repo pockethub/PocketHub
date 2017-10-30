@@ -17,15 +17,11 @@ package com.github.pockethub.android.ui.user;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Issue;
@@ -75,33 +71,40 @@ public class UriLauncherActivity extends Activity {
      * @return converted intent or null if non-application specific
      */
     static public Intent convert(final Intent intent) {
-        if (intent == null)
+        if (intent == null) {
             return null;
+        }
 
-        if (!ACTION_VIEW.equals(intent.getAction()))
+        if (!ACTION_VIEW.equals(intent.getAction())) {
             return null;
+        }
 
         Uri data = intent.getData();
-        if (data == null)
+        if (data == null) {
             return null;
+        }
 
         if (TextUtils.isEmpty(data.getHost()) || TextUtils.isEmpty(data.getScheme())) {
             String host = data.getHost();
-            if (TextUtils.isEmpty(host))
+            if (TextUtils.isEmpty(host)) {
                 host = HOST_DEFAULT;
+            }
             String scheme = data.getScheme();
-            if (TextUtils.isEmpty(scheme))
+            if (TextUtils.isEmpty(scheme)) {
                 scheme = PROTOCOL_HTTPS;
+            }
             String prefix = scheme + "://" + host;
 
             String path = data.getPath();
-            if (!TextUtils.isEmpty(path))
-                if (path.charAt(0) == '/')
+            if (!TextUtils.isEmpty(path)) {
+                if (path.charAt(0) == '/') {
                     data = Uri.parse(prefix + path);
-                else
+                } else {
                     data = Uri.parse(prefix + '/' + path);
-            else
+                }
+            } else {
                 data = Uri.parse(prefix);
+            }
             intent.setData(data);
         }
 
@@ -165,19 +168,9 @@ public class UriLauncherActivity extends Activity {
         new MaterialDialog.Builder(this)
                 .title(R.string.title_invalid_github_url)
                 .content(MessageFormat.format(getString(R.string.message_invalid_github_url), url))
-                .cancelListener(new OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        finish();
-                    }
-                })
+                .cancelListener(dialog -> finish())
                 .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        finish();
-                    }
-                })
+                .onPositive((dialog, which) -> finish())
                 .show();
     }
 }

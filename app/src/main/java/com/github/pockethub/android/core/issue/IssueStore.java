@@ -16,16 +16,17 @@
 package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
+import android.widget.Toast;
 
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ItemStore;
-import com.github.pockethub.android.rx.ObserverAdapter;
 import com.github.pockethub.android.util.InfoUtils;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueState;
-import com.meisolsson.githubsdk.model.PullRequest;
 import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
@@ -34,21 +35,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 /**
  * Store of loaded issues
  */
 public class IssueStore extends ItemStore {
 
-    //+++
     private final Map<String, ItemReferences<Issue>> repos = new HashMap<>();
 
-    private IssueService service;
+    private final Context context;
 
-    private PullRequestService pullRequestService;
+    private IssueService service;
 
     /**
      * Create issue store
@@ -56,8 +55,8 @@ public class IssueStore extends ItemStore {
      * @param context
      */
     public IssueStore(final Context context) {
+        this.context = context;
         service = ServiceGenerator.createService(context, IssueService.class);
-        pullRequestService = ServiceGenerator.createService(context, PullRequestService.class);
     }
 
     /**
@@ -82,25 +81,31 @@ public class IssueStore extends ItemStore {
         Repository repo = null;
         if (issue != null) {
             repo = issue.repository();
-            if (repo == null)
+            if (repo == null) {
                 repo = repoFromUrl(issue.htmlUrl());
+            }
         }
         return addIssue(repo, issue);
     }
 
     private Repository repoFromUrl(String url) {
-        if (url == null || url.length() == 0)
+        if (url == null || url.length() == 0) {
             return null;
+        }
         String owner = null;
         String name = null;
         for (String segment : url.split("/")) //$NON-NLS-1$
-            if (segment.length() > 0)
-                if (owner == null)
+        {
+            if (segment.length() > 0) {
+                if (owner == null) {
                     owner = segment;
-                else if (name == null)
+                } else if (name == null) {
                     name = segment;
-                else
+                } else {
                     break;
+                }
+            }
+        }
 
         if (owner != null && owner.length() > 0 && name != null && name.length() > 0) {
             return InfoUtils.createRepoFromData(owner, name);
@@ -118,8 +123,9 @@ public class IssueStore extends ItemStore {
      */
     public Issue addIssue(Repository repository, Issue issue) {
         Issue current = getIssue(repository, issue.number());
-        if (current != null && current.equals(issue))
+        if (current != null && current.equals(issue)) {
             return current;
+        }
 
         String repoId = InfoUtils.createRepoId(repository);
         ItemReferences<Issue> repoIssues = repos.get(repoId);
@@ -133,42 +139,63 @@ public class IssueStore extends ItemStore {
     }
 
     /**
-     * Refresh issue
+     * Refresh issue.
      *
-     * @param repository
-     * @param number
-     * @return refreshed issue
-     * @throws IOException
+     * @param repository The issues repository
+     * @param issueNumber The issue number
+     * @return A {@link Single} representing the  issues
      */
-    public Issue refreshIssue(Repository repository, int number) throws IOException {
-        Issue issue = service.getIssue(repository.owner().login(), repository.name(), number)
-                .toBlocking()
-                .first();
-        return addIssue(repository, issue);
+    public Single<Issue> refreshIssue(Repository repository, int issueNumber) {
+        return service.getIssue(repository.owner().login(), repository.name(), issueNumber)
+                .map(response -> addIssueOrThrow(repository, response, R.string.error_issue_load));
     }
 
     /**
-     * Edit issue
+     * Edit issue.
      *
-     * @param repository
-     * @param issueNumber
-     * @return edited issue
-     * @throws IOException
+     * @param repository The issues repository
+     * @param issueNumber The issues number to change
+     * @return A {@link Single} representing the changed issues
      */
-    public Issue editIssue(Repository repository, int issueNumber, IssueRequest request) throws IOException {
-        Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, request)
-                .toBlocking()
-                .first();
-        return addIssue(repository, issue);
+    public Single<Issue> editIssue(Repository repository, int issueNumber, IssueRequest request) {
+        return service
+                .editIssue(repository.owner().login(), repository.name(), issueNumber, request)
+                .map(response -> addIssueOrThrow(repository, response, R.string.error_edit_issue));
     }
 
-    public Issue changeState(Repository repository, int issueNumber, IssueState state) throws IOException {
+    /**
+     * Change the issue state.
+     *
+     * @param repository The issues repository
+     * @param issueNumber The issue number to change
+     * @param state What state to change to
+     * @return A {@link Single} representing the changed issue
+     */
+    public Single<Issue> changeState(Repository repository, int issueNumber, IssueState state) {
         IssueRequest editIssue = IssueRequest.builder()
                 .state(state)
                 .build();
-        Issue issue = service.editIssue(repository.owner().login(), repository.name(), issueNumber, editIssue)
-                .toBlocking()
-                .first();
-        return addIssue(repository, issue);
+
+        return service
+                .editIssue(repository.owner().login(), repository.name(), issueNumber, editIssue)
+                .map(response -> addIssueOrThrow(repository, response, R.string.error_issue_state));
+    }
+
+    /**
+     * Adds the issue from the response or throws an error if the request was unsuccessful.
+     *
+     * @param repository The issues repository
+     * @param response The issue response to add
+     * @param error String to print if unsuccessful
+     * @return The added issue
+     */
+    private Issue addIssueOrThrow(Repository repository, Response<Issue> response,
+                                  @StringRes int error) {
+        if (response.isSuccessful()) {
+            return addIssue(repository, response.body());
+        } else {
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            return Issue.builder().build();
+        }
     }
 }
