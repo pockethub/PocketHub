@@ -15,11 +15,14 @@
  */
 package com.github.pockethub.android.ui.repo;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.pockethub.android.ui.StyledText;
+import com.github.pockethub.android.util.GitHubColorUtils;
 
 import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_FORK;
 import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PRIVATE;
@@ -81,12 +84,19 @@ public abstract class RepositoryListAdapter<V> extends SingleTypeAdapter<V> {
 
         if (!TextUtils.isEmpty(description)) {
             setText(1, description).setVisibility(View.VISIBLE);
+
         } else {
             setGone(1, true);
         }
 
         if (!TextUtils.isEmpty(language)) {
-            setText(2, language).setVisibility(View.VISIBLE);
+            String languageColorCode = " ";
+            GitHubColorUtils gitHubColorUtils = GitHubColorUtils.getInstance();
+            StyledText t = new StyledText();
+            languageColorCode = gitHubColorUtils.githubColorCode(language);
+            if(languageColorCode==null) languageColorCode = "#000";
+            t.foreground(language, Color.parseColor(languageColorCode));
+            setText(2, t).setVisibility(View.VISIBLE);
         } else {
             setGone(2, true);
         }

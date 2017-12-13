@@ -17,6 +17,7 @@
 package com.github.pockethub.android;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.bugsnag.android.Bugsnag;
 
@@ -24,11 +25,17 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 public class PocketHub extends Application {
 
+    private static PocketHub pocketHub = null;
     @Override
     public void onCreate() {
         super.onCreate();
+        pocketHub = this;
         JodaTimeAndroid.init(this);
         Bugsnag.init(this);
         Bugsnag.setNotifyReleaseStages("production");
+    }
+
+    public static Context getAppContext(){
+        return pocketHub.getApplicationContext();
     }
 }

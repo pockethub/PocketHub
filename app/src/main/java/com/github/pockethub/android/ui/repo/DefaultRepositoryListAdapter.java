@@ -128,6 +128,7 @@ public class DefaultRepositoryListAdapter extends
         name.bold(repository.name());
         setText(8, name);
 
+
         updateDetails(repository.description(), repository.language(),
                 repository.watchersCount(), repository.forksCount(),
                 repository.isPrivate(), repository.isFork(),
