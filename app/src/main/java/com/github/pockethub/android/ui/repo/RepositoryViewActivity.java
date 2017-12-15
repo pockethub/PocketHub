@@ -138,7 +138,9 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         followItem.setTitle(isStarred ? R.string.unstar : R.string.star);
 
         MenuItem parentRepo = menu.findItem(R.id.m_parent_repo);
-        parentRepo.setVisible(repository.isFork());
+        if (repository != null) {
+            parentRepo.setVisible(repository.isFork() == null ? false : repository.isFork());
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
