@@ -26,7 +26,7 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.organizations.OrganizationService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;

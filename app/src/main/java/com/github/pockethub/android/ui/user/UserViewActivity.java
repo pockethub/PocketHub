@@ -35,7 +35,7 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,7 +68,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private User user;
 

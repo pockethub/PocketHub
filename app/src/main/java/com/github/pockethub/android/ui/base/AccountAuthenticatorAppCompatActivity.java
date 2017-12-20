@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.github.pockethub.android.ui.roboactivities;
+package com.github.pockethub.android.ui.base;
 
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
-import android.support.v7.app.AppCompatActivity;
 
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -28,6 +27,8 @@ import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import dagger.android.AndroidInjection;
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
@@ -47,7 +48,9 @@ import io.reactivex.subjects.BehaviorSubject;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity implements LifecycleProvider<ActivityEvent> {
+public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCompatActivity
+        implements LifecycleProvider<ActivityEvent> {
+
     private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
     private Bundle mResultBundle = null;
 
@@ -120,6 +123,7 @@ public class AccountAuthenticatorAppCompatActivity extends AppCompatActivity imp
      */
     @Override
     protected void onCreate(Bundle icicle) {
+        AndroidInjection.inject(this);
         super.onCreate(icicle);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
 

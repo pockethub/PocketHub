@@ -36,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.core.commit.RefreshCommitTaskFactory;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
@@ -55,7 +56,7 @@ import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.git.GitCommit;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Collections;
 import java.util.Date;
@@ -95,10 +96,10 @@ public class CommitDiffListFragment extends DialogFragment implements
     private List<FullCommitFile> files;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private CommitStore store;
+    protected CommitStore store;
 
     private View loadingView;
 
@@ -125,7 +126,10 @@ public class CommitDiffListFragment extends DialogFragment implements
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 
     @Inject
-    private HttpImageGetter commentImageGetter;
+    protected RefreshCommitTaskFactory refreshCommitTaskFactory;
+
+    @Inject
+    protected HttpImageGetter commentImageGetter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -238,7 +242,7 @@ public class CommitDiffListFragment extends DialogFragment implements
     }
 
     private void refreshCommit() {
-        new RefreshCommitTask(getActivity(), repository, base, commentImageGetter)
+        refreshCommitTaskFactory.create(getActivity(), repository, base)
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

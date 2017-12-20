@@ -43,7 +43,7 @@ import com.meisolsson.githubsdk.service.activity.StarringService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryForkService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -78,7 +78,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     private Repository repository;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private ProgressBar loadingBar;
 

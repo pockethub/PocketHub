@@ -36,7 +36,7 @@ import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.Map;
@@ -64,7 +64,7 @@ public class GistFileFragment extends DialogFragment implements
     private Gist gist;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     private SourceEditor editor;
 

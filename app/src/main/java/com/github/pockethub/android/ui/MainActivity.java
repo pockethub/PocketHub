@@ -66,8 +66,9 @@ import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,17 +76,18 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends BaseActivity implements
-    LoaderManager.LoaderCallbacks<List<User>>, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity
+        implements LoaderManager.LoaderCallbacks<List<User>>,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     @Inject
-    private AccountDataManager accountDataManager;
+    protected AccountDataManager accountDataManager;
 
     @Inject
-    private Provider<UserComparator> userComparatorProvider;
+    protected Provider<UserComparator> userComparatorProvider;
 
     private List<User> orgs = Collections.emptyList();
 
@@ -94,7 +96,8 @@ public class MainActivity extends BaseActivity implements
     private NavigationView navigationView;
 
     @Inject
-    private AvatarLoader avatars;
+    @Singleton
+    protected AvatarLoader avatars;
     private DrawerLayout drawerLayout;
     private boolean userLearnedDrawer;
     private Toolbar toolbar;

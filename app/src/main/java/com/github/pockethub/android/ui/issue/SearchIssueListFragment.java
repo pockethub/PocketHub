@@ -31,7 +31,7 @@ import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.service.search.SearchService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
         implements Comparator<Issue> {
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private Repository repository;
 

@@ -29,7 +29,7 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 
@@ -103,7 +103,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
     }
 
     @Inject
-    private AvatarLoader loader;
+    protected AvatarLoader loader;
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {

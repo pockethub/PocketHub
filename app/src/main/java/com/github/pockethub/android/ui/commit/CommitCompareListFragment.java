@@ -43,7 +43,7 @@ import com.meisolsson.githubsdk.model.CommitCompare;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -76,7 +76,7 @@ public class CommitCompareListFragment extends DialogFragment implements
     private String head;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private HeaderFooterListAdapter<CommitFileListAdapter> adapter;
 

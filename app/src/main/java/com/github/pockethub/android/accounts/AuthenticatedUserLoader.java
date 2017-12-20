@@ -21,12 +21,8 @@ import android.accounts.AccountsException;
 import android.app.Activity;
 
 import com.github.kevinsawicki.wishlist.AsyncLoader;
-import com.google.inject.Inject;
 
 import java.io.IOException;
-
-import roboguice.RoboGuice;
-import roboguice.inject.ContextScope;
 
 /**
  * Base loader class that ensures an authenticated account exists before
@@ -41,9 +37,6 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
      */
     protected Activity activity;
 
-    @Inject
-    private ContextScope contextScope;
-
     /**
      * Create loader for context
      *
@@ -52,7 +45,6 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
     public AuthenticatedUserLoader(final Activity activity) {
         super(activity);
         this.activity = activity;
-        RoboGuice.injectMembers(activity, this);
     }
 
     /**
@@ -74,12 +66,7 @@ public abstract class AuthenticatedUserLoader<D> extends AsyncLoader<D> {
             return getAccountFailureData();
         }
 
-        contextScope.enter(getContext());
-        try {
-            return load(account);
-        } finally {
-            contextScope.exit(getContext());
-        }
+        return load(account);
     }
 
     /**

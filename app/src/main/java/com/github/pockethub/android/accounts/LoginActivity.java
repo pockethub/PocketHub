@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.MainActivity;
-import com.github.pockethub.android.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
+import com.github.pockethub.android.ui.base.AccountAuthenticatorAppCompatActivity;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.GitHubToken;
@@ -49,7 +49,7 @@ import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AU
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
+public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
 
     /**
      * Auth token type parameter

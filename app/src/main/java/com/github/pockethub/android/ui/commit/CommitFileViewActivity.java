@@ -48,7 +48,7 @@ import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -114,10 +114,10 @@ public class CommitFileViewActivity extends BaseActivity implements
     private MenuItem markdownItem;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected HttpImageGetter imageGetter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

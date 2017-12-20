@@ -25,8 +25,8 @@ import com.github.pockethub.android.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.util.ToastUtils;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import java.io.IOException;
 import java.util.Collections;

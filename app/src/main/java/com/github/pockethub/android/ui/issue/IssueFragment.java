@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.pockethub.android.core.issue.RefreshIssueTaskFactory;
 import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
@@ -66,7 +67,7 @@ import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,10 +120,10 @@ public class IssueFragment extends DialogFragment {
     private boolean canWrite;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private IssueStore store;
+    protected IssueStore store;
 
     private ListView list;
 
@@ -135,6 +136,21 @@ public class IssueFragment extends DialogFragment {
     private View footerView;
 
     private HeaderFooterListAdapter<CommentListAdapter> adapter;
+
+    @Inject
+    protected RefreshIssueTaskFactory refreshIssueTaskFactory;
+
+    @Inject
+    protected EditLabelsTaskFactory labelsTaskFactory;
+
+    @Inject
+    protected EditMilestoneTaskFactory milestoneTaskFactory;
+
+    @Inject
+    protected EditAssigneeTaskFactory assigneeTaskFactory;
+
+    @Inject
+    protected EditStateTaskFactory stateTaskFactory;
 
     private EditMilestoneTask milestoneTask;
 
@@ -173,10 +189,10 @@ public class IssueFragment extends DialogFragment {
     private MenuItem stateItem;
 
     @Inject
-    private HttpImageGetter bodyImageGetter;
+    protected HttpImageGetter bodyImageGetter;
 
     @Inject
-    private HttpImageGetter commentImageGetter;
+    protected HttpImageGetter commentImageGetter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -192,10 +208,10 @@ public class IssueFragment extends DialogFragment {
 
         BaseActivity dialogActivity = (BaseActivity) getActivity();
 
-        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber, createObserver());
+        milestoneTask = milestoneTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        labelsTask = labelsTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        assigneeTask = assigneeTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        stateTask = stateTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
     }
 
     private Consumer<Issue> createObserver() {
@@ -404,8 +420,7 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
-                bodyImageGetter, commentImageGetter)
+        refreshIssueTaskFactory.create(repositoryId, issueNumber)
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -478,13 +493,8 @@ public class IssueFragment extends DialogFragment {
             assigneeTask.edit(AssigneeDialogFragment.getSelected(arguments));
             break;
         case ISSUE_LABELS_UPDATE:
-            ArrayList<Label> labels = LabelsDialogFragment
-                    .getSelected(arguments);
-            if (labels != null && !labels.isEmpty()) {
-                labelsTask.edit(labels.toArray(new Label[labels.size()]));
-            } else {
-                labelsTask.edit(null);
-            }
+            ArrayList<Label> labels = LabelsDialogFragment.getSelected(arguments);
+            labelsTask.edit(labels);
             break;
         case ISSUE_CLOSE:
             stateTask.edit(true);

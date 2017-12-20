@@ -52,7 +52,7 @@ import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
 import com.meisolsson.githubsdk.model.payload.PushPayload;
 import com.meisolsson.githubsdk.model.payload.ReleasePayload;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.List;
 
@@ -88,7 +88,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     protected final UserEventMatcher userMatcher = new UserEventMatcher();
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

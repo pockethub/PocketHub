@@ -18,22 +18,23 @@ package com.github.pockethub.android.ui;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
+import android.support.v7.app.AppCompatActivity;
 
-import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
 import com.trello.rxlifecycle2.LifecycleProvider;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Activity that display dialogs
  */
-public abstract class BaseActivity extends
-        RoboAppCompatActivity implements DialogResultListener, LifecycleProvider<ActivityEvent> {
+public abstract class BaseActivity extends DaggerAppCompatActivity
+        implements DialogResultListener, LifecycleProvider<ActivityEvent> {
 
     private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
 

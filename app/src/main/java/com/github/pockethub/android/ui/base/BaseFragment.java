@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.github.pockethub.android.ui.roboactivities;
+package com.github.pockethub.android.ui.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -28,21 +30,23 @@ import com.trello.rxlifecycle2.RxLifecycle;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
+import dagger.android.support.AndroidSupportInjection;
+import dagger.android.support.DaggerFragment;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
-import roboguice.RoboGuice;
 
-public abstract class RoboSupportFragment extends Fragment implements LifecycleProvider<FragmentEvent> {
+public abstract class BaseFragment extends DaggerFragment implements LifecycleProvider<FragmentEvent> {
 
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
 
+    @NonNull
     @Override
     public final Observable<FragmentEvent> lifecycle() {
         return lifecycleSubject;
     }
 
     @Override
-    public final <T> LifecycleTransformer<T> bindUntilEvent(FragmentEvent event) {
+    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
         return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
     }
 
@@ -62,7 +66,7 @@ public abstract class RoboSupportFragment extends Fragment implements LifecycleP
     @CallSuper
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
+        AndroidSupportInjection.inject(this);
         lifecycleSubject.onNext(FragmentEvent.CREATE);
     }
 
@@ -70,7 +74,6 @@ public abstract class RoboSupportFragment extends Fragment implements LifecycleP
     @CallSuper
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RoboGuice.getInjector(getActivity()).injectViewMembers(this);
         lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
     }
 

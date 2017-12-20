@@ -29,7 +29,7 @@ import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class MembersFragment extends ItemListFragment<User> {
     private User org;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

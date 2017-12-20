@@ -18,21 +18,21 @@ package com.github.pockethub.android.sync;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
-import roboguice.inject.ContextScopedProvider;
-import roboguice.service.RoboService;
+import dagger.android.DaggerService;
 
 /**
  * Sync adapter service
  */
-public class SyncAdapterService extends RoboService {
+public class SyncAdapterService extends DaggerService {
 
     @Inject
-    private ContextScopedProvider<SyncAdapter> syncAdapterProvider;
+    protected Provider<SyncAdapter> syncAdapterProvider;
 
     @Override
     public IBinder onBind(Intent intent) {
-        return syncAdapterProvider.get(this).getSyncAdapterBinder();
+        return syncAdapterProvider.get().getSyncAdapterBinder();
     }
 }

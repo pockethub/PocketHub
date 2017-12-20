@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
@@ -35,8 +36,7 @@ import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.HttpImageGetter;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -77,13 +77,13 @@ public class GistFilesViewActivity extends PagerActivity {
     private Gist gist;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected RefreshGistTaskFactory refreshGistTaskFactory;
 
     private GistFilesPagerAdapter adapter;
 
@@ -115,7 +115,7 @@ public class GistFilesViewActivity extends PagerActivity {
             loadingBar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.GONE);
             tabs.setVisibility(View.GONE);
-            new RefreshGistTask(this, gistId, imageGetter)
+            refreshGistTaskFactory.create(this, gistId)
                     .refresh()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

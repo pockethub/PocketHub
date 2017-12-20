@@ -22,35 +22,30 @@ import android.content.Context;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.persistence.OrganizationRepositories;
-import com.github.pockethub.android.sync.SyncCampaign;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.name.Named;
+import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.persistence.CacheHelper;
+import com.github.pockethub.android.persistence.DatabaseCache;
 
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+import javax.inject.Named;
+
+import dagger.Module;
+import dagger.Provides;
+
 /**
  * Main module provide services and clients
  */
-public class PocketHubModule extends AbstractModule {
+@Module
+public class PocketHubModule {
 
     private WeakReference<IssueStore> issues;
 
     private WeakReference<GistStore> gists;
 
     private WeakReference<CommitStore> commits;
-
-    @Override
-    protected void configure() {
-        install(new ServicesModule());
-        install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
-        install(new FactoryModuleBuilder()
-                .build(OrganizationRepositories.Factory.class));
-    }
 
     @Provides
     Account account(Context context){

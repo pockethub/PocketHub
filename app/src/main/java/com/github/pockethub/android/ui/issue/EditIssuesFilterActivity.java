@@ -37,7 +37,7 @@ import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -66,7 +66,7 @@ public class EditIssuesFilterActivity extends BaseActivity {
     private static final int REQUEST_ASSIGNEE = 3;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private LabelsDialog labelsDialog;
 

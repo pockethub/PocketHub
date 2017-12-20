@@ -31,7 +31,7 @@ import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.Serializable;
 
@@ -50,7 +50,7 @@ public class RenderedCommentFragment extends DialogFragment implements
     private TextView bodyText;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected HttpImageGetter imageGetter;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

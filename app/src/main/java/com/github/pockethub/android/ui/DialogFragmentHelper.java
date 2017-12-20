@@ -25,15 +25,15 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import roboguice.fragment.RoboDialogFragment;
+import dagger.android.support.DaggerAppCompatDialogFragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * Base dialog fragment helper
  */
-public abstract class DialogFragmentHelper extends RoboDialogFragment implements
-    OnClickListener {
+public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment
+        implements OnClickListener {
 
     /**
      * Dialog message

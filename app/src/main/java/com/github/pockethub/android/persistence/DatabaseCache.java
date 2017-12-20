@@ -21,8 +21,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +37,10 @@ public class DatabaseCache {
     private static final String TAG = "DatabaseCache";
 
     @Inject
-    private Provider<CacheHelper> helperProvider;
+    protected Provider<CacheHelper> helperProvider;
+
+    @Inject
+    public DatabaseCache() {}
 
     /**
      * Get writable database

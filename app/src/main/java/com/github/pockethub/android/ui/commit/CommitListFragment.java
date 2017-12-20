@@ -48,7 +48,7 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.git.GitReference;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.List;
 
@@ -70,7 +70,7 @@ public class CommitListFragment extends PagedItemFragment<Commit>
     protected AvatarLoader avatars;
 
     @Inject
-    private CommitStore store;
+    protected CommitStore store;
 
     private Repository repository;
 

@@ -38,7 +38,7 @@ import com.github.pockethub.android.ui.user.OrganizationSelectionProvider;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,10 +56,10 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     implements OrganizationSelectionListener {
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private final AtomicReference<User> org = new AtomicReference<>();
 

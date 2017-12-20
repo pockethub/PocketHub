@@ -24,8 +24,8 @@ import com.github.pockethub.android.core.gist.GistPager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.RequestCodes.GIST_CREATE;
@@ -37,7 +37,7 @@ import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
 public class MyGistsFragment extends GistsFragment {
 
     @Inject
-    private Provider<Account> accountProvider;
+    protected Provider<Account> accountProvider;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -60,7 +60,7 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -148,7 +148,7 @@ public class EditIssueActivity extends BaseActivity {
     private FloatingActionButton addImageFab;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private Issue issue;
 

@@ -33,7 +33,7 @@ import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     private String query;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     protected ResourcePager<User> createPager() {

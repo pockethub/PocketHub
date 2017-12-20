@@ -19,7 +19,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 /**
  * Helper class to create & upgrade database cache tables

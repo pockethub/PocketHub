@@ -33,6 +33,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
 import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
@@ -57,7 +58,7 @@ import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,10 +96,13 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     private ProgressBar progress;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected RefreshGistTaskFactory refreshGistTaskFactory;
+
+    @Inject
+    protected HttpImageGetter imageGetter;
 
     private View headerView;
 
@@ -119,7 +123,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     private boolean loadFinished;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private List<View> fileHeaders = new ArrayList<>();
 
@@ -397,7 +401,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     private void refreshGist() {
-        new RefreshGistTask(getActivity(), gistId, imageGetter)
+        refreshGistTaskFactory.create(getActivity(), gistId)
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

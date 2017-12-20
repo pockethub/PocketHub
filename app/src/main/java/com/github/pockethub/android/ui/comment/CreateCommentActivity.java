@@ -26,7 +26,8 @@ import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.git.GitComment;
-import com.google.inject.Inject;
+
+import javax.inject.Inject;
 
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_EDIT;

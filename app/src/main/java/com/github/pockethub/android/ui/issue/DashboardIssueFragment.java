@@ -30,7 +30,7 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.service.issues.IssueService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.List;
 import java.util.Map;
@@ -48,10 +48,10 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     public static final String ARG_FILTER = "filter";
 
     @Inject
-    private IssueStore store;
+    protected IssueStore store;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private Map<String, Object> filterData;
 

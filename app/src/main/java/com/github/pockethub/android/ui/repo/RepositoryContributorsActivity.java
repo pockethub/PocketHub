@@ -27,7 +27,7 @@ import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -51,7 +51,7 @@ public class RepositoryContributorsActivity extends BaseActivity {
     private Repository repository;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

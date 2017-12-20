@@ -29,7 +29,7 @@ import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,10 +45,10 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
         Comparator<IssueFilter> {
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

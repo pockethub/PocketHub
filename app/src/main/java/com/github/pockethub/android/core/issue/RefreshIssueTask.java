@@ -17,9 +17,12 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.github.pockethub.android.core.PageIterator;
+import com.github.pockethub.android.DaggerApplicationComponent;
+import com.github.pockethub.android.PocketHub;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.RxPageUtil;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.Issue;
@@ -29,7 +32,7 @@ import com.meisolsson.githubsdk.model.PullRequest;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 import com.meisolsson.githubsdk.service.issues.IssueEventService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 
 import java.util.Collections;
@@ -37,22 +40,19 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
-import roboguice.RoboGuice;
 
 /**
  * Task to load and store an {@link Issue}
  */
+@AutoFactory
 public class RefreshIssueTask {
 
     private static final String TAG = "RefreshIssueTask";
 
     private final Context context;
 
-    @Inject
-    private IssueStore store;
+    private final IssueStore store;
 
     private final Repository repo;
 
@@ -70,14 +70,17 @@ public class RefreshIssueTask {
      * @param issueNumber The issue's number
      * @param bodyImageGetter {@link HttpImageGetter} to fetch images for the bodies
      */
-    public RefreshIssueTask(Context context, Repository repo, int issueNumber,
-                            HttpImageGetter bodyImageGetter, HttpImageGetter commentImageGetter) {
+    public RefreshIssueTask(@Provided Context context,
+                            Repository repo, int issueNumber,
+                            @Provided HttpImageGetter bodyImageGetter,
+                            @Provided HttpImageGetter commentImageGetter,
+                            @Provided IssueStore store) {
         this.repo = repo;
         this.issueNumber = issueNumber;
         this.bodyImageGetter = bodyImageGetter;
         this.context = context;
         this.commentImageGetter = commentImageGetter;
-        RoboGuice.getInjector(context).injectMembers(this);
+        this.store = store;
     }
 
     /**

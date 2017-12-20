@@ -122,13 +122,19 @@ dependencies {
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
     compile 'com.bugsnag:bugsnag-android:3.2.7'
-    compile 'org.roboguice:roboguice:2.0'
+
+    compile 'com.google.dagger:dagger:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
+
+    compile 'com.google.dagger:dagger-android:2.13'
+    compile 'com.google.dagger:dagger-android-support:2.13'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
+
+    provided 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
+    annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
 
     compile 'com.github.meisolsson:githubsdk:0.4.5'
 
-    compile ('com.google.inject.extensions:guice-assistedinject:3.0'){
-        exclude group: 'com.google.inject'
-    }
     compile 'com.afollestad.material-dialogs:core:0.9.4.4'
 
     //Self compiled .aar version of wishlist
@@ -137,7 +143,7 @@ dependencies {
     //Libs for testing
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile('org.robolectric:robolectric:3.3.2') {
+    testCompile('org.robolectric:robolectric:3.1.4') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

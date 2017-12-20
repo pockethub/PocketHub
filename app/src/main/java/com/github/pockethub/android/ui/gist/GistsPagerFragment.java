@@ -35,7 +35,7 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Random;
 
@@ -52,7 +52,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
 
     private static final String TAG = "GistsPagerFragment";
     @Inject
-    private GistStore store;
+    protected GistStore store;
     private Random rand;
 
     @Override

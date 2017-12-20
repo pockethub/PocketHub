@@ -31,7 +31,7 @@ import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MainActivity;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -56,7 +56,7 @@ public class FiltersViewActivity extends BaseActivity implements
     private static final int REQUEST_DELETE = 1;
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     private FilterListFragment fragment;
 

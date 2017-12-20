@@ -16,6 +16,8 @@
 package com.github.pockethub.android.ui.issue;
 
 import com.github.pockethub.android.rx.RxProgress;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
@@ -23,14 +25,13 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Collections;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import roboguice.RoboGuice;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
 
@@ -38,10 +39,10 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE;
  * Task to edit the assignee
  */
 //TODO Let this take multiple assignees
+@AutoFactory
 public class EditAssigneeTask {
 
-    @Inject
-    private IssueStore store;
+    private final IssueStore store;
 
     private final AssigneeDialog assigneeDialog;
 
@@ -60,16 +61,15 @@ public class EditAssigneeTask {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditAssigneeTask(final BaseActivity activity,
+    public EditAssigneeTask(@Provided IssueStore store, final BaseActivity activity,
                             final Repository repositoryId, final int issueNumber,
                             final Consumer<Issue> observer) {
+        this.store = store;
         this.activity = activity;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         this.observer = observer;
-        assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE,
-                repositoryId);
-        RoboGuice.injectMembers(activity, this);
+        assigneeDialog = new AssigneeDialog(activity, ISSUE_ASSIGNEE_UPDATE, repositoryId);
     }
 
     /**

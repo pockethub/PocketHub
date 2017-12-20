@@ -32,7 +32,7 @@ import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Collection;
 
@@ -103,7 +103,7 @@ public class CommitViewActivity extends PagerActivity {
     private int initialPosition;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private CommitPagerAdapter adapter;
 

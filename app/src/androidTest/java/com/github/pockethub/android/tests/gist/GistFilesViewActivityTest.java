@@ -24,11 +24,9 @@ import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Map;
-
-import roboguice.RoboGuice;
 
 /**
  * Tests of {@link GistFilesViewActivity}
@@ -37,7 +35,7 @@ public class GistFilesViewActivityTest extends
     ActivityTest<GistFilesViewActivity> {
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     private Gist gist;
 
@@ -52,8 +50,9 @@ public class GistFilesViewActivityTest extends
     protected void setUp() throws Exception {
         super.setUp();
 
-        RoboGuice.injectMembers(getInstrumentation().getTargetContext()
-            .getApplicationContext(), this);
+        // TODO: Fix this test
+        // RoboGuice.injectMembers(getInstrumentation().getTargetContext()
+        //     .getApplicationContext(), this);
 
         Map<String, GistFile> files = new ArrayMap<>();
 

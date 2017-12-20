@@ -38,7 +38,7 @@ import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -100,10 +100,10 @@ public class GistsViewActivity extends PagerActivity implements
     private int initialPosition;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private GistsPagerAdapter adapter;
 

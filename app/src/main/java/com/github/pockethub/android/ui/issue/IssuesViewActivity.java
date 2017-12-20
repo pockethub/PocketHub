@@ -38,7 +38,7 @@ import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -160,10 +160,10 @@ public class IssuesViewActivity extends PagerActivity {
     private Repository repo;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private IssueStore store;
+    protected IssueStore store;
 
     private final AtomicReference<User> user = new AtomicReference<>();
 

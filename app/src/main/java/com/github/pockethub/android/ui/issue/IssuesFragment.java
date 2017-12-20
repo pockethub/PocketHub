@@ -48,7 +48,7 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Collection;
 import java.util.List;
@@ -69,10 +69,10 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     @Inject
-    private IssueStore store;
+    protected IssueStore store;
 
     private IssueFilter filter;
 
@@ -93,7 +93,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     private TextView milestone;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onAttach(Context context) {

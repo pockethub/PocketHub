@@ -22,23 +22,17 @@ import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
 
-import com.github.pockethub.android.sync.SyncCampaign.Factory;
-import com.google.inject.Inject;
-
-import roboguice.inject.ContextScope;
-import roboguice.inject.ContextSingleton;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Sync adapter
  */
-@ContextSingleton
+@Singleton
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Inject
-    private ContextScope contextScope;
-
-    @Inject
-    private Factory campaignFactory;
+    protected SyncCampaignFactory campaignFactory;
 
     private SyncCampaign campaign = null;
 
@@ -56,14 +50,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(final Account account, final Bundle extras,
             final String authority, final ContentProviderClient provider,
             final SyncResult syncResult) {
-        contextScope.enter(getContext());
-        try {
-            cancelCampaign();
-            campaign = campaignFactory.create(syncResult);
-            campaign.run();
-        } finally {
-            contextScope.exit(getContext());
-        }
+        cancelCampaign();
+        campaign = campaignFactory.create(syncResult);
+        campaign.run();
     }
 
     @Override
