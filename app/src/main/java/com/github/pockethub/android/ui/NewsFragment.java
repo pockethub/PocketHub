@@ -307,7 +307,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_news_load;
     }
 }

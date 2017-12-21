@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui.repo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,7 +28,6 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.ui.ItemListFragment;
@@ -43,6 +41,8 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import io.reactivex.Single;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 import static com.github.pockethub.android.RequestCodes.REPOSITORY_VIEW;
@@ -296,23 +296,31 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    public Loader<List<Repository>> onCreateLoader(int id, final Bundle args) {
-        return new ThrowableLoader<List<Repository>>(getActivity(), items) {
+    protected Single<List<Repository>> loadData(boolean forceRefresh) {
+        User org = this.org.get();
+        if (org == null) {
+            return Single.just(Collections.emptyList());
+        }
 
-            @Override
-            public List<Repository> loadData() throws Exception {
-                User org = RepositoryListFragment.this.org.get();
-                if (org == null) {
-                    return Collections.emptyList();
-                }
-
-                List<Repository> repos = cache.getRepos(org,
-                    isForceRefresh(args));
+        return Single.fromCallable(() -> {
+            List<Repository> repos;
+            try {
+                repos = cache.getRepos(org, forceRefresh);
                 Collections.sort(repos, recentRepos);
-                updateHeaders(repos);
-                return repos;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
-        };
+
+
+            return repos;
+        });
+    }
+
+    @Override
+    protected void onDataLoaded(List<Repository> items) {
+        super.onDataLoaded(items);
+        updateHeaders(items);
     }
 
     @Override
@@ -323,7 +331,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_repos_load;
     }
 }

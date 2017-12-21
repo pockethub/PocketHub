@@ -40,6 +40,8 @@ import com.meisolsson.githubsdk.service.users.UserService;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
@@ -90,6 +92,9 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     private String scope;
 
     private MaterialDialog progressDialog;
+
+    @Inject
+    protected UserService userService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -218,7 +223,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
         progressDialog.setContent(getString(R.string.loading_user));
 
         TokenStore.getInstance(this).saveToken(accessToken);
-        ServiceGenerator.createService(this, UserService.class)
+        userService
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

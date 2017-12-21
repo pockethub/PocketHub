@@ -17,16 +17,16 @@ package com.github.pockethub.android.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.model.Page;
 
-import java.io.IOException;
 import java.util.List;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 /**
  * List fragment that adds more elements when the bottom of the list is scrolled
@@ -37,19 +37,11 @@ import java.util.List;
 public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         implements OnScrollListener {
 
-    /**
-     * Resource pager
-     */
-    protected ResourcePager<E> pager;
-
     private ResourceLoadingIndicator loadingIndicator;
 
-    /**
-     * Create pager that provides resources
-     *
-     * @return pager
-     */
-    protected abstract ResourcePager<E> createPager();
+    // TODO: Comment
+    private int page = 1;
+    private boolean hasMore = true;
 
     /**
      * Get resource id of {@link String} to display when loading
@@ -57,13 +49,6 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
      * @return string resource id
      */
     protected abstract int getLoadingMessage();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pager = createPager();
-    }
 
     /**
      * Configure list after view has been created
@@ -89,16 +74,18 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         getListView().setFastScrollEnabled(true);
     }
 
-    @Override
-    public Loader<List<E>> onCreateLoader(int id, Bundle bundle) {
-        return new ThrowableLoader<List<E>>(getActivity(), items) {
+    protected abstract Single<Response<Page<E>>> loadData(int page);
 
-            @Override
-            public List<E> loadData() throws IOException {
-                pager.next();
-                return pager.getResources();
-            }
-        };
+    @Override
+    protected Single<List<E>> loadData(boolean forceRefresh) {
+        Single<Response<Page<E>>> load = loadData(page);
+        page++;
+        return load.map(Response::body)
+                .map(page -> {
+                    hasMore = page.next() != null;
+                    return page;
+                })
+                .map(Page::items);
     }
 
     @Override
@@ -112,21 +99,24 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         if (!isUsable()) {
             return;
         }
-        if (!pager.hasMore()) {
+        if (!hasMore) {
             return;
         }
+
         if (getLoaderManager().hasRunningLoaders()) {
             return;
         }
-        if (listView != null
-                && listView.getLastVisiblePosition() >= pager.size()) {
+
+        int count = getListAdapter().getWrappedAdapter().getCount();
+        if (listView != null && listView.getLastVisiblePosition() >= count) {
             showMore();
         }
     }
 
     @Override
     protected void forceRefresh() {
-        pager.clear();
+        page = 1;
+        hasMore = true;
 
         super.forceRefresh();
     }
@@ -139,16 +129,15 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
     }
 
     @Override
-    public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
-        loadingIndicator.setVisible(pager.hasMore());
-
-        super.onLoadFinished(loader, items);
+    protected void onDataLoaded(List<E> items) {
+        super.onDataLoaded(items);
+        loadingIndicator.setVisible(hasMore);
     }
 
     @Override
     protected void refreshWithProgress() {
-        pager.reset();
-        pager = createPager();
+        page = 1;
+        hasMore = true;
 
         super.refreshWithProgress();
     }

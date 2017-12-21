@@ -17,11 +17,9 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.AsyncLoader;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
@@ -35,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import io.reactivex.Single;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -58,17 +58,13 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    public Loader<List<IssueFilter>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<IssueFilter>>(getActivity()) {
-
-            @Override
-            public List<IssueFilter> loadInBackground() {
-                List<IssueFilter> filters = new ArrayList<>(
-                        cache.getIssueFilters());
-                Collections.sort(filters, FilterListFragment.this);
-                return filters;
-            }
-        };
+    protected Single<List<IssueFilter>> loadData(boolean forceRefresh) {
+        return Single.fromCallable(() -> {
+            List<IssueFilter> filters = new ArrayList<>(
+                    cache.getIssueFilters());
+            Collections.sort(filters, FilterListFragment.this);
+            return filters;
+        });
     }
 
     @Override
@@ -85,7 +81,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_bookmarks_load;
     }
 

@@ -20,9 +20,11 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
@@ -30,6 +32,7 @@ import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.SearchPage;
+import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import javax.inject.Inject;
 
@@ -38,14 +41,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import io.reactivex.Single;
+import retrofit2.Response;
+
 import static android.app.SearchManager.APP_DATA;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
 /**
  * Fragment to display a list of {@link Issue} instances
  */
-public class SearchIssueListFragment extends ItemListFragment<Issue>
-        implements Comparator<Issue> {
+public class SearchIssueListFragment extends PagedItemFragment<Issue> {
+
+    SearchService service = ServiceGenerator.createService(getActivity(), SearchService.class);
 
     @Inject
     protected AvatarLoader avatars;
@@ -88,40 +95,31 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
     }
 
     @Override
-    public Loader<List<Issue>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<Issue>>(getActivity(), items) {
-            @Override
-            public List<Issue> loadData() throws Exception {
-                if (repository == null) {
-                    return Collections.emptyList();
-                }
-                List<Issue> matches = new ArrayList<>();
-                // We need to add the repo parameter to allow us to search only the repo issues
-                String searchQuery = query + "+repo:" + InfoUtils.createRepoId(repository);
+    protected Single<Response<Page<Issue>>> loadData(int page) {
+        String searchQuery = query + "+repo:" + InfoUtils.createRepoId(repository);
+        return service.searchIssues(searchQuery, null, null, page)
+                .map(response -> {
+                    SearchPage<Issue> issueSearchPage = response.body();
 
-                SearchService service = ServiceGenerator.createService(getActivity(),
-                        SearchService.class);
-
-                int current = 1;
-                int last = 0;
-                while (current != last) {
-                    SearchPage<Issue> page = service.searchIssues(searchQuery, null, null, current)
-                            .blockingGet()
-                            .body();
-
-                    matches.addAll(page.items());
-                    last = page.last() != null ? page.last() : -1;
-                    current = page.next() != null ? page.next() : -1;
-                }
-                Collections.sort(matches, SearchIssueListFragment.this);
-                return matches;
-            }
-        };
+                    return Response.success(Page.<Issue>builder()
+                            .first(issueSearchPage.first())
+                            .last(issueSearchPage.last())
+                            .next(issueSearchPage.next())
+                            .prev(issueSearchPage.prev())
+                            .items(issueSearchPage.items())
+                            .build());
+                });
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_issues_load;
+    }
+
+
+    @Override
+    protected int getLoadingMessage() {
+        return R.string.loading_issues;
     }
 
     @Override
@@ -129,10 +127,5 @@ public class SearchIssueListFragment extends ItemListFragment<Issue>
             List<Issue> items) {
         return new SearchIssueListAdapter(getActivity().getLayoutInflater(),
                 items.toArray(new Issue[items.size()]), avatars);
-    }
-
-    @Override
-    public int compare(Issue lhs, Issue rhs) {
-        return rhs.number() - lhs.number();
     }
 }

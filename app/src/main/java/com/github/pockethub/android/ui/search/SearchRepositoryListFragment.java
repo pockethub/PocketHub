@@ -40,6 +40,7 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import java.text.MessageFormat;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -51,34 +52,24 @@ import static android.app.SearchManager.QUERY;
  */
 public class SearchRepositoryListFragment extends PagedItemFragment<Repository> {
 
+    SearchService service = ServiceGenerator.createService(getContext(), SearchService.class);
+
     private String query;
 
     @Override
-    protected ResourcePager<Repository> createPager() {
-        return new ResourcePager<Repository>() {
-            @Override
-            protected Object getId(Repository resource) {
-                return resource.id();
-            }
+    protected Single<Response<Page<Repository>>> loadData(int page) {
+        return service.searchRepositories(query, null, null, page)
+                .map(response -> {
+                    SearchPage<Repository> repositorySearchPage = response.body();
 
-            @Override
-            public PageIterator<Repository> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchRepositories(query, null, null, page1)
-                                .map(response -> {
-                                    SearchPage<Repository> repositorySearchPage = response.body();
-
-                                    return Response.success(Page.<Repository>builder()
-                                            .first(repositorySearchPage.first())
-                                            .last(repositorySearchPage.last())
-                                            .next(repositorySearchPage.next())
-                                            .prev(repositorySearchPage.prev())
-                                            .items(repositorySearchPage.items())
-                                            .build());
-                                }), page);
-            }
-        };
+                    return Response.success(Page.<Repository>builder()
+                            .first(repositorySearchPage.first())
+                            .last(repositorySearchPage.last())
+                            .next(repositorySearchPage.next())
+                            .prev(repositorySearchPage.prev())
+                            .items(repositorySearchPage.items())
+                            .build());
+                });
     }
 
     @Override
@@ -158,7 +149,7 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_repos_load;
     }
 

@@ -17,8 +17,6 @@ package com.github.pockethub.android.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +30,19 @@ import android.widget.Toast;
 
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ThrowableLoader;
 import com.github.pockethub.android.util.ToastUtils;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+// TODO: This class should probably just take data as a list.
+// All data fetched from an async source should probably be paged. So PagedItemFragment should
+// do most of the heavy lifting in the case.
 
 /**
  * Base fragment for displaying a list of items that loads with a progress bar
@@ -45,26 +51,14 @@ import java.util.List;
  * @param <E>
  */
 public abstract class ItemListFragment<E> extends DialogFragment implements
-        LoaderCallbacks<List<E>>, SwipeRefreshLayout.OnRefreshListener {
-
-    private static final String FORCE_REFRESH = "forceRefresh";
+        SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeLayout;
 
     /**
-     * @param args
-     *            bundle passed to the loader by the LoaderManager
-     * @return true if the bundle indicates a requested forced refresh of the
-     *         items
+     * List items
      */
-    protected static boolean isForceRefresh(Bundle args) {
-        return args != null && args.getBoolean(FORCE_REFRESH, false);
-    }
-
-    /**
-     * List items provided to {@link #onLoadFinished(Loader, List)}
-     */
-    protected List<E> items = Collections.emptyList();
+    protected List<E> items = new ArrayList<>();
 
     /**
      * List view
@@ -86,6 +80,13 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     protected boolean listShown;
 
+    /**
+     * Disposable for data load request
+     */
+    private Disposable dataLoadDisposable;
+
+    protected boolean isLoading;
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -94,7 +95,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
             setListShown(true, false);
         }
 
-        getLoaderManager().initLoader(0, null, this);
+        refresh();
     }
 
     @Override
@@ -159,51 +160,77 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * Force a refresh of the items displayed ignoring any cached items
      */
     protected void forceRefresh() {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(FORCE_REFRESH, true);
-        refresh(bundle);
+        items.clear();
+        refresh(true);
+    }
+
+    public void refresh() {
+        refresh(false);
     }
 
     /**
      * Refresh the fragment's list
      */
-    public void refresh() {
-        refresh(null);
-    }
-
-    private void refresh(final Bundle args) {
-        if (!isUsable()) {
+    public void refresh(boolean force) {
+        if (!isUsable() || isLoading) {
             return;
         }
 
-        getLoaderManager().restartLoader(0, args, this);
+        if (dataLoadDisposable != null && !dataLoadDisposable.isDisposed()) {
+            dataLoadDisposable.dispose();
+        }
+
+        isLoading = true;
+        dataLoadDisposable = loadData(force)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onDataLoaded, this::onDataLoadError);
     }
 
     /**
      * Get error message to display for exception
      *
-     * @param exception
      * @return string resource id
      */
-    protected abstract int getErrorMessage(Exception exception);
+    protected abstract int getErrorMessage();
 
-    @Override
-    public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
+    /**
+     * Load data async via a Single
+     *
+     * @return Single to subscribe to
+     * @param forceRefresh
+     */
+    protected abstract Single<List<E>> loadData(boolean forceRefresh);
+
+    /**
+     * Called when the data has loaded
+     * @param items The items added to the list,
+     */
+    protected void onDataLoaded(List<E> items) {
         if (!isUsable()) {
             return;
         }
 
+        isLoading = false;
         swipeLayout.setRefreshing(false);
-        Exception exception = getException(loader);
-        if (exception != null) {
-            showError(exception, getErrorMessage(exception));
-            showList();
+
+        this.items.addAll(items);
+        getListAdapter().getWrappedAdapter().setItems(this.items);
+        showList();
+    }
+
+    protected void onDataLoadError(Throwable throwable) {
+        if (!isUsable()) {
             return;
         }
 
-        this.items = items;
-        getListAdapter().getWrappedAdapter().setItems(items.toArray());
-        showList();
+        isLoading = false;
+        swipeLayout.setRefreshing(false);
+
+        if (throwable != null) {
+            showError(throwable, getErrorMessage());
+            showList();
+        }
     }
 
     /**
@@ -232,34 +259,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         setListShown(true, isResumed());
     }
 
-    @Override
-    public void onLoaderReset(Loader<List<E>> loader) {
-        // Intentionally left blank
-    }
-
     /**
      * Show exception in a {@link Toast}
      *
      * @param e
      * @param defaultMessage
      */
-    protected void showError(final Exception e, final int defaultMessage) {
+    protected void showError(final Throwable e, final int defaultMessage) {
         ToastUtils.show(getActivity(), e, defaultMessage);
-    }
-
-    /**
-     * Get exception from loader if it provides one by being a
-     * {@link ThrowableLoader}
-     *
-     * @param loader
-     * @return exception or null if none provided
-     */
-    protected Exception getException(final Loader<List<E>> loader) {
-        if (loader instanceof ThrowableLoader) {
-            return ((ThrowableLoader<List<E>>) loader).clearException();
-        } else {
-            return null;
-        }
     }
 
     /**

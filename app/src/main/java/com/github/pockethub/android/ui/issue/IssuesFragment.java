@@ -35,6 +35,7 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
@@ -53,6 +54,9 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
 
+import io.reactivex.Single;
+import retrofit2.Response;
+
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -67,6 +71,8 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
  * Fragment to display a list of issues
  */
 public class IssuesFragment extends PagedItemFragment<Issue> {
+
+    IssueService service = ServiceGenerator.createService(getActivity(), IssueService.class);
 
     @Inject
     protected AccountDataManager cache;
@@ -239,7 +245,6 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
                 updateFilterSummary();
-                pager.reset();
                 refreshWithProgress();
                 return;
             }
@@ -264,17 +269,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ResourcePager<Issue> createPager() {
-        return new IssuePager(store) {
-
-            @Override
-            public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), IssueService.class)
-                                .getRepositoryIssues(repository.owner().login(),
-                                        repository.name(), filter.toFilterMap(), page1), page);
-            }
-        };
+    protected Single<Response<Page<Issue>>> loadData(int page) {
+        return service.getRepositoryIssues(repository.owner().login(),
+                repository.name(), filter.toFilterMap(), page);
     }
 
     @Override
@@ -283,7 +280,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_issues_load;
     }
 

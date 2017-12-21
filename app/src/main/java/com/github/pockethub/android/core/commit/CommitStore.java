@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 
 
@@ -39,6 +41,9 @@ public class CommitStore extends ItemStore {
     private final Map<String, ItemReferences<Commit>> commits = new HashMap<>();
 
     private final Context context;
+
+    @Inject
+    protected RepositoryCommitService service;
 
     /**
      * Create commit store
@@ -92,7 +97,7 @@ public class CommitStore extends ItemStore {
      * @return refreshed commit
      */
     public Single<Commit> refreshCommit(final Repository repo, final String id) {
-        return ServiceGenerator.createService(context, RepositoryCommitService.class)
+        return service
                 .getCommit(repo.owner().login(), repo.name(), id)
                 .map(response -> addCommit(repo, response.body()));
     }

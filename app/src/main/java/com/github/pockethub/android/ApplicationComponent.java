@@ -18,7 +18,8 @@ import dagger.android.support.AndroidSupportInjectionModule;
         ApplicationModule.class,
         PocketHubModule.class,
         ActivityBuilder.class,
-        DialogFragmentBuilder.class
+        DialogFragmentBuilder.class,
+        GitHubModule.class
 })
 interface ApplicationComponent extends AndroidInjector<PocketHub> {
 

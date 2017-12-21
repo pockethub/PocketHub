@@ -21,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.ui.PagedItemFragment;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
@@ -38,15 +39,19 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
 /**
  * Fragment to display a list of contributors for a specific repository
  */
-public class RepositoryContributorsFragment extends ItemListFragment<User> {
+public class RepositoryContributorsFragment extends PagedItemFragment<User> {
+
+    RepositoryService service = ServiceGenerator.createService(getActivity(), RepositoryService.class);
 
     /**
      * Avatar loader
@@ -71,30 +76,8 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     }
 
     @Override
-    public Loader<List<User>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<User>>(getActivity(), items) {
-
-            @Override
-            public List<User> loadData() throws Exception {
-                RepositoryService service = ServiceGenerator.createService(getActivity(), RepositoryService.class);
-
-                int current = 1;
-                int last = 0;
-                List<User> users = new ArrayList<>();
-
-                while (current != last) {
-                    Page<User> page = service
-                            .getContributors(repo.owner().login(), repo.name(), current)
-                            .blockingGet()
-                            .body();
-
-                    users.addAll(page.items());
-                    last = page.last() != null ? page.last() : -1;
-                    current = page.next() != null ? page.next() : -1;
-                }
-                return users;
-            }
-        };
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.getContributors(repo.owner().login(), repo.name(), page);
     }
 
     @Override
@@ -117,7 +100,12 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_contributors_load;
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return R.string.loading;
     }
 }

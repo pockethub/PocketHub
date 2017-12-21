@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -48,37 +49,27 @@ import static android.app.SearchManager.QUERY;
  */
 public class SearchUserListFragment extends PagedItemFragment<User> {
 
+    SearchService service = ServiceGenerator.createService(getContext(), SearchService.class);
+
     private String query;
 
     @Inject
     protected AvatarLoader avatars;
 
     @Override
-    protected ResourcePager<User> createPager() {
-        return new ResourcePager<User>() {
-            @Override
-            protected Object getId(User resource) {
-                return resource.id();
-            }
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.searchUsers(query, null, null, page)
+                .map(response -> {
+                    SearchPage<User> repositorySearchPage = response.body();
 
-            @Override
-            public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchUsers(query, null, null, page1)
-                                .map(response -> {
-                                    SearchPage<User> repositorySearchPage = response.body();
-
-                                    return Response.success(Page.<User>builder()
-                                            .first(repositorySearchPage.first())
-                                            .last(repositorySearchPage.last())
-                                            .next(repositorySearchPage.next())
-                                            .prev(repositorySearchPage.prev())
-                                            .items(repositorySearchPage.items())
-                                            .build());
-                                }), page);
-            }
-        };
+                    return Response.success(Page.<User>builder()
+                            .first(repositorySearchPage.first())
+                            .last(repositorySearchPage.last())
+                            .next(repositorySearchPage.next())
+                            .prev(repositorySearchPage.prev())
+                            .items(repositorySearchPage.items())
+                            .build());
+                });
     }
 
     @Override
@@ -126,7 +117,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_users_search;
     }
 }

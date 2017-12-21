@@ -38,7 +38,7 @@ public abstract class FollowingFragment extends PagedUserFragment {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_people_load;
     }
 }

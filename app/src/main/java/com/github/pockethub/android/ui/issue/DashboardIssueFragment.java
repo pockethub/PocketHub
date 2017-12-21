@@ -29,11 +29,15 @@ import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import javax.inject.Inject;
 
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 
@@ -46,6 +50,8 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
      * Filter data argument
      */
     public static final String ARG_FILTER = "filter";
+
+    private IssueService service = ServiceGenerator.createService(getActivity(), IssueService.class);
 
     @Inject
     protected IssueStore store;
@@ -75,33 +81,15 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
+    protected Single<Response<Page<Issue>>> loadData(int page) {
+        return service.getIssues(filterData, page);
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         startActivityForResult(
                 IssuesViewActivity.createIntent(items, position
                         - getListAdapter().getHeadersCount()), ISSUE_VIEW);
-    }
-
-    @Override
-    protected ResourcePager<Issue> createPager() {
-        return new ResourcePager<Issue>() {
-
-            @Override
-            protected Issue register(Issue resource) {
-                return store.addIssue(resource);
-            }
-
-            @Override
-            protected Object getId(Issue resource) {
-                return resource.id();
-            }
-
-            @Override
-            public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), IssueService.class)
-                                .getIssues(filterData, page1), page);
-            }
-        };
     }
 
     @Override
@@ -110,7 +98,7 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_issues_load;
     }
 

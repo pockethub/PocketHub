@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
@@ -33,6 +34,9 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.util.List;
 
+import io.reactivex.Single;
+import retrofit2.Response;
+
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 import static com.github.pockethub.android.RequestCodes.REPOSITORY_VIEW;
 import static com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED;
@@ -41,6 +45,8 @@ import static com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED;
  * Fragment to display a list of repositories for a {@link User}
  */
 public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
+
+    RepositoryService service = ServiceGenerator.createService(getContext(), RepositoryService.class);
 
     private User user;
 
@@ -59,21 +65,8 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected ResourcePager<Repository> createPager() {
-        return new ResourcePager<Repository>() {
-
-            @Override
-            protected Object getId(Repository resource) {
-                return resource.id();
-            }
-
-            @Override
-            public PageIterator<Repository> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getContext(), RepositoryService.class)
-                                .getUserRepositories(user.login(), page1), page);
-            }
-        };
+    protected Single<Response<Page<Repository>>> loadData(int page) {
+        return service.getUserRepositories(user.login(), page);
     }
 
     @Override
@@ -82,7 +75,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_repos_load;
     }
 
