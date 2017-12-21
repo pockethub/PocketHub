@@ -15,14 +15,11 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.accounts.Account;
-import android.app.Activity;
 import android.content.Context;
 import android.text.Html.ImageGetter;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.android.util.HtmlUtils;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
 import com.meisolsson.githubsdk.service.misc.MarkdownService;
