@@ -59,12 +59,11 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
 
     @Override
     protected Single<List<IssueFilter>> loadData(boolean forceRefresh) {
-        return Single.fromCallable(() -> {
-            List<IssueFilter> filters = new ArrayList<>(
-                    cache.getIssueFilters());
-            Collections.sort(filters, FilterListFragment.this);
-            return filters;
-        });
+        return Single.fromCallable(() -> new ArrayList<>(cache.getIssueFilters()))
+                .map(filters -> {
+                    Collections.sort(filters, FilterListFragment.this);
+                    return filters;
+                });
     }
 
     @Override

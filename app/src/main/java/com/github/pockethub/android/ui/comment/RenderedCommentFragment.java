@@ -38,8 +38,7 @@ import java.io.Serializable;
 /**
  * Fragment to display rendered comment fragment
  */
-public class RenderedCommentFragment extends DialogFragment implements
-        LoaderCallbacks<CharSequence> {
+public class RenderedCommentFragment extends DialogFragment {
 
     private static final String ARG_TEXT = "text";
 
@@ -67,12 +66,7 @@ public class RenderedCommentFragment extends DialogFragment implements
      * @param repo
      */
     public void setText(final String raw, final Repository repo) {
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_TEXT, raw);
-        if (repo instanceof Serializable) {
-            args.putParcelable(ARG_REPO, repo);
-        }
-        getLoaderManager().restartLoader(0, args, this);
+        loadMarkdown(raw, repo);
         Keyboard.hideSoftInput(bodyText);
         showLoading(true);
     }
@@ -93,25 +87,11 @@ public class RenderedCommentFragment extends DialogFragment implements
         return inflater.inflate(R.layout.fragment_comment_preview, null);
     }
 
-    @Override
-    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
-        final CharSequence raw = args.getCharSequence(ARG_TEXT);
-        final Repository repo = args.getParcelable(ARG_REPO);
-        return new MarkdownLoader(getActivity(), repo, raw.toString(),
-                imageGetter, true);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CharSequence> loader,
-            CharSequence rendered) {
-        if (rendered == null) {
-            ToastUtils.show(getActivity(), R.string.error_rendering_markdown);
-        }
-        bodyText.setText(rendered);
-        showLoading(false);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CharSequence> loader) {
+    private void loadMarkdown(String raw, Repository repo) {
+        MarkdownLoader.load(getActivity(), raw, repo, imageGetter, true)
+                .subscribe(rendered -> {
+                    bodyText.setText(rendered);
+                    showLoading(false);
+                } , e -> ToastUtils.show(getActivity(), R.string.error_rendering_markdown));
     }
 }

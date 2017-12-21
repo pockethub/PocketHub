@@ -31,9 +31,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.IntentCompat;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -61,9 +59,9 @@ import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.notification.NotificationActivity;
-import com.github.pockethub.android.ui.repo.OrganizationLoader;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.User;
 import javax.inject.Inject;
@@ -75,10 +73,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class MainActivity extends BaseActivity
-        implements LoaderManager.LoaderCallbacks<List<User>>,
-        NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -134,10 +136,9 @@ public class MainActivity extends BaseActivity
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        reloadOrgs();
 
         TokenStore tokenStore = TokenStore.getInstance(this);
 
@@ -160,7 +161,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -173,7 +174,42 @@ public class MainActivity extends BaseActivity
     }
 
     private void reloadOrgs() {
-        getSupportLoaderManager().restartLoader(0, null, this);
+        Single.fromCallable(() -> accountDataManager.getOrgs(false))
+                .map(orgs -> {
+                    Collections.sort(orgs, userComparatorProvider.get());
+                    return orgs;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(orgs -> {
+                    if (orgs.isEmpty()) {
+                        return;
+                    }
+
+                    org = orgs.get(0);
+                    this.orgs = orgs;
+
+                    setUpNavigationView();
+
+                    Window window = getWindow();
+                    if (window == null) {
+                        return;
+                    }
+                    View view = window.getDecorView();
+                    if (view == null) {
+                        return;
+                    }
+
+                    view.post(() -> {
+                        switchFragment(new HomePagerFragment(), org);
+                        if (!userLearnedDrawer) {
+                            drawerLayout.openDrawer(GravityCompat.START);
+                        }
+                    });
+                }, e -> {
+                        Log.e(TAG, "Exception loading organizations", e);
+                        ToastUtils.show(this, e, R.string.error_orgs_load);
+                    });
     }
 
     @Override
@@ -201,42 +237,7 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
-        return new OrganizationLoader(this, accountDataManager,
-                userComparatorProvider);
-    }
-
     Map<MenuItem,User> menuItemOrganizationMap = new HashMap<>();
-
-    @Override
-    public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
-        if (orgs.isEmpty()) {
-            return;
-        }
-
-        org = orgs.get(0);
-        this.orgs = orgs;
-
-        setUpNavigationView();
-
-        Window window = getWindow();
-        if (window == null) {
-            return;
-        }
-        View view = window.getDecorView();
-        if (view == null) {
-            return;
-        }
-
-        view.post(() -> {
-            switchFragment(new HomePagerFragment(), org);
-            if(!userLearnedDrawer) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-    }
 
     private void setUpHeaderView() {
         ImageView userImage;
@@ -288,11 +289,6 @@ public class MainActivity extends BaseActivity
         } else {
             throw new IllegalStateException("Menu item " + organizationContainer + " should have a submenu");
         }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<List<User>> listLoader) {
-
     }
 
     @Override

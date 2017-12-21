@@ -17,8 +17,6 @@ package com.github.pockethub.android.ui.commit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -63,8 +61,7 @@ import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 /**
  * Activity to display the contents of a file in a commit
  */
-public class CommitFileViewActivity extends BaseActivity implements
-    LoaderCallbacks<CharSequence> {
+public class CommitFileViewActivity extends BaseActivity {
 
     private static final String TAG = "CommitFileViewActivity";
 
@@ -223,36 +220,6 @@ public class CommitFileViewActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
-        final String raw = args.getString(ARG_TEXT);
-        final Repository repo = args.getParcelable(ARG_REPO);
-        return new MarkdownLoader(this, repo, raw, imageGetter, false);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CharSequence> loader,
-        CharSequence rendered) {
-        if (rendered == null) {
-            ToastUtils.show(this, R.string.error_rendering_markdown);
-        }
-
-        loadingBar.setVisibility(View.GONE);
-        codeView.setVisibility(View.VISIBLE);
-
-        if (!TextUtils.isEmpty(rendered)) {
-            renderedMarkdown = rendered.toString();
-            if (markdownItem != null) {
-                markdownItem.setEnabled(true);
-            }
-            editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CharSequence> loader) {
-    }
-
     private void shareFile() {
         String id = InfoUtils.createRepoId(repo);
         startActivity(ShareUtils.create(
@@ -265,10 +232,20 @@ public class CommitFileViewActivity extends BaseActivity implements
         codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_TEXT, markdown);
-        args.putParcelable(ARG_REPO, repo);
-        getSupportLoaderManager().restartLoader(0, args, this);
+
+        MarkdownLoader.load(this, markdown, repo, imageGetter, false)
+                .subscribe(rendered -> {
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
+
+                    if (!TextUtils.isEmpty(rendered)) {
+                        renderedMarkdown = rendered.toString();
+                        if (markdownItem != null) {
+                            markdownItem.setEnabled(true);
+                        }
+                        editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
+                    }
+                } , e -> ToastUtils.show(this, R.string.error_rendering_markdown));
     }
 
     private void loadContent() {

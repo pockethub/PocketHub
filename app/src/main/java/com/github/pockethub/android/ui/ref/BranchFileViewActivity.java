@@ -62,8 +62,7 @@ import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 /**
  * Activity to view a file on a branch
  */
-public class BranchFileViewActivity extends BaseActivity implements
-    LoaderCallbacks<CharSequence> {
+public class BranchFileViewActivity extends BaseActivity {
 
     private static final String TAG = "BranchFileViewActivity";
 
@@ -220,36 +219,6 @@ public class BranchFileViewActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
-        final String raw = args.getString(ARG_TEXT);
-        final Repository repo = args.getParcelable(ARG_REPO);
-        return new MarkdownLoader(this, repo, raw, imageGetter, false);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CharSequence> loader,
-                               CharSequence rendered) {
-        if (rendered == null) {
-            ToastUtils.show(this, R.string.error_rendering_markdown);
-        }
-
-        loadingBar.setVisibility(View.GONE);
-        codeView.setVisibility(View.VISIBLE);
-
-        if (!TextUtils.isEmpty(rendered)) {
-            renderedMarkdown = rendered.toString();
-            if (markdownItem != null) {
-                markdownItem.setEnabled(true);
-            }
-            editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CharSequence> loader) {
-    }
-
     private void shareFile() {
         String id = InfoUtils.createRepoId(repo);
         startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
@@ -261,10 +230,19 @@ public class BranchFileViewActivity extends BaseActivity implements
         codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_TEXT, markdown);
-        args.putParcelable(ARG_REPO, repo);
-        getSupportLoaderManager().restartLoader(0, args, this);
+        MarkdownLoader.load(this, markdown, repo, imageGetter, false)
+                .subscribe(rendered -> {
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
+
+                    if (!TextUtils.isEmpty(rendered)) {
+                        renderedMarkdown = rendered.toString();
+                        if (markdownItem != null) {
+                            markdownItem.setEnabled(true);
+                        }
+                        editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
+                    }
+                }, e -> ToastUtils.show(this, R.string.error_rendering_markdown));
     }
 
     private void loadContent() {

@@ -302,19 +302,11 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             return Single.just(Collections.emptyList());
         }
 
-        return Single.fromCallable(() -> {
-            List<Repository> repos;
-            try {
-                repos = cache.getRepos(org, forceRefresh);
-                Collections.sort(repos, recentRepos);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-
-            return repos;
-        });
+        return Single.fromCallable(() -> cache.getRepos(org, forceRefresh))
+                .map(repos -> {
+                    Collections.sort(repos, recentRepos);
+                    return repos;
+                });
     }
 
     @Override

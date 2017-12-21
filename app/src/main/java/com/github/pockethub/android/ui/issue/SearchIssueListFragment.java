@@ -28,8 +28,6 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;

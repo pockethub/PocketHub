@@ -40,13 +40,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-// TODO: This class should probably just take data as a list.
-// All data fetched from an async source should probably be paged. So PagedItemFragment should
-// do most of the heavy lifting in the case.
-
 /**
  * Base fragment for displaying a list of items that loads with a progress bar
- * visible
+ * visible.
  *
  * @param <E>
  */
@@ -56,32 +52,32 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     private SwipeRefreshLayout swipeLayout;
 
     /**
-     * List items
+     * List items.
      */
     protected List<E> items = new ArrayList<>();
 
     /**
-     * List view
+     * List view.
      */
     protected ListView listView;
 
     /**
-     * Empty view
+     * Empty view.
      */
     protected TextView emptyView;
 
     /**
-     * Progress bar
+     * Progress bar.
      */
     protected ProgressBar progressBar;
 
     /**
-     * Is the list currently shown?
+     * Is the list currently shown?.
      */
     protected boolean listShown;
 
     /**
-     * Disposable for data load request
+     * Disposable for data load request.
      */
     private Disposable dataLoadDisposable;
 
@@ -147,7 +143,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
     
     /**
-     * Configure list after view has been created
+     * Configure list after view has been created.
      *
      * @param activity
      * @param listView
@@ -157,7 +153,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Force a refresh of the items displayed ignoring any cached items
+     * Force a refresh of the items displayed ignoring any cached items.
      */
     protected void forceRefresh() {
         items.clear();
@@ -169,7 +165,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Refresh the fragment's list
+     * Refresh the fragment's list.
      */
     public void refresh(boolean force) {
         if (!isUsable() || isLoading) {
@@ -188,22 +184,23 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Get error message to display for exception
+     * Get error message to display for exception.
      *
      * @return string resource id
      */
     protected abstract int getErrorMessage();
 
     /**
-     * Load data async via a Single
+     * Load data async via a Single.
      *
-     * @return Single to subscribe to
      * @param forceRefresh
+     * @return Single to subscribe to
      */
     protected abstract Single<List<E>> loadData(boolean forceRefresh);
 
     /**
-     * Called when the data has loaded
+     * Called when the data has loaded.
+     *
      * @param items The items added to the list,
      */
     protected void onDataLoaded(List<E> items) {
@@ -234,7 +231,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Create adapter to display items
+     * Create adapter to display items.
      *
      * @return adapter
      */
@@ -245,7 +242,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Create adapter to display items
+     * Create adapter to display items.
      *
      * @param items
      * @return adapter
@@ -253,14 +250,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     protected abstract SingleTypeAdapter<E> createAdapter(final List<E> items);
 
     /**
-     * Set the list to be shown
+     * Set the list to be shown.
      */
     protected void showList() {
         setListShown(true, isResumed());
     }
 
     /**
-     * Show exception in a {@link Toast}
+     * Show exception in a {@link Toast}.
      *
      * @param e
      * @param defaultMessage
@@ -270,7 +267,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Refresh the list with the progress bar showing
+     * Refresh the list with the progress bar showing.
      */
     protected void refreshWithProgress() {
         items.clear();
@@ -279,7 +276,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Get {@link ListView}
+     * Get {@link ListView}.
      *
      * @return listView
      */
@@ -288,7 +285,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Get list adapter
+     * Get list adapter.
      *
      * @return list adapter
      */
@@ -303,7 +300,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Notify the underlying adapter that the data set has changed
+     * Notify the underlying adapter that the data set has changed.
      *
      * @return this fragment
      */
@@ -319,7 +316,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Set list adapter to use on list view
+     * Set list adapter to use on list view.
      *
      * @param adapter
      * @return this fragment
@@ -354,7 +351,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Set list shown or progress bar show
+     * Set list shown or progress bar show.
      *
      * @param shown
      * @return this fragment
@@ -364,7 +361,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Set list shown or progress bar show
+     * Set list shown or progress bar show.
      *
      * @param shown
      * @param animate
@@ -377,10 +374,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         }
 
         if (shown == listShown) {
-            if (shown)
+            if (shown) {
                 // List has already been shown so hide/show the empty view with
                 // no fade effect
-            {
                 if (items.isEmpty()) {
                     hide(listView).show(emptyView);
                 } else {
@@ -409,7 +405,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Set empty text on list fragment
+     * Set empty text on list fragment.
      *
      * @param message
      * @return this fragment
@@ -422,7 +418,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Set empty text on list fragment
+     * Set empty text on list fragment.
      *
      * @param resId
      * @return this fragment
@@ -435,7 +431,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Callback when a list view item is clicked
+     * Callback when a list view item is clicked.
      *
      * @param l
      * @param v
@@ -446,7 +442,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Callback when a list view item is clicked and held
+     * Callback when a list view item is clicked and held.
      *
      * @param l
      * @param v

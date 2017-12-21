@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.github.pockethub.android.ui;
 
 import android.app.Activity;
@@ -30,28 +31,34 @@ import retrofit2.Response;
 
 /**
  * List fragment that adds more elements when the bottom of the list is scrolled
- * to
+ * to.
  *
- * @param <E>
+ * @param <E> The type of item to display in the list
  */
 public abstract class PagedItemFragment<E> extends ItemListFragment<E>
         implements OnScrollListener {
 
     private ResourceLoadingIndicator loadingIndicator;
 
-    // TODO: Comment
+    /**
+     * The current page.
+     */
     private int page = 1;
+
+    /**
+     * Is there more items to fetch.
+     */
     private boolean hasMore = true;
 
     /**
-     * Get resource id of {@link String} to display when loading
+     * Get resource id of {@link String} to display when loading.
      *
      * @return string resource id
      */
     protected abstract int getLoadingMessage();
 
     /**
-     * Configure list after view has been created
+     * Configure list after view has been created.
      *
      * @param activity
      * @param listView
@@ -122,7 +129,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
     }
 
     /**
-     * Show more events while retaining the current pager state
+     * Show more events while retaining the current pager state.
      */
     private void showMore() {
         refresh();
