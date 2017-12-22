@@ -28,6 +28,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
@@ -253,7 +254,7 @@ public class CommitFileViewActivity extends BaseActivity {
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     GitBlob gitBlob = response.body();
                     loadingBar.setVisibility(View.GONE);

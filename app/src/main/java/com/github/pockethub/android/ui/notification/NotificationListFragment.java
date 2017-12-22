@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUriMatcher;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.issue.IssuesViewActivity;
 import com.github.pockethub.android.util.ToastUtils;
@@ -132,7 +133,7 @@ public class NotificationListFragment extends DialogFragment
                 .markNotificationRead(thread.id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> refreshNotifications(), Throwable::printStackTrace);
     }
 
@@ -143,7 +144,7 @@ public class NotificationListFragment extends DialogFragment
                         repository.name(), NotificationReadRequest.builder().build())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> refreshNotifications(), Throwable::printStackTrace);
     }
 

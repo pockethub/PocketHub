@@ -38,6 +38,7 @@ import com.github.pockethub.android.core.code.FullTree.Entry;
 import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
@@ -153,7 +154,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullTree -> {
                     if (folder == null || folder.isRoot()) {
                         setFolder(fullTree, fullTree.root);

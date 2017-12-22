@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.core.commit.RefreshCommitTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.Repository;
@@ -246,7 +247,7 @@ public class CommitDiffListFragment extends DialogFragment implements
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(full -> {
                     List<GitHubFile> files = full.getCommit().files();
                     diffStyler.setFiles(files);

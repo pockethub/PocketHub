@@ -27,6 +27,7 @@ import android.view.View;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
@@ -102,8 +103,8 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(getActivity(), R.string.random_gist))
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(gist -> getActivity().startActivityForResult(
                         GistsViewActivity.createIntent(gist), GIST_VIEW), e -> {
                     Log.d(TAG, "Exception opening random Gist", e);

@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
@@ -119,7 +120,7 @@ public class GistFilesViewActivity extends PagerActivity {
                     .refresh()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(gist -> {
                         this.gist = gist.getGist();
                         configurePager();

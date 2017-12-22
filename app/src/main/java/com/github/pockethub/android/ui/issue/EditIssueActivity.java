@@ -38,6 +38,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.util.ImageBinPoster;
 import com.github.pockethub.android.util.PermissionsUtils;
@@ -494,8 +495,8 @@ public class EditIssueActivity extends BaseActivity {
 
                 single.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .compose(this.bindToLifecycle())
                         .compose(RxProgress.bindToLifecycle(this, message))
+                        .as(AutoDisposeUtils.bindToLifecycle(this))
                         .subscribe(response -> {
                             Intent intent = new Intent();
                             intent.putExtra(EXTRA_ISSUE, response.body());
@@ -516,7 +517,7 @@ public class EditIssueActivity extends BaseActivity {
                 .isUserCollaborator(repository.owner().login(), repository.name(), AccountUtils.getLogin(this))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     showMainContent();
                     if (response.code() == 204) {

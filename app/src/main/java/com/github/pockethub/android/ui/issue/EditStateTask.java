@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
@@ -97,8 +98,8 @@ public class EditStateTask {
             store.changeState(repository, issueNumber, state)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(activity.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(activity, message))
+                    .as(AutoDisposeUtils.bindToLifecycle(activity))
                     .subscribe(observer);
         } catch (Exception e) {
             e.printStackTrace();

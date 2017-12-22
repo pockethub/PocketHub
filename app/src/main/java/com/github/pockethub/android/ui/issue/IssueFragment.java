@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.pockethub.android.core.issue.RefreshIssueTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
@@ -425,7 +426,7 @@ public class IssueFragment extends DialogFragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullIssue -> isUsable())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullIssue -> {
                     issue = fullIssue.getIssue();
                     items = new ArrayList<>();
@@ -509,8 +510,8 @@ public class IssueFragment extends DialogFragment {
                     .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(getActivity(), R.string.deleting_comment))
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         if (items != null) {
                             int commentPosition = findCommentPositionInItems(comment);

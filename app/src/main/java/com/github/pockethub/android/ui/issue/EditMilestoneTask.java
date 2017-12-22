@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
@@ -25,6 +26,8 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
+import com.uber.autodispose.AutoDispose;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -93,8 +96,8 @@ public class EditMilestoneTask {
             store.editIssue(repositoryId, issueNumber, editedIssue)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(activity.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(activity, R.string.updating_milestone))
+                    .as(AutoDisposeUtils.bindToLifecycle(activity))
                     .subscribe(observer);
         }
 

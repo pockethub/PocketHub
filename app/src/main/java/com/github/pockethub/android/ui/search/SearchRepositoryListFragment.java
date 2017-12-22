@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
@@ -108,10 +109,10 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 .getRepository(result.owner().login(), result.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(getActivity(),
                         MessageFormat.format(getString(R.string.opening_repository),
                                 InfoUtils.createRepoId(result))))
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response ->
                         startActivity(RepositoryViewActivity.createIntent(response.body())));
     }

@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
@@ -126,7 +127,7 @@ public class CommitCompareListFragment extends DialogFragment implements
                 .compareCommits(repository.owner().login(), repository.name(), base, head)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     CommitCompare compareCommit = response.body();
                     List<GitHubFile> files = compareCommit.files();

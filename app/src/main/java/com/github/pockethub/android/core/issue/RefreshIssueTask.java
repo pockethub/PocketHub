@@ -17,8 +17,6 @@ package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
 
-import com.github.pockethub.android.DaggerApplicationComponent;
-import com.github.pockethub.android.PocketHub;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.RxPageUtil;
 import com.google.auto.factory.AutoFactory;

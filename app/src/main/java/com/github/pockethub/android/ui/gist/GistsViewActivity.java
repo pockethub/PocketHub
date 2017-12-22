@@ -26,6 +26,7 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.GistStore;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.FragmentProvider;
@@ -172,8 +173,8 @@ public class GistsViewActivity extends PagerActivity implements
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(this, R.string.deleting_gist))
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         setResult(RESULT_OK);
                         finish();

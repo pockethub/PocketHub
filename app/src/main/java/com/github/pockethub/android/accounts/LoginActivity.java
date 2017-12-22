@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.base.AccountAuthenticatorAppCompatActivity;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -147,7 +148,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
                     .getToken(request)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         GitHubToken token = response.body();
                         if (token.accessToken() != null) {
@@ -227,7 +228,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     User user = response.body();
                     Account account = new Account(user.login(), getString(R.string.account_type));

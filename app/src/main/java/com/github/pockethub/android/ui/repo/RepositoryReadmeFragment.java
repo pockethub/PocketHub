@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents;
@@ -49,7 +50,7 @@ public class RepositoryReadmeFragment extends DialogFragment {
                 .getReadmeHtml(repo.owner().login(), repo.name(), null)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     String baseUrl = String.format("https://github.com/%s/%s/raw/%s/",
                             repo.owner().login(), repo.name(), "master");

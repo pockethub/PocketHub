@@ -21,13 +21,13 @@ def clientIdIsNotSet = true;
 def clientSecretIsNotSet = true;
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.2'
 
     defaultConfig {
         applicationId 'com.github.pockethub.android'
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         vectorDrawables.useSupportLibrary = true
@@ -109,7 +109,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    def supportVersion = '25.3.1'
+    def supportVersion = '27.0.2'
     compile "com.android.support:appcompat-v7:$supportVersion"
     compile "com.android.support:support-v4:$supportVersion"
     compile "com.android.support:design:$supportVersion"
@@ -118,24 +118,24 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
 
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.7'
-    compile 'com.trello.rxlifecycle2:rxlifecycle:2.0.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-android:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
+    compile 'com.uber.autodispose:autodispose:0.5.1'
+    compile 'com.uber.autodispose:autodispose-android-archcomponents:0.5.1'
+
     compile 'com.bugsnag:bugsnag-android:3.2.7'
 
     compile 'com.google.dagger:dagger:2.13'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
-
     compile 'com.google.dagger:dagger-android:2.13'
     compile 'com.google.dagger:dagger-android-support:2.13'
+
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
 
     provided 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
 
     compile 'com.github.meisolsson:githubsdk:0.4.5'
-
-    compile 'com.afollestad.material-dialogs:core:0.9.4.4'
+    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')

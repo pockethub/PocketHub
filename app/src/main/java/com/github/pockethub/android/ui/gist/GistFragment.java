@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
@@ -301,7 +302,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .starGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> starred = response.code() == 204,
                         e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
@@ -324,7 +325,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .unstarGist(gistId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> starred = !(response.code() == 204),
                         e -> ToastUtils.show((Activity) getContext(), e.getMessage()));
     }
@@ -406,7 +407,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullGist -> isUsable())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullGist -> {
                     FragmentActivity activity = getActivity();
                     if (activity instanceof OnLoadListener) {
@@ -445,8 +446,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                     .deleteGistComment(gistId, comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(getActivity(), R.string.deleting_comment))
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         // Update comment list
                         if (comments != null) {

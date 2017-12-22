@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
@@ -200,7 +201,7 @@ public class IssuesViewActivity extends PagerActivity {
                     .getRepository(temp.owner().login(), temp.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> repositoryLoaded(response.body()));
         } else {
             repositoryLoaded(repo);

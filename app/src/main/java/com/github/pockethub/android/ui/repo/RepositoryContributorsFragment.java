@@ -21,6 +21,7 @@ import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
@@ -91,7 +92,7 @@ public class RepositoryContributorsFragment extends PagedItemFragment<User> {
                 .getUser(contributor.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response ->
                         startActivity(UserViewActivity.createIntent(response.body())));
 

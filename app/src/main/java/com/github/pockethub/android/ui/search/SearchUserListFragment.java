@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.SearchPage;
@@ -111,7 +112,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
                 .getUser(result.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response ->
                         startActivity(UserViewActivity.createIntent(response.body())));
     }

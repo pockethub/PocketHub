@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
@@ -113,7 +114,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                     .getRepository(repository.owner().login(), repository.name())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         repository = response.body();
                         checkReadme();
@@ -157,7 +158,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .hasReadme(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.<Response>bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     hasReadme = response.code() == 200;
                     configurePager();
@@ -264,7 +265,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
 
         starSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(aBoolean -> {
                     isStarred = !isStarred;
                     setResult(RESOURCE_CHANGED);
@@ -277,7 +278,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .checkIfRepositoryIsStarred(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     isStarred = response.code() == 204;
                     starredStatusChecked = true;
@@ -299,7 +300,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                 .createFork(repository.owner().login(), repository.name())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     Repository repo = response.body();
                     UriLauncherActivity.launchUri(this, Uri.parse(repo.htmlUrl()));
@@ -328,7 +329,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                                 .deleteRepository(repository.owner().login(), repository.name())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .compose(RepositoryViewActivity.this.bindToLifecycle())
+                                .as(AutoDisposeUtils.bindToLifecycle(getLifecycle()))
                                 .subscribe(response -> {
                                     onBackPressed();
                                     ToastUtils.show(RepositoryViewActivity.this, R.string.delete_successful);

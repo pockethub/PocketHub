@@ -19,18 +19,8 @@ package com.github.pockethub.android.ui.base;
 import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
-
-import dagger.android.AndroidInjection;
 import dagger.android.support.DaggerAppCompatActivity;
-import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Base class for implementing an Activity that is used to help implement an
@@ -48,64 +38,10 @@ import io.reactivex.subjects.BehaviorSubject;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCompatActivity
-        implements LifecycleProvider<ActivityEvent> {
+public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCompatActivity {
 
-    private AccountAuthenticatorResponse mAccountAuthenticatorResponse = null;
-    private Bundle mResultBundle = null;
-
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
-
-    @Override
-    public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject;
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    protected void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(ActivityEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(ActivityEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
-    protected void onPause() {
-        lifecycleSubject.onNext(ActivityEvent.PAUSE);
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
-    protected void onStop() {
-        lifecycleSubject.onNext(ActivityEvent.STOP);
-        super.onStop();
-    }
-
-    @Override
-    @CallSuper
-    protected void onDestroy() {
-        lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        super.onDestroy();
-    }
-
+    private AccountAuthenticatorResponse accountAuthenticatorResponse = null;
+    private Bundle resultBundle = null;
     /**
      * Set the result that is to be sent as the result of the request that caused this
      * Activity to be launched. If result is null or this method is never called then
@@ -113,7 +49,7 @@ public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCom
      * @param result this is returned as the result of the AbstractAccountAuthenticator request
      */
     public final void setAccountAuthenticatorResult(Bundle result) {
-        mResultBundle = result;
+        resultBundle = result;
     }
 
     /**
@@ -123,15 +59,13 @@ public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCom
      */
     @Override
     protected void onCreate(Bundle icicle) {
-        AndroidInjection.inject(this);
         super.onCreate(icicle);
-        lifecycleSubject.onNext(ActivityEvent.CREATE);
 
-        mAccountAuthenticatorResponse =
+        accountAuthenticatorResponse =
             getIntent().getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE);
 
-        if (mAccountAuthenticatorResponse != null) {
-            mAccountAuthenticatorResponse.onRequestContinued();
+        if (accountAuthenticatorResponse != null) {
+            accountAuthenticatorResponse.onRequestContinued();
         }
     }
 
@@ -140,15 +74,15 @@ public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCom
      */
     @Override
     public void finish() {
-        if (mAccountAuthenticatorResponse != null) {
+        if (accountAuthenticatorResponse != null) {
             // send the result bundle back if set, otherwise send an error.
-            if (mResultBundle != null) {
-                mAccountAuthenticatorResponse.onResult(mResultBundle);
+            if (resultBundle != null) {
+                accountAuthenticatorResponse.onResult(resultBundle);
             } else {
-                mAccountAuthenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED,
+                accountAuthenticatorResponse.onError(AccountManager.ERROR_CODE_CANCELED,
                     "canceled");
             }
-            mAccountAuthenticatorResponse = null;
+            accountAuthenticatorResponse = null;
         }
         super.finish();
     }

@@ -17,6 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.app.Activity;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
@@ -106,8 +107,8 @@ public class EditLabelsTask {
         store.editIssue(repositoryId, issueNumber, editIssue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(activity, R.string.updating_labels))
+                .as(AutoDisposeUtils.bindToLifecycle(activity))
                 .subscribe(observer);
         return this;
     }

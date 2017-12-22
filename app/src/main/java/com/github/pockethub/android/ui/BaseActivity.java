@@ -20,11 +20,9 @@ import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 import android.support.v7.app.AppCompatActivity;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Observable;
@@ -33,68 +31,7 @@ import io.reactivex.subjects.BehaviorSubject;
 /**
  * Activity that display dialogs
  */
-public abstract class BaseActivity extends DaggerAppCompatActivity
-        implements DialogResultListener, LifecycleProvider<ActivityEvent> {
-
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
-
-    @CallSuper
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(ActivityEvent.CREATE);
-    }
-
-
-    @Override
-    public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject;
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    protected void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(ActivityEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(ActivityEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
-    protected void onPause() {
-        lifecycleSubject.onNext(ActivityEvent.PAUSE);
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
-    protected void onStop() {
-        lifecycleSubject.onNext(ActivityEvent.STOP);
-        super.onStop();
-    }
-
-    @Override
-    @CallSuper
-    protected void onDestroy() {
-        lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        super.onDestroy();
-    }
+public abstract class BaseActivity extends DaggerAppCompatActivity implements DialogResultListener {
 
     /**
      * Get intent extra

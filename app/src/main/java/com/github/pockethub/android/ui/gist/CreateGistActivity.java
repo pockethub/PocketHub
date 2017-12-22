@@ -30,6 +30,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
@@ -194,8 +195,8 @@ public class CreateGistActivity extends BaseActivity {
                 .createGist(createGist)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(this, R.string.creating_gist))
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     startActivity(GistsViewActivity.createIntent(response.body()));
                     setResult(RESULT_OK);

@@ -348,7 +348,7 @@ public class MainActivity extends BaseActivity
         helper.getWritableDatabase().delete("repos", null, null);
 
         Intent in = new Intent(this, LoginActivity.class);
-        in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);
         finish();
     }

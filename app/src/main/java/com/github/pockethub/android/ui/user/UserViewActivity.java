@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
@@ -98,7 +99,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         user = response.body();
                         configurePager();
@@ -201,7 +202,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
         followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(aBoolean -> isFollowing = !isFollowing,
                         e -> ToastUtils.show(this, isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person));
     }
@@ -212,7 +213,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     isFollowing = response.code() == 204;
                     followingStatusChecked = true;
