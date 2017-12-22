@@ -122,7 +122,7 @@ dependencies {
     compile 'com.uber.autodispose:autodispose:0.5.1'
     compile 'com.uber.autodispose:autodispose-android-archcomponents:0.5.1'
 
-    compile 'com.bugsnag:bugsnag-android:3.2.7'
+    compile 'com.bugsnag:bugsnag-android:3.6.0'
 
     compile 'com.google.dagger:dagger:2.13'
     compile 'com.google.dagger:dagger-android:2.13'
