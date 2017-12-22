@@ -88,10 +88,6 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
 
     private AccountManager accountManager;
 
-    private String accessToken;
-
-    private String scope;
-
     private MaterialDialog progressDialog;
 
     @Inject
@@ -107,7 +103,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
         secret = getString(R.string.github_secret);
         redirectUri = getString(R.string.github_oauth);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         accountManager = AccountManager.get(this);
@@ -162,10 +158,6 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     }
 
     private void openMain() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -201,7 +193,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK) {
             onUserLoggedIn(data.getData());
         }
     }
@@ -218,9 +210,6 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     }
 
     private void endAuth(final String accessToken, final String scope) {
-        this.accessToken = accessToken;
-        this.scope = scope;
-
         progressDialog.setContent(getString(R.string.loading_user));
 
         TokenStore.getInstance(this).saveToken(accessToken);
@@ -246,8 +235,16 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
 
                     setAccountAuthenticatorResult(result);
 
-                    openMain();
+                    finish();
                 }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public void finish() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        super.finish();
     }
 
     @Override

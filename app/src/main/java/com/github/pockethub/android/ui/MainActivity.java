@@ -27,6 +27,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -55,6 +56,7 @@ import com.github.pockethub.android.accounts.LoginActivity;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.persistence.CacheHelper;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
@@ -73,7 +75,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -174,13 +175,15 @@ public class MainActivity extends BaseActivity
     }
 
     private void reloadOrgs() {
-        Single.fromCallable(() -> accountDataManager.getOrgs(false))
+        Single.fromCallable(() -> AccountUtils.getAccount(getAccountManager(), this))
+                .map(account -> accountDataManager.getOrgs(false))
                 .map(orgs -> {
                     Collections.sort(orgs, userComparatorProvider.get());
                     return orgs;
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(orgs -> {
                     if (orgs.isEmpty()) {
                         return;
@@ -292,7 +295,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
 
         if (itemId == R.id.navigation_home) {
@@ -324,29 +327,34 @@ public class MainActivity extends BaseActivity
     }
 
     private void logout() {
-        AccountManager accountManager = getAccountManager();
-        String accountType = getString(R.string.account_type);
-        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
-
-        for (Account account : allGitHubAccounts) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                accountManager.removeAccount(account, this, null, null);
-            } else {
-                accountManager.removeAccount(account, null, null);
-            }
-        }
-
+        // Remove cookies so that the login is clean
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().removeAllCookies(null);
         } else {
             CookieManager.getInstance().removeAllCookie();
         }
 
+        // Clear all of the cached data
         CacheHelper helper = new CacheHelper(this);
         helper.getWritableDatabase().delete("orgs", null, null);
         helper.getWritableDatabase().delete("users", null, null);
         helper.getWritableDatabase().delete("repos", null, null);
 
+        // Remove the account
+        AccountManager accountManager = getAccountManager();
+        String accountType = getString(R.string.account_type);
+        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
+
+        for (Account account : allGitHubAccounts) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                accountManager.removeAccount(account, this, bool -> startLoginActivity(), null);
+            } else {
+                accountManager.removeAccount(account, bundle -> startLoginActivity(), null);
+            }
+        }
+    }
+
+    private void startLoginActivity() {
         Intent in = new Intent(this, LoginActivity.class);
         in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);

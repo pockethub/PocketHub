@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.github.pockethub.android.dagger.ActivityBuilder;
 import com.github.pockethub.android.dagger.DialogFragmentBuilder;
+import com.github.pockethub.android.dagger.ServiceBuilder;
 
 import javax.inject.Singleton;
 
@@ -18,6 +19,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         ApplicationModule.class,
         PocketHubModule.class,
         ActivityBuilder.class,
+        ServiceBuilder.class,
         DialogFragmentBuilder.class,
         GitHubModule.class
 })
