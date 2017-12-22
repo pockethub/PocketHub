@@ -48,6 +48,8 @@ import javax.inject.Inject;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Single;
 import retrofit2.Response;
 
@@ -78,11 +80,14 @@ public class CommitListFragment extends PagedItemFragment<Commit>
 
     private RefDialog dialog;
 
-    private TextView branchIconView;
+    @BindView(R.id.tv_branch_icon)
+    protected TextView branchIconView;
 
-    private TextView branchView;
+    @BindView(R.id.tv_branch)
+    protected TextView branchView;
 
-    private View branchFooterView;
+    @BindView(R.id.rl_branch)
+    protected View branchFooterView;
 
     private String ref;
 
@@ -205,7 +210,8 @@ public class CommitListFragment extends PagedItemFragment<Commit>
         refreshWithProgress();
     }
 
-    private void switchRefs() {
+    @OnClick(R.id.rl_branch)
+    protected void switchRefs() {
         if (ref == null) {
             return;
         }
@@ -225,16 +231,6 @@ public class CommitListFragment extends PagedItemFragment<Commit>
             boolean animate) {
         branchFooterView.setVisibility(shown ? View.VISIBLE : View.GONE);
         return super.setListShown(shown, animate);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        branchFooterView = view.findViewById(R.id.rl_branch);
-        branchView = (TextView) view.findViewById(R.id.tv_branch);
-        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
-        branchFooterView.setOnClickListener(v -> switchRefs());
     }
 
     @Override

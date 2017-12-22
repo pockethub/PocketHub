@@ -27,6 +27,8 @@ import android.view.ViewGroup;
 
 import com.github.pockethub.android.R;
 
+import butterknife.BindView;
+
 import static android.widget.TabHost.OnTabChangeListener;
 import static android.widget.TabHost.TabContentFactory;
 
@@ -37,11 +39,13 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     /**
      * View pager
      */
+    @BindView(R.id.vp_pages)
     protected ViewPager pager;
 
     /**
      * Tab host
      */
+    @BindView(R.id.sliding_tabs_layout)
     protected TabLayout slidingTabsLayout;
 
     /**
@@ -156,9 +160,7 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(0);
 
-        pager = (ViewPager) view.findViewById(R.id.vp_pages);
         pager.setOnPageChangeListener(this);
-        slidingTabsLayout = (TabLayout) view.findViewById(R.id.sliding_tabs_layout);
     }
 
     @Override

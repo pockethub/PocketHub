@@ -35,6 +35,9 @@ import com.github.pockethub.android.util.ToastUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnItemClick;
+import butterknife.OnItemLongClick;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -49,27 +52,34 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class ItemListFragment<E> extends DialogFragment implements
         SwipeRefreshLayout.OnRefreshListener {
 
-    private SwipeRefreshLayout swipeLayout;
-
     /**
-     * List items.
+     * Swipe to refresh view.
      */
-    protected List<E> items = new ArrayList<>();
+    @BindView(R.id.swipe_item)
+    protected SwipeRefreshLayout swipeLayout;
 
     /**
      * List view.
      */
+    @BindView(android.R.id.list)
     protected ListView listView;
 
     /**
      * Empty view.
      */
+    @BindView(android.R.id.empty)
     protected TextView emptyView;
 
     /**
      * Progress bar.
      */
+    @BindView(R.id.pb_loading)
     protected ProgressBar progressBar;
+
+    /**
+     * List items.
+     */
+    protected List<E> items = new ArrayList<>();
 
     /**
      * Is the list currently shown?.
@@ -122,22 +132,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_item);
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeResources(
                 R.color.pager_title_background_top_start,
                 R.color.pager_title_background_end,
                 R.color.text_link,
                 R.color.pager_title_background_end);
-
-        listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnItemClickListener((parent, view1, position, id) ->
-                onListItemClick((ListView) parent, view1, position, id));
-        listView.setOnItemLongClickListener((parent, view12, position, id) ->
-                onListItemLongClick((ListView) parent, view12, position, id));
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_loading);
-
-        emptyView = (TextView) view.findViewById(android.R.id.empty);
 
         configureList(getActivity(), getListView());
     }
@@ -438,6 +438,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param position
      * @param id
      */
+    @OnItemClick(android.R.id.list)
     public void onListItemClick(ListView l, View v, int position, long id) {
     }
 
@@ -450,6 +451,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param id
      * @return true if the callback consumed the long click, false otherwise
      */
+    @OnItemLongClick(android.R.id.list)
     public boolean onListItemLongClick(ListView l, View v, int position, long id) {
         return false;
     }

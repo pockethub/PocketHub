@@ -44,6 +44,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -57,8 +58,7 @@ import static com.github.pockethub.android.Intents.EXTRA_POSITION;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class GistsViewActivity extends PagerActivity implements
-    OnLoadListener<Gist> {
+public class GistsViewActivity extends PagerActivity implements OnLoadListener<Gist> {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
     private static final String TAG = "GistsViewActivity";
@@ -92,7 +92,8 @@ public class GistsViewActivity extends PagerActivity implements
             .add(EXTRA_POSITION, position).toIntent();
     }
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
     private String[] gists;
 
@@ -112,14 +113,9 @@ public class GistsViewActivity extends PagerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_pager);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -137,9 +133,15 @@ public class GistsViewActivity extends PagerActivity implements
 
         adapter = new GistsPagerAdapter(this, gists);
         pager.setAdapter(adapter);
+        // TODO: This should be in the base class
         pager.setOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager;
     }
 
     @Override

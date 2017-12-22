@@ -39,8 +39,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends BaseActivity implements
-    OnItemLongClickListener {
+public class FiltersViewActivity extends BaseActivity implements OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters
@@ -64,10 +63,6 @@ public class FiltersViewActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.issues_filter_list);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
         actionBar.setIcon(R.drawable.ic_bookmark_white_24dp);
@@ -76,6 +71,11 @@ public class FiltersViewActivity extends BaseActivity implements
         fragment = (FilterListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
         fragment.getListView().setOnItemLongClickListener(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.issues_filter_list;
     }
 
     @Override

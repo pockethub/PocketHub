@@ -20,6 +20,8 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
 
+import com.github.pockethub.android.ui.BaseActivity;
+
 import dagger.android.support.DaggerAppCompatActivity;
 
 /**
@@ -38,7 +40,7 @@ import dagger.android.support.DaggerAppCompatActivity;
  *
  * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
  */
-public abstract class AccountAuthenticatorAppCompatActivity extends DaggerAppCompatActivity {
+public abstract class AccountAuthenticatorAppCompatActivity extends BaseActivity {
 
     private AccountAuthenticatorResponse accountAuthenticatorResponse = null;
     private Bundle resultBundle = null;

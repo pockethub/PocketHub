@@ -38,6 +38,7 @@ import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -73,7 +74,8 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
     private User user;
 
-    private ProgressBar loadingBar;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
 
     private boolean isFollowing;
 
@@ -84,7 +86,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         super.onCreate(savedInstanceState);
 
         user = getIntent().getParcelableExtra(EXTRA_USER);
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

@@ -51,6 +51,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -64,11 +65,13 @@ import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 public class CommitCompareListFragment extends DialogFragment implements
         OnItemClickListener {
 
+    @BindView(android.R.id.list)
+    protected ListView list;
+
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
+
     private DiffStyler diffStyler;
-
-    private ListView list;
-
-    private ProgressBar progress;
 
     private Repository repository;
 
@@ -193,10 +196,6 @@ public class CommitCompareListFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        list = (ListView) view.findViewById(android.R.id.list);
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         list.setOnItemClickListener(this);

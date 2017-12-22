@@ -46,6 +46,7 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryForkService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -81,7 +82,8 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Inject
     protected AvatarLoader avatars;
 
-    private ProgressBar loadingBar;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
 
     private boolean isStarred;
 
@@ -94,9 +96,6 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         super.onCreate(savedInstanceState);
 
         repository = getParcelableExtra(EXTRA_REPOSITORY);
-
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
-
         User owner = repository.owner();
 
         ActionBar actionBar = getSupportActionBar();

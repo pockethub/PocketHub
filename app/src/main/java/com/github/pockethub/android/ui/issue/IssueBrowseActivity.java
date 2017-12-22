@@ -61,15 +61,16 @@ public class IssueBrowseActivity extends BaseActivity {
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.activity_repo_issue_list);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.name());
         actionBar.setSubtitle(repo.owner().login());
         actionBar.setDisplayHomeAsUpEnabled(true);
         avatars.bind(actionBar, repo.owner());
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_repo_issue_list;
     }
 
     @Override

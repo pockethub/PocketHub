@@ -41,6 +41,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -55,7 +56,8 @@ import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 public class GistFileFragment extends DialogFragment implements
         OnSharedPreferenceChangeListener {
 
-    private WebView webView;
+    @BindView(R.id.wv_code)
+    protected WebView webView;
 
     private String gistId;
 
@@ -182,9 +184,6 @@ public class GistFileFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        webView = (WebView) view.findViewById(R.id.wv_code);
-
         editor = new SourceEditor(webView);
         editor.setWrap(PreferenceUtils.getCodePreferences(getActivity())
                 .getBoolean(WRAP, false));

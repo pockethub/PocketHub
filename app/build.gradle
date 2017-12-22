@@ -134,6 +134,9 @@ dependencies {
     provided 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
 
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
     compile 'com.github.meisolsson:githubsdk:0.4.5'
     compile 'com.afollestad.material-dialogs:core:0.9.6.0'
 

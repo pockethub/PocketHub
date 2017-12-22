@@ -120,16 +120,14 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        filterHeader = getLayoutInflater(savedInstanceState).inflate(
-                R.layout.issues_filter_header, null);
-        state = (TextView) filterHeader.findViewById(R.id.tv_filter_state);
-        labels = (TextView) filterHeader.findViewById(R.id.tv_filter_labels);
-        milestone = (TextView) filterHeader
-                .findViewById(R.id.tv_filter_milestone);
+        // TODO: Custom view or just inline the
+        filterHeader = getLayoutInflater().inflate(R.layout.issues_filter_header, null);
+        state = filterHeader.findViewById(R.id.tv_filter_state);
+        labels = filterHeader.findViewById(R.id.tv_filter_labels);
+        milestone = filterHeader.findViewById(R.id.tv_filter_milestone);
         assigneeArea = filterHeader.findViewById(R.id.ll_assignee);
-        assignee = (TextView) filterHeader.findViewById(R.id.tv_filter_assignee);
-        assigneeAvatar = (ImageView) filterHeader
-                .findViewById(R.id.iv_assignee_avatar);
+        assignee = filterHeader.findViewById(R.id.tv_filter_assignee);
+        assigneeAvatar = filterHeader.findViewById(R.id.iv_assignee_avatar);
         updateFilterSummary();
 
         super.onViewCreated(view, savedInstanceState);

@@ -27,6 +27,7 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.request.NotificationReadRequest;
 import com.meisolsson.githubsdk.service.activity.NotificationService;
 
+import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,10 +51,17 @@ public class NotificationListFragment extends DialogFragment
 
     private NotificationListAdapter adapter;
 
-    private ListView list;
-    private TextView emptyText;
-    private ProgressBar progressBar;
-    private SwipeRefreshLayout refreshLayout;
+    @BindView(android.R.id.list)
+    protected ListView list;
+
+    @BindView(android.R.id.empty)
+    protected TextView emptyText;
+
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progressBar;
+
+    @BindView(R.id.swipe_item)
+    protected SwipeRefreshLayout refreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,20 +81,13 @@ public class NotificationListFragment extends DialogFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_item);
         refreshLayout.setOnRefreshListener(this::refreshNotifications);
-
-        emptyText = (TextView) view.findViewById(android.R.id.empty);
         emptyText.setText(R.string.no_notifications);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.pb_loading);
-        list = (ListView) view.findViewById(android.R.id.list);
         list.setVisibility(View.VISIBLE);
         list.setOnItemClickListener(this);
 
         adapter = new NotificationListAdapter(getActivity().getLayoutInflater(), this);
-
         list.setAdapter(adapter);
     }
 

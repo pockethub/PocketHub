@@ -50,6 +50,7 @@ import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -90,6 +91,12 @@ public class BranchFileViewActivity extends BaseActivity {
         return builder.toIntent();
     }
 
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
+
+    @BindView(R.id.wv_code)
+    protected WebView codeView;
+
     private Repository repo;
 
     private String sha;
@@ -106,10 +113,6 @@ public class BranchFileViewActivity extends BaseActivity {
 
     private GitBlob blob;
 
-    private ProgressBar loadingBar;
-
-    private WebView codeView;
-
     private SourceEditor editor;
 
     private MenuItem markdownItem;
@@ -124,15 +127,10 @@ public class BranchFileViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_commit_file_view);
-
         repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
         branch = getStringExtra(EXTRA_HEAD);
-
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
-        codeView = (WebView) findViewById(R.id.wv_code);
 
         codeView.getSettings().setBuiltInZoomControls(true);
         codeView.getSettings().setUseWideViewPort(true);
@@ -143,14 +141,17 @@ public class BranchFileViewActivity extends BaseActivity {
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(file);
         actionBar.setSubtitle(branch);
         avatars.bind(actionBar, repo.owner());
 
         loadContent();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_commit_file_view;
     }
 
     @Override

@@ -49,6 +49,7 @@ import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -87,6 +88,12 @@ public class CommitFileViewActivity extends BaseActivity {
         return builder.toIntent();
     }
 
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
+
+    @BindView(R.id.wv_code)
+    protected WebView codeView;
+
     private Repository repo;
 
     private String commit;
@@ -103,10 +110,6 @@ public class CommitFileViewActivity extends BaseActivity {
 
     private GitBlob blob;
 
-    private ProgressBar loadingBar;
-
-    private WebView codeView;
-
     private SourceEditor editor;
 
     private MenuItem markdownItem;
@@ -121,17 +124,10 @@ public class CommitFileViewActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_commit_file_view);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         repo = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_HEAD);
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
-
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
-        codeView = (WebView) findViewById(R.id.wv_code);
 
         file = CommitUtils.getName(path);
         isMarkdownFile = MarkdownUtils.isMarkdown(file);
@@ -152,6 +148,11 @@ public class CommitFileViewActivity extends BaseActivity {
         avatars.bind(actionBar, repo.owner());
 
         loadContent();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_commit_file_view;
     }
 
     @Override

@@ -36,6 +36,8 @@ import javax.inject.Inject;
 
 import java.util.Collection;
 
+import butterknife.BindView;
+
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 import static com.github.pockethub.android.Intents.EXTRA_BASES;
@@ -94,7 +96,8 @@ public class CommitViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
     private Repository repository;
 
@@ -111,12 +114,6 @@ public class CommitViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_pager);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        pager = (ViewPager) findViewById(R.id.vp_pages);
-
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);
         initialPosition = getIntExtra(EXTRA_POSITION);
@@ -131,6 +128,11 @@ public class CommitViewActivity extends PagerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager;
     }
 
     @Override

@@ -35,6 +35,8 @@ import javax.inject.Inject;
 
 import java.io.Serializable;
 
+import butterknife.BindView;
+
 /**
  * Fragment to display rendered comment fragment
  */
@@ -44,20 +46,14 @@ public class RenderedCommentFragment extends DialogFragment {
 
     private static final String ARG_REPO = "repo";
 
-    private ProgressBar progress;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
 
-    private TextView bodyText;
+    @BindView(R.id.tv_comment_body)
+    protected TextView bodyText;
 
     @Inject
     protected HttpImageGetter imageGetter;
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-        bodyText = (TextView) view.findViewById(R.id.tv_comment_body);
-    }
 
     /**
      * Set text to render

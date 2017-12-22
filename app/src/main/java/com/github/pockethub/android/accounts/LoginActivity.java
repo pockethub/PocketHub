@@ -97,14 +97,9 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.login);
-
         clientId = getString(R.string.github_client);
         secret = getString(R.string.github_secret);
         redirectUri = getString(R.string.github_oauth);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         accountManager = AccountManager.get(this);
 
@@ -114,6 +109,11 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
             openMain();
         }
         checkOauthConfig();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.login;
     }
 
     private void checkOauthConfig() {

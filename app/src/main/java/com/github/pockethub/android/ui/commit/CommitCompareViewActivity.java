@@ -73,10 +73,6 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.commit_compare);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
@@ -84,6 +80,11 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         fragment = getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.commit_compare;
     }
 
     @Override

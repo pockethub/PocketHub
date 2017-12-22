@@ -63,6 +63,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -80,11 +81,14 @@ import static com.github.pockethub.android.RequestCodes.COMMENT_CREATE;
 public class CommitDiffListFragment extends DialogFragment implements
         OnItemClickListener {
 
+
+    @BindView(android.R.id.list)
+    protected ListView list;
+
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
+
     private DiffStyler diffStyler;
-
-    private ListView list;
-
-    private ProgressBar progress;
 
     private Repository repository;
 
@@ -378,10 +382,6 @@ public class CommitDiffListFragment extends DialogFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        list = (ListView) view.findViewById(android.R.id.list);
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-
         diffStyler = new DiffStyler(getResources());
 
         list.setOnItemClickListener(this);
@@ -395,19 +395,17 @@ public class CommitDiffListFragment extends DialogFragment implements
         list.setAdapter(adapter);
 
         commitHeader = inflater.inflate(R.layout.commit_header, null);
-        commitMessage = (TextView) commitHeader
-                .findViewById(R.id.tv_commit_message);
+        commitMessage = commitHeader.findViewById(R.id.tv_commit_message);
 
         authorArea = commitHeader.findViewById(R.id.ll_author);
-        authorAvatar = (ImageView) commitHeader.findViewById(R.id.iv_author);
-        authorName = (TextView) commitHeader.findViewById(R.id.tv_author);
-        authorDate = (TextView) commitHeader.findViewById(R.id.tv_author_date);
+        authorAvatar = commitHeader.findViewById(R.id.iv_author);
+        authorName = commitHeader.findViewById(R.id.tv_author);
+        authorDate = commitHeader.findViewById(R.id.tv_author_date);
 
         committerArea = commitHeader.findViewById(R.id.ll_committer);
-        committerAvatar = (ImageView) commitHeader
-                .findViewById(R.id.iv_committer);
-        committerName = (TextView) commitHeader.findViewById(R.id.tv_committer);
-        committerDate = (TextView) commitHeader.findViewById(R.id.tv_commit_date);
+        committerAvatar = commitHeader.findViewById(R.id.iv_committer);
+        committerName = commitHeader.findViewById(R.id.tv_committer);
+        committerDate = commitHeader.findViewById(R.id.tv_commit_date);
 
         loadingView = inflater.inflate(R.layout.loading_item, null);
     }

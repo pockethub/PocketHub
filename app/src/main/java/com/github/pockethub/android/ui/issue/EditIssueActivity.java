@@ -68,6 +68,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -130,23 +133,32 @@ public class EditIssueActivity extends BaseActivity {
         return builder.toIntent();
     }
 
-    private EditText titleText;
+    @BindView(R.id.et_issue_title)
+    protected EditText titleText;
 
-    private EditText bodyText;
+    @BindView(R.id.et_issue_body)
+    protected EditText bodyText;
 
-    private View milestoneGraph;
+    @BindView(R.id.ll_milestone_graph)
+    protected View milestoneGraph;
 
-    private TextView milestoneText;
+    @BindView(R.id.tv_milestone)
+    protected TextView milestoneText;
 
-    private View milestoneClosed;
+    @BindView(R.id.v_closed)
+    protected View milestoneClosed;
 
-    private ImageView assigneeAvatar;
+    @BindView(R.id.iv_assignee_avatar)
+    protected ImageView assigneeAvatar;
 
-    private TextView assigneeText;
+    @BindView(R.id.tv_assignee_name)
+    protected TextView assigneeText;
 
-    private TextView labelsText;
+    @BindView(R.id.tv_labels)
+    protected TextView labelsText;
 
-    private FloatingActionButton addImageFab;
+    @BindView(R.id.fab_add_image)
+    protected FloatingActionButton addImageFab;
 
     @Inject
     protected AvatarLoader avatars;
@@ -168,19 +180,6 @@ public class EditIssueActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_issue_edit);
-
-        titleText = (EditText) findViewById(R.id.et_issue_title);
-        bodyText = (EditText) findViewById(R.id.et_issue_body);
-        milestoneGraph = findViewById(R.id.ll_milestone_graph);
-        milestoneText = (TextView) findViewById(R.id.tv_milestone);
-        milestoneClosed = findViewById(R.id.v_closed);
-        assigneeAvatar = (ImageView) findViewById(R.id.iv_assignee_avatar);
-        assigneeText = (TextView) findViewById(R.id.tv_assignee_name);
-        labelsText = (TextView) findViewById(R.id.tv_labels);
-        addImageFab = (FloatingActionButton) findViewById(R.id.fab_add_image);
-
         Intent intent = getIntent();
 
         if (savedInstanceState != null) {
@@ -199,8 +198,6 @@ public class EditIssueActivity extends BaseActivity {
 
         checkCollaboratorStatus();
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         if (issue.number() != null && issue.number() > 0) {
             if (IssueUtils.isPullRequest(issue)) {
@@ -216,42 +213,14 @@ public class EditIssueActivity extends BaseActivity {
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, (User) intent.getParcelableExtra(EXTRA_USER));
 
-        titleText.addTextChangedListener(new TextWatcherAdapter() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                super.onTextChanged(s, start, before, count);
-                updateSaveMenu(s);
-            }
-        });
-
-        // @TargetApi(…) required to ensure build passes
-        // noinspection Convert2Lambda
-        addImageFab.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Activity activity = EditIssueActivity.this;
-                    String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
-
-                    if (ContextCompat.checkSelfPermission(activity, permission)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
-                                permission, R.string.read_permission_title,
-                                R.string.read_permission_content);
-                    } else {
-                        startImagePicker();
-                    }
-                } else {
-                    startImagePicker();
-                }
-            }
-        });
-
         updateSaveMenu();
         titleText.setText(issue.title());
         bodyText.setText(issue.body());
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_issue_edit;
     }
 
     @Override
@@ -331,6 +300,30 @@ public class EditIssueActivity extends BaseActivity {
                     }
                 }
             });
+        }
+    }
+
+    @OnTextChanged(R.id.et_issue_title)
+    protected void onIssueTitleChange(CharSequence text) {
+        updateSaveMenu(text);
+    }
+
+    @OnClick(R.id.fab_add_image)
+    protected void onAddImageClicked() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            Activity activity = EditIssueActivity.this;
+            String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+
+            if (ContextCompat.checkSelfPermission(activity, permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
+                        permission, R.string.read_permission_title,
+                        R.string.read_permission_content);
+            } else {
+                startImagePicker();
+            }
+        } else {
+            startImagePicker();
         }
     }
 
@@ -435,9 +428,7 @@ public class EditIssueActivity extends BaseActivity {
     }
 
     private void updateSaveMenu() {
-        if (titleText != null) {
-            updateSaveMenu(titleText.getText());
-        }
+        updateSaveMenu(titleText.getText());
     }
 
     private void updateSaveMenu(final CharSequence text) {

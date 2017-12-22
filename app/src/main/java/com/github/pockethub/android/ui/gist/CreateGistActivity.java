@@ -44,6 +44,11 @@ import com.meisolsson.githubsdk.service.gists.GistService;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.OnCheckedChanged;
+import butterknife.OnFocusChange;
+import butterknife.OnTextChanged;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -54,64 +59,26 @@ public class CreateGistActivity extends BaseActivity {
 
     private static final String TAG = "CreateGistActivity";
 
-    private EditText descriptionText;
+    @BindView(R.id.et_gist_description)
+    protected EditText descriptionText;
 
-    private EditText nameText;
+    @BindView(R.id.et_gist_name)
+    protected EditText nameText;
 
-    private EditText contentText;
+    @BindView(R.id.et_gist_content)
+    protected EditText contentText;
 
-    private CheckBox publicCheckBox;
+    @BindView(R.id.cb_public)
+    protected CheckBox publicCheckBox;
+
+    @BindView(R.id.appbar)
+    protected AppBarLayout appBarLayout;
 
     private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_gist_create);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        descriptionText = (EditText) findViewById(R.id.et_gist_description);
-        nameText = (EditText) findViewById(R.id.et_gist_name);
-        contentText = (EditText) findViewById(R.id.et_gist_content);
-        publicCheckBox = (CheckBox) findViewById(R.id.cb_public);
-
-        final AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-
-        // Fully expand the AppBar if something in it gets focus
-        View.OnFocusChangeListener expandAppBarOnFocusChangeListener = (v, hasFocus) -> {
-            if (hasFocus) {
-                appBarLayout.setExpanded(true);
-            }
-        };
-        nameText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
-        descriptionText.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
-        publicCheckBox.setOnFocusChangeListener(expandAppBarOnFocusChangeListener);
-
-        // Fully expand the AppBar if something in it changes its value
-        TextWatcher expandAppBarTextWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                appBarLayout.setExpanded(true);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                appBarLayout.setExpanded(true);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                appBarLayout.setExpanded(true);
-            }
-        };
-        nameText.addTextChangedListener(expandAppBarTextWatcher);
-        descriptionText.addTextChangedListener(expandAppBarTextWatcher);
-        publicCheckBox.addTextChangedListener(expandAppBarTextWatcher);
-        publicCheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-                appBarLayout.setExpanded(true));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -125,14 +92,12 @@ public class CreateGistActivity extends BaseActivity {
             descriptionText.setText(subject);
         }
 
-        contentText.addTextChangedListener(new TextWatcherAdapter() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updateCreateMenu(s);
-            }
-        });
         updateCreateMenu();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_gist_create;
     }
 
     @Override
@@ -158,10 +123,27 @@ public class CreateGistActivity extends BaseActivity {
         }
     }
 
-    private void updateCreateMenu() {
-        if (contentText != null) {
-            updateCreateMenu(contentText.getText());
+    // Fully expand the AppBar if something in it gets focus
+    @OnFocusChange({R.id.et_gist_description, R.id.et_gist_name, R.id.cb_public})
+    protected void expandAppBarOnFocusChangeListener(View v, boolean hasFocus) {
+        if (hasFocus) {
+            appBarLayout.setExpanded(true);
         }
+    }
+
+    @OnCheckedChanged(R.id.cb_public)
+    @OnTextChanged(value = {R.id.et_gist_description, R.id.et_gist_name, R.id.cb_public})
+    protected void expandAppBarOnChange() {
+        appBarLayout.setExpanded(true);
+    }
+
+    @OnTextChanged(R.id.et_gist_content)
+    protected void onContentTextChange() {
+        updateCreateMenu();
+    }
+
+    private void updateCreateMenu() {
+        updateCreateMenu(contentText.getText());
     }
 
     private void updateCreateMenu(CharSequence text) {
@@ -175,11 +157,11 @@ public class CreateGistActivity extends BaseActivity {
 
         String enteredDescription = descriptionText.getText().toString().trim();
         final String description = enteredDescription.length() > 0 ? enteredDescription
-            : getString(R.string.gist_description_hint);
+                : getString(R.string.gist_description_hint);
 
         String enteredName = nameText.getText().toString().trim();
         final String name = enteredName.length() > 0 ? enteredName
-            : getString(R.string.gist_file_name_hint);
+                : getString(R.string.gist_file_name_hint);
 
         final String content = contentText.getText().toString();
         Map<String, GistFile> map = new HashMap<>();

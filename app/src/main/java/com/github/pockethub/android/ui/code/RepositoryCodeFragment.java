@@ -53,6 +53,7 @@ import com.meisolsson.githubsdk.model.git.GitReference;
 
 import java.util.LinkedList;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -69,21 +70,27 @@ public class RepositoryCodeFragment extends DialogFragment implements
 
     private static final String TAG = "RepositoryCodeFragment";
 
-    private FullTree tree;
+    @BindView(android.R.id.list)
+    protected ListView listView;
 
-    private ListView listView;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progressView;
 
-    private ProgressBar progressView;
+    @BindView(R.id.tv_branch_icon)
+    protected TextView branchIconView;
 
-    private TextView branchIconView;
+    @BindView(R.id.tv_branch)
+    protected TextView branchView;
 
-    private TextView branchView;
+    @BindView(R.id.tv_path)
+    protected TextView pathView;
 
-    private TextView pathView;
+    @BindView(R.id.rl_branch)
+    protected View branchFooterView;
 
     private View pathHeaderView;
 
-    private View branchFooterView;
+    private FullTree tree;
 
     private HeaderFooterListAdapter<CodeTreeAdapter> adapter;
 
@@ -223,22 +230,14 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressView = (ProgressBar) view.findViewById(R.id.pb_loading);
-        listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(this);
 
         Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<>(listView,
-                new CodeTreeAdapter(activity));
+        adapter = new HeaderFooterListAdapter<>(listView, new CodeTreeAdapter(activity));
 
-        branchFooterView = view.findViewById(R.id.rl_branch);
-        branchView = (TextView) view.findViewById(R.id.tv_branch);
-        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
         branchFooterView.setOnClickListener(v -> switchBranches());
+        pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item, null);
 
-        pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
-                null);
-        pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
         pathView.setMovementMethod(LinkMovementMethod.getInstance());
         if (pathShowing) {
             adapter.addHeader(pathHeaderView);
@@ -309,8 +308,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Entry entry = (Entry) parent.getItemAtPosition(position);
         if (tree == null || entry == null) {
             return;

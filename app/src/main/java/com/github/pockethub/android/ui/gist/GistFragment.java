@@ -67,6 +67,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -92,9 +93,11 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
 
     private Gist gist;
 
-    private ListView list;
+    @BindView(android.R.id.list)
+    protected ListView list;
 
-    private ProgressBar progress;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
 
     @Inject
     protected GistStore store;
@@ -158,10 +161,6 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        list = (ListView) view.findViewById(android.R.id.list);
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-
         Activity activity = getActivity();
         User user = gist.owner();
         String userName = null;

@@ -97,10 +97,6 @@ public class IssueSearchActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_issue_search);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         Bundle appData = getIntent().getBundleExtra(APP_DATA);
         if (appData != null) {
@@ -116,6 +112,11 @@ public class IssueSearchActivity extends BaseActivity {
             .findFragmentById(android.R.id.list);
 
         handleIntent(getIntent());
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_issue_search;
     }
 
     @Override

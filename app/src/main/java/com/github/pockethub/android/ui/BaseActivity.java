@@ -18,12 +18,18 @@ package com.github.pockethub.android.ui;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
+import com.github.pockethub.android.R;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -32,6 +38,21 @@ import io.reactivex.subjects.BehaviorSubject;
  * Activity that display dialogs
  */
 public abstract class BaseActivity extends DaggerAppCompatActivity implements DialogResultListener {
+
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getContentView());
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
 
     /**
      * Get intent extra
@@ -108,4 +129,12 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Di
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
     }
+
+    /**
+     * Get content view to be used when {@link #onCreate(Bundle)} is called.
+     *
+     * @return layout resource id
+     */
+    @LayoutRes
+    protected abstract int getContentView();
 }

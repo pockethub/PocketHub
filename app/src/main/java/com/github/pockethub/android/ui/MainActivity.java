@@ -75,6 +75,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -86,6 +87,12 @@ public class MainActivity extends BaseActivity
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout drawerLayout;
+
+    @BindView(R.id.navigation_view)
+    protected NavigationView navigationView;
+
     @Inject
     protected AccountDataManager accountDataManager;
 
@@ -96,32 +103,22 @@ public class MainActivity extends BaseActivity
 
     private User org;
 
-    private NavigationView navigationView;
-
     @Inject
     @Singleton
     protected AvatarLoader avatars;
-    private DrawerLayout drawerLayout;
+
     private boolean userLearnedDrawer;
-    private Toolbar toolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -136,7 +133,6 @@ public class MainActivity extends BaseActivity
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         reloadOrgs();
@@ -152,6 +148,11 @@ public class MainActivity extends BaseActivity
                 tokenStore.saveToken(AccountsHelper.getUserToken(this, account));
             }
         }
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -248,10 +249,10 @@ public class MainActivity extends BaseActivity
         TextView userName;
 
         View headerView = navigationView.getHeaderView(0);
-        userImage = (ImageView) headerView.findViewById(R.id.user_picture);
-        ImageView notificationIcon = (ImageView) headerView.findViewById(R.id.iv_notification);
-        userRealName = (TextView) headerView.findViewById(R.id.user_real_name);
-        userName = (TextView) headerView.findViewById(R.id.user_name);
+        userImage = headerView.findViewById(R.id.user_picture);
+        ImageView notificationIcon = headerView.findViewById(R.id.iv_notification);
+        userRealName = headerView.findViewById(R.id.user_real_name);
+        userName = headerView.findViewById(R.id.user_name);
 
         notificationIcon.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, NotificationActivity.class)));
@@ -268,11 +269,8 @@ public class MainActivity extends BaseActivity
     }
 
     private void setUpNavigationView() {
-        if (navigationView != null) {
-
-            setUpHeaderView();
-            setUpNavigationMenu();
-        }
+        setUpHeaderView();
+        setUpNavigationMenu();
     }
 
     private void setUpNavigationMenu() {

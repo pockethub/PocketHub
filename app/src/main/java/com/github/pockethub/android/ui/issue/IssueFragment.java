@@ -76,6 +76,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -126,9 +127,11 @@ public class IssueFragment extends DialogFragment {
     @Inject
     protected IssueStore store;
 
-    private ListView list;
+    @BindView(android.R.id.list)
+    protected ListView list;
 
-    private ProgressBar progress;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
 
     private View headerView;
 
@@ -231,8 +234,7 @@ public class IssueFragment extends DialogFragment {
 
         issue = store.getIssue(repositoryId, issueNumber);
 
-        TextView loadingText = (TextView) loadingView
-                .findViewById(R.id.tv_loading);
+        TextView loadingText = (TextView) loadingView.findViewById(R.id.tv_loading);
         loadingText.setText(R.string.loading_comments);
 
         if (issue == null || (issue.comments() > 0 && items == null)) {
@@ -258,29 +260,23 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        list = (ListView) view.findViewById(android.R.id.list);
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-
-        LayoutInflater inflater = getLayoutInflater(savedInstanceState);
+        LayoutInflater inflater = getLayoutInflater();
 
         headerView = inflater.inflate(R.layout.issue_header, null);
-
-        stateText = (TextView) headerView.findViewById(R.id.tv_state);
-        titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
-        authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
-        createdDateText = (TextView) headerView
-                .findViewById(R.id.tv_issue_creation_date);
-        creatorAvatar = (ImageView) headerView.findViewById(R.id.iv_avatar);
-        commitsView = (ViewGroup) headerView.findViewById(R.id.ll_issue_commits);
-        assigneeText = (TextView) headerView.findViewById(R.id.tv_assignee_name);
-        assigneeAvatar = (ImageView) headerView
-                .findViewById(R.id.iv_assignee_avatar);
-        labelsArea = (TextView) headerView.findViewById(R.id.tv_labels);
+        // TODO: Make this a custom view, probably a cleaner way to do this.
+        stateText = headerView.findViewById(R.id.tv_state);
+        titleText = headerView.findViewById(R.id.tv_issue_title);
+        authorText = headerView.findViewById(R.id.tv_issue_author);
+        createdDateText = headerView.findViewById(R.id.tv_issue_creation_date);
+        creatorAvatar = headerView.findViewById(R.id.iv_avatar);
+        commitsView = headerView.findViewById(R.id.ll_issue_commits);
+        assigneeText = headerView.findViewById(R.id.tv_assignee_name);
+        assigneeAvatar = headerView.findViewById(R.id.iv_assignee_avatar);
+        labelsArea = headerView.findViewById(R.id.tv_labels);
         milestoneArea = headerView.findViewById(R.id.ll_milestone);
-        milestoneText = (TextView) headerView.findViewById(R.id.tv_milestone);
+        milestoneText = headerView.findViewById(R.id.tv_milestone);
         milestoneProgressArea = headerView.findViewById(R.id.v_closed);
-        bodyText = (TextView) headerView.findViewById(R.id.tv_issue_body);
+        bodyText = headerView.findViewById(R.id.tv_issue_body);
         bodyText.setMovementMethod(SelectableLinkMovementMethod.getInstance());
 
         loadingView = inflater.inflate(R.layout.loading_item, null);

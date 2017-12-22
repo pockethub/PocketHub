@@ -46,6 +46,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -150,7 +151,8 @@ public class IssuesViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
     private int[] issueNumbers;
 
@@ -175,19 +177,14 @@ public class IssuesViewActivity extends PagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
         repoIds = getIntent().getParcelableArrayListExtra(EXTRA_REPOSITORIES);
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.activity_pager);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         if (repo != null) {
-            ActionBar actionBar = getSupportActionBar();
             actionBar.setSubtitle(InfoUtils.createRepoId(repo));
             user.set(repo.owner());
             avatars.bind(actionBar, user);
@@ -208,6 +205,12 @@ public class IssuesViewActivity extends PagerActivity {
         }
     }
 
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager;
+    }
+
     private void repositoryLoaded(Repository repo) {
         if (issueNumbers.length == 1 && (user.get() == null || user.get().avatarUrl() == null)) {
             avatars.bind(getSupportActionBar(), repo.owner());
@@ -221,7 +224,6 @@ public class IssuesViewActivity extends PagerActivity {
 
     private void configurePager() {
         int initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         if (repo != null) {
             adapter = new IssuesPagerAdapter(this, repo, issueNumbers, canWrite);
