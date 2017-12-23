@@ -6,22 +6,14 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.12.0'
     }
-
-    // Exclude the version that the android plugin depends on (for retrolambda-lombok purposes).
-    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }
 
 allprojects {
     repositories {
-        maven { url "http://dl.bintray.com/populov/maven" }
         jcenter()
-        maven { url "https://repo.eclipse.org/content/groups/releases" }
-        maven { url "https://jitpack.io" }
         google()
     }
 }
