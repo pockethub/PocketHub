@@ -155,13 +155,13 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(this.bindToLifecycle())
                 .subscribe(fullTree -> {
-                    if (folder == null || folder.parent == null) {
+                    if (folder == null || folder.isRoot()) {
                         setFolder(fullTree, fullTree.root);
                     } else {
                         // Look for current folder in new tree or else reset to root
                         Folder current = folder;
                         LinkedList<Folder> stack = new LinkedList<>();
-                        while (current.parent != null) {
+                        while (!current.isRoot()) {
                             stack.addFirst(current);
                             current = current.parent;
                         }
@@ -252,7 +252,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
      * @return true if directory changed, false otherwise
      */
     public boolean onBackPressed() {
-        if (folder != null && folder.parent != null) {
+        if (folder != null && !folder.isRoot()) {
             setFolder(tree, folder.parent);
             return true;
         } else {
