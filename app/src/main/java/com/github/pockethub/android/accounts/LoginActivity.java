@@ -85,8 +85,6 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
     private AccountManager accountManager;
 
-    private Account[] accounts;
-
     private String accessToken;
 
     private String scope;
@@ -108,9 +106,9 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
         accountManager = AccountManager.get(this);
 
-        accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+        Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
 
-        if (accounts != null && accounts.length > 0) {
+        if (accounts.length > 0) {
             openMain();
         }
         checkOauthConfig();
