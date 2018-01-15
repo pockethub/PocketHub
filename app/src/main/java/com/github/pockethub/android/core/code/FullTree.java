@@ -67,6 +67,10 @@ public class FullTree {
             this.name = CommitUtils.getName(entry.path());
         }
 
+        public boolean isRoot() {
+            return parent == null;
+        }
+
         @Override
         public int compareTo(Entry another) {
             return CASE_INSENSITIVE_ORDER.compare(name, another.name);
