@@ -140,9 +140,6 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.6.0'
     compile 'com.xwray:groupie:2.0.3'
 
-    //Self compiled .aar version of wishlist
-    compile (name:'lib', ext:'aar')
-
     //Libs for testing
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"

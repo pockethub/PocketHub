@@ -15,14 +15,15 @@
  */
 package com.github.pockethub.android.ui.comment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.Keyboard;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
@@ -59,8 +60,20 @@ public class RenderedCommentFragment extends DialogFragment {
      */
     public void setText(final String raw, final Repository repo) {
         loadMarkdown(raw, repo);
-        Keyboard.hideSoftInput(bodyText);
+        hideSoftKeyboard();
         showLoading(true);
+    }
+
+    private void hideSoftKeyboard() {
+        Context context = getContext();
+        if (context != null) {
+            InputMethodManager imm =
+                    (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(bodyText.getWindowToken(), 0);
+            }
+        }
     }
 
     private void showLoading(final boolean loading) {

@@ -18,8 +18,6 @@ package com.github.pockethub.android.util;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.github.kevinsawicki.wishlist.Toaster;
-
 /**
  * Utilities for displaying toast notifications
  */
@@ -34,7 +32,7 @@ public class ToastUtils {
      * @param message
      */
     public static void show(final Activity activity, final String message) {
-        Toaster.showLong(activity, message);
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
     }
 
     /**
