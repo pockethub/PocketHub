@@ -17,26 +17,26 @@ package com.github.pockethub.android.ui.search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.item.UserItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.List;
+import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
@@ -48,37 +48,27 @@ import static android.app.SearchManager.QUERY;
  */
 public class SearchUserListFragment extends PagedItemFragment<User> {
 
+    SearchService service = ServiceGenerator.createService(getContext(), SearchService.class);
+
     private String query;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
-    protected ResourcePager<User> createPager() {
-        return new ResourcePager<User>() {
-            @Override
-            protected Object getId(User resource) {
-                return resource.id();
-            }
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.searchUsers(query, null, null, page)
+                .map(response -> {
+                    SearchPage<User> repositorySearchPage = response.body();
 
-            @Override
-            public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getContext(), SearchService.class)
-                                .searchUsers(query, null, null, page1)
-                                .map(response -> {
-                                    SearchPage<User> repositorySearchPage = response.body();
-
-                                    return Response.success(Page.<User>builder()
-                                            .first(repositorySearchPage.first())
-                                            .last(repositorySearchPage.last())
-                                            .next(repositorySearchPage.next())
-                                            .prev(repositorySearchPage.prev())
-                                            .items(repositorySearchPage.items())
-                                            .build());
-                                }), page);
-            }
-        };
+                    return Response.success(Page.<User>builder()
+                            .first(repositorySearchPage.first())
+                            .last(repositorySearchPage.last())
+                            .next(repositorySearchPage.next())
+                            .prev(repositorySearchPage.prev())
+                            .items(repositorySearchPage.items())
+                            .build());
+                });
     }
 
     @Override
@@ -108,25 +98,26 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        return new SearchUserListAdapter(getActivity(),
-                items.toArray(new User[items.size()]), avatars);
+    protected Item createItem(User item) {
+        return new UserItem(avatars, item);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User result = (User) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(result.login())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
-                .subscribe(response ->
-                        startActivity(UserViewActivity.createIntent(response.body())));
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof UserItem) {
+            User result = ((UserItem) item).getData();
+            ServiceGenerator.createService(getContext(), UserService.class)
+                    .getUser(result.login())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
+                    .subscribe(response ->
+                            startActivity(UserViewActivity.createIntent(response.body())));
+        }
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_users_search;
     }
 }

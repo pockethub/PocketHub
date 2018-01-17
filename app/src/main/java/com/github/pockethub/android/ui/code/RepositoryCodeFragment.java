@@ -18,7 +18,9 @@ package com.github.pockethub.android.ui.code;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,9 +28,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -38,21 +37,30 @@ import com.github.pockethub.android.core.code.FullTree.Entry;
 import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.ui.StyledText;
+import com.github.pockethub.android.ui.item.code.BlobItem;
+import com.github.pockethub.android.ui.item.code.FolderItem;
+import com.github.pockethub.android.ui.item.code.PathHeaderItem;
 import com.github.pockethub.android.ui.ref.BranchFileViewActivity;
-import com.github.pockethub.android.ui.ref.CodeTreeAdapter;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitReference;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
+import com.xwray.groupie.Section;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
-import io.reactivex.Single;
+import butterknife.BindView;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -63,28 +71,30 @@ import static com.github.pockethub.android.RequestCodes.REF_UPDATE;
 /**
  * Fragment to display a repository's source code tree
  */
-public class RepositoryCodeFragment extends DialogFragment implements
-        OnItemClickListener {
+public class RepositoryCodeFragment extends DialogFragment implements OnItemClickListener {
 
     private static final String TAG = "RepositoryCodeFragment";
 
+    @BindView(android.R.id.list)
+    protected RecyclerView recyclerView;
+
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progressView;
+
+    @BindView(R.id.tv_branch_icon)
+    protected TextView branchIconView;
+
+    @BindView(R.id.tv_branch)
+    protected TextView branchView;
+
+    @BindView(R.id.rl_branch)
+    protected View branchFooterView;
+
+    private GroupAdapter adapter = new GroupAdapter();
+
+    private Section mainSection = new Section();
+
     private FullTree tree;
-
-    private ListView listView;
-
-    private ProgressBar progressView;
-
-    private TextView branchIconView;
-
-    private TextView branchView;
-
-    private TextView pathView;
-
-    private View pathHeaderView;
-
-    private View branchFooterView;
-
-    private HeaderFooterListAdapter<CodeTreeAdapter> adapter;
 
     private boolean pathShowing;
 
@@ -105,6 +115,9 @@ public class RepositoryCodeFragment extends DialogFragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        adapter.add(mainSection);
+        adapter.setOnItemClickListener(this);
+
         if (tree == null || folder == null) {
             refreshTree(null);
         } else {
@@ -120,29 +133,29 @@ public class RepositoryCodeFragment extends DialogFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.m_refresh:
-            if (tree != null) {
-                GitReference ref = GitReference.builder()
-                        .ref(tree.reference.ref())
-                        .build();
-                refreshTree(ref);
-            }else {
-                refreshTree(null);
-            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+            case R.id.m_refresh:
+                if (tree != null) {
+                    GitReference ref = GitReference.builder()
+                            .ref(tree.reference.ref())
+                            .build();
+                    refreshTree(ref);
+                } else {
+                    refreshTree(null);
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     private void showLoading(final boolean loading) {
         if (loading) {
             progressView.setVisibility(View.VISIBLE);
-            listView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             branchFooterView.setVisibility(View.GONE);
         } else {
             progressView.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             branchFooterView.setVisibility(View.VISIBLE);
         }
     }
@@ -153,7 +166,7 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullTree -> {
                     if (folder == null || folder.isRoot()) {
                         setFolder(fullTree, fullTree.root);
@@ -219,31 +232,17 @@ public class RepositoryCodeFragment extends DialogFragment implements
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressView = (ProgressBar) view.findViewById(R.id.pb_loading);
-        listView = (ListView) view.findViewById(android.R.id.list);
-        listView.setOnItemClickListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
 
-        Activity activity = getActivity();
-        adapter = new HeaderFooterListAdapter<>(listView,
-                new CodeTreeAdapter(activity));
-
-        branchFooterView = view.findViewById(R.id.rl_branch);
-        branchView = (TextView) view.findViewById(R.id.tv_branch);
-        branchIconView = (TextView) view.findViewById(R.id.tv_branch_icon);
         branchFooterView.setOnClickListener(v -> switchBranches());
 
-        pathHeaderView = activity.getLayoutInflater().inflate(R.layout.path_item,
-                null);
-        pathView = (TextView) pathHeaderView.findViewById(R.id.tv_path);
-        pathView.setMovementMethod(LinkMovementMethod.getInstance());
         if (pathShowing) {
-            adapter.addHeader(pathHeaderView);
+            mainSection.setHeader(new PathHeaderItem(""));
         }
-
-        listView.setAdapter(adapter);
     }
 
     /**
@@ -273,8 +272,6 @@ public class RepositoryCodeFragment extends DialogFragment implements
             branchIconView.setText(R.string.icon_fork);
         }
 
-        adapter.getWrappedAdapter().setIndented(folder.entry != null);
-
         if (folder.entry != null) {
             int textLightColor = getResources().getColor(R.color.text_light);
             final String[] segments = folder.entry.path().split("/");
@@ -293,33 +290,45 @@ public class RepositoryCodeFragment extends DialogFragment implements
                 }).append(' ').foreground('/', textLightColor).append(' ');
             }
             text.bold(segments[segments.length - 1]);
-            pathView.setText(text);
+
             if (!pathShowing) {
-                adapter.addHeader(pathHeaderView);
+                mainSection.setHeader(new PathHeaderItem(text));
                 pathShowing = true;
             }
         } else if (pathShowing) {
-            adapter.removeHeader(pathHeaderView);
+            mainSection.removeHeader();
             pathShowing = false;
         }
 
-        adapter.getWrappedAdapter().setItems(folder);
-        listView.setSelection(0);
+
+        boolean indented = folder.entry != null;
+
+        List items = new ArrayList();
+
+        for (Folder folder1 : folder.folders.values()) {
+            items.add(new FolderItem(getActivity(), folder1, indented));
+        }
+
+        for (Entry blob : folder.files.values()) {
+            items.add(new BlobItem(getActivity(), blob, indented));
+        }
+
+        mainSection.update(items);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
-        Entry entry = (Entry) parent.getItemAtPosition(position);
-        if (tree == null || entry == null) {
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (tree == null) {
             return;
         }
 
-        if (entry instanceof Folder) {
-            setFolder(tree, (Folder) entry);
-        } else {
+        if (item instanceof BlobItem) {
+            Entry entry = ((BlobItem) item).getData();
             startActivity(BranchFileViewActivity.createIntent(repository,
                     tree.branch, entry.entry.path(), entry.entry.sha()));
+        } else if (item instanceof FolderItem) {
+            Folder folder = ((FolderItem) item).getData();
+            setFolder(tree, folder);
         }
     }
 }

@@ -19,12 +19,14 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.github.pockethub.android.util.HttpImageGetter;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -35,19 +37,18 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import retrofit2.Response;
-import retrofit2.http.Body;
-import roboguice.RoboGuice;
 
 /**
  * Task to load and store a {@link Gist}.
  */
+@AutoFactory
 public class RefreshGistTask {
 
     private final Context context;
+
     private final GistService service;
 
-    @Inject
-    private GistStore store;
+    private final GistStore store;
 
     private final String id;
 
@@ -59,13 +60,13 @@ public class RefreshGistTask {
      * @param gistId
      * @param imageGetter
      */
-    public RefreshGistTask(Activity activity, String gistId,
-                           HttpImageGetter imageGetter) {
-        id = gistId;
+    public RefreshGistTask(@Provided GistStore store, @Provided HttpImageGetter imageGetter,
+                           Activity activity, String gistId) {
+        this.store = store;
+        this.id = gistId;
         this.imageGetter = imageGetter;
         this.context = activity;
         this.service = ServiceGenerator.createService(context, GistService.class);
-        RoboGuice.injectMembers(activity, this);
     }
 
     public Single<FullGist> refresh() {

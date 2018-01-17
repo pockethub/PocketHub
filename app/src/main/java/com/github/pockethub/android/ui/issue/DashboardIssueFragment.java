@@ -17,23 +17,30 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.PagedItemFragment;
+import com.github.pockethub.android.ui.item.issue.IssueDashboardItem;
+import com.github.pockethub.android.ui.item.issue.IssueItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.issues.IssueService;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.List;
+import javax.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
 
@@ -47,20 +54,21 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
      */
     public static final String ARG_FILTER = "filter";
 
-    @Inject
-    private IssueStore store;
+    private IssueService service = ServiceGenerator.createService(getActivity(), IssueService.class);
 
     @Inject
-    private AvatarLoader avatars;
+    protected IssueStore store;
+
+    @Inject
+    protected AvatarLoader avatars;
 
     private Map<String, Object> filterData;
 
     @SuppressWarnings("unchecked")
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         filterData = (Map<String, Object>) getArguments().getSerializable(ARG_FILTER);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -75,33 +83,22 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(
-                IssuesViewActivity.createIntent(items, position
-                        - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+    protected Single<Response<Page<Issue>>> loadData(int page) {
+        return service.getIssues(filterData, page);
     }
 
     @Override
-    protected ResourcePager<Issue> createPager() {
-        return new ResourcePager<Issue>() {
-
-            @Override
-            protected Issue register(Issue resource) {
-                return store.addIssue(resource);
+    public void onItemClick(@NonNull Item clickedItem, @NonNull View view) {
+        if (clickedItem instanceof IssueDashboardItem) {
+            int position = getListAdapter().getAdapterPosition(clickedItem);
+            Collection<Issue> issues = new ArrayList<>();
+            for (Item item : items) {
+                if (item instanceof IssueDashboardItem) {
+                    issues.add(((IssueItem) item).getData());
+                }
             }
-
-            @Override
-            protected Object getId(Issue resource) {
-                return resource.id();
-            }
-
-            @Override
-            public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), IssueService.class)
-                                .getIssues(filterData, page1), page);
-            }
-        };
+            startActivityForResult(IssuesViewActivity.createIntent(issues, position), ISSUE_VIEW);
+        }
     }
 
     @Override
@@ -110,14 +107,12 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_issues_load;
     }
 
     @Override
-    protected SingleTypeAdapter<Issue> createAdapter(
-            List<Issue> items) {
-        return new DashboardIssueListAdapter(avatars, getActivity()
-                .getLayoutInflater(), items.toArray(new Issue[items.size()]));
+    protected Item createItem(Issue item) {
+        return new IssueDashboardItem(avatars, item);
     }
 }

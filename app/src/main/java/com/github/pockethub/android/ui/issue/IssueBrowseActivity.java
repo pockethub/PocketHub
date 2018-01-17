@@ -27,7 +27,7 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -53,7 +53,7 @@ public class IssueBrowseActivity extends BaseActivity {
     private Repository repo;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,16 @@ public class IssueBrowseActivity extends BaseActivity {
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.activity_repo_issue_list);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.name());
         actionBar.setSubtitle(repo.owner().login());
         actionBar.setDisplayHomeAsUpEnabled(true);
         avatars.bind(actionBar, repo.owner());
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_repo_issue_list;
     }
 
     @Override

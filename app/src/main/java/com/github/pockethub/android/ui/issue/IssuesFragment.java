@@ -15,47 +15,44 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.github.pockethub.android.ui.item.issue.IssueFilterHeaderItem;
+import com.github.pockethub.android.ui.item.issue.IssueItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Label;
-import com.meisolsson.githubsdk.model.Milestone;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.core.issue.IssueFilter;
-import com.github.pockethub.android.core.issue.IssuePager;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueService;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
+
+import javax.inject.Inject;
 
 import java.util.Collection;
-import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 import static com.github.pockethub.android.Intents.EXTRA_ISSUE;
 import static com.github.pockethub.android.Intents.EXTRA_ISSUE_FILTER;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
@@ -68,32 +65,20 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_VIEW;
  */
 public class IssuesFragment extends PagedItemFragment<Issue> {
 
-    @Inject
-    private AccountDataManager cache;
+    IssueService service = ServiceGenerator.createService(getActivity(), IssueService.class);
 
     @Inject
-    private IssueStore store;
+    protected AccountDataManager cache;
+
+    @Inject
+    protected IssueStore store;
 
     private IssueFilter filter;
 
     private Repository repository;
 
-    private View filterHeader;
-
-    private TextView state;
-
-    private ImageView assigneeAvatar;
-
-    private View assigneeArea;
-
-    private TextView assignee;
-
-    private TextView labels;
-
-    private TextView milestone;
-
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onAttach(Context context) {
@@ -113,60 +98,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        filterHeader = getLayoutInflater(savedInstanceState).inflate(
-                R.layout.issues_filter_header, null);
-        state = (TextView) filterHeader.findViewById(R.id.tv_filter_state);
-        labels = (TextView) filterHeader.findViewById(R.id.tv_filter_labels);
-        milestone = (TextView) filterHeader
-                .findViewById(R.id.tv_filter_milestone);
-        assigneeArea = filterHeader.findViewById(R.id.ll_assignee);
-        assignee = (TextView) filterHeader.findViewById(R.id.tv_filter_assignee);
-        assigneeAvatar = (ImageView) filterHeader
-                .findViewById(R.id.iv_assignee_avatar);
-        updateFilterSummary();
-
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    protected void configureList(Activity activity, ListView listView) {
-        super.configureList(activity, listView);
-
-        getListAdapter().addHeader(filterHeader, filter, true);
-    }
-
-    private void updateFilterSummary() {
-        if (filter.isOpen()) {
-            state.setText(R.string.open_issues);
-        } else {
-            state.setText(R.string.closed_issues);
-        }
-
-        Collection<Label> filterLabels = filter.getLabels();
-        if (filterLabels != null && !filterLabels.isEmpty()) {
-            LabelDrawableSpan.setText(labels, filterLabels);
-            labels.setVisibility(VISIBLE);
-        } else {
-            labels.setVisibility(GONE);
-        }
-
-        Milestone filterMilestone = filter.getMilestone();
-        if (filterMilestone != null) {
-            milestone.setText(filterMilestone.title());
-            milestone.setVisibility(VISIBLE);
-        } else {
-            milestone.setVisibility(GONE);
-        }
-
-        User user = filter.getAssignee();
-        if (user != null) {
-            avatars.bind(assigneeAvatar, user);
-            assignee.setText(user.login());
-            assigneeArea.setVisibility(VISIBLE);
-        } else {
-            assigneeArea.setVisibility(GONE);
-        }
+    protected void configureList(RecyclerView recyclerView) {
+        super.configureList(recyclerView);
+        getMainSection().setHeader(new IssueFilterHeaderItem(avatars, filter));
     }
 
     @Override
@@ -177,15 +111,21 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        if (position == 0) {
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueItem) {
+            // Remove one since we have a header
+            int position = getListAdapter().getAdapterPosition(item) - 1;
+            Collection<Issue> issues = Observable.fromIterable(items)
+                    .filter(mapItem -> mapItem instanceof IssueItem)
+                    .map(mapItem -> ((IssueItem) mapItem).getData())
+                    .toList()
+                    .blockingGet();
+
             startActivityForResult(
-                    EditIssuesFilterActivity.createIntent(filter),
-                    ISSUE_FILTER_EDIT);
-        } else {
+                    IssuesViewActivity.createIntent(issues, repository, position), ISSUE_VIEW);
+        } else if (item instanceof IssueFilterHeaderItem) {
             startActivityForResult(
-                    IssuesViewActivity.createIntent(items, repository, position
-                            - getListAdapter().getHeadersCount()), ISSUE_VIEW);
+                    EditIssuesFilterActivity.createIntent(filter), ISSUE_FILTER_EDIT);
         }
     }
 
@@ -211,22 +151,22 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
         switch (item.getItemId()) {
             case R.id.m_refresh:
                 forceRefresh();
-            return true;
-        case R.id.create_issue:
-            startActivityForResult(EditIssueActivity.createIntent(repository),
-                    ISSUE_CREATE);
-            return true;
-        case R.id.m_filter:
-            startActivityForResult(
-                    EditIssuesFilterActivity.createIntent(filter),
-                    ISSUE_FILTER_EDIT);
-            return true;
-        case R.id.m_bookmark:
-            cache.addIssueFilter(filter)
-                .subscribe(response -> ToastUtils.show(getActivity(), R.string.message_filter_saved));
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
+                return true;
+            case R.id.create_issue:
+                startActivityForResult(EditIssueActivity.createIntent(repository),
+                        ISSUE_CREATE);
+                return true;
+            case R.id.m_filter:
+                startActivityForResult(
+                        EditIssuesFilterActivity.createIntent(filter),
+                        ISSUE_FILTER_EDIT);
+                return true;
+            case R.id.m_bookmark:
+                cache.addIssueFilter(filter)
+                        .subscribe(response -> ToastUtils.show(getActivity(), R.string.message_filter_saved));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -238,8 +178,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
                     .getParcelableExtra(EXTRA_ISSUE_FILTER);
             if (!filter.equals(newFilter)) {
                 filter = newFilter;
-                updateFilterSummary();
-                pager.reset();
+                getMainSection().setHeader(new IssueFilterHeaderItem(avatars, filter));
                 refreshWithProgress();
                 return;
             }
@@ -264,17 +203,9 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected ResourcePager<Issue> createPager() {
-        return new IssuePager(store) {
-
-            @Override
-            public PageIterator<Issue> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), IssueService.class)
-                                .getRepositoryIssues(repository.owner().login(),
-                                        repository.name(), filter.toFilterMap(), page1), page);
-            }
-        };
+    protected Single<Response<Page<Issue>>> loadData(int page) {
+        return service.getRepositoryIssues(repository.owner().login(),
+                repository.name(), filter.toFilterMap(), page);
     }
 
     @Override
@@ -283,14 +214,12 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_issues_load;
     }
 
     @Override
-    protected SingleTypeAdapter<Issue> createAdapter(List<Issue> items) {
-        return new RepositoryIssueListAdapter(
-                getActivity().getLayoutInflater(),
-                items.toArray(new Issue[items.size()]), avatars);
+    protected Item createItem(Issue item) {
+        return new IssueItem(avatars, item);
     }
 }

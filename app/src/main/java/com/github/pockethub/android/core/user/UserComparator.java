@@ -18,7 +18,7 @@ package com.github.pockethub.android.core.user;
 import android.accounts.Account;
 
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Comparator;
 

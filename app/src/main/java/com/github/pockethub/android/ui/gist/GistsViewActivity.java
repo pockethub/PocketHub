@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -26,23 +25,28 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.OnLoadListener;
 import com.github.pockethub.android.core.gist.GistStore;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
+import com.github.pockethub.android.ui.item.gist.GistItem;
 import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
+
+import javax.inject.Inject;
 
 import java.io.Serializable;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -56,8 +60,7 @@ import static com.github.pockethub.android.Intents.EXTRA_POSITION;
 /**
  * Activity to display a collection of Gists in a pager
  */
-public class GistsViewActivity extends PagerActivity implements
-    OnLoadListener<Gist> {
+public class GistsViewActivity extends PagerActivity implements OnLoadListener<Gist> {
 
     private static final int REQUEST_CONFIRM_DELETE = 1;
     private static final String TAG = "GistsViewActivity";
@@ -76,14 +79,15 @@ public class GistsViewActivity extends PagerActivity implements
     /**
      * Create an intent to show gists with an initial selected Gist
      *
-     * @param gists
+     * @param items
      * @param position
      * @return intent
      */
-    public static Intent createIntent(List<Gist> gists, int position) {
-        String[] ids = new String[gists.size()];
+    public static Intent createIntent(List<Item> items, int position) {
+        String[] ids = new String[items.size()];
         int index = 0;
-        for (Gist gist : gists) {
+        for (Item item : items) {
+            Gist gist = ((GistItem) item).getData();
             ids[index++] = gist.id();
         }
         return new Builder("gists.VIEW")
@@ -91,7 +95,8 @@ public class GistsViewActivity extends PagerActivity implements
             .add(EXTRA_POSITION, position).toIntent();
     }
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
     private String[] gists;
 
@@ -100,10 +105,10 @@ public class GistsViewActivity extends PagerActivity implements
     private int initialPosition;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private GistsPagerAdapter adapter;
 
@@ -111,14 +116,9 @@ public class GistsViewActivity extends PagerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_pager);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
         initialPosition = getIntExtra(EXTRA_POSITION);
-        pager = (ViewPager) findViewById(R.id.vp_pages);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -136,9 +136,20 @@ public class GistsViewActivity extends PagerActivity implements
 
         adapter = new GistsPagerAdapter(this, gists);
         pager.setAdapter(adapter);
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager;
     }
 
     @Override
@@ -172,8 +183,8 @@ public class GistsViewActivity extends PagerActivity implements
                     .deleteGist(gistId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(this, R.string.deleting_gist))
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         setResult(RESULT_OK);
                         finish();

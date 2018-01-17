@@ -18,11 +18,12 @@ package com.github.pockethub.android.ui.user;
 import android.content.Context;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 
@@ -30,6 +31,8 @@ import static com.github.pockethub.android.Intents.EXTRA_USER;
  * Fragment to display a list of followers
  */
 public class UserFollowersFragment extends FollowersFragment {
+
+    UserFollowerService service = ServiceGenerator.createService(getContext(), UserFollowerService.class);
 
     private User user;
 
@@ -41,15 +44,7 @@ public class UserFollowersFragment extends FollowersFragment {
     }
 
     @Override
-    protected ResourcePager<User> createPager() {
-        return new UserPager() {
-
-            @Override
-            public PageIterator<User> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getContext(), UserFollowerService.class)
-                                .getFollowers(user.login(), page1), page);
-            }
-        };
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.getFollowers(user.login(), page);
     }
 }

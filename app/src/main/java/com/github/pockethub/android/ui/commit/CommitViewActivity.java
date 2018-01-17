@@ -18,9 +18,9 @@ package com.github.pockethub.android.ui.commit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
@@ -32,9 +32,13 @@ import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
+
+import javax.inject.Inject;
 
 import java.util.Collection;
+
+import butterknife.BindView;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -68,10 +72,11 @@ public class CommitViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-        final int position, final Collection<Commit> commits) {
+                                      final int position, final Collection<Item> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
-        for (Commit commit : commits) {
+        for (Item item : commits) {
+            Commit commit = ((CommitItem) item).getData();
             ids[index++] = commit.sha();
         }
         return createIntent(repository, position, ids);
@@ -94,7 +99,8 @@ public class CommitViewActivity extends PagerActivity {
         return builder.toIntent();
     }
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
     private Repository repository;
 
@@ -103,7 +109,7 @@ public class CommitViewActivity extends PagerActivity {
     private int initialPosition;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private CommitPagerAdapter adapter;
 
@@ -111,19 +117,13 @@ public class CommitViewActivity extends PagerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_pager);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        pager = (ViewPager) findViewById(R.id.vp_pages);
-
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);
         initialPosition = getIntExtra(EXTRA_POSITION);
 
         adapter = new CommitPagerAdapter(this, repository, ids);
         pager.setAdapter(adapter);
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
 
@@ -131,6 +131,17 @@ public class CommitViewActivity extends PagerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager;
     }
 
     @Override

@@ -17,36 +17,38 @@ package com.github.pockethub.android.ui.repo;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.PagedItemFragment;
+import com.github.pockethub.android.ui.item.ContributorItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
 /**
  * Fragment to display a list of contributors for a specific repository
  */
-public class RepositoryContributorsFragment extends ItemListFragment<User> {
+public class RepositoryContributorsFragment extends PagedItemFragment<User> {
+
+    RepositoryService service = ServiceGenerator.createService(getActivity(), RepositoryService.class);
 
     /**
      * Avatar loader
@@ -71,53 +73,36 @@ public class RepositoryContributorsFragment extends ItemListFragment<User> {
     }
 
     @Override
-    public Loader<List<User>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<User>>(getActivity(), items) {
-
-            @Override
-            public List<User> loadData() throws Exception {
-                RepositoryService service = ServiceGenerator.createService(getActivity(), RepositoryService.class);
-
-                int current = 1;
-                int last = 0;
-                List<User> users = new ArrayList<>();
-
-                while (current != last) {
-                    Page<User> page = service
-                            .getContributors(repo.owner().login(), repo.name(), current)
-                            .blockingGet()
-                            .body();
-
-                    users.addAll(page.items());
-                    last = page.last() != null ? page.last() : -1;
-                    current = page.next() != null ? page.next() : -1;
-                }
-                return users;
-            }
-        };
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.getContributors(repo.owner().login(), repo.name(), page);
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        return new ContributorListAdapter(getActivity(),
-                items.toArray(new User[items.size()]), avatars);
+    protected Item createItem(User item) {
+        return new ContributorItem(avatars, item);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        final User contributor = (User) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(contributor.login())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
-                .subscribe(response ->
-                        startActivity(UserViewActivity.createIntent(response.body())));
-
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof ContributorItem) {
+            User contributor = ((ContributorItem) item).getData();
+            ServiceGenerator.createService(getContext(), UserService.class)
+                    .getUser(contributor.login())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
+                    .subscribe(response ->
+                            startActivity(UserViewActivity.createIntent(response.body())));
+        }
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_contributors_load;
+    }
+
+    @Override
+    protected int getLoadingMessage() {
+        return R.string.loading;
     }
 }

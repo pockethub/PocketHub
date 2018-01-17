@@ -24,11 +24,10 @@ import android.util.Log;
 import com.github.pockethub.android.RequestReader;
 import com.github.pockethub.android.RequestWriter;
 import com.github.pockethub.android.core.issue.IssueFilter;
-import com.github.pockethub.android.persistence.OrganizationRepositories.Factory;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,20 +58,23 @@ public class AccountDataManager {
     private static final int FORMAT_VERSION = 4;
 
     @Inject
-    private Context context;
+    protected Context context;
 
     @Inject
-    private DatabaseCache dbCache;
+    protected DatabaseCache dbCache;
 
     @Inject
-    private Factory allRepos;
+    protected OrganizationRepositoriesFactory allRepos;
 
     @Inject
-    private Organizations userAndOrgsResource;
+    protected Organizations userAndOrgsResource;
 
     @Inject
     @Named("cacheDir")
-    private File root;
+    protected File root;
+
+    @Inject
+    public AccountDataManager() {}
 
     /**
      * @return context
@@ -173,7 +175,7 @@ public class AccountDataManager {
      */
     public List<Repository> getRepos(final User user, boolean forceReload)
             throws IOException {
-        OrganizationRepositories resource = allRepos.under(user);
+        OrganizationRepositories resource = allRepos.create(user);
         return forceReload ? dbCache.requestAndStore(resource) : dbCache
                 .loadOrRequest(resource);
     }

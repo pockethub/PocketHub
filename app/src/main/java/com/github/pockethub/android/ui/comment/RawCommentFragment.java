@@ -41,6 +41,7 @@ import com.github.pockethub.android.util.ImageBinPoster;
 import com.github.pockethub.android.util.PermissionsUtils;
 import com.github.pockethub.android.util.ToastUtils;
 
+import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -53,9 +54,11 @@ public class RawCommentFragment extends DialogFragment {
     private static final int REQUEST_CODE_SELECT_PHOTO = 0;
     private static final int READ_PERMISSION_REQUEST = 1;
 
-    private EditText commentText;
+    @BindView(R.id.et_comment)
+    protected EditText commentText;
 
-    private FloatingActionButton addImageFab;
+    @BindView(R.id.fab_add_image)
+    protected FloatingActionButton addImageFab;
 
     /**
      * Text to populate comment window.
@@ -63,11 +66,8 @@ public class RawCommentFragment extends DialogFragment {
     private String initComment;
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        commentText = (EditText) view.findViewById(R.id.et_comment);
-        addImageFab = (FloatingActionButton) view.findViewById(R.id.fab_add_image);
 
         // @TargetApi(…) required to ensure build passes
         // noinspection Convert2Lambda

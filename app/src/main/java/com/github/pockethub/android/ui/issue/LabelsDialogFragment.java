@@ -15,38 +15,33 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.DialogFragmentHelper;
+import com.github.pockethub.android.ui.item.dialog.LabelDialogItem;
 import com.meisolsson.githubsdk.model.Label;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import io.reactivex.Observable;
+
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_NEUTRAL;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 /**
  * Dialog fragment to present labels where one or more can be selected
  */
-public class LabelsDialogFragment extends DialogFragmentHelper implements
-        OnClickListener {
+public class LabelsDialogFragment extends DialogFragmentHelper implements OnItemClickListener {
 
     /**
      * Arguments key for the selected items
@@ -59,37 +54,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
 
     private static final String TAG = "multi_choice_dialog";
 
-    private static class LabelListAdapter extends SingleTypeAdapter<Label>
-            implements OnItemClickListener {
-
-        private final boolean[] selected;
-
-        public LabelListAdapter(LayoutInflater inflater, Label[] labels,
-                boolean[] selected) {
-            super(inflater, R.layout.label_item);
-
-            this.selected = selected;
-            setItems(labels);
-        }
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-            selected[position] = !selected[position];
-            notifyDataSetChanged();
-        }
-
-        @Override
-        protected int[] getChildViewIds() {
-            return new int[] { R.id.tv_label_name, R.id.cb_selected };
-        }
-
-        @Override
-        protected void update(int position, Label item) {
-            LabelDrawableSpan.setText(textView(0), item);
-            setChecked(1, selected[position]);
-        }
-    }
+    boolean[] selectedChoices;
+    private GroupAdapter adapter;
 
     /**
      * Get selected labels from result bundle
@@ -112,23 +78,21 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
      * @param choices
      * @param selectedChoices
      */
-    public static void show(final BaseActivity activity,
-            final int requestCode, final String title, final String message,
-            final ArrayList<Label> choices, final boolean[] selectedChoices) {
+    public static void show(final BaseActivity activity, final int requestCode,
+                            final String title, final String message,
+                            final ArrayList<Label> choices, final boolean[] selectedChoices) {
         Bundle arguments = createArguments(title, message, requestCode);
         arguments.putParcelableArrayList(ARG_CHOICES, choices);
         arguments.putBooleanArray(ARG_SELECTED_CHOICES, selectedChoices);
         show(activity, new LabelsDialogFragment(), arguments, TAG);
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
-        Activity activity = getActivity();
+        selectedChoices = getArguments().getBooleanArray(ARG_SELECTED_CHOICES);
 
         ArrayList<Label> choices = getChoices();
-        boolean[] selectedChoices = arguments
-                .getBooleanArray(ARG_SELECTED_CHOICES);
         List<String> selected = new ArrayList<>();
         if (selectedChoices != null) {
             for (int i = 0; i < choices.size(); i++) {
@@ -137,28 +101,23 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
                 }
             }
         }
-        arguments.putStringArrayList(ARG_SELECTED, (ArrayList<String>) selected);
 
-        LayoutInflater inflater = activity.getLayoutInflater();
-        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
-                null);
-        LabelListAdapter adapter = new LabelListAdapter(inflater,
-                choices.toArray(new Label[choices.size()]), selectedChoices);
-        view.setAdapter(adapter);
-        view.setOnItemClickListener(adapter);
+        adapter = new GroupAdapter();
+        for (Label label : getChoices()) {
+            adapter.add(new LabelDialogItem(label, selected.contains(label.name())));
+        }
+        adapter.setOnItemClickListener(this);
 
-        return new MaterialDialog.Builder(activity)
-                .cancelable(true)
-                .cancelListener(this)
+        return createDialogBuilder()
+                .adapter(adapter, null)
                 .negativeText(R.string.cancel)
-                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
                 .neutralText(R.string.clear)
-                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL))
                 .positiveText(R.string.apply)
-                .onPositive((dialog, which) -> onClick(dialog, BUTTON_POSITIVE))
-                .title(getTitle())
-                .content(getMessage())
-                .customView(view, false)
+                .onNeutral((dialog, which) -> {
+                    Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES), false);
+                    onResult(RESULT_OK);
+                })
+                .onPositive((dialog, which) -> onResult(RESULT_OK))
                 .build();
     }
 
@@ -171,9 +130,8 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
     protected void onResult(int resultCode) {
         Bundle arguments = getArguments();
         ArrayList<Label> selected = new ArrayList<>();
-        boolean[] selectedChoices = arguments
-                .getBooleanArray(ARG_SELECTED_CHOICES);
         ArrayList<Label> choices = getChoices();
+
         if (selectedChoices != null) {
             for (int i = 0; i < selectedChoices.length; i++) {
                 if (selectedChoices[i]) {
@@ -184,17 +142,17 @@ public class LabelsDialogFragment extends DialogFragmentHelper implements
         arguments.putParcelableArrayList(ARG_SELECTED, selected);
 
         super.onResult(resultCode);
+        dismiss();
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        super.onClick(dialog, which);
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof LabelDialogItem) {
+            LabelDialogItem labelDialogItem = (LabelDialogItem) item;
 
-        switch (which) {
-        case BUTTON_NEUTRAL:
-            Arrays.fill(getArguments().getBooleanArray(ARG_SELECTED_CHOICES), false);
-        case BUTTON_POSITIVE:
-            onResult(RESULT_OK);
+            labelDialogItem.toggleSelected();
+            selectedChoices[adapter.getAdapterPosition(item)] = labelDialogItem.isSelected();
+            item.notifyChanged();
         }
     }
 }

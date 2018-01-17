@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui;
 
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -25,15 +24,14 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import roboguice.fragment.RoboDialogFragment;
+import dagger.android.support.DaggerAppCompatDialogFragment;
 
 import static android.app.Activity.RESULT_CANCELED;
 
 /**
  * Base dialog fragment helper
  */
-public abstract class DialogFragmentHelper extends RoboDialogFragment implements
-    OnClickListener {
+public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment {
 
     /**
      * Dialog message
@@ -99,8 +97,7 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
         if (activity != null) {
             final Bundle arguments = getArguments();
             if (arguments != null) {
-                activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE),
-                        resultCode, arguments);
+                activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE), resultCode, arguments);
             }
         }
     }
@@ -139,10 +136,5 @@ public abstract class DialogFragmentHelper extends RoboDialogFragment implements
                 .content(getMessage())
                 .cancelable(true)
                 .cancelListener(this);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
     }
 }

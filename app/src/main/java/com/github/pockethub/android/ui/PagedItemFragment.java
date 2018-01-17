@@ -13,143 +13,143 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.github.pockethub.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.core.ResourcePager;
+import com.meisolsson.githubsdk.model.Page;
+import com.xwray.groupie.Item;
 
-import java.io.IOException;
 import java.util.List;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 /**
  * List fragment that adds more elements when the bottom of the list is scrolled
- * to
- *
- * @param <E>
+ * to.
  */
-public abstract class PagedItemFragment<E> extends ItemListFragment<E>
-        implements OnScrollListener {
+public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
 
-    /**
-     * Resource pager
-     */
-    protected ResourcePager<E> pager;
+    private final RecyclerView.OnScrollListener scrollListener =
+            new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (!isUsable()) {
+                        return;
+                    }
+                    if (!hasMore) {
+                        return;
+                    }
+
+                    // The item count minus the footer
+                    int count = getMainSection().getItemCount() - 1;
+                    LinearLayoutManager layoutManager = getLayoutManager();
+
+                    if (layoutManager != null) {
+                        if (layoutManager.findLastVisibleItemPosition() >= count) {
+                            showMore();
+                        }
+                    }
+                }
+            };
 
     private ResourceLoadingIndicator loadingIndicator;
 
     /**
-     * Create pager that provides resources
-     *
-     * @return pager
+     * The current page.
      */
-    protected abstract ResourcePager<E> createPager();
+    private int page = 1;
 
     /**
-     * Get resource id of {@link String} to display when loading
+     * Is there more items to fetch.
+     */
+    private boolean hasMore = true;
+
+    /**
+     * Get resource id of {@link String} to display when loading.
      *
      * @return string resource id
      */
     protected abstract int getLoadingMessage();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        pager = createPager();
-    }
-
-    /**
-     * Configure list after view has been created
-     *
-     * @param activity
-     * @param listView
-     */
-    @Override
-    protected void configureList(Activity activity, ListView listView) {
-        super.configureList(activity, listView);
-
-        loadingIndicator = new ResourceLoadingIndicator(activity,
-                getLoadingMessage());
-        loadingIndicator.setList(getListAdapter());
+    protected void configureList(RecyclerView recyclerView) {
+        super.configureList(recyclerView);
+        loadingIndicator = new ResourceLoadingIndicator(getLoadingMessage());
+        loadingIndicator.setSection(getMainSection());
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        getListView().setOnScrollListener(this);
-
-        getListView().setFastScrollEnabled(true);
+        getRecyclerView().addOnScrollListener(scrollListener);
     }
 
     @Override
-    public Loader<List<E>> onCreateLoader(int id, Bundle bundle) {
-        return new ThrowableLoader<List<E>>(getActivity(), items) {
-
-            @Override
-            public List<E> loadData() throws IOException {
-                pager.next();
-                return pager.getResources();
-            }
-        };
+    public void onDestroyView() {
+        getRecyclerView().removeOnScrollListener(scrollListener);
+        super.onDestroyView();
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // Intentionally left blank
-    }
+    protected abstract Single<Response<Page<E>>> loadData(int page);
 
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem,
-            int visibleItemCount, int totalItemCount) {
-        if (!isUsable()) {
-            return;
-        }
-        if (!pager.hasMore()) {
-            return;
-        }
-        if (getLoaderManager().hasRunningLoaders()) {
-            return;
-        }
-        if (listView != null
-                && listView.getLastVisiblePosition() >= pager.size()) {
-            showMore();
-        }
+    protected Single<List<E>> loadData(boolean forceRefresh) {
+        return loadData(page)
+                .map(Response::body)
+                .map(page -> {
+                    hasMore = page.next() != null;
+                    return page;
+                })
+                .map(Page::items);
+
+    }
+
+    private void resetPagingData() {
+        page = 1;
+        hasMore = true;
     }
 
     @Override
     protected void forceRefresh() {
-        pager.clear();
-
+        resetPagingData();
+        loadingIndicator.setVisible(false);
         super.forceRefresh();
     }
 
-    /**
-     * Show more events while retaining the current pager state
-     */
-    private void showMore() {
-        refresh();
-    }
-
     @Override
-    public void onLoadFinished(Loader<List<E>> loader, List<E> items) {
-        loadingIndicator.setVisible(pager.hasMore());
-
-        super.onLoadFinished(loader, items);
+    public void refresh() {
+        refresh(false);
     }
 
     @Override
     protected void refreshWithProgress() {
-        pager.reset();
-        pager = createPager();
-
+        resetPagingData();
+        loadingIndicator.setVisible(false);
         super.refreshWithProgress();
+    }
+
+    /**
+     * Show more events while retaining the current pager state.
+     */
+    private void showMore() {
+        page++;
+        refresh();
+    }
+
+    @Override
+    protected void onDataLoaded(List<Item> items) {
+        super.onDataLoaded(items);
+        loadingIndicator.setVisible(hasMore);
     }
 }

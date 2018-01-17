@@ -21,12 +21,12 @@ import android.os.Parcelable;
 import android.support.annotation.StringRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.pockethub.android.ui.roboactivities.RoboSupportFragment;
+import com.github.pockethub.android.ui.base.BaseFragment;
 
 /**
  * Base fragment capable of receiving dialog callbacks
  */
-public abstract class DialogFragment extends RoboSupportFragment implements
+public abstract class DialogFragment extends BaseFragment implements
         DialogResultListener {
 
     private MaterialDialog progressDialog;

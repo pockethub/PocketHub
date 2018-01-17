@@ -30,7 +30,7 @@ import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -63,7 +63,7 @@ public class CommitCompareViewActivity extends BaseActivity {
     private Repository repository;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private Fragment fragment;
 
@@ -73,10 +73,6 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
-        setContentView(R.layout.commit_compare);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
@@ -84,6 +80,11 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         fragment = getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.commit_compare;
     }
 
     @Override

@@ -16,35 +16,31 @@
 package com.github.pockethub.android.ui.user;
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
-import android.view.View;
-import android.widget.ListView;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ThrowableLoader;
-import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 
 /**
  * Fragment to display the members of an org.
  */
-public class MembersFragment extends ItemListFragment<User> {
+public class MembersFragment extends PagedUserFragment {
+
+    OrganizationMemberService service = ServiceGenerator.createService(getContext(), OrganizationMemberService.class);
 
     private User org;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -67,43 +63,17 @@ public class MembersFragment extends ItemListFragment<User> {
     }
 
     @Override
-    public Loader<List<User>> onCreateLoader(int id, Bundle args) {
-        return new ThrowableLoader<List<User>>(getActivity(), items) {
-
-            @Override
-            public List<User> loadData() throws Exception {
-                OrganizationMemberService service = ServiceGenerator.createService(getContext(), OrganizationMemberService.class);
-
-                int current = 1;
-                int last = -1;
-                List<User> users = new ArrayList<>();
-
-                while (current != last){
-                    Page<User> page = service.getMembers(org.login(), current).blockingGet().body();
-                    users.addAll(page.items());
-                    last = page.last() != null ? page.last() : -1;
-                    current = page.next() != null ? page.next() : -1;
-                }
-                return users;
-            }
-        };
+    protected Single<Response<Page<User>>> loadData(int page) {
+        return service.getMembers(org.login(), page);
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users,
-                avatars);
+    protected int getLoadingMessage() {
+        return R.string.loading;
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User user = (User) l.getItemAtPosition(position);
-        startActivity(UserViewActivity.createIntent(user));
-    }
-
-    @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_members_load;
     }
 }

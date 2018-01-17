@@ -29,8 +29,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.MainActivity;
-import com.github.pockethub.android.ui.roboactivities.RoboAccountAuthenticatorAppCompatActivity;
+import com.github.pockethub.android.ui.base.AccountAuthenticatorAppCompatActivity;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.GitHubToken;
@@ -39,6 +40,8 @@ import com.meisolsson.githubsdk.model.request.RequestToken;
 import com.meisolsson.githubsdk.service.users.UserService;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -49,7 +52,7 @@ import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AU
 /**
  * Activity to login
  */
-public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
+public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
 
     /**
      * Auth token type parameter
@@ -85,24 +88,18 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
     private AccountManager accountManager;
 
-    private String accessToken;
-
-    private String scope;
-
     private MaterialDialog progressDialog;
+
+    @Inject
+    protected UserService userService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.login);
-
         clientId = getString(R.string.github_client);
         secret = getString(R.string.github_secret);
         redirectUri = getString(R.string.github_oauth);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         accountManager = AccountManager.get(this);
 
@@ -112,6 +109,11 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
             openMain();
         }
         checkOauthConfig();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.login;
     }
 
     private void checkOauthConfig() {
@@ -142,7 +144,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
                     .getToken(request)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         GitHubToken token = response.body();
                         if (token.accessToken() != null) {
@@ -156,10 +158,6 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     private void openMain() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
-
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -195,7 +193,7 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == WEBVIEW_REQUEST_CODE && resultCode == RESULT_OK) {
             onUserLoggedIn(data.getData());
         }
     }
@@ -212,17 +210,14 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
     }
 
     private void endAuth(final String accessToken, final String scope) {
-        this.accessToken = accessToken;
-        this.scope = scope;
-
         progressDialog.setContent(getString(R.string.loading_user));
 
         TokenStore.getInstance(this).saveToken(accessToken);
-        ServiceGenerator.createService(this, UserService.class)
+        userService
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     User user = response.body();
                     Account account = new Account(user.login(), getString(R.string.account_type));
@@ -240,8 +235,16 @@ public class LoginActivity extends RoboAccountAuthenticatorAppCompatActivity {
 
                     setAccountAuthenticatorResult(result);
 
-                    openMain();
+                    finish();
                 }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public void finish() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        super.finish();
     }
 
     @Override

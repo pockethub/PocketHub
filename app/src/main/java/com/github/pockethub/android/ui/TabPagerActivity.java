@@ -25,22 +25,26 @@ import android.widget.TabHost.TabContentFactory;
 
 import com.github.pockethub.android.R;
 
+import butterknife.BindView;
+
 /**
  * Activity with tabbed pages
  *
  * @param <V>
  */
 public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider>
-    extends PagerActivity implements OnTabChangeListener, TabContentFactory {
+        extends PagerActivity implements OnTabChangeListener, TabContentFactory {
 
     /**
      * View pager
      */
+    @BindView(R.id.vp_pages)
     protected ViewPager pager;
 
     /**
      * Tab host
      */
+    @BindView(R.id.sliding_tabs_layout)
     protected TabLayout slidingTabsLayout;
 
     /**
@@ -117,11 +121,7 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         // Intentionally left blank
     }
 
-    /**
-     * Get content view to be used when {@link #onCreate(Bundle)} is called
-     *
-     * @return layout resource id
-     */
+    @Override
     protected int getContentView() {
         return R.layout.pager_with_tabs;
     }
@@ -157,16 +157,9 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(getContentView());
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         getSupportActionBar().setElevation(0);
-
-        pager = (ViewPager) findViewById(R.id.vp_pages);
         pager.addOnPageChangeListener(this);
-        slidingTabsLayout = (TabLayout) findViewById(R.id.sliding_tabs_layout);
     }
 
     @Override

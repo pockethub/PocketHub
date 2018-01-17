@@ -38,7 +38,7 @@ public abstract class FollowersFragment extends PagedUserFragment {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_followers_load;
     }
 }

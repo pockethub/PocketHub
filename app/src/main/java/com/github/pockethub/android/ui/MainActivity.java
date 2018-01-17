@@ -27,13 +27,12 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
 import android.support.v4.content.IntentCompat;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -57,65 +56,72 @@ import com.github.pockethub.android.accounts.LoginActivity;
 import com.github.pockethub.android.core.user.UserComparator;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.persistence.CacheHelper;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.notification.NotificationActivity;
-import com.github.pockethub.android.ui.repo.OrganizationLoader;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity implements
-    LoaderManager.LoaderCallbacks<List<User>>, NavigationView.OnNavigationItemSelectedListener {
+
+public class MainActivity extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    @Inject
-    private AccountDataManager accountDataManager;
+    @BindView(R.id.drawer_layout)
+    protected DrawerLayout drawerLayout;
+
+    @BindView(R.id.navigation_view)
+    protected NavigationView navigationView;
 
     @Inject
-    private Provider<UserComparator> userComparatorProvider;
+    protected AccountDataManager accountDataManager;
+
+    @Inject
+    protected Provider<UserComparator> userComparatorProvider;
 
     private List<User> orgs = Collections.emptyList();
 
     private User org;
 
-    private NavigationView navigationView;
-
     @Inject
-    private AvatarLoader avatars;
-    private DrawerLayout drawerLayout;
+    @Singleton
+    protected AvatarLoader avatars;
+
     private boolean userLearnedDrawer;
-    private Toolbar toolbar;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+
+    @VisibleForTesting
+    public Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -130,11 +136,9 @@ public class MainActivity extends BaseActivity implements
         };
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportLoaderManager().initLoader(0, null, this);
+        reloadOrgs();
 
         TokenStore tokenStore = TokenStore.getInstance(this);
 
@@ -150,6 +154,11 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    protected int getContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
@@ -157,7 +166,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -170,7 +179,48 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void reloadOrgs() {
-        getSupportLoaderManager().restartLoader(0, null, this);
+        Single.fromCallable(() -> AccountUtils.getAccount(getAccountManager(), this))
+                .map(account -> accountDataManager.getOrgs(false))
+                .map(orgs -> {
+                    Collections.sort(orgs, userComparatorProvider.get());
+                    return orgs;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
+                .subscribe(this::onOrgsLoaded,
+                        e -> {
+                            Log.e(TAG, "Exception loading organizations", e);
+                            ToastUtils.show(this, e, R.string.error_orgs_load);
+                        });
+    }
+
+    @VisibleForTesting
+    void onOrgsLoaded(List<User> orgs) {
+        if (orgs.isEmpty()) {
+            return;
+        }
+
+        org = orgs.get(0);
+        this.orgs = orgs;
+
+        setUpNavigationView();
+
+        Window window = getWindow();
+        if (window == null) {
+            return;
+        }
+        View view = window.getDecorView();
+        if (view == null) {
+            return;
+        }
+
+        view.post(() -> {
+            switchFragment(new HomePagerFragment(), org);
+            if (!userLearnedDrawer) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     @Override
@@ -198,42 +248,7 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public Loader<List<User>> onCreateLoader(int i, Bundle bundle) {
-        return new OrganizationLoader(this, accountDataManager,
-                userComparatorProvider);
-    }
-
     Map<MenuItem,User> menuItemOrganizationMap = new HashMap<>();
-
-    @Override
-    public void onLoadFinished(Loader<List<User>> listLoader, final List<User> orgs) {
-        if (orgs.isEmpty()) {
-            return;
-        }
-
-        org = orgs.get(0);
-        this.orgs = orgs;
-
-        setUpNavigationView();
-
-        Window window = getWindow();
-        if (window == null) {
-            return;
-        }
-        View view = window.getDecorView();
-        if (view == null) {
-            return;
-        }
-
-        view.post(() -> {
-            switchFragment(new HomePagerFragment(), org);
-            if(!userLearnedDrawer) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
-
-    }
 
     private void setUpHeaderView() {
         ImageView userImage;
@@ -241,10 +256,10 @@ public class MainActivity extends BaseActivity implements
         TextView userName;
 
         View headerView = navigationView.getHeaderView(0);
-        userImage = (ImageView) headerView.findViewById(R.id.user_picture);
-        ImageView notificationIcon = (ImageView) headerView.findViewById(R.id.iv_notification);
-        userRealName = (TextView) headerView.findViewById(R.id.user_real_name);
-        userName = (TextView) headerView.findViewById(R.id.user_name);
+        userImage = headerView.findViewById(R.id.user_picture);
+        ImageView notificationIcon = headerView.findViewById(R.id.iv_notification);
+        userRealName = headerView.findViewById(R.id.user_real_name);
+        userName = headerView.findViewById(R.id.user_name);
 
         notificationIcon.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, NotificationActivity.class)));
@@ -261,11 +276,8 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setUpNavigationView() {
-        if (navigationView != null) {
-
-            setUpHeaderView();
-            setUpNavigationMenu();
-        }
+        setUpHeaderView();
+        setUpNavigationMenu();
     }
 
     private void setUpNavigationMenu() {
@@ -288,12 +300,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onLoaderReset(Loader<List<User>> listLoader) {
-
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem menuItem) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int itemId = menuItem.getItemId();
 
         if (itemId == R.id.navigation_home) {
@@ -325,37 +332,41 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void logout() {
-        AccountManager accountManager = getAccountManager();
-        String accountType = getString(R.string.account_type);
-        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
-
-        for (Account account : allGitHubAccounts) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                accountManager.removeAccount(account, this, null, null);
-            } else {
-                accountManager.removeAccount(account, null, null);
-            }
-        }
-
+        // Remove cookies so that the login is clean
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().removeAllCookies(null);
         } else {
             CookieManager.getInstance().removeAllCookie();
         }
 
+        // Clear all of the cached data
         CacheHelper helper = new CacheHelper(this);
         helper.getWritableDatabase().delete("orgs", null, null);
         helper.getWritableDatabase().delete("users", null, null);
         helper.getWritableDatabase().delete("repos", null, null);
 
+        // Remove the account
+        AccountManager accountManager = getAccountManager();
+        String accountType = getString(R.string.account_type);
+        Account[] allGitHubAccounts = accountManager.getAccountsByType(accountType);
+
+        for (Account account : allGitHubAccounts) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                accountManager.removeAccount(account, this, bool -> startLoginActivity(), null);
+            } else {
+                accountManager.removeAccount(account, bundle -> startLoginActivity(), null);
+            }
+        }
+    }
+
+    private void startLoginActivity() {
         Intent in = new Intent(this, LoginActivity.class);
-        in.addFlags(IntentCompat.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(in);
         finish();
     }
 
-    @VisibleForTesting
-    void switchFragment(Fragment fragment, User organization) {
+    private void switchFragment(Fragment fragment, User organization) {
         if (organization != null) {
             Bundle args = new Bundle();
             args.putParcelable("org", organization);
@@ -364,10 +375,11 @@ public class MainActivity extends BaseActivity implements
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.container, fragment).commit();
         drawerLayout.closeDrawer(GravityCompat.START);
+
+        currentFragment = fragment;
     }
 
-    @VisibleForTesting
-    AccountManager getAccountManager() {
+    private AccountManager getAccountManager() {
         return AccountManager.get(this);
     }
 }

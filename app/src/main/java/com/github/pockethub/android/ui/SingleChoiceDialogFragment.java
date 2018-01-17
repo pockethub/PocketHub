@@ -15,17 +15,21 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.view.View;
+
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
 
 import java.util.ArrayList;
 
 /**
  * Helper to display a single choice dialog
  */
-public class SingleChoiceDialogFragment extends DialogFragmentHelper implements
-        OnClickListener {
+public class SingleChoiceDialogFragment extends DialogFragmentHelper
+        implements OnItemClickListener {
 
     /**
      * Arguments key for the selected item
@@ -66,5 +70,10 @@ public class SingleChoiceDialogFragment extends DialogFragmentHelper implements
         arguments.putParcelableArrayList(ARG_CHOICES, choices);
         arguments.putInt(ARG_SELECTED_CHOICE, selectedChoice);
         show(activity, helper, arguments, TAG);
+    }
+
+    @Override
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        dismiss();
     }
 }

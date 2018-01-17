@@ -17,38 +17,39 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.AsyncLoader;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ItemListFragment;
+import com.github.pockethub.android.ui.item.issue.IssueFilterItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
+
+import javax.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
 /**
  * Fragment to display a list of {@link IssueFilter} objects
  */
-public class FilterListFragment extends ItemListFragment<IssueFilter> implements
-        Comparator<IssueFilter> {
+public class FilterListFragment extends ItemListFragment<IssueFilter> implements Comparator<IssueFilter> {
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -58,23 +59,24 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    public Loader<List<IssueFilter>> onCreateLoader(int id, Bundle args) {
-        return new AsyncLoader<List<IssueFilter>>(getActivity()) {
-
-            @Override
-            public List<IssueFilter> loadInBackground() {
-                List<IssueFilter> filters = new ArrayList<>(
-                        cache.getIssueFilters());
-                Collections.sort(filters, FilterListFragment.this);
-                return filters;
-            }
-        };
+    protected Single<List<IssueFilter>> loadData(boolean forceRefresh) {
+        return Single.fromCallable(() -> new ArrayList<>(cache.getIssueFilters()))
+                .flatMap(filters -> Observable.fromIterable(filters)
+                        .sorted(FilterListFragment.this)
+                        .toList());
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        IssueFilter filter = (IssueFilter) l.getItemAtPosition(position);
-        startActivity(IssueBrowseActivity.createIntent(filter));
+    protected Item createItem(IssueFilter item) {
+        return new IssueFilterItem(avatars, item);
+    }
+
+    @Override
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueFilterItem) {
+            IssueFilter filter = ((IssueFilterItem) item).getData();
+            startActivity(IssueBrowseActivity.createIntent(filter));
+        }
     }
 
     @Override
@@ -85,15 +87,8 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_bookmarks_load;
-    }
-
-    @Override
-    protected SingleTypeAdapter<IssueFilter> createAdapter(
-            List<IssueFilter> items) {
-        return new FilterListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new IssueFilter[items.size()]), avatars);
     }
 
     @Override

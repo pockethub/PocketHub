@@ -43,7 +43,7 @@ public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
     public void testCreateWithInitialText() {
         setActivityIntent(new Intent().putExtra(EXTRA_TEXT, "gist content"));
 
-        View createMenu = view(id.m_apply);
+        View createMenu = view(id.create_gist);
         assertTrue(createMenu.isEnabled());
         EditText content = editText(id.et_gist_content);
         assertEquals("gist content", content.getText().toString());
@@ -55,7 +55,7 @@ public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
      * @throws Throwable
      */
     public void testCreateWithNoInitialText() throws Throwable {
-        View createMenu = view(id.m_apply);
+        View createMenu = view(id.create_gist);
         assertFalse(createMenu.isEnabled());
         EditText content = editText(id.et_gist_content);
         focus(content);

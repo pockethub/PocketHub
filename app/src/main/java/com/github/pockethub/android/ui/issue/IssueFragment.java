@@ -15,11 +15,12 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,13 +28,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.github.pockethub.android.core.issue.RefreshIssueTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.item.GitHubCommentItem;
+import com.github.pockethub.android.ui.item.LoadingItem;
+import com.github.pockethub.android.ui.item.issue.IssueEventItem;
+import com.github.pockethub.android.ui.item.issue.IssueHeaderItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -41,7 +44,6 @@ import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueEvent;
 import com.meisolsson.githubsdk.model.IssueState;
 import com.meisolsson.githubsdk.model.Label;
-import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.PullRequest;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
@@ -49,14 +51,9 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.core.issue.RefreshIssueTask;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.HeaderFooterListAdapter;
-import com.github.pockethub.android.ui.SelectableLinkMovementMethod;
-import com.github.pockethub.android.ui.StyledText;
-import com.github.pockethub.android.ui.comment.CommentListAdapter;
 import com.github.pockethub.android.ui.comment.DeleteCommentListener;
 import com.github.pockethub.android.ui.comment.EditCommentListener;
 import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
@@ -66,7 +63,11 @@ import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
-import com.google.inject.Inject;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.Section;
+
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,6 +75,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -97,12 +99,12 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_EDIT;
 import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE;
 import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
-import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT;
 
 /**
  * Fragment to display an issue
  */
-public class IssueFragment extends DialogFragment {
+public class IssueFragment extends DialogFragment
+        implements IssueHeaderItem.OnIssueHeaderActionListener {
 
     private static final String TAG = "IssueFragment";
 
@@ -119,22 +121,35 @@ public class IssueFragment extends DialogFragment {
     private boolean canWrite;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private IssueStore store;
+    protected IssueStore store;
 
-    private ListView list;
+    @BindView(android.R.id.list)
+    protected RecyclerView list;
 
-    private ProgressBar progress;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
 
-    private View headerView;
+    private GroupAdapter adapter = new GroupAdapter();
 
-    private View loadingView;
+    private Section mainSection = new Section();
 
-    private View footerView;
+    @Inject
+    protected RefreshIssueTaskFactory refreshIssueTaskFactory;
 
-    private HeaderFooterListAdapter<CommentListAdapter> adapter;
+    @Inject
+    protected EditLabelsTaskFactory labelsTaskFactory;
+
+    @Inject
+    protected EditMilestoneTaskFactory milestoneTaskFactory;
+
+    @Inject
+    protected EditAssigneeTaskFactory assigneeTaskFactory;
+
+    @Inject
+    protected EditStateTaskFactory stateTaskFactory;
 
     private EditMilestoneTask milestoneTask;
 
@@ -144,39 +159,13 @@ public class IssueFragment extends DialogFragment {
 
     private EditStateTask stateTask;
 
-    private TextView stateText;
-
-    private TextView titleText;
-
-    private TextView bodyText;
-
-    private TextView authorText;
-
-    private TextView createdDateText;
-
-    private ImageView creatorAvatar;
-
-    private ViewGroup commitsView;
-
-    private TextView assigneeText;
-
-    private ImageView assigneeAvatar;
-
-    private TextView labelsArea;
-
-    private View milestoneArea;
-
-    private View milestoneProgressArea;
-
-    private TextView milestoneText;
-
     private MenuItem stateItem;
 
     @Inject
-    private HttpImageGetter bodyImageGetter;
+    protected HttpImageGetter bodyImageGetter;
 
     @Inject
-    private HttpImageGetter commentImageGetter;
+    protected HttpImageGetter commentImageGetter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -192,10 +181,10 @@ public class IssueFragment extends DialogFragment {
 
         BaseActivity dialogActivity = (BaseActivity) getActivity();
 
-        milestoneTask = new EditMilestoneTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        assigneeTask = new EditAssigneeTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        labelsTask = new EditLabelsTask(dialogActivity, repositoryId, issueNumber, createObserver());
-        stateTask = new EditStateTask(dialogActivity, repositoryId, issueNumber, createObserver());
+        milestoneTask = milestoneTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        labelsTask = labelsTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        assigneeTask = assigneeTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+        stateTask = stateTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
     }
 
     private Consumer<Issue> createObserver() {
@@ -208,18 +197,12 @@ public class IssueFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        adapter.addHeader(headerView);
-        adapter.addFooter(footerView);
-
         issue = store.getIssue(repositoryId, issueNumber);
 
-        TextView loadingText = (TextView) loadingView
-                .findViewById(R.id.tv_loading);
-        loadingText.setText(R.string.loading_comments);
+        adapter.add(mainSection);
 
         if (issue == null || (issue.comments() > 0 && items == null)) {
-            adapter.addHeader(loadingView);
+            mainSection.setFooter(new LoadingItem(R.string.loading_comments));
         }
 
         if (issue != null && items != null) {
@@ -239,73 +222,15 @@ public class IssueFragment extends DialogFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        list = (ListView) view.findViewById(android.R.id.list);
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
+        DividerItemDecoration itemDecoration =
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.list_divider_5dp));
 
-        LayoutInflater inflater = getLayoutInflater(savedInstanceState);
-
-        headerView = inflater.inflate(R.layout.issue_header, null);
-
-        stateText = (TextView) headerView.findViewById(R.id.tv_state);
-        titleText = (TextView) headerView.findViewById(R.id.tv_issue_title);
-        authorText = (TextView) headerView.findViewById(R.id.tv_issue_author);
-        createdDateText = (TextView) headerView
-                .findViewById(R.id.tv_issue_creation_date);
-        creatorAvatar = (ImageView) headerView.findViewById(R.id.iv_avatar);
-        commitsView = (ViewGroup) headerView.findViewById(R.id.ll_issue_commits);
-        assigneeText = (TextView) headerView.findViewById(R.id.tv_assignee_name);
-        assigneeAvatar = (ImageView) headerView
-                .findViewById(R.id.iv_assignee_avatar);
-        labelsArea = (TextView) headerView.findViewById(R.id.tv_labels);
-        milestoneArea = headerView.findViewById(R.id.ll_milestone);
-        milestoneText = (TextView) headerView.findViewById(R.id.tv_milestone);
-        milestoneProgressArea = headerView.findViewById(R.id.v_closed);
-        bodyText = (TextView) headerView.findViewById(R.id.tv_issue_body);
-        bodyText.setMovementMethod(SelectableLinkMovementMethod.getInstance());
-
-        loadingView = inflater.inflate(R.layout.loading_item, null);
-
-        footerView = inflater.inflate(R.layout.footer_separator, null);
-
-        commitsView.setOnClickListener(v -> {
-            if (IssueUtils.isPullRequest(issue)) {
-                openPullRequestCommits();
-            }
-        });
-
-        stateText.setOnClickListener(v -> {
-            if (issue != null) {
-                stateTask.confirm(IssueState.open.equals(issue.state()));
-            }
-        });
-
-        milestoneArea.setOnClickListener(v -> {
-            if (issue != null && canWrite) {
-                milestoneTask.prompt(issue.milestone());
-            }
-        });
-
-        headerView.findViewById(R.id.ll_assignee).setOnClickListener(v -> {
-            if (issue != null && canWrite) {
-                assigneeTask.prompt(issue.assignee());
-            }
-        });
-
-        labelsArea.setOnClickListener(v -> {
-            if (issue != null && canWrite) {
-                labelsTask.prompt(issue.labels());
-            }
-        });
-
-        Activity activity = getActivity();
-        String userName = AccountUtils.getLogin(activity);
-
-        adapter = new HeaderFooterListAdapter<>(list,
-                new CommentListAdapter(activity.getLayoutInflater(), null, avatars,
-                        commentImageGetter, editCommentListener, deleteCommentListener, userName, canWrite, issue));
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.addItemDecoration(itemDecoration);
         list.setAdapter(adapter);
     }
 
@@ -314,89 +239,8 @@ public class IssueFragment extends DialogFragment {
             return;
         }
 
-        titleText.setText(issue.title());
-
-        String body = issue.bodyHtml();
-        if (!TextUtils.isEmpty(body)) {
-            bodyImageGetter.bind(bodyText, body, issue.id());
-        } else {
-            bodyText.setText(R.string.no_description_given);
-        }
-
-        authorText.setText(issue.user().login());
-        createdDateText.setText(new StyledText().append(
-                getString(R.string.prefix_opened)).append(issue.createdAt()));
-        avatars.bind(creatorAvatar, issue.user());
-
-        if (IssueUtils.isPullRequest(issue) && issue.pullRequest().commits() != null
-                && issue.pullRequest().commits() > 0) {
-            commitsView.setVisibility(VISIBLE);
-
-            TextView icon = (TextView) headerView.findViewById(R.id.tv_commit_icon);
-            icon.setText(ICON_COMMIT);
-
-            String commits = getString(R.string.pull_request_commits,
-                    issue.pullRequest().commits());
-            ((TextView) headerView.findViewById(R.id.tv_pull_request_commits)).setText(commits);
-        } else {
-            commitsView.setVisibility(GONE);
-        }
-
-        boolean open = IssueState.open.equals(issue.state());
-        if (!open) {
-            StyledText text = new StyledText();
-            text.bold(getString(R.string.closed));
-            Date closedAt = issue.closedAt();
-            if (closedAt != null) {
-                text.append(' ').append(closedAt);
-            }
-            stateText.setText(text);
-            stateText.setVisibility(VISIBLE);
-        } else {
-            stateText.setVisibility(GONE);
-        }
-
-        User assignee = issue.assignee();
-        if (assignee != null) {
-            StyledText name = new StyledText();
-            name.bold(assignee.login());
-            name.append(' ').append(getString(R.string.assigned));
-            assigneeText.setText(name);
-            assigneeAvatar.setVisibility(VISIBLE);
-            avatars.bind(assigneeAvatar, assignee);
-        } else {
-            assigneeAvatar.setVisibility(GONE);
-            assigneeText.setText(R.string.unassigned);
-        }
-
-        List<Label> labels = issue.labels();
-        if (labels != null && !labels.isEmpty()) {
-            LabelDrawableSpan.setText(labelsArea, labels);
-            labelsArea.setVisibility(VISIBLE);
-        } else {
-            labelsArea.setVisibility(GONE);
-        }
-
-        if (issue.milestone() != null) {
-            Milestone milestone = issue.milestone();
-            StyledText milestoneLabel = new StyledText();
-            milestoneLabel.append(getString(R.string.milestone_prefix));
-            milestoneLabel.append(' ');
-            milestoneLabel.bold(milestone.title());
-            milestoneText.setText(milestoneLabel);
-            float closed = milestone.closedIssues();
-            float total = closed + milestone.openIssues();
-            if (total > 0) {
-                ((LayoutParams) milestoneProgressArea.getLayoutParams()).weight = closed
-                        / total;
-                milestoneProgressArea.setVisibility(VISIBLE);
-            } else {
-                milestoneProgressArea.setVisibility(GONE);
-            }
-            milestoneArea.setVisibility(VISIBLE);
-        } else {
-            milestoneArea.setVisibility(GONE);
-        }
+        mainSection.setHeader(
+                new IssueHeaderItem(avatars, bodyImageGetter, getActivity(), this, issue));
 
         progress.setVisibility(GONE);
         list.setVisibility(VISIBLE);
@@ -404,13 +248,12 @@ public class IssueFragment extends DialogFragment {
     }
 
     private void refreshIssue() {
-        new RefreshIssueTask(getActivity(), repositoryId, issueNumber,
-                bodyImageGetter, commentImageGetter)
+        refreshIssueTaskFactory.create(repositoryId, issueNumber)
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(fullIssue -> isUsable())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullIssue -> {
                     issue = fullIssue.getIssue();
                     items = new ArrayList<>();
@@ -430,23 +273,23 @@ public class IssueFragment extends DialogFragment {
                 Date l = getDate(lhs);
                 Date r = getDate(rhs);
 
-                if(l == null && r != null) {
+                if (l == null && r != null) {
                     return 1;
-                } else if(l != null && r == null) {
+                } else if (l != null && r == null) {
                     return -1;
-                } else if(l == null && r == null) {
+                } else if (l == null && r == null) {
                     return 0;
                 } else {
                     return l.compareTo(r);
                 }
             }
 
-            private Date getDate(Object obj){
-                if(obj instanceof GitHubComment) {
+            private Date getDate(Object obj) {
+                if (obj instanceof GitHubComment) {
                     return ((GitHubComment) obj).createdAt();
-                } else if(obj instanceof GitHubEvent) {
+                } else if (obj instanceof GitHubEvent) {
                     return ((GitHubEvent) obj).createdAt();
-                } else if(obj instanceof IssueEvent) {
+                } else if (obj instanceof IssueEvent) {
                     return ((IssueEvent) obj).createdAt();
                 }
 
@@ -454,13 +297,23 @@ public class IssueFragment extends DialogFragment {
             }
         });
 
-        adapter.getWrappedAdapter().setItems(items);
-        adapter.removeHeader(loadingView);
-        adapter.getWrappedAdapter().setIssue(issue);
+        List<Item> listItems = new ArrayList<>();
+        for (Object item : items) {
+            if (item instanceof IssueEvent) {
+                listItems.add(new IssueEventItem(avatars, getActivity(), issue, (IssueEvent) item));
+            } else if (item instanceof GitHubComment) {
+                listItems.add(
+                        new GitHubCommentItem(avatars, commentImageGetter,
+                                editCommentListener, deleteCommentListener,
+                                AccountUtils.getLogin(getActivity()), canWrite,
+                                (GitHubComment) item
+                        )
+                );
+            }
+        }
 
-        adapter.getWrappedAdapter().notifyDataSetChanged();
-
-        headerView.setVisibility(VISIBLE);
+        mainSection.removeFooter();
+        mainSection.update(listItems);
         updateHeader(issue);
     }
 
@@ -478,13 +331,8 @@ public class IssueFragment extends DialogFragment {
             assigneeTask.edit(AssigneeDialogFragment.getSelected(arguments));
             break;
         case ISSUE_LABELS_UPDATE:
-            ArrayList<Label> labels = LabelsDialogFragment
-                    .getSelected(arguments);
-            if (labels != null && !labels.isEmpty()) {
-                labelsTask.edit(labels.toArray(new Label[labels.size()]));
-            } else {
-                labelsTask.edit(null);
-            }
+            ArrayList<Label> labels = LabelsDialogFragment.getSelected(arguments);
+            labelsTask.edit(labels);
             break;
         case ISSUE_CLOSE:
             stateTask.edit(true);
@@ -499,8 +347,8 @@ public class IssueFragment extends DialogFragment {
                     .deleteIssueComment(repositoryId.owner().login(), repositoryId.name(), comment.id())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
                     .compose(RxProgress.bindToLifecycle(getActivity(), R.string.deleting_comment))
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         if (items != null) {
                             int commentPosition = findCommentPositionInItems(comment);
@@ -716,4 +564,38 @@ public class IssueFragment extends DialogFragment {
         return result;
     }
 
+    @Override
+    public void onCommitsClicked() {
+        if (IssueUtils.isPullRequest(issue)) {
+            openPullRequestCommits();
+        }
+    }
+
+    @Override
+    public void onStateClicked() {
+        if (issue != null) {
+            stateTask.confirm(IssueState.open.equals(issue.state()));
+        }
+    }
+
+    @Override
+    public void onMilestonesClicked() {
+        if (issue != null && canWrite) {
+            milestoneTask.prompt(issue.milestone());
+        }
+    }
+
+    @Override
+    public void onAssigneesClicked() {
+        if (issue != null && canWrite) {
+            assigneeTask.prompt(issue.assignee());
+        }
+    }
+
+    @Override
+    public void onLabelsClicked() {
+        if (issue != null && canWrite) {
+            labelsTask.prompt(issue.labels());
+        }
+    }
 }

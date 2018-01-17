@@ -23,6 +23,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.github.pockethub.android.core.PageIterator;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Permissions;
@@ -30,9 +32,8 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.activity.WatchingService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,22 +46,8 @@ import retrofit2.Response;
 /**
  * Cache of repositories under a given organization
  */
-public class OrganizationRepositories implements
-        PersistableResource<Repository> {
-
-    /**
-     * Creation factory
-     */
-    public interface Factory {
-
-        /**
-         * Get repositories under given organization
-         *
-         * @param org
-         * @return repositories
-         */
-        OrganizationRepositories under(User org);
-    }
+@AutoFactory
+public class OrganizationRepositories implements PersistableResource<Repository> {
 
     private final User org;
 
@@ -75,9 +62,9 @@ public class OrganizationRepositories implements
      * @param context
      * @param accountProvider
      */
-    @Inject
-    public OrganizationRepositories(@Assisted User orgs, Context context,
-            Provider<Account> accountProvider) {
+    public OrganizationRepositories(User orgs,
+                                    @Provided Context context,
+                                    @Provided Provider<Account> accountProvider) {
         this.org = orgs;
         this.context = context;
         this.accountProvider = accountProvider;

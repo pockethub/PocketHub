@@ -15,71 +15,43 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.accounts.Account;
-import android.app.Activity;
+import android.content.Context;
 import android.text.Html.ImageGetter;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.accounts.AuthenticatedUserLoader;
 import com.github.pockethub.android.util.HtmlUtils;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
 import com.meisolsson.githubsdk.service.misc.MarkdownService;
 
+import io.reactivex.Single;
+import retrofit2.Response;
+
 /**
- * Markdown loader
+ * Markdown loader.
  */
-public class MarkdownLoader extends AuthenticatedUserLoader<CharSequence> {
-
-    private static final String TAG = "MarkdownLoader";
-
-    private final ImageGetter imageGetter;
-
-    private final Repository repository;
-
-    private final String raw;
-
-    private boolean encode;
+public class MarkdownLoader {
 
     /**
-     * @param activity
-     * @param repository
+     * Fetches html
+     * @param context
      * @param raw
+     * @param repository
      * @param imageGetter
      * @param encode
+     * @return
      */
-    public MarkdownLoader(Activity activity, Repository repository,
-                          String raw, ImageGetter imageGetter, boolean encode) {
-        super(activity);
-
-        this.repository = repository;
-        this.raw = raw;
-        this.imageGetter = imageGetter;
-        this.encode = encode;
-    }
-
-    @Override
-    protected CharSequence getAccountFailureData() {
-        return null;
-    }
-
-    @Override
-    public CharSequence load(Account account) {
+    public static Single<CharSequence> load(Context context, String raw, Repository repository,
+                              ImageGetter imageGetter, boolean encode) {
         RequestMarkdown markdown = RequestMarkdown.builder()
                 .mode(RequestMarkdown.MODE_GFM)
                 .text(raw)
                 .context(repository != null ? String.format("%s/%s", repository.owner().login(), repository.name()) : null)
                 .build();
 
-        String html = ServiceGenerator.createService(activity, MarkdownService.class)
+        return ServiceGenerator.createService(context, MarkdownService.class)
                 .renderMarkdown(markdown)
-                .blockingGet()
-                .body();
-
-        if (encode) {
-            return HtmlUtils.encode(html, imageGetter);
-        } else {
-            return html;
-        }
+                .map(Response::body)
+                .map(html -> encode ? HtmlUtils.encode(html, imageGetter) : html);
     }
 }

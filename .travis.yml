@@ -4,9 +4,11 @@ android:
    - tools
    - tools #Running this twice get's the latest build tools (https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI)
    - platform-tools
-   - android-25
-   - build-tools-25.0.2
+   - android-27
+   - build-tools-27.0.3
    - extra
+   licenses:
+   - 'android-sdk-license-.+'
 
 jdk: oraclejdk8
 
@@ -14,6 +16,9 @@ notifications:
   email: false
 
 sudo: required #The build runs out of memory and is killed if we use the container system
+
+before_install:
+  - yes | sdkmanager "platforms;android-27"
 
 script:
   - ./gradlew clean build

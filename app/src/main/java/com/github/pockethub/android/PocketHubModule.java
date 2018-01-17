@@ -22,38 +22,27 @@ import android.content.Context;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.persistence.OrganizationRepositories;
-import com.github.pockethub.android.sync.SyncCampaign;
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
-import com.google.inject.name.Named;
+import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.persistence.CacheHelper;
+import com.github.pockethub.android.persistence.DatabaseCache;
 
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
+import javax.inject.Named;
+
+import dagger.Module;
+import dagger.Provides;
+
 /**
  * Main module provide services and clients
  */
-public class PocketHubModule extends AbstractModule {
-
-    private WeakReference<IssueStore> issues;
-
-    private WeakReference<GistStore> gists;
-
-    private WeakReference<CommitStore> commits;
-
-    @Override
-    protected void configure() {
-        install(new ServicesModule());
-        install(new FactoryModuleBuilder().build(SyncCampaign.Factory.class));
-        install(new FactoryModuleBuilder()
-                .build(OrganizationRepositories.Factory.class));
-    }
+@Module
+public class PocketHubModule {
 
     @Provides
-    Account account(Context context){
+    Account account(Context context) {
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
         Account[] accounts = accountManager.getAccountsByType(context.getString(R.string.account_type));
         return accounts[0];
@@ -63,35 +52,5 @@ public class PocketHubModule extends AbstractModule {
     @Named("cacheDir")
     File cacheDir(Context context) {
         return new File(context.getFilesDir(), "cache");
-    }
-
-    @Provides
-    IssueStore issueStore(Context context) {
-        IssueStore store = issues != null ? issues.get() : null;
-        if (store == null) {
-            store = new IssueStore(context);
-            issues = new WeakReference<>(store);
-        }
-        return store;
-    }
-
-    @Provides
-    GistStore gistStore(Context context) {
-        GistStore store = gists != null ? gists.get() : null;
-        if (store == null) {
-            store = new GistStore(context);
-            gists = new WeakReference<>(store);
-        }
-        return store;
-    }
-
-    @Provides
-    CommitStore commitStore(Context context) {
-        CommitStore store = commits != null ? commits.get() : null;
-        if (store == null) {
-            store = new CommitStore(context);
-            commits = new WeakReference<>(store);
-        }
-        return store;
     }
 }

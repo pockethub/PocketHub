@@ -18,81 +18,40 @@ package com.github.pockethub.android.ui;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.CallSuper;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
-import com.github.pockethub.android.ui.roboactivities.RoboAppCompatActivity;
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
+import com.github.pockethub.android.R;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import dagger.android.support.DaggerAppCompatActivity;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
 /**
  * Activity that display dialogs
  */
-public abstract class BaseActivity extends
-        RoboAppCompatActivity implements DialogResultListener, LifecycleProvider<ActivityEvent> {
+public abstract class BaseActivity extends DaggerAppCompatActivity implements DialogResultListener {
 
-    private final BehaviorSubject<ActivityEvent> lifecycleSubject = BehaviorSubject.create();
+    @BindView(R.id.toolbar)
+    protected Toolbar toolbar;
 
-    @CallSuper
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(ActivityEvent.CREATE);
+        setContentView(getContentView());
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
     }
 
-
-    @Override
-    public final Observable<ActivityEvent> lifecycle() {
-        return lifecycleSubject;
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindUntilEvent(ActivityEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindActivity(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    protected void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(ActivityEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    protected void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(ActivityEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
-    protected void onPause() {
-        lifecycleSubject.onNext(ActivityEvent.PAUSE);
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
-    protected void onStop() {
-        lifecycleSubject.onNext(ActivityEvent.STOP);
-        super.onStop();
-    }
-
-    @Override
-    @CallSuper
-    protected void onDestroy() {
-        lifecycleSubject.onNext(ActivityEvent.DESTROY);
-        super.onDestroy();
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     /**
@@ -170,4 +129,12 @@ public abstract class BaseActivity extends
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
     }
+
+    /**
+     * Get content view to be used when {@link #onCreate(Bundle)} is called.
+     *
+     * @return layout resource id
+     */
+    @LayoutRes
+    protected abstract int getContentView();
 }

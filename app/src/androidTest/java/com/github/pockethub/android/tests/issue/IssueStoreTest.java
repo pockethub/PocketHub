@@ -33,7 +33,7 @@ public class IssueStoreTest extends AndroidTestCase {
      * Verify issue is updated when re-added
      */
     public void testReuseIssue() {
-        IssueStore store = new IssueStore(mContext);
+        IssueStore store = new IssueStore();
         Repository repo = InfoUtils.createRepoFromData("owner", "name");
 
         assertNull(store.getIssue(repo, 1));

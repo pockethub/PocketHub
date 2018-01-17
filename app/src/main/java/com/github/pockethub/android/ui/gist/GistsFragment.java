@@ -17,19 +17,19 @@ package com.github.pockethub.android.ui.gist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.ui.PagedItemFragment;
+import com.github.pockethub.android.ui.item.gist.GistItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.Gist;
-import com.google.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import static com.github.pockethub.android.RequestCodes.GIST_CREATE;
 import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
@@ -52,9 +52,9 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     protected GistStore store;
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        startActivityForResult(GistsViewActivity.createIntent(items, position),
-                GIST_VIEW);
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        int position = getListAdapter().getAdapterPosition(item);
+        startActivityForResult(GistsViewActivity.createIntent(items, position), GIST_VIEW);
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     }
 
     @Override
-    protected int getErrorMessage(Exception exception) {
+    protected int getErrorMessage() {
         return R.string.error_gists_load;
     }
 
@@ -101,7 +101,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
     }
 
     @Override
-    protected SingleTypeAdapter<Gist> createAdapter(List<Gist> items) {
-        return new GistListAdapter(avatars, getActivity(), items);
+    protected Item createItem(Gist item) {
+        return new GistItem(avatars, item);
     }
 }

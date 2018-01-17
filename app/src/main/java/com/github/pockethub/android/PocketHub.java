@@ -16,13 +16,19 @@
 
 package com.github.pockethub.android;
 
-import android.app.Application;
+import android.util.Log;
 
 import com.bugsnag.android.Bugsnag;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-public class PocketHub extends Application {
+import javax.inject.Inject;
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+
+public class PocketHub extends DaggerApplication {
+
+    private ApplicationComponent applicationComponent;
 
     @Override
     public void onCreate() {
@@ -30,5 +36,23 @@ public class PocketHub extends Application {
         JodaTimeAndroid.init(this);
         Bugsnag.init(this);
         Bugsnag.setNotifyReleaseStages("production");
+    }
+
+    @Inject
+    void logInjection() {
+        Log.i("Test", "Injecting " + PocketHub.class.getSimpleName());
+    }
+
+    public ApplicationComponent applicationComponent() {
+        return applicationComponent;
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        applicationComponent = (ApplicationComponent) DaggerApplicationComponent.builder()
+                .application(this)
+                .create(this);
+
+        return applicationComponent;
     }
 }

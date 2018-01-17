@@ -16,34 +16,34 @@
 package com.github.pockethub.android.util;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.github.pockethub.android.R;
-import com.google.inject.Singleton;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import roboguice.util.RoboAsyncTask;
 
 /**
  * Avatar utilities
@@ -140,23 +140,13 @@ public class AvatarLoader {
             avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"));
         }
 
+        ActionBarTarget target = new ActionBarTarget(context, actionBar);
+
         final String url = avatarUrl;
-
-        new FetchAvatarTask(context) {
-
-            @Override
-            public BitmapDrawable call() throws Exception {
-                Bitmap image = Bitmap.createScaledBitmap(p.load(url).get(), avatarSize, avatarSize, false);
-                return new BitmapDrawable(context.getResources(), ImageUtils.roundCorners(image, cornerRadius));
-            }
-
-            @Override
-            protected void onSuccess(BitmapDrawable image) throws Exception {
-                // compute inset in pixels
-                int insetPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, context.getResources().getDisplayMetrics());
-                actionBar.setLogo(new InsetDrawable(image, 0, 0, insetPx, 0));
-            }
-        }.execute();
+        p.load(url)
+                .resize(avatarSize, avatarSize)
+                .transform(new RoundedCornersTransformation())
+                .into(target);
     }
 
     /**
@@ -251,17 +241,35 @@ public class AvatarLoader {
         return cache.delete();
     }
 
-    private static abstract class FetchAvatarTask extends RoboAsyncTask<BitmapDrawable> {
+    public class ActionBarTarget implements Target {
 
-        private static final Executor EXECUTOR = Executors.newFixedThreadPool(1);
+        private Context context;
+        private ActionBar actionBar;
 
-        private FetchAvatarTask(Context context) {
-            super(context, EXECUTOR);
+        public ActionBarTarget(Context context, ActionBar actionBar) {
+            this.context = context;
+            this.actionBar = actionBar;
         }
 
         @Override
-        protected void onException(Exception e) throws RuntimeException {
-            Log.d(TAG, "Avatar load failed", e);
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            Resources res = context.getResources();
+            BitmapDrawable drawable = new BitmapDrawable(res, bitmap);
+
+            int insetPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    8, res.getDisplayMetrics());
+
+            actionBar.setLogo(new InsetDrawable(drawable, 0, 0, insetPx, 0));
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+            actionBar.setLogo(errorDrawable);
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+            actionBar.setLogo(placeHolderDrawable);
         }
     }
 

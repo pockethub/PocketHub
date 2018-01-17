@@ -34,7 +34,7 @@ import com.meisolsson.githubsdk.model.Content;
 import com.meisolsson.githubsdk.model.request.RequestMarkdown;
 import com.meisolsson.githubsdk.service.misc.MarkdownService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;

@@ -24,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
@@ -35,9 +37,9 @@ import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.HttpImageGetter;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -68,22 +70,25 @@ public class GistFilesViewActivity extends PagerActivity {
 
     private int initialPosition;
 
-    private ViewPager pager;
+    @BindView(R.id.vp_pages)
+    protected ViewPager pager;
 
-    private ProgressBar loadingBar;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
 
-    private TabLayout tabs;
+    @BindView(R.id.sliding_tabs_layout)
+    protected TabLayout tabs;
 
     private Gist gist;
 
     @Inject
-    private GistStore store;
+    protected GistStore store;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected RefreshGistTaskFactory refreshGistTaskFactory;
 
     private GistFilesPagerAdapter adapter;
 
@@ -93,14 +98,6 @@ public class GistFilesViewActivity extends PagerActivity {
 
         gistId = getStringExtra(EXTRA_GIST_ID);
         initialPosition = getIntExtra(EXTRA_POSITION);
-
-        setContentView(R.layout.activity_pager_with_title);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
-        pager = (ViewPager) findViewById(R.id.vp_pages);
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
-        tabs = (TabLayout) findViewById(R.id.sliding_tabs_layout);
 
         if (initialPosition < 0) {
             initialPosition = 0;
@@ -115,16 +112,21 @@ public class GistFilesViewActivity extends PagerActivity {
             loadingBar.setVisibility(View.VISIBLE);
             pager.setVisibility(View.GONE);
             tabs.setVisibility(View.GONE);
-            new RefreshGistTask(this, gistId, imageGetter)
+            refreshGistTaskFactory.create(this, gistId)
                     .refresh()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(gist -> {
                         this.gist = gist.getGist();
                         configurePager();
                     });
         }
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_pager_with_title;
     }
 
     private void configurePager() {

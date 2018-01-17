@@ -18,14 +18,15 @@ package com.github.pockethub.android.ui.gist;
 import android.accounts.Account;
 import android.content.Intent;
 
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.gist.GistPager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static com.github.pockethub.android.RequestCodes.GIST_CREATE;
@@ -36,8 +37,10 @@ import static com.github.pockethub.android.RequestCodes.GIST_VIEW;
  */
 public class MyGistsFragment extends GistsFragment {
 
+    GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
+
     @Inject
-    private Provider<Account> accountProvider;
+    protected Provider<Account> accountProvider;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -51,15 +54,7 @@ public class MyGistsFragment extends GistsFragment {
     }
 
     @Override
-    protected ResourcePager<Gist> createPager() {
-        return new GistPager(store) {
-
-            @Override
-            public PageIterator<Gist> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), GistService.class)
-                                .getUserGists(page1), page);
-            }
-        };
+    protected Single<Response<Page<Gist>>> loadData(int page) {
+        return service.getUserGists(page);
     }
 }

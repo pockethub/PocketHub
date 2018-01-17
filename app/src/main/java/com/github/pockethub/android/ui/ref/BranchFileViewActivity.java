@@ -30,6 +30,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
@@ -47,8 +48,9 @@ import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -62,8 +64,7 @@ import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 /**
  * Activity to view a file on a branch
  */
-public class BranchFileViewActivity extends BaseActivity implements
-    LoaderCallbacks<CharSequence> {
+public class BranchFileViewActivity extends BaseActivity {
 
     private static final String TAG = "BranchFileViewActivity";
 
@@ -90,6 +91,12 @@ public class BranchFileViewActivity extends BaseActivity implements
         return builder.toIntent();
     }
 
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
+
+    @BindView(R.id.wv_code)
+    protected WebView codeView;
+
     private Repository repo;
 
     private String sha;
@@ -106,33 +113,24 @@ public class BranchFileViewActivity extends BaseActivity implements
 
     private GitBlob blob;
 
-    private ProgressBar loadingBar;
-
-    private WebView codeView;
-
     private SourceEditor editor;
 
     private MenuItem markdownItem;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Inject
-    private HttpImageGetter imageGetter;
+    protected HttpImageGetter imageGetter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_commit_file_view);
-
         repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);
         path = getStringExtra(EXTRA_PATH);
         branch = getStringExtra(EXTRA_HEAD);
-
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
-        codeView = (WebView) findViewById(R.id.wv_code);
 
         codeView.getSettings().setBuiltInZoomControls(true);
         codeView.getSettings().setUseWideViewPort(true);
@@ -143,14 +141,17 @@ public class BranchFileViewActivity extends BaseActivity implements
         editor.setWrap(PreferenceUtils.getCodePreferences(this).getBoolean(
                 WRAP, false));
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(file);
         actionBar.setSubtitle(branch);
         avatars.bind(actionBar, repo.owner());
 
         loadContent();
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_commit_file_view;
     }
 
     @Override
@@ -220,36 +221,6 @@ public class BranchFileViewActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
-        final String raw = args.getString(ARG_TEXT);
-        final Repository repo = args.getParcelable(ARG_REPO);
-        return new MarkdownLoader(this, repo, raw, imageGetter, false);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CharSequence> loader,
-                               CharSequence rendered) {
-        if (rendered == null) {
-            ToastUtils.show(this, R.string.error_rendering_markdown);
-        }
-
-        loadingBar.setVisibility(View.GONE);
-        codeView.setVisibility(View.VISIBLE);
-
-        if (!TextUtils.isEmpty(rendered)) {
-            renderedMarkdown = rendered.toString();
-            if (markdownItem != null) {
-                markdownItem.setEnabled(true);
-            }
-            editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CharSequence> loader) {
-    }
-
     private void shareFile() {
         String id = InfoUtils.createRepoId(repo);
         startActivity(ShareUtils.create(path + " at " + branch + " on " + id,
@@ -261,10 +232,19 @@ public class BranchFileViewActivity extends BaseActivity implements
         codeView.setVisibility(View.GONE);
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_TEXT, markdown);
-        args.putParcelable(ARG_REPO, repo);
-        getSupportLoaderManager().restartLoader(0, args, this);
+        MarkdownLoader.load(this, markdown, repo, imageGetter, false)
+                .subscribe(rendered -> {
+                    loadingBar.setVisibility(View.GONE);
+                    codeView.setVisibility(View.VISIBLE);
+
+                    if (!TextUtils.isEmpty(rendered)) {
+                        renderedMarkdown = rendered.toString();
+                        if (markdownItem != null) {
+                            markdownItem.setEnabled(true);
+                        }
+                        editor.setMarkdown(true).setSource(file, renderedMarkdown, false);
+                    }
+                }, e -> ToastUtils.show(this, R.string.error_rendering_markdown));
     }
 
     private void loadContent() {
@@ -275,7 +255,7 @@ public class BranchFileViewActivity extends BaseActivity implements
                 .getGitBlob(repo.owner().login(), repo.name(), sha)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     blob = response.body();
 

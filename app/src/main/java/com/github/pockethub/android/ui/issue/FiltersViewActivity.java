@@ -17,12 +17,10 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -31,7 +29,11 @@ import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MainActivity;
-import com.google.inject.Inject;
+import com.github.pockethub.android.ui.item.issue.IssueFilterItem;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemLongClickListener;
+
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -39,8 +41,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends BaseActivity implements
-    OnItemLongClickListener {
+public class FiltersViewActivity extends BaseActivity implements OnItemLongClickListener {
 
     /**
      * Create intent to browse issue filters
@@ -56,17 +57,13 @@ public class FiltersViewActivity extends BaseActivity implements
     private static final int REQUEST_DELETE = 1;
 
     @Inject
-    private AccountDataManager cache;
+    protected AccountDataManager cache;
 
     private FilterListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.issues_filter_list);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
@@ -75,7 +72,12 @@ public class FiltersViewActivity extends BaseActivity implements
 
         fragment = (FilterListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
-        fragment.getListView().setOnItemLongClickListener(this);
+        fragment.getListAdapter().setOnItemLongClickListener(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.issues_filter_list;
     }
 
     @Override
@@ -108,14 +110,17 @@ public class FiltersViewActivity extends BaseActivity implements
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view,
-        int position, long id) {
-        IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_FILTER, filter);
-        ConfirmDialogFragment.show(this, REQUEST_DELETE,
-            getString(R.string.confirm_bookmark_delete_title),
-            getString(R.string.confirm_bookmark_delete_message), args);
-        return true;
+    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueFilterItem) {
+            IssueFilter filter = ((IssueFilterItem) item).getData();
+            Bundle args = new Bundle();
+            args.putParcelable(ARG_FILTER, filter);
+            ConfirmDialogFragment.show(this, REQUEST_DELETE,
+                    getString(R.string.confirm_bookmark_delete_title),
+                    getString(R.string.confirm_bookmark_delete_message), args);
+            return true;
+        }
+
+        return false;
     }
 }

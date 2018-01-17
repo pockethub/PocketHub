@@ -21,10 +21,12 @@ import android.util.Log;
 
 import com.github.pockethub.android.persistence.DatabaseCache;
 import com.github.pockethub.android.persistence.OrganizationRepositories;
+import com.github.pockethub.android.persistence.OrganizationRepositoriesFactory;
 import com.github.pockethub.android.persistence.Organizations;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.User;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,32 +34,19 @@ import java.util.List;
 /**
  * A cancelable sync operation to synchronize data for a given account
  */
+@AutoFactory
 public class SyncCampaign implements Runnable {
 
     private static final String TAG = "SyncCampaign";
 
-    /**
-     * Factory to create campaign
-     */
-    public interface Factory {
-
-        /**
-         * Create campaign for result
-         *
-         * @param syncResult
-         * @return campaign
-         */
-        SyncCampaign create(SyncResult syncResult);
-    }
+    @Inject
+    protected DatabaseCache cache;
 
     @Inject
-    private DatabaseCache cache;
+    protected OrganizationRepositoriesFactory repos;
 
     @Inject
-    private OrganizationRepositories.Factory repos;
-
-    @Inject
-    private Organizations persistedOrgs;
+    protected Organizations persistedOrgs;
 
     private final SyncResult syncResult;
 
@@ -68,8 +57,7 @@ public class SyncCampaign implements Runnable {
      *
      * @param syncResult
      */
-    @Inject
-    public SyncCampaign(@Assisted SyncResult syncResult) {
+    public SyncCampaign(SyncResult syncResult) {
         this.syncResult = syncResult;
     }
 
@@ -93,7 +81,7 @@ public class SyncCampaign implements Runnable {
 
             Log.d(TAG, "Syncing repos for " + org.login());
             try {
-                cache.requestAndStore(repos.under(org));
+                cache.requestAndStore(repos.create(org));
                 syncResult.stats.numUpdates++;
             } catch (IOException | SQLException e) {
                 syncResult.stats.numIoExceptions++;

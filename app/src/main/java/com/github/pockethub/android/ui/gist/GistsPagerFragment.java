@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.gist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import android.view.View;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
@@ -35,7 +37,7 @@ import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import java.util.Random;
 
@@ -52,11 +54,11 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
 
     private static final String TAG = "GistsPagerFragment";
     @Inject
-    private GistStore store;
+    protected GistStore store;
     private Random rand;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rand = new Random();
         configureTabPager();
@@ -102,8 +104,8 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(((BaseActivity)getActivity()).bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(getActivity(), R.string.random_gist))
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(gist -> getActivity().startActivityForResult(
                         GistsViewActivity.createIntent(gist), GIST_VIEW), e -> {
                     Log.d(TAG, "Exception opening random Gist", e);

@@ -33,6 +33,8 @@ import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.ToastUtils;
 
+import butterknife.BindView;
+
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -45,7 +47,8 @@ import static com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC;
  */
 public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
 
-    private ProgressBar loadingBar;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
 
     private SearchRepositoryListFragment repoFragment;
 
@@ -58,8 +61,6 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

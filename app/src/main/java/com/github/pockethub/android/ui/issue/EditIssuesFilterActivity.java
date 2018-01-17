@@ -21,7 +21,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,8 +39,12 @@ import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static com.github.pockethub.android.Intents.EXTRA_ISSUE_FILTER;
@@ -65,8 +71,20 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     private static final int REQUEST_ASSIGNEE = 3;
 
+    @BindView(R.id.tv_labels)
+    protected TextView labelsText;
+
+    @BindView(R.id.tv_milestone)
+    protected TextView milestoneText;
+
+    @BindView(R.id.tv_assignee)
+    protected TextView assigneeText;
+
+    @BindView(R.id.iv_avatar)
+    protected ImageView avatarView;
+
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private LabelsDialog labelsDialog;
 
@@ -76,25 +94,9 @@ public class EditIssuesFilterActivity extends BaseActivity {
 
     private IssueFilter filter;
 
-    private TextView labelsText;
-
-    private TextView milestoneText;
-
-    private TextView assigneeText;
-
-    private ImageView avatarView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_issues_filter_edit);
-
-        labelsText = (TextView) findViewById(R.id.tv_labels);
-        milestoneText = (TextView) findViewById(R.id.tv_milestone);
-        assigneeText = (TextView) findViewById(R.id.tv_assignee);
-        avatarView = (ImageView) findViewById(R.id.iv_avatar);
-
         if (savedInstanceState != null) {
             filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);
         }
@@ -103,55 +105,24 @@ public class EditIssuesFilterActivity extends BaseActivity {
             filter = getIntent().getParcelableExtra(EXTRA_ISSUE_FILTER);
         }
 
-        final Repository repository = filter.getRepository();
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        Repository repository = filter.getRepository();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.filter_issues_title);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
 
-        OnClickListener assigneeListener = v -> {
-            if (assigneeDialog == null) {
-                assigneeDialog = new AssigneeDialog(this, REQUEST_ASSIGNEE, repository);
-            }
-            assigneeDialog.show(filter.getAssignee());
-        };
-
-        findViewById(R.id.tv_assignee_label).setOnClickListener(assigneeListener);
-        assigneeText.setOnClickListener(assigneeListener);
-
-        OnClickListener milestoneListener = v -> {
-            if (milestoneDialog == null) {
-                milestoneDialog = new MilestoneDialog(this, REQUEST_MILESTONE, repository);
-            }
-            milestoneDialog.show(filter.getMilestone());
-        };
-
-        findViewById(R.id.tv_milestone_label).setOnClickListener(milestoneListener);
-        milestoneText.setOnClickListener(milestoneListener);
-
-        OnClickListener labelsListener = v -> {
-            if (labelsDialog == null) {
-                labelsDialog = new LabelsDialog(this, REQUEST_LABELS, repository);
-            }
-            labelsDialog.show(filter.getLabels());
-        };
-
-        findViewById(R.id.tv_labels_label).setOnClickListener(labelsListener);
-        labelsText.setOnClickListener(labelsListener);
-
         updateAssignee();
         updateMilestone();
         updateLabels();
 
-        RadioGroup status = (RadioGroup) findViewById(R.id.issue_filter_status);
-        RadioGroup sortOrder = (RadioGroup) findViewById(R.id.issue_sort_order);
-        RadioGroup sortType = (RadioGroup) findViewById(R.id.issue_sort_type);
+        RadioGroup status = findViewById(R.id.issue_filter_status);
+        RadioGroup sortOrder = findViewById(R.id.issue_sort_order);
+        RadioGroup sortType = findViewById(R.id.issue_sort_type);
 
-        status.setOnCheckedChangeListener((radioGroup, checkedId) ->
-                filter.setOpen(checkedId == R.id.rb_open));
+        status.setOnCheckedChangeListener(this::onStatusChanged);
+        sortOrder.setOnCheckedChangeListener(this::onSortOrderChanged);
+        sortType.setOnCheckedChangeListener(this::onSortTypeChanged);
 
         if (filter.isOpen()) {
             status.check(R.id.rb_open);
@@ -159,35 +130,12 @@ public class EditIssuesFilterActivity extends BaseActivity {
             status.check(R.id.rb_closed);
         }
 
-        sortOrder.setOnCheckedChangeListener((radioGroup, checkedId) -> {
-            if (checkedId == R.id.rb_asc) {
-                filter.setDirection(IssueFilter.DIRECTION_ASCENDING);
-            } else {
-                filter.setDirection(IssueFilter.DIRECTION_DESCENDING);
-            }
-        });
 
         if (filter.getDirection().equals(IssueFilter.DIRECTION_ASCENDING)) {
             sortOrder.check(R.id.rb_asc);
         } else {
             sortOrder.check(R.id.rb_desc);
         }
-
-        sortType.setOnCheckedChangeListener((radioGroup, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rb_created:
-                    filter.setSortType(IssueFilter.SORT_CREATED);
-                    break;
-                case R.id.rb_updated:
-                    filter.setSortType(IssueFilter.SORT_UPDATED);
-                    break;
-                case R.id.rb_comments:
-                    filter.setSortType(IssueFilter.SORT_COMMENTS);
-                    break;
-                default:
-                    break;
-            }
-        });
 
         switch (filter.getSortType()) {
             case IssueFilter.SORT_CREATED:
@@ -202,6 +150,11 @@ public class EditIssuesFilterActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_issues_filter_edit;
     }
 
     @Override
@@ -229,6 +182,58 @@ public class EditIssuesFilterActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
 
         outState.putParcelable(EXTRA_ISSUE_FILTER, filter);
+    }
+
+    @OnClick({R.id.tv_assignee, R.id.tv_assignee_label})
+    protected void onAssigneeClicked() {
+        if (assigneeDialog == null) {
+            assigneeDialog = new AssigneeDialog(this, REQUEST_ASSIGNEE, filter.getRepository());
+        }
+        assigneeDialog.show(filter.getAssignee());
+    }
+
+    @OnClick({R.id.tv_milestone, R.id.tv_milestone_label})
+    protected void onMilestoneClicked() {
+        if (milestoneDialog == null) {
+            milestoneDialog = new MilestoneDialog(this, REQUEST_MILESTONE, filter.getRepository());
+        }
+        milestoneDialog.show(filter.getMilestone());
+    }
+
+    @OnClick({R.id.tv_labels, R.id.tv_labels_label})
+    protected void onLabelsClicked() {
+        if (labelsDialog == null) {
+            labelsDialog = new LabelsDialog(this, REQUEST_LABELS, filter.getRepository());
+        }
+        labelsDialog.show(filter.getLabels());
+    }
+
+    private void onStatusChanged(RadioGroup radioGroup, int checkedId) {
+        filter.setOpen(checkedId == R.id.rb_open);
+    }
+
+    private void onSortOrderChanged(RadioGroup radioGroup, int checkedId) {
+        if (checkedId == R.id.rb_asc) {
+            filter.setDirection(IssueFilter.DIRECTION_ASCENDING);
+        } else {
+            filter.setDirection(IssueFilter.DIRECTION_DESCENDING);
+        }
+    }
+
+    private void onSortTypeChanged(RadioGroup radioGroup, int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_created:
+                filter.setSortType(IssueFilter.SORT_CREATED);
+                break;
+            case R.id.rb_updated:
+                filter.setSortType(IssueFilter.SORT_UPDATED);
+                break;
+            case R.id.rb_comments:
+                filter.setSortType(IssueFilter.SORT_COMMENTS);
+                break;
+            default:
+                break;
+        }
     }
 
     private void updateLabels() {

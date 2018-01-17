@@ -18,14 +18,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
-        style="@style/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:dividerHeight="0dp"
         android:layout_alignParentTop="true"
-        android:fastScrollEnabled="true"
+        android:paddingBottom="10dp"
+        android:clipToPadding="false"
         android:visibility="gone" />
 
     <ProgressBar

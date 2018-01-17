@@ -27,7 +27,7 @@ import com.github.pockethub.android.Intents;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -51,17 +51,12 @@ public class RepositoryContributorsActivity extends BaseActivity {
     private Repository repository;
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_repo_contributors);
-
         repository = getParcelableExtra(EXTRA_REPOSITORY);
-
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.name());
@@ -70,6 +65,11 @@ public class RepositoryContributorsActivity extends BaseActivity {
 
         User owner = repository.owner();
         avatars.bind(getSupportActionBar(), owner);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_repo_contributors;
     }
 
     @Override

@@ -15,50 +15,42 @@
  */
 package com.github.pockethub.android.ui.comment;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.kevinsawicki.wishlist.Keyboard;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
-import java.io.Serializable;
+import butterknife.BindView;
 
 /**
  * Fragment to display rendered comment fragment
  */
-public class RenderedCommentFragment extends DialogFragment implements
-        LoaderCallbacks<CharSequence> {
+public class RenderedCommentFragment extends DialogFragment {
 
     private static final String ARG_TEXT = "text";
 
     private static final String ARG_REPO = "repo";
 
-    private ProgressBar progress;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar progress;
 
-    private TextView bodyText;
+    @BindView(R.id.tv_comment_body)
+    protected TextView bodyText;
 
     @Inject
-    private HttpImageGetter imageGetter;
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        progress = (ProgressBar) view.findViewById(R.id.pb_loading);
-        bodyText = (TextView) view.findViewById(R.id.tv_comment_body);
-    }
+    protected HttpImageGetter imageGetter;
 
     /**
      * Set text to render
@@ -67,14 +59,21 @@ public class RenderedCommentFragment extends DialogFragment implements
      * @param repo
      */
     public void setText(final String raw, final Repository repo) {
-        Bundle args = new Bundle();
-        args.putCharSequence(ARG_TEXT, raw);
-        if (repo instanceof Serializable) {
-            args.putParcelable(ARG_REPO, repo);
-        }
-        getLoaderManager().restartLoader(0, args, this);
-        Keyboard.hideSoftInput(bodyText);
+        loadMarkdown(raw, repo);
+        hideSoftKeyboard();
         showLoading(true);
+    }
+
+    private void hideSoftKeyboard() {
+        Context context = getContext();
+        if (context != null) {
+            InputMethodManager imm =
+                    (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(bodyText.getWindowToken(), 0);
+            }
+        }
     }
 
     private void showLoading(final boolean loading) {
@@ -93,25 +92,11 @@ public class RenderedCommentFragment extends DialogFragment implements
         return inflater.inflate(R.layout.fragment_comment_preview, null);
     }
 
-    @Override
-    public Loader<CharSequence> onCreateLoader(int loader, Bundle args) {
-        final CharSequence raw = args.getCharSequence(ARG_TEXT);
-        final Repository repo = args.getParcelable(ARG_REPO);
-        return new MarkdownLoader(getActivity(), repo, raw.toString(),
-                imageGetter, true);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<CharSequence> loader,
-            CharSequence rendered) {
-        if (rendered == null) {
-            ToastUtils.show(getActivity(), R.string.error_rendering_markdown);
-        }
-        bodyText.setText(rendered);
-        showLoading(false);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<CharSequence> loader) {
+    private void loadMarkdown(String raw, Repository repo) {
+        MarkdownLoader.load(getActivity(), raw, repo, imageGetter, true)
+                .subscribe(rendered -> {
+                    bodyText.setText(rendered);
+                    showLoading(false);
+                } , e -> ToastUtils.show(getActivity(), R.string.error_rendering_markdown));
     }
 }

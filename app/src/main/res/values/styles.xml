@@ -49,18 +49,6 @@
 
     <style name="commentDeleteIcon" parent="AvatarMedium"/>
 
-    <style name="ListView">
-        <item name="android:dividerHeight">0dp</item>
-        <item name="android:divider">@null</item>
-        <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:fadingEdge">none</item>
-    </style>
-
-    <style name="CommentListView" parent="ListView">
-        <item name="android:dividerHeight">5dp</item>
-        <item name="android:divider">@null</item>
-    </style>
-
     <style name="EditText" parent="Global">
         <item name="android:textColor">@color/text</item>
         <item name="android:textCursorDrawable">@drawable/edit_text_cursor</item>
@@ -176,7 +164,7 @@
 
     <style name="ListItem">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
         <item name="android:paddingTop">10dp</item>

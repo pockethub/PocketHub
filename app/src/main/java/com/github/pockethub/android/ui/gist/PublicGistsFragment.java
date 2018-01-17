@@ -15,28 +15,23 @@
  */
 package com.github.pockethub.android.ui.gist;
 
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.gist.GistPager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.gists.GistService;
+
+import io.reactivex.Single;
+import retrofit2.Response;
 
 /**
  * Fragment to display a list of public Gists
  */
 public class PublicGistsFragment extends GistsFragment {
 
-    @Override
-    protected ResourcePager<Gist> createPager() {
-        return new GistPager(store) {
+    GistService service = ServiceGenerator.createService(getActivity(), GistService.class);
 
-            @Override
-            public PageIterator<Gist> createIterator(int page, int size) {
-                return new PageIterator<>(page1 ->
-                        ServiceGenerator.createService(getActivity(), GistService.class)
-                                .getPublicGists(page1), page);
-            }
-        };
+    @Override
+    protected Single<Response<Page<Gist>>> loadData(int page) {
+        return service.getPublicGists(page);
     }
 }

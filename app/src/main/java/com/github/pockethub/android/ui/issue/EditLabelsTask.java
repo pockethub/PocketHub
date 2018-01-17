@@ -15,7 +15,12 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import android.app.Activity;
+
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Repository;
@@ -23,7 +28,9 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
-import com.google.inject.Inject;
+
+import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +38,16 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import roboguice.RoboGuice;
 
 import static com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE;
 
 /**
  * Task to edit labels
  */
+@AutoFactory
 public class EditLabelsTask {
 
-    @Inject
-    private IssueStore store;
+    private final IssueStore store;
 
     private final LabelsDialog labelsDialog;
 
@@ -60,17 +66,16 @@ public class EditLabelsTask {
      * @param repositoryId
      * @param issueNumber
      */
-    public EditLabelsTask(final BaseActivity activity,
+    public EditLabelsTask(@Provided IssueStore store, final BaseActivity activity,
                           final Repository repositoryId, final int issueNumber,
                           final Consumer<Issue> observer) {
 
         this.activity = activity;
+        this.store = store;
         this.repositoryId = repositoryId;
         this.issueNumber = issueNumber;
         this.observer = observer;
-        labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE,
-                repositoryId);
-        RoboGuice.injectMembers(activity, this);
+        labelsDialog = new LabelsDialog(activity, ISSUE_LABELS_UPDATE, repositoryId);
     }
 
     /**
@@ -91,8 +96,8 @@ public class EditLabelsTask {
      * @param labels
      * @return this task
      */
-    public EditLabelsTask edit(Label[] labels) {
-        List<String> labelNames = new ArrayList<>(labels.length);
+    public EditLabelsTask edit(@Nonnull List<Label> labels) {
+        List<String> labelNames = new ArrayList<>();
         for (Label label : labels) {
             labelNames.add(label.name());
         }
@@ -102,8 +107,8 @@ public class EditLabelsTask {
         store.editIssue(repositoryId, issueNumber, editIssue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(activity.bindToLifecycle())
                 .compose(RxProgress.bindToLifecycle(activity, R.string.updating_labels))
+                .as(AutoDisposeUtils.bindToLifecycle(activity))
                 .subscribe(observer);
         return this;
     }

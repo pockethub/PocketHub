@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
@@ -35,8 +36,9 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
+import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -68,11 +70,12 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     }
 
     @Inject
-    private AvatarLoader avatars;
+    protected AvatarLoader avatars;
 
     private User user;
 
-    private ProgressBar loadingBar;
+    @BindView(R.id.pb_loading)
+    protected ProgressBar loadingBar;
 
     private boolean isFollowing;
 
@@ -83,7 +86,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         super.onCreate(savedInstanceState);
 
         user = getIntent().getParcelableExtra(EXTRA_USER);
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -98,7 +100,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                     .getUser(user.login())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .compose(this.bindToLifecycle())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         user = response.body();
                         configurePager();
@@ -201,7 +203,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
 
         followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(aBoolean -> isFollowing = !isFollowing,
                         e -> ToastUtils.show(this, isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person));
     }
@@ -212,7 +214,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
                 .isFollowing(user.login())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(this.bindToLifecycle())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(response -> {
                     isFollowing = response.code() == 204;
                     followingStatusChecked = true;
