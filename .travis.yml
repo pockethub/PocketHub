@@ -17,5 +17,8 @@ notifications:
 
 sudo: required #The build runs out of memory and is killed if we use the container system
 
+before_install:
+  - yes | sdkmanager "platforms;android-27"
+
 script:
   - ./gradlew clean build
