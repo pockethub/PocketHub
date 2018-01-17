@@ -110,6 +110,9 @@ public class MainActivity extends BaseActivity
     private boolean userLearnedDrawer;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
+    @VisibleForTesting
+    public Fragment currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,35 +188,39 @@ public class MainActivity extends BaseActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe(orgs -> {
-                    if (orgs.isEmpty()) {
-                        return;
-                    }
+                .subscribe(this::onOrgsLoaded,
+                        e -> {
+                            Log.e(TAG, "Exception loading organizations", e);
+                            ToastUtils.show(this, e, R.string.error_orgs_load);
+                        });
+    }
 
-                    org = orgs.get(0);
-                    this.orgs = orgs;
+    @VisibleForTesting
+    void onOrgsLoaded(List<User> orgs) {
+        if (orgs.isEmpty()) {
+            return;
+        }
 
-                    setUpNavigationView();
+        org = orgs.get(0);
+        this.orgs = orgs;
 
-                    Window window = getWindow();
-                    if (window == null) {
-                        return;
-                    }
-                    View view = window.getDecorView();
-                    if (view == null) {
-                        return;
-                    }
+        setUpNavigationView();
 
-                    view.post(() -> {
-                        switchFragment(new HomePagerFragment(), org);
-                        if (!userLearnedDrawer) {
-                            drawerLayout.openDrawer(GravityCompat.START);
-                        }
-                    });
-                }, e -> {
-                        Log.e(TAG, "Exception loading organizations", e);
-                        ToastUtils.show(this, e, R.string.error_orgs_load);
-                    });
+        Window window = getWindow();
+        if (window == null) {
+            return;
+        }
+        View view = window.getDecorView();
+        if (view == null) {
+            return;
+        }
+
+        view.post(() -> {
+            switchFragment(new HomePagerFragment(), org);
+            if (!userLearnedDrawer) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     @Override
@@ -359,8 +366,7 @@ public class MainActivity extends BaseActivity
         finish();
     }
 
-    @VisibleForTesting
-    void switchFragment(Fragment fragment, User organization) {
+    private void switchFragment(Fragment fragment, User organization) {
         if (organization != null) {
             Bundle args = new Bundle();
             args.putParcelable("org", organization);
@@ -369,10 +375,11 @@ public class MainActivity extends BaseActivity
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.container, fragment).commit();
         drawerLayout.closeDrawer(GravityCompat.START);
+
+        currentFragment = fragment;
     }
 
-    @VisibleForTesting
-    AccountManager getAccountManager() {
+    private AccountManager getAccountManager() {
         return AccountManager.get(this);
     }
 }

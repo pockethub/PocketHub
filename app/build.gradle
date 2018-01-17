@@ -79,6 +79,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -141,10 +147,7 @@ dependencies {
     compile 'com.xwray:groupie:2.0.3'
 
     //Libs for testing
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.9.5"
-    testCompile('org.robolectric:robolectric:3.1.4') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
-    }
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:1.9.5"
+    testImplementation "org.robolectric:robolectric:3.6.1"
 }

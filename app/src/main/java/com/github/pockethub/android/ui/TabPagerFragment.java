@@ -164,8 +164,8 @@ public abstract class TabPagerFragment<V extends PagerAdapter & FragmentProvider
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         pager.removeOnPageChangeListener(this);
     }
 
