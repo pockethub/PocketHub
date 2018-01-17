@@ -123,7 +123,7 @@ public class CommitViewActivity extends PagerActivity {
 
         adapter = new CommitPagerAdapter(this, repository, ids);
         pager.setAdapter(adapter);
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
 
@@ -131,6 +131,12 @@ public class CommitViewActivity extends PagerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
         avatars.bind(actionBar, repository.owner());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
     }
 
     @Override

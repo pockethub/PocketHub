@@ -136,10 +136,15 @@ public class GistsViewActivity extends PagerActivity implements OnLoadListener<G
 
         adapter = new GistsPagerAdapter(this, gists);
         pager.setAdapter(adapter);
-        // TODO: This should be in the base class
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
     }
 
     @Override

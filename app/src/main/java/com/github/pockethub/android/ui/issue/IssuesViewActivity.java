@@ -205,6 +205,11 @@ public class IssuesViewActivity extends PagerActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        pager.removeOnPageChangeListener(this);
+    }
 
     @Override
     protected int getContentView() {
@@ -232,7 +237,7 @@ public class IssuesViewActivity extends PagerActivity {
         }
         pager.setAdapter(adapter);
 
-        pager.setOnPageChangeListener(this);
+        pager.addOnPageChangeListener(this);
         pager.scheduleSetItem(initialPosition, this);
         onPageSelected(initialPosition);
     }
