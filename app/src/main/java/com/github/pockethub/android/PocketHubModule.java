@@ -41,14 +41,8 @@ import dagger.Provides;
 @Module
 public class PocketHubModule {
 
-    private WeakReference<IssueStore> issues;
-
-    private WeakReference<GistStore> gists;
-
-    private WeakReference<CommitStore> commits;
-
     @Provides
-    Account account(Context context){
+    Account account(Context context) {
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
         Account[] accounts = accountManager.getAccountsByType(context.getString(R.string.account_type));
         return accounts[0];
@@ -58,35 +52,5 @@ public class PocketHubModule {
     @Named("cacheDir")
     File cacheDir(Context context) {
         return new File(context.getFilesDir(), "cache");
-    }
-
-    @Provides
-    IssueStore issueStore(Context context) {
-        IssueStore store = issues != null ? issues.get() : null;
-        if (store == null) {
-            store = new IssueStore(context);
-            issues = new WeakReference<>(store);
-        }
-        return store;
-    }
-
-    @Provides
-    GistStore gistStore(Context context) {
-        GistStore store = gists != null ? gists.get() : null;
-        if (store == null) {
-            store = new GistStore(context);
-            gists = new WeakReference<>(store);
-        }
-        return store;
-    }
-
-    @Provides
-    CommitStore commitStore(Context context) {
-        CommitStore store = commits != null ? commits.get() : null;
-        if (store == null) {
-            store = new CommitStore(context);
-            commits = new WeakReference<>(store);
-        }
-        return store;
     }
 }

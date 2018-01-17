@@ -28,6 +28,8 @@ import dagger.android.DaggerApplication;
 
 public class PocketHub extends DaggerApplication {
 
+    private ApplicationComponent applicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,10 +43,16 @@ public class PocketHub extends DaggerApplication {
         Log.i("Test", "Injecting " + PocketHub.class.getSimpleName());
     }
 
+    public ApplicationComponent applicationComponent() {
+        return applicationComponent;
+    }
+
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
-        return DaggerApplicationComponent.builder()
+        applicationComponent = (ApplicationComponent) DaggerApplicationComponent.builder()
                 .application(this)
                 .create(this);
+
+        return applicationComponent;
     }
 }

@@ -28,6 +28,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Single;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -35,19 +38,19 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 /**
  * Store of Gists
  */
+@Singleton
 public class GistStore extends ItemStore {
 
     private final ItemReferences<Gist> gists = new ItemReferences<>();
 
-    private Context context;
+    @Inject
+    protected GistService gistService;
 
     /**
-     * Create gist store
-     *
-     * @param context
+     * Create gist store.
      */
-    public GistStore(final Context context) {
-        this.context = context;
+    @Inject
+    public GistStore() {
     }
 
     /**
@@ -103,7 +106,7 @@ public class GistStore extends ItemStore {
      * @return refreshed gist
      */
     public Single<Gist> refreshGist(String id) {
-        return ServiceGenerator.createService(context, GistService.class).getGist(id)
+        return gistService.getGist(id)
                 .map(response -> addGist(response.body()));
     }
 
@@ -120,7 +123,7 @@ public class GistStore extends ItemStore {
                 .isPublic(gist.isPublic())
                 .build();
 
-        return ServiceGenerator.createService(context, GistService.class).editGist(edit)
+        return gistService.editGist(edit)
                 .map(response -> addGist(response.body()));
     }
 }

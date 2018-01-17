@@ -23,4 +23,7 @@ public interface DialogFragmentBuilder {
 
     @ContributesAndroidInjector
     RefDialogFragment refDialogFragment();
+
+    @ContributesAndroidInjector
+    ConfirmDialogFragment confirmDialogFragment();
 }

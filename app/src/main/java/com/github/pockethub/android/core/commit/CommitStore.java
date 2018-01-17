@@ -24,11 +24,11 @@ import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Single;
 
@@ -36,22 +36,19 @@ import io.reactivex.Single;
 /**
  * Store of commits
  */
+@Singleton
 public class CommitStore extends ItemStore {
 
     private final Map<String, ItemReferences<Commit>> commits = new HashMap<>();
-
-    private final Context context;
 
     @Inject
     protected RepositoryCommitService service;
 
     /**
-     * Create commit store
-     *
-     * @param context
+     * Create commit store.
      */
-    public CommitStore(final Context context) {
-        this.context = context;
+    @Inject
+    public CommitStore() {
     }
 
     /**

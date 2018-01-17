@@ -31,7 +31,7 @@ public class GistStoreTest extends AndroidTestCase {
      * Verify issue is updated when re-added
      */
     public void testReuseIssue() {
-        GistStore store = new GistStore(mContext);
+        GistStore store = new GistStore();
         assertNull(store.getGist("abcd"));
 
         Gist gist = Gist.builder()

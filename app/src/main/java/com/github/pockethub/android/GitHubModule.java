@@ -3,6 +3,8 @@ package com.github.pockethub.android;
 import android.content.Context;
 
 import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.service.gists.GistService;
+import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 import com.meisolsson.githubsdk.service.users.UserService;
@@ -33,4 +35,15 @@ public class GitHubModule {
         return ServiceGenerator.createService(context, RepositoryCommentService.class);
     }
 
+    @Provides
+    @Singleton
+    GistService providesGistService(Context context) {
+        return ServiceGenerator.createService(context, GistService.class);
+    }
+
+    @Provides
+    @Singleton
+    IssueService providesIssueService(Context context) {
+        return ServiceGenerator.createService(context, IssueService.class);
+    }
 }

@@ -16,9 +16,14 @@
 package com.github.pockethub.android.tests.gist;
 
 import android.app.Application;
+import android.app.Instrumentation;
+import android.content.Context;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 
+import com.github.pockethub.android.GitHubModule;
+import com.github.pockethub.android.PocketHub;
+import com.github.pockethub.android.PocketHubModule;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.tests.ActivityTest;
@@ -26,15 +31,17 @@ import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import java.util.Map;
+
+import dagger.Component;
 
 /**
  * Tests of {@link GistFilesViewActivity}
  */
 public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivity> {
 
-    @Inject
     protected GistStore store;
 
     private Gist gist;
@@ -50,10 +57,9 @@ public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivit
     protected void setUp() throws Exception {
         super.setUp();
 
-        // TODO: Fix this test
-
-        // RoboGuice.injectMembers(getInstrumentation().getTargetContext()
-        //     .getApplicationContext(), this);
+        Context context = getInstrumentation().getTargetContext();
+        PocketHub pocketHub = (PocketHub) context.getApplicationContext();
+        store = pocketHub.applicationComponent().gistStore();
 
         Map<String, GistFile> files = new ArrayMap<>();
 

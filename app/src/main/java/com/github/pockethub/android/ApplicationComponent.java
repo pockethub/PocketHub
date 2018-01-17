@@ -2,6 +2,7 @@ package com.github.pockethub.android;
 
 import android.app.Application;
 
+import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.dagger.ActivityBuilder;
 import com.github.pockethub.android.dagger.DialogFragmentBuilder;
 import com.github.pockethub.android.dagger.ServiceBuilder;
@@ -23,12 +24,17 @@ import dagger.android.support.AndroidSupportInjectionModule;
         DialogFragmentBuilder.class,
         GitHubModule.class
 })
-interface ApplicationComponent extends AndroidInjector<PocketHub> {
+public interface ApplicationComponent extends AndroidInjector<PocketHub> {
+
+    GistStore gistStore();
 
     @Component.Builder
     abstract class Builder extends AndroidInjector.Builder<PocketHub> {
 
         @BindsInstance
         abstract Builder application(Application application);
+
+        @Override
+        public abstract ApplicationComponent build();
     }
 }

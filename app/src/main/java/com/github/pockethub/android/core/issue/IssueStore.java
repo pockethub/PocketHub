@@ -35,28 +35,31 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Single;
 import retrofit2.Response;
 
 /**
  * Store of loaded issues
  */
+@Singleton
 public class IssueStore extends ItemStore {
 
     private final Map<String, ItemReferences<Issue>> repos = new HashMap<>();
 
-    private final Context context;
+    @Inject
+    protected Context context;
 
-    private IssueService service;
+    @Inject
+    protected IssueService service;
 
     /**
-     * Create issue store
-     *
-     * @param context
+     * Create issue store.
      */
-    public IssueStore(final Context context) {
-        this.context = context;
-        service = ServiceGenerator.createService(context, IssueService.class);
+    @Inject
+    public IssueStore() {
     }
 
     /**
