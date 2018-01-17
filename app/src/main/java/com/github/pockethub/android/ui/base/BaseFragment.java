@@ -31,7 +31,6 @@ import dagger.android.support.DaggerFragment;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
-// TODO Remove this?
 public abstract class BaseFragment extends DaggerFragment {
 
     @Override

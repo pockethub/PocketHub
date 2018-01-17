@@ -18,6 +18,7 @@ package com.github.pockethub.android.ui.gist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
@@ -57,7 +58,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
     private Random rand;
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         rand = new Random();
         configureTabPager();

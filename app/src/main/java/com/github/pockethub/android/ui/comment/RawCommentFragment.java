@@ -66,7 +66,7 @@ public class RawCommentFragment extends DialogFragment {
     private String initComment;
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // @TargetApi(…) required to ensure build passes

@@ -141,7 +141,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         DividerItemDecoration itemDecoration =
                 new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
