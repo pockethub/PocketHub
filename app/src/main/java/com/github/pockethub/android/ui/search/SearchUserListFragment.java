@@ -17,26 +17,24 @@ package com.github.pockethub.android.ui.search;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.item.UserItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import javax.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -100,21 +98,22 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        return new SearchUserListAdapter(getActivity(),
-                items.toArray(new User[items.size()]), avatars);
+    protected Item createItem(User item) {
+        return new UserItem(avatars, item);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User result = (User) l.getItemAtPosition(position);
-        ServiceGenerator.createService(getContext(), UserService.class)
-                .getUser(result.login())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe(response ->
-                        startActivity(UserViewActivity.createIntent(response.body())));
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof UserItem) {
+            User result = ((UserItem) item).getData();
+            ServiceGenerator.createService(getContext(), UserService.class)
+                    .getUser(result.login())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
+                    .subscribe(response ->
+                            startActivity(UserViewActivity.createIntent(response.body())));
+        }
     }
 
     @Override

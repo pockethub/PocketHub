@@ -19,9 +19,11 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -137,6 +139,17 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText monospace(final CharSequence text) {
         return append(text, new TypefaceSpan("monospace"));
+    }
+
+    public StyledText underlineAll() {
+        setSpan(new UnderlineSpan(), 0, length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        return this;
+    }
+
+
+    public StyledText strikethroughAll() {
+        setSpan(new StrikethroughSpan(), 0, length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        return this;
     }
 
     /**

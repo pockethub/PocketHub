@@ -15,29 +15,34 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
+import com.xwray.groupie.OnItemLongClickListener;
+import com.xwray.groupie.Section;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnItemClick;
-import butterknife.OnItemLongClick;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -47,10 +52,9 @@ import io.reactivex.schedulers.Schedulers;
  * Base fragment for displaying a list of items that loads with a progress bar
  * visible.
  *
- * @param <E>
  */
 public abstract class ItemListFragment<E> extends DialogFragment implements
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, OnItemClickListener, OnItemLongClickListener {
 
     /**
      * Swipe to refresh view.
@@ -62,7 +66,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * List view.
      */
     @BindView(android.R.id.list)
-    protected ListView listView;
+    protected RecyclerView recyclerView;
 
     /**
      * Empty view.
@@ -79,7 +83,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     /**
      * List items.
      */
-    protected List<E> items = new ArrayList<>();
+    protected List<Item> items = new ArrayList<>();
 
     /**
      * Is the list currently shown?.
@@ -91,7 +95,27 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     private Disposable dataLoadDisposable;
 
+    /**
+     * The adapter used by the {@link RecyclerView} to display {@link com.xwray.groupie.Group}:s
+     * from Groupie.
+     */
+    private GroupAdapter adapter = new GroupAdapter();
+
+    /**
+     * The {@link Section} containing headers, footers and the items.
+     */
+    private Section mainSection = new Section();
+
+    /**
+     * Is the fragment currently loading data.
+     */
     protected boolean isLoading;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter.add(mainSection);
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -99,9 +123,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
 
         if (!items.isEmpty()) {
             setListShown(true, false);
+        } else {
+            refresh();
         }
-
-        refresh();
     }
 
     @Override
@@ -123,7 +147,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         listShown = false;
         emptyView = null;
         progressBar = null;
-        listView = null;
+        recyclerView = null;
 
         super.onDestroyView();
     }
@@ -139,17 +163,20 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
                 R.color.text_link,
                 R.color.pager_title_background_end);
 
-        configureList(getActivity(), getListView());
+        configureList(getRecyclerView());
     }
     
     /**
      * Configure list after view has been created.
      *
-     * @param activity
-     * @param listView
+     * @param recyclerView
      */
-    protected void configureList(Activity activity, ListView listView) {
-        listView.setAdapter(createAdapter());
+    protected void configureList(RecyclerView recyclerView) {
+
+        adapter.setOnItemClickListener(this);
+        adapter.setOnItemLongClickListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -161,13 +188,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     public void refresh() {
+        items.clear();
         refresh(false);
     }
 
     /**
      * Refresh the fragment's list.
      */
-    public void refresh(boolean force) {
+    protected void refresh(boolean force) {
         if (!isUsable() || isLoading) {
             return;
         }
@@ -177,9 +205,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         }
 
         isLoading = true;
+
         dataLoadDisposable = loadData(force)
+                .flatMap(items -> Observable.fromIterable(items)
+                        .map(this::createItem)
+                        .toList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(this::onDataLoaded, this::onDataLoadError);
     }
 
@@ -193,17 +226,25 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     /**
      * Load data async via a Single.
      *
-     * @param forceRefresh
-     * @return Single to subscribe to
+     * @param forceRefresh If the loading is forced.
+     * @return Single to subscribe to.
      */
     protected abstract Single<List<E>> loadData(boolean forceRefresh);
 
     /**
+     * Create a {@link Item} from the data item.
+     *
+     * @param item The data item to create an item with.
+     * @return A new item.
+     */
+    protected abstract Item createItem(E item);
+
+    /**
      * Called when the data has loaded.
      *
-     * @param items The items added to the list,
+     * @param newItems The items added to the list.
      */
-    protected void onDataLoaded(List<E> items) {
+    protected void onDataLoaded(List<Item> newItems) {
         if (!isUsable()) {
             return;
         }
@@ -211,8 +252,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         isLoading = false;
         swipeLayout.setRefreshing(false);
 
-        this.items.addAll(items);
-        getListAdapter().getWrappedAdapter().setItems(this.items);
+        items.addAll(newItems);
+        mainSection.update(items);
+
         showList();
     }
 
@@ -229,25 +271,6 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
             showList();
         }
     }
-
-    /**
-     * Create adapter to display items.
-     *
-     * @return adapter
-     */
-    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> createAdapter() {
-        SingleTypeAdapter<E> wrapped = createAdapter(items);
-        return new HeaderFooterListAdapter<>(getListView(),
-                wrapped);
-    }
-
-    /**
-     * Create adapter to display items.
-     *
-     * @param items
-     * @return adapter
-     */
-    protected abstract SingleTypeAdapter<E> createAdapter(final List<E> items);
 
     /**
      * Set the list to be shown.
@@ -276,12 +299,36 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     /**
-     * Get {@link ListView}.
+     * Get {@link RecyclerView}.
      *
-     * @return listView
+     * @return recyclerView
      */
-    public ListView getListView() {
-        return listView;
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+
+    /**
+     * Get main {@link Section} for adding footers and headers.
+     *
+     * @return mainSection
+     */
+    public Section getMainSection() {
+        return mainSection;
+    }
+
+    /**
+     * Get the {@link android.support.v7.widget.RecyclerView.LayoutManager} for
+     * the {@link RecyclerView}
+     *
+     * @return recyclerView
+     */
+    public LinearLayoutManager getLayoutManager() {
+        if (recyclerView != null) {
+            return (LinearLayoutManager) recyclerView.getLayoutManager();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -289,14 +336,8 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      *
      * @return list adapter
      */
-    @SuppressWarnings("unchecked")
-    protected HeaderFooterListAdapter<SingleTypeAdapter<E>> getListAdapter() {
-        if (listView != null) {
-            return (HeaderFooterListAdapter<SingleTypeAdapter<E>>) listView
-                    .getAdapter();
-        } else {
-            return null;
-        }
+    public GroupAdapter getListAdapter() {
+        return adapter;
     }
 
     /**
@@ -304,31 +345,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      *
      * @return this fragment
      */
-    protected ItemListFragment<E> notifyDataSetChanged() {
-        HeaderFooterListAdapter<SingleTypeAdapter<E>> root = getListAdapter();
-        if (root != null) {
-            SingleTypeAdapter<E> typeAdapter = root.getWrappedAdapter();
-            if (typeAdapter != null) {
-                typeAdapter.notifyDataSetChanged();
-            }
-        }
+    protected ItemListFragment notifyDataSetChanged() {
+        getListAdapter().notifyDataSetChanged();
         return this;
     }
 
-    /**
-     * Set list adapter to use on list view.
-     *
-     * @param adapter
-     * @return this fragment
-     */
-    protected ItemListFragment<E> setListAdapter(final ListAdapter adapter) {
-        if (listView != null) {
-            listView.setAdapter(adapter);
-        }
-        return this;
-    }
-
-    private ItemListFragment<E> fadeIn(final View view, final boolean animate) {
+    private ItemListFragment fadeIn(final View view, final boolean animate) {
         if (view != null) {
             if (animate) {
                 view.startAnimation(AnimationUtils.loadAnimation(getActivity(),
@@ -340,12 +362,12 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
         return this;
     }
 
-    private ItemListFragment<E> show(final View view) {
+    private ItemListFragment show(final View view) {
         view.setVisibility(View.VISIBLE);
         return this;
     }
 
-    private ItemListFragment<E> hide(final View view) {
+    private ItemListFragment hide(final View view) {
         view.setVisibility(View.GONE);
         return this;
     }
@@ -356,7 +378,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param shown
      * @return this fragment
      */
-    public ItemListFragment<E> setListShown(final boolean shown) {
+    public ItemListFragment setListShown(final boolean shown) {
         return setListShown(shown, true);
     }
 
@@ -367,7 +389,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param animate
      * @return this fragment
      */
-    public ItemListFragment<E> setListShown(final boolean shown,
+    public ItemListFragment setListShown(final boolean shown,
             final boolean animate) {
         if (!isUsable()) {
             return this;
@@ -378,9 +400,9 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
                 // List has already been shown so hide/show the empty view with
                 // no fade effect
                 if (items.isEmpty()) {
-                    hide(listView).show(emptyView);
+                    hide(recyclerView).show(emptyView);
                 } else {
-                    hide(emptyView).show(listView);
+                    hide(emptyView).show(recyclerView);
                 }
             }
             return this;
@@ -390,14 +412,14 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
 
         if (shown) {
             if (!items.isEmpty()) {
-                hide(progressBar).hide(emptyView).fadeIn(listView, animate)
-                        .show(listView);
+                hide(progressBar).hide(emptyView).fadeIn(recyclerView, animate)
+                        .show(recyclerView);
             } else {
-                hide(progressBar).hide(listView).fadeIn(emptyView, animate)
+                hide(progressBar).hide(recyclerView).fadeIn(emptyView, animate)
                         .show(emptyView);
             }
         } else {
-            hide(listView).hide(emptyView).fadeIn(progressBar, animate)
+            hide(recyclerView).hide(emptyView).fadeIn(progressBar, animate)
                     .show(progressBar);
         }
 
@@ -410,7 +432,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param message
      * @return this fragment
      */
-    protected ItemListFragment<E> setEmptyText(final String message) {
+    protected ItemListFragment setEmptyText(final String message) {
         if (emptyView != null) {
             emptyView.setText(message);
         }
@@ -423,7 +445,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param resId
      * @return this fragment
      */
-    protected ItemListFragment<E> setEmptyText(final int resId) {
+    protected ItemListFragment setEmptyText(final int resId) {
         if (emptyView != null) {
             emptyView.setText(resId);
         }
@@ -433,26 +455,23 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     /**
      * Callback when a list view item is clicked.
      *
-     * @param l
-     * @param v
-     * @param position
-     * @param id
+     * @param item
+     * @param view
      */
-    @OnItemClick(android.R.id.list)
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    @Override
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+
     }
 
     /**
      * Callback when a list view item is clicked and held.
      *
-     * @param l
-     * @param v
-     * @param position
-     * @param id
+     * @param item
+     * @param view
      * @return true if the callback consumed the long click, false otherwise
      */
-    @OnItemLongClick(android.R.id.list)
-    public boolean onListItemLongClick(ListView l, View v, int position, long id) {
+    @Override
+    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
         return false;
     }
 }

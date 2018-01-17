@@ -16,13 +16,12 @@
 
 package com.github.pockethub.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ListView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.meisolsson.githubsdk.model.Page;
+import com.xwray.groupie.Item;
 
 import java.util.List;
 
@@ -32,11 +31,37 @@ import retrofit2.Response;
 /**
  * List fragment that adds more elements when the bottom of the list is scrolled
  * to.
- *
- * @param <E> The type of item to display in the list
  */
-public abstract class PagedItemFragment<E> extends ItemListFragment<E>
-        implements OnScrollListener {
+public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
+
+    private final RecyclerView.OnScrollListener scrollListener =
+            new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                }
+
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (!isUsable()) {
+                        return;
+                    }
+                    if (!hasMore) {
+                        return;
+                    }
+
+                    // The item count minus the footer
+                    int count = getMainSection().getItemCount() - 1;
+                    LinearLayoutManager layoutManager = getLayoutManager();
+
+                    if (layoutManager != null) {
+                        if (layoutManager.findLastVisibleItemPosition() >= count) {
+                            showMore();
+                        }
+                    }
+                }
+            };
 
     private ResourceLoadingIndicator loadingIndicator;
 
@@ -57,95 +82,74 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E>
      */
     protected abstract int getLoadingMessage();
 
-    /**
-     * Configure list after view has been created.
-     *
-     * @param activity
-     * @param listView
-     */
     @Override
-    protected void configureList(Activity activity, ListView listView) {
-        super.configureList(activity, listView);
-
-        loadingIndicator = new ResourceLoadingIndicator(activity,
-                getLoadingMessage());
-        loadingIndicator.setList(getListAdapter());
+    protected void configureList(RecyclerView recyclerView) {
+        super.configureList(recyclerView);
+        loadingIndicator = new ResourceLoadingIndicator(getLoadingMessage());
+        loadingIndicator.setSection(getMainSection());
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getRecyclerView().addOnScrollListener(scrollListener);
+    }
 
-        getListView().setOnScrollListener(this);
-
-        getListView().setFastScrollEnabled(true);
+    @Override
+    public void onDestroyView() {
+        getRecyclerView().removeOnScrollListener(scrollListener);
+        super.onDestroyView();
     }
 
     protected abstract Single<Response<Page<E>>> loadData(int page);
 
     @Override
     protected Single<List<E>> loadData(boolean forceRefresh) {
-        Single<Response<Page<E>>> load = loadData(page);
-        page++;
-        return load.map(Response::body)
+        return loadData(page)
+                .map(Response::body)
                 .map(page -> {
                     hasMore = page.next() != null;
                     return page;
                 })
                 .map(Page::items);
+
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        // Intentionally left blank
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem,
-            int visibleItemCount, int totalItemCount) {
-        if (!isUsable()) {
-            return;
-        }
-        if (!hasMore) {
-            return;
-        }
-
-        if (getLoaderManager().hasRunningLoaders()) {
-            return;
-        }
-
-        int count = getListAdapter().getWrappedAdapter().getCount();
-        if (listView != null && listView.getLastVisiblePosition() >= count) {
-            showMore();
-        }
+    private void resetPagingData() {
+        page = 1;
+        hasMore = true;
     }
 
     @Override
     protected void forceRefresh() {
-        page = 1;
-        hasMore = true;
-
+        resetPagingData();
+        loadingIndicator.setVisible(false);
         super.forceRefresh();
+    }
+
+    @Override
+    public void refresh() {
+        refresh(false);
+    }
+
+    @Override
+    protected void refreshWithProgress() {
+        resetPagingData();
+        loadingIndicator.setVisible(false);
+        super.refreshWithProgress();
     }
 
     /**
      * Show more events while retaining the current pager state.
      */
     private void showMore() {
+        page++;
         refresh();
     }
 
     @Override
-    protected void onDataLoaded(List<E> items) {
+    protected void onDataLoaded(List<Item> items) {
         super.onDataLoaded(items);
         loadingIndicator.setVisible(hasMore);
-    }
-
-    @Override
-    protected void refreshWithProgress() {
-        page = 1;
-        hasMore = true;
-
-        super.refreshWithProgress();
     }
 }

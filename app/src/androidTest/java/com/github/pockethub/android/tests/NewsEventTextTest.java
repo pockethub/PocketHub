@@ -22,6 +22,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.github.pockethub.android.ui.item.news.GistEventItem;
+import com.github.pockethub.android.ui.item.news.NewsItem;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
@@ -30,7 +32,6 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.Team;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R.id;
-import com.github.pockethub.android.ui.user.NewsListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
 import com.meisolsson.githubsdk.model.payload.CreatePayload;
@@ -44,6 +45,9 @@ import com.meisolsson.githubsdk.model.payload.MemberPayload;
 import com.meisolsson.githubsdk.model.payload.PullRequestPayload;
 import com.meisolsson.githubsdk.model.payload.PushPayload;
 import com.meisolsson.githubsdk.model.payload.TeamAddPayload;
+import com.xwray.groupie.GroupAdapter;
+
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -51,13 +55,15 @@ import java.util.Date;
  */
 public class NewsEventTextTest extends InstrumentationTestCase {
 
-    private NewsListAdapter adapter;
-
     private TextView text;
 
     private User actor;
 
     private Repository repo;
+
+    private AvatarLoader avatarLoader;
+
+    private LayoutInflater layoutInflater;
 
     @Override
     protected void setUp() throws Exception {
@@ -65,14 +71,14 @@ public class NewsEventTextTest extends InstrumentationTestCase {
 
         actor = User.builder().login("user").build();
         repo = Repository.builder().name("user/repo").build();
-
         Context context = getInstrumentation().getTargetContext();
-        adapter = new NewsListAdapter(LayoutInflater.from(context),
-                new AvatarLoader(context));
+        avatarLoader = new AvatarLoader(context);
+        layoutInflater = LayoutInflater.from(context);
     }
 
     private GitHubEvent createEvent(GitHubEventType type, GitHubPayload payload) {
         return GitHubEvent.builder()
+                .id("test")
                 .createdAt(new Date())
                 .type(type)
                 .payload(payload)
@@ -88,10 +94,13 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     }
 
     private void updateView(GitHubEvent event) {
-        adapter.setItems(new Object[] { event });
-        View view = adapter.getView(0, null, null);
-        assertNotNull(view);
-        text = (TextView) view.findViewById(id.tv_event);
+        NewsItem item = NewsItem.createNewsItem(avatarLoader, event);
+
+        View itemView = layoutInflater.inflate(item.getLayout(), null);
+        NewsItem.ViewHolder viewHolder = item.createViewHolder(itemView);
+        item.bind(viewHolder, 0);
+
+        text = viewHolder.event;
         assertNotNull(text);
     }
 
@@ -307,6 +316,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     public void testPush() {
         PushPayload payload = PushPayload.builder()
                 .ref("refs/heads/master")
+                .commits(Collections.emptyList())
                 .build();
 
         GitHubEvent event = createEvent(GitHubEventType.PushEvent, payload);

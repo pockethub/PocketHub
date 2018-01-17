@@ -15,16 +15,16 @@
  */
 package com.github.pockethub.android.ui.user;
 
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
+import com.github.pockethub.android.ui.item.UserItem;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import javax.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Fragment to page over users
@@ -38,15 +38,15 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     protected AvatarLoader avatars;
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(List<User> items) {
-        User[] users = items.toArray(new User[items.size()]);
-        return new UserListAdapter(getActivity().getLayoutInflater(), users,
-                avatars);
+    protected Item createItem(User item) {
+        return new UserItem(avatars, item);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        User user = (User) l.getItemAtPosition(position);
-        startActivity(UserViewActivity.createIntent(user));
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof UserItem) {
+            User user = ((UserItem) item).getData();
+            startActivity(UserViewActivity.createIntent(user));
+        }
     }
 }

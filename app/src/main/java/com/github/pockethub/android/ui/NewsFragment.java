@@ -18,20 +18,38 @@ package com.github.pockethub.android.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.ui.item.news.CommitCommentEventItem;
+import com.github.pockethub.android.ui.item.news.CreateEventItem;
+import com.github.pockethub.android.ui.item.news.DeleteEventItem;
+import com.github.pockethub.android.ui.item.news.FollowEventItem;
+import com.github.pockethub.android.ui.item.news.ForkEventItem;
+import com.github.pockethub.android.ui.item.news.GistEventItem;
+import com.github.pockethub.android.ui.item.news.GollumEventItem;
+import com.github.pockethub.android.ui.item.news.IssueCommentEventItem;
+import com.github.pockethub.android.ui.item.news.IssuesEventItem;
+import com.github.pockethub.android.ui.item.news.MemberEventItem;
+import com.github.pockethub.android.ui.item.news.NewsItem;
+import com.github.pockethub.android.ui.item.news.PublicEventItem;
+import com.github.pockethub.android.ui.item.news.PullRequestEventItem;
+import com.github.pockethub.android.ui.item.news.PullRequestReviewCommentEventItem;
+import com.github.pockethub.android.ui.item.news.PushEventItem;
+import com.github.pockethub.android.ui.item.news.ReleaseEventItem;
+import com.github.pockethub.android.ui.item.news.TeamAddEventItem;
+import com.github.pockethub.android.ui.item.news.WatchEventItem;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Release;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistEventMatcher;
 import com.github.pockethub.android.core.issue.IssueEventMatcher;
@@ -43,7 +61,6 @@ import com.github.pockethub.android.ui.commit.CommitViewActivity;
 import com.github.pockethub.android.ui.gist.GistsViewActivity;
 import com.github.pockethub.android.ui.issue.IssuesViewActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
-import com.github.pockethub.android.ui.user.NewsListAdapter;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ConvertUtils;
 import com.github.pockethub.android.util.InfoUtils;
@@ -52,6 +69,8 @@ import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
 import com.meisolsson.githubsdk.model.payload.PushPayload;
 import com.meisolsson.githubsdk.model.payload.ReleasePayload;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.util.List;
@@ -98,8 +117,12 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        GitHubEvent event = (GitHubEvent) l.getItemAtPosition(position);
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (!(item instanceof NewsItem)) {
+            return;
+        }
+
+        GitHubEvent event = ((NewsItem) item).getData();
 
         if (DownloadEvent.equals(event.type())) {
             openDownload(event);
@@ -141,13 +164,17 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     }
 
     @Override
-    public boolean onListItemLongClick(ListView l, View v, int position,
-            long itemId) {
+    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
         if (!isUsable()) {
             return false;
         }
 
-        final GitHubEvent event = (GitHubEvent) l.getItemAtPosition(position);
+        if (!(item instanceof NewsItem)) {
+            return false;
+        }
+
+
+        final GitHubEvent event = ((NewsItem) item).getData();
         final Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
         final User user = event.actor();
 
@@ -158,21 +185,21 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
             // Hacky but necessary since material dialogs has a different API
             final MaterialDialog[] dialogHolder = new MaterialDialog[1];
 
-            View view = getActivity().getLayoutInflater().inflate(
+            View dialogView = getActivity().getLayoutInflater().inflate(
                     R.layout.nav_dialog, null);
-            avatars.bind((ImageView) view.findViewById(R.id.iv_user_avatar), user);
-            avatars.bind((ImageView) view.findViewById(R.id.iv_repo_avatar), repo.owner());
-            ((TextView) view.findViewById(R.id.tv_login)).setText(user.login());
-            ((TextView) view.findViewById(R.id.tv_repo_name)).setText(InfoUtils.createRepoId(repo));
-            view.findViewById(R.id.ll_user_area).setOnClickListener(v1 -> {
+            avatars.bind((ImageView) dialogView.findViewById(R.id.iv_user_avatar), user);
+            avatars.bind((ImageView) dialogView.findViewById(R.id.iv_repo_avatar), repo.owner());
+            ((TextView) dialogView.findViewById(R.id.tv_login)).setText(user.login());
+            ((TextView) dialogView.findViewById(R.id.tv_repo_name)).setText(InfoUtils.createRepoId(repo));
+            dialogView.findViewById(R.id.ll_user_area).setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
                 viewUser(user);
             });
-            view.findViewById(R.id.ll_repo_area).setOnClickListener(v1 -> {
+            dialogView.findViewById(R.id.ll_repo_area).setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
                 viewRepository(repo);
             });
-            builder.customView(view, false);
+            builder.customView(dialogView, false);
 
             MaterialDialog dialog = builder.build();
             dialogHolder[0] = dialog;
@@ -296,9 +323,8 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
     }
 
     @Override
-    protected SingleTypeAdapter<GitHubEvent> createAdapter(List<GitHubEvent> items) {
-        return new NewsListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new GitHubEvent[items.size()]), avatars);
+    protected Item createItem(GitHubEvent item) {
+        return NewsItem.createNewsItem(avatars, item);
     }
 
     @Override

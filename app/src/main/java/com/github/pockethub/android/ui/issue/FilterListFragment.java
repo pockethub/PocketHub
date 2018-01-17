@@ -17,23 +17,25 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ItemListFragment;
+import com.github.pockethub.android.ui.item.issue.IssueFilterItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -41,8 +43,7 @@ import static java.lang.String.CASE_INSENSITIVE_ORDER;
 /**
  * Fragment to display a list of {@link IssueFilter} objects
  */
-public class FilterListFragment extends ItemListFragment<IssueFilter> implements
-        Comparator<IssueFilter> {
+public class FilterListFragment extends ItemListFragment<IssueFilter> implements Comparator<IssueFilter> {
 
     @Inject
     protected AccountDataManager cache;
@@ -60,16 +61,22 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     @Override
     protected Single<List<IssueFilter>> loadData(boolean forceRefresh) {
         return Single.fromCallable(() -> new ArrayList<>(cache.getIssueFilters()))
-                .map(filters -> {
-                    Collections.sort(filters, FilterListFragment.this);
-                    return filters;
-                });
+                .flatMap(filters -> Observable.fromIterable(filters)
+                        .sorted(FilterListFragment.this)
+                        .toList());
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        IssueFilter filter = (IssueFilter) l.getItemAtPosition(position);
-        startActivity(IssueBrowseActivity.createIntent(filter));
+    protected Item createItem(IssueFilter item) {
+        return new IssueFilterItem(avatars, item);
+    }
+
+    @Override
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueFilterItem) {
+            IssueFilter filter = ((IssueFilterItem) item).getData();
+            startActivity(IssueBrowseActivity.createIntent(filter));
+        }
     }
 
     @Override
@@ -82,13 +89,6 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     @Override
     protected int getErrorMessage() {
         return R.string.error_bookmarks_load;
-    }
-
-    @Override
-    protected SingleTypeAdapter<IssueFilter> createAdapter(
-            List<IssueFilter> items) {
-        return new FilterListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new IssueFilter[items.size()]), avatars);
     }
 
     @Override

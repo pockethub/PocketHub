@@ -18,9 +18,9 @@ package com.github.pockethub.android.ui.commit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
@@ -32,6 +32,8 @@ import com.github.pockethub.android.ui.ViewPager;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.util.Collection;
@@ -70,10 +72,11 @@ public class CommitViewActivity extends PagerActivity {
      * @return intent
      */
     public static Intent createIntent(final Repository repository,
-        final int position, final Collection<Commit> commits) {
+                                      final int position, final Collection<Item> commits) {
         String[] ids = new String[commits.size()];
         int index = 0;
-        for (Commit commit : commits) {
+        for (Item item : commits) {
+            Commit commit = ((CommitItem) item).getData();
             ids[index++] = commit.sha();
         }
         return createIntent(repository, position, ids);

@@ -15,6 +15,7 @@
  */
 package com.github.pockethub.android.tests.gist;
 
+import android.app.Application;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 
@@ -31,8 +32,7 @@ import java.util.Map;
 /**
  * Tests of {@link GistFilesViewActivity}
  */
-public class GistFilesViewActivityTest extends
-    ActivityTest<GistFilesViewActivity> {
+public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivity> {
 
     @Inject
     protected GistStore store;
@@ -51,6 +51,7 @@ public class GistFilesViewActivityTest extends
         super.setUp();
 
         // TODO: Fix this test
+
         // RoboGuice.injectMembers(getInstrumentation().getTargetContext()
         //     .getApplicationContext(), this);
 

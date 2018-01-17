@@ -17,12 +17,10 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -31,6 +29,10 @@ import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MainActivity;
+import com.github.pockethub.android.ui.item.issue.IssueFilterItem;
+import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemLongClickListener;
+
 import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
@@ -70,7 +72,7 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
 
         fragment = (FilterListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
-        fragment.getListView().setOnItemLongClickListener(this);
+        fragment.getListAdapter().setOnItemLongClickListener(this);
     }
 
     @Override
@@ -108,14 +110,17 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view,
-        int position, long id) {
-        IssueFilter filter = (IssueFilter) parent.getItemAtPosition(position);
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_FILTER, filter);
-        ConfirmDialogFragment.show(this, REQUEST_DELETE,
-            getString(R.string.confirm_bookmark_delete_title),
-            getString(R.string.confirm_bookmark_delete_message), args);
-        return true;
+    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueFilterItem) {
+            IssueFilter filter = ((IssueFilterItem) item).getData();
+            Bundle args = new Bundle();
+            args.putParcelable(ARG_FILTER, filter);
+            ConfirmDialogFragment.show(this, REQUEST_DELETE,
+                    getString(R.string.confirm_bookmark_delete_title),
+                    getString(R.string.confirm_bookmark_delete_message), args);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -18,21 +18,18 @@ package com.github.pockethub.android.ui.repo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
+import com.github.pockethub.android.ui.item.repository.RepositoryItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-
-import java.util.List;
+import com.xwray.groupie.Item;
 
 import io.reactivex.Single;
 import retrofit2.Response;
@@ -80,9 +77,8 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
-        return new UserRepositoryListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Repository[items.size()]), user);
+    protected Item createItem(Repository item) {
+        return new RepositoryItem(item, user);
     }
 
     @Override
@@ -96,9 +92,10 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     }
 
     @Override
-    public void onListItemClick(ListView list, View v, int position, long id) {
-        Repository repo = (Repository) list.getItemAtPosition(position);
-        startActivityForResult(RepositoryViewActivity.createIntent(repo),
-                REPOSITORY_VIEW);
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof RepositoryItem) {
+            Repository repo = ((RepositoryItem) item).getData();
+            startActivityForResult(RepositoryViewActivity.createIntent(repo), REPOSITORY_VIEW);
+        }
     }
 }

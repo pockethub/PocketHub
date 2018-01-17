@@ -16,8 +16,6 @@
 package com.github.pockethub.android.ui.comment;
 
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +30,6 @@ import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
 import javax.inject.Inject;
-
-import java.io.Serializable;
 
 import butterknife.BindView;
 

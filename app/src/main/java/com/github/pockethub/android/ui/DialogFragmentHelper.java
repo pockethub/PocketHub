@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui;
 
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,8 +31,7 @@ import static android.app.Activity.RESULT_CANCELED;
 /**
  * Base dialog fragment helper
  */
-public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment
-        implements OnClickListener {
+public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment {
 
     /**
      * Dialog message
@@ -99,8 +97,7 @@ public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment
         if (activity != null) {
             final Bundle arguments = getArguments();
             if (arguments != null) {
-                activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE),
-                        resultCode, arguments);
+                activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE), resultCode, arguments);
             }
         }
     }
@@ -139,10 +136,5 @@ public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment
                 .content(getMessage())
                 .cancelable(true)
                 .cancelListener(this);
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-        dialog.dismiss();
     }
 }

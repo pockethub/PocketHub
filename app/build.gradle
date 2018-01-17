@@ -138,6 +138,7 @@ dependencies {
 
     compile 'com.github.meisolsson:githubsdk:0.4.5'
     compile 'com.afollestad.material-dialogs:core:0.9.6.0'
+    compile 'com.xwray:groupie:2.0.3'
 
     //Self compiled .aar version of wishlist
     compile (name:'lib', ext:'aar')

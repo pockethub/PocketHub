@@ -18,30 +18,33 @@ package com.github.pockethub.android.ui.repo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.ui.item.repository.RepositoryHeaderItem;
+import com.github.pockethub.android.ui.item.repository.RepositoryItem;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.persistence.AccountDataManager;
-import com.github.pockethub.android.ui.HeaderFooterListAdapter;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.ui.user.OrganizationSelectionListener;
 import com.github.pockethub.android.ui.user.OrganizationSelectionProvider;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
@@ -53,7 +56,7 @@ import static java.util.Locale.US;
  * Fragment to display a list of {@link Repository} instances
  */
 public class RepositoryListFragment extends ItemListFragment<Repository>
-    implements OrganizationSelectionListener {
+        implements OrganizationSelectionListener {
 
     @Inject
     protected AccountDataManager cache;
@@ -73,14 +76,6 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         if (org != null) {
             outState.putParcelable(EXTRA_USER, org);
         }
-    }
-
-    @Override
-    protected void configureList(Activity activity, ListView listView) {
-        super.configureList(activity, listView);
-
-        listView.setDividerHeight(0);
-        updateHeaders(items);
     }
 
     @Override
@@ -120,8 +115,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         User currentOrg = null;
 
         if (getActivity() instanceof OrganizationSelectionProvider) {
-            currentOrg = ((OrganizationSelectionProvider) activity)
-                    .addListener(this);
+            currentOrg = ((OrganizationSelectionProvider) activity).addListener(this);
         }
 
         if (getArguments() != null && getArguments().containsKey("org")) {
@@ -153,61 +147,66 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     }
 
     @Override
-    public void onListItemClick(ListView list, View v, int position, long id) {
-        Repository repo = (Repository) list.getItemAtPosition(position);
-        if (recentRepos != null) {
-            recentRepos.add(repo);
-        }
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof RepositoryItem) {
+            Repository repo = ((RepositoryItem) item).getData();
+            if (recentRepos != null) {
+                recentRepos.add(repo);
+            }
 
-        startActivityForResult(RepositoryViewActivity.createIntent(repo),
-            REPOSITORY_VIEW);
+            startActivityForResult(RepositoryViewActivity.createIntent(repo),
+                    REPOSITORY_VIEW);
+        }
     }
 
     @Override
-    public boolean onListItemLongClick(ListView list, View v, int position,
-        long itemId) {
+    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
         if (!isUsable()) {
             return false;
         }
 
-        final Repository repo = (Repository) list.getItemAtPosition(position);
-        if (repo == null) {
-            return false;
-        }
+        if (item instanceof RepositoryItem) {
+            Repository repo = ((RepositoryItem) item).getData();
+            if (repo == null) {
+                return false;
+            }
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
-                .title(InfoUtils.createRepoId(repo));
-        final MaterialDialog[] dialogHolder = new MaterialDialog[1];
+            MaterialDialog.Builder builder = new MaterialDialog.Builder(getActivity())
+                    .title(InfoUtils.createRepoId(repo));
+            final MaterialDialog[] dialogHolder = new MaterialDialog[1];
 
-        View view = getActivity().getLayoutInflater().inflate(
-            R.layout.repo_dialog, null);
+            View dialogView = getActivity().getLayoutInflater().inflate(
+                    R.layout.repo_dialog, null);
 
-        final User owner = repo.owner();
-        avatars.bind((ImageView) view.findViewById(R.id.iv_owner_avatar), owner);
-        ((TextView) view.findViewById(R.id.tv_owner_name)).setText(getString(R.string.navigate_to_user, owner.login()));
-        view.findViewById(R.id.ll_owner_area).setOnClickListener(v1 -> {
-            dialogHolder[0].dismiss();
-            viewUser(owner);
-        });
-
-        if ((recentRepos != null) && (recentRepos.contains(repo))) {
-            view.findViewById(R.id.divider).setVisibility(View.VISIBLE);
-            View recentRepoArea = view.findViewById(R.id.ll_recent_repo_area);
-            recentRepoArea.setVisibility(View.VISIBLE);
-            recentRepoArea.setOnClickListener(v1 -> {
+            final User owner = repo.owner();
+            avatars.bind((ImageView) dialogView.findViewById(R.id.iv_owner_avatar), owner);
+            ((TextView) dialogView.findViewById(R.id.tv_owner_name)).setText(getString(R.string.navigate_to_user, owner.login()));
+            dialogView.findViewById(R.id.ll_owner_area).setOnClickListener(v1 -> {
                 dialogHolder[0].dismiss();
-                recentRepos.remove(repo);
-                refresh();
+                viewUser(owner);
             });
+
+            if ((recentRepos != null) && (recentRepos.contains(repo))) {
+                dialogView.findViewById(R.id.divider).setVisibility(View.VISIBLE);
+                View recentRepoArea = dialogView.findViewById(R.id.ll_recent_repo_area);
+                recentRepoArea.setVisibility(View.VISIBLE);
+                recentRepoArea.setOnClickListener(v1 -> {
+                    dialogHolder[0].dismiss();
+                    recentRepos.remove(repo);
+                    refresh();
+                });
+            }
+
+            builder.customView(dialogView, false);
+            MaterialDialog dialog = builder.build();
+            dialogHolder[0] = dialog;
+            dialog.setCanceledOnTouchOutside(true);
+            dialog.show();
+
+            return true;
         }
 
-        builder.customView(view, false);
-        MaterialDialog dialog = builder.build();
-        dialogHolder[0] = dialog;
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-
-        return true;
+        return false;
     }
 
     private void viewUser(User user) {
@@ -225,35 +224,26 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         }
     }
 
-    private void updateHeaders(final List<Repository> repos) {
-        HeaderFooterListAdapter<?> rootAdapter = getListAdapter();
-        if (rootAdapter == null) {
-            return;
-        }
-
-        DefaultRepositoryListAdapter adapter = (DefaultRepositoryListAdapter) rootAdapter
-            .getWrappedAdapter();
-        adapter.clearHeaders();
-
+    private void updateHeaders(final List<Item> repos) {
         if (repos.isEmpty()) {
             return;
         }
 
         // Add recent header if at least one recent repository
-        Repository first = repos.get(0);
+        Repository first = ((RepositoryItem) repos.get(0)).getData();
         if (recentRepos.contains(first)) {
-            adapter.registerHeader(first, getString(R.string.recently_viewed));
+            repos.add(0, new RepositoryHeaderItem(getString(R.string.recently_viewed)));
         }
 
         // Advance past all recent repositories
         int index;
-        Repository current = null;
         for (index = 0; index < repos.size(); index++) {
-            Repository repository = repos.get(index);
-            if (recentRepos.contains(repository.id())) {
-                current = repository;
-            } else {
-                break;
+            Item item = repos.get(index);
+            if (item instanceof RepositoryItem) {
+                Repository repository = ((RepositoryItem) item).getData();
+                if (!recentRepos.contains(repository.id())) {
+                    break;
+                }
             }
         }
 
@@ -261,38 +251,21 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
             return;
         }
 
-        if (current != null) {
-            adapter.registerNoSeparator(current);
-        }
-
         // Register header for first character
-        current = repos.get(index);
+        Repository current = ((RepositoryItem) repos.get(index)).getData();
         char start = Character.toLowerCase(current.name().charAt(0));
-        adapter.registerHeader(current,
-            Character.toString(start).toUpperCase(US));
+        repos.add(index, new RepositoryHeaderItem(Character.toString(start).toUpperCase(US)));
 
-        char previousHeader = start;
         for (index = index + 1; index < repos.size(); index++) {
-            current = repos.get(index);
+            current = ((RepositoryItem) repos.get(index)).getData();
             char repoStart = Character.toLowerCase(current.name().charAt(0));
             if (repoStart <= start) {
                 continue;
             }
 
-            // Don't include separator for the last element of the previous
-            // character
-            if (previousHeader != repoStart) {
-                adapter.registerNoSeparator(repos.get(index - 1));
-            }
-
-            adapter.registerHeader(current, Character.toString(repoStart)
-                .toUpperCase(US));
-            previousHeader = repoStart;
-            start = repoStart++;
+            repos.add(index, new RepositoryHeaderItem(Character.toString(repoStart).toUpperCase(US)));
+            start = repoStart;
         }
-
-        // Don't include separator for last element
-        adapter.registerNoSeparator(repos.get(repos.size() - 1));
     }
 
     @Override
@@ -303,23 +276,21 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         }
 
         return Single.fromCallable(() -> cache.getRepos(org, forceRefresh))
-                .map(repos -> {
-                    Collections.sort(repos, recentRepos);
-                    return repos;
-                });
+                .flatMap(repos -> Observable.fromIterable(repos)
+                        .sorted(recentRepos)
+                        .toList());
     }
 
     @Override
-    protected void onDataLoaded(List<Repository> items) {
-        super.onDataLoaded(items);
-        updateHeaders(items);
+    protected Item createItem(Repository item) {
+        return new RepositoryItem(item, org.get());
     }
 
     @Override
-    protected SingleTypeAdapter<Repository> createAdapter(List<Repository> items) {
-        return new DefaultRepositoryListAdapter(getActivity()
-            .getLayoutInflater(),
-            items.toArray(new Repository[items.size()]), org);
+    protected void onDataLoaded(List<Item> newItems) {
+        items.clear();
+        updateHeaders(newItems);
+        super.onDataLoaded(newItems);
     }
 
     @Override

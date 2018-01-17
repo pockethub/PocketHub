@@ -15,12 +15,8 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-
-import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.item.LoadingItem;
+import com.xwray.groupie.Section;
 
 /**
  * Helper for showing more items are being loaded at the bottom of a list via a
@@ -28,54 +24,45 @@ import com.github.pockethub.android.R;
  */
 public class ResourceLoadingIndicator {
 
-    private HeaderFooterListAdapter<?> adapter;
+    private Section section;
 
     private boolean showing;
 
-    private final View view;
-
-    private final TextView textView;
+    private final LoadingItem loadingItem;
 
     /**
-     * Create indicator using given inflater
+     * Create indicator using given inflater.
      *
-     * @param context
      * @param loadingResId
      *            string resource id to show when loading
      */
-    public ResourceLoadingIndicator(final Context context,
-            final int loadingResId) {
-        view = LayoutInflater.from(context).inflate(R.layout.loading_item, null);
-        textView = (TextView) view.findViewById(R.id.tv_loading);
-        textView.setText(loadingResId);
+    public ResourceLoadingIndicator(final int loadingResId) {
+        loadingItem = new LoadingItem(loadingResId);
     }
 
     /**
-     * Set the adapter that this indicator should be added as a footer to
+     * Set the adapter that this indicator should be added as a footer to.
      *
-     * @param adapter
+     * @param section
      * @return this indicator
      */
-    public ResourceLoadingIndicator setList(
-            final HeaderFooterListAdapter<?> adapter) {
-        this.adapter = adapter;
-        adapter.addFooter(view);
-        showing = true;
+    public ResourceLoadingIndicator setSection(final Section section) {
+        this.section = section;
         return this;
     }
 
     /**
-     * Set visibility of entire indicator view
+     * Set visibility of entire indicator view.
      *
      * @param visible
      * @return this indicator
      */
     public ResourceLoadingIndicator setVisible(final boolean visible) {
-        if (showing != visible && adapter != null) {
+        if (showing != visible && section != null) {
             if (visible) {
-                adapter.addFooter(view);
+                section.setFooter(loadingItem);
             } else {
-                adapter.removeFooter(view);
+                section.removeFooter();
             }
         }
         showing = visible;

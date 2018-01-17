@@ -16,28 +16,23 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
+import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.ListView;
 
 import com.github.pockethub.android.ui.PagedItemFragment;
+import com.github.pockethub.android.ui.item.issue.IssueItem;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.SearchPage;
-import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.search.SearchService;
-import javax.inject.Inject;
+import com.xwray.groupie.Item;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import retrofit2.Response;
@@ -86,10 +81,11 @@ public class SearchIssueListFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        final Issue searchIssue = (Issue) l.getItemAtPosition(position);
-
-        startActivity(IssuesViewActivity.createIntent(searchIssue, repository));
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        if (item instanceof IssueItem) {
+            Issue searchIssue = ((IssueItem) item).getData();
+            startActivity(IssuesViewActivity.createIntent(searchIssue, repository));
+        }
     }
 
     @Override
@@ -121,9 +117,7 @@ public class SearchIssueListFragment extends PagedItemFragment<Issue> {
     }
 
     @Override
-    protected SingleTypeAdapter<Issue> createAdapter(
-            List<Issue> items) {
-        return new SearchIssueListAdapter(getActivity().getLayoutInflater(),
-                items.toArray(new Issue[items.size()]), avatars);
+    protected Item createItem(Issue item) {
+        return new IssueItem(avatars, item, false);
     }
 }

@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui.gist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -33,12 +32,15 @@ import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
+import com.github.pockethub.android.ui.item.gist.GistItem;
 import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.service.gists.GistService;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.io.Serializable;
@@ -77,14 +79,15 @@ public class GistsViewActivity extends PagerActivity implements OnLoadListener<G
     /**
      * Create an intent to show gists with an initial selected Gist
      *
-     * @param gists
+     * @param items
      * @param position
      * @return intent
      */
-    public static Intent createIntent(List<Gist> gists, int position) {
-        String[] ids = new String[gists.size()];
+    public static Intent createIntent(List<Item> items, int position) {
+        String[] ids = new String[items.size()];
         int index = 0;
-        for (Gist gist : gists) {
+        for (Item item : items) {
+            Gist gist = ((GistItem) item).getData();
             ids[index++] = gist.id();
         }
         return new Builder("gists.VIEW")

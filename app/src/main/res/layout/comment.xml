@@ -57,11 +57,23 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/iv_more"
+            android:id="@+id/iv_delete"
             style="@style/AvatarMedium"
             android:layout_weight=".10"
-            android:contentDescription="@string/show_more"
-            android:src="@drawable/action_overflow" />
+            android:contentDescription="@string/delete"
+            android:src="@drawable/ic_delete_white_24dp"
+            android:tint="#757575"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:id="@+id/iv_edit"
+            style="@style/AvatarMedium"
+            android:layout_weight=".10"
+            android:contentDescription="@string/edit"
+            android:visibility="invisible"
+            android:tint="#757575"
+            android:src="@drawable/ic_edit_white_24dp" />
+
     </LinearLayout>
 
     <TextView

@@ -15,65 +15,30 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.ListView;
+import android.support.annotation.NonNull;
+import android.view.View;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.ui.item.dialog.AssigneeDialogItem;
 import com.meisolsson.githubsdk.model.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.xwray.groupie.GroupAdapter;
+import com.xwray.groupie.Item;
+
 import javax.inject.Inject;
 
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_NEUTRAL;
 
 /**
  * Dialog fragment to select an issue assignee from a list of collaborators
  */
 public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
-
-    private static class UserListAdapter extends SingleTypeAdapter<User> {
-
-        private final int selected;
-
-        private final AvatarLoader loader;
-
-        public UserListAdapter(LayoutInflater inflater, User[] users,
-                int selected, AvatarLoader loader) {
-            super(inflater, R.layout.collaborator_item);
-
-            this.selected = selected;
-            this.loader = loader;
-            setItems(users);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return getItem(position).id();
-        }
-
-        @Override
-        protected int[] getChildViewIds() {
-            return new int[] { R.id.tv_login, R.id.iv_avatar, R.id.rb_selected };
-        }
-
-        @Override
-        protected void update(int position, User item) {
-            setText(0, item.login());
-            loader.bind(imageView(1), item);
-            setChecked(2, selected == position);
-        }
-    }
 
     /**
      * Get selected user from results bundle
@@ -103,37 +68,25 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
     }
 
     @Inject
-    protected AvatarLoader loader;
+    protected AvatarLoader avatars;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        Activity activity = getActivity();
-        Bundle arguments = getArguments();
+        int selected = getArguments().getInt(ARG_SELECTED_CHOICE);
 
-        final MaterialDialog.Builder dialogBuilder = createDialogBuilder()
-                .negativeText(R.string.cancel)
-                .onNegative((dialog, which) -> onClick(dialog, BUTTON_NEGATIVE))
-                .neutralText(R.string.clear)
-                .onNeutral((dialog, which) -> onClick(dialog, BUTTON_NEUTRAL));
-
-        LayoutInflater inflater = activity.getLayoutInflater();
-
-        ListView view = (ListView) inflater.inflate(R.layout.dialog_list_view,
-                null);
-        view.setOnItemClickListener((parent, view1, position, id) ->
-                onClick(getDialog(), position));
-
-        ArrayList<User> choices = getChoices();
-        int selected = arguments.getInt(ARG_SELECTED_CHOICE);
-        UserListAdapter adapter = new UserListAdapter(inflater,
-                choices.toArray(new User[choices.size()]), selected, loader);
-        view.setAdapter(adapter);
-        if (selected >= 0) {
-            view.setSelection(selected);
+        GroupAdapter adapter = new GroupAdapter();
+        for (User user : getChoices()) {
+            adapter.add(new AssigneeDialogItem(avatars, user, selected));
         }
-        dialogBuilder.customView(view, false);
 
-        return dialogBuilder.build();
+
+        return createDialogBuilder()
+                .adapter(adapter, null)
+                .negativeText(R.string.cancel)
+                .neutralText(R.string.clear)
+                .onNeutral((dialog, which) -> onResult(RESULT_OK))
+                .build();
     }
 
     @SuppressWarnings("unchecked")
@@ -142,17 +95,10 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        super.onClick(dialog, which);
-
-        switch (which) {
-        case BUTTON_NEGATIVE:
-            break;
-        case BUTTON_NEUTRAL:
-            onResult(RESULT_OK);
-            break;
-        default:
-            getArguments().putParcelable(ARG_SELECTED, getChoices().get(which));
+    public void onItemClick(@NonNull Item item, @NonNull View view) {
+        super.onItemClick(item, view);
+        if (item instanceof AssigneeDialogItem) {
+            getArguments().putParcelable(ARG_SELECTED, ((AssigneeDialogItem) item).getData());
             onResult(RESULT_OK);
         }
     }
