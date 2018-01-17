@@ -18,9 +18,6 @@ package com.github.pockethub.android.ui.user;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.user.UserPager;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 
 import io.reactivex.Single;

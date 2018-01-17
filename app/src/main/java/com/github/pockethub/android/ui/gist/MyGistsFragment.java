@@ -18,9 +18,6 @@ package com.github.pockethub.android.ui.gist;
 import android.accounts.Account;
 import android.content.Intent;
 
-import com.github.pockethub.android.core.PageIterator;
-import com.github.pockethub.android.core.ResourcePager;
-import com.github.pockethub.android.core.gist.GistPager;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.Page;
