@@ -19,6 +19,13 @@ def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 def clientIdIsNotSet = true;
 def clientSecretIsNotSet = true;
 
+def addConfigValues = { name, isDebug, suffix = "" ->
+    def value = (isDebug ? "com.github.debug" : "com.github") + suffix
+
+    android.defaultConfig.buildConfigField "String", name, "\"${value}\""
+    android.defaultConfig.resValue "string", name.toLowerCase(), value
+}
+
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -30,6 +37,11 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         vectorDrawables.useSupportLibrary = true
+
+        addConfigValues("ACCOUNT_TYPE", false)
+        addConfigValues("PROVIDER_AUTHORITY_SYNC", false, ".sync")
+        addConfigValues("PROVIDER_AUTHORITY_SEARCH_SUGGEST_ISSUES", false, ".search.suggest.recent.issues")
+        addConfigValues("PROVIDER_AUTHORITY_SEARCH_SUGGEST_REPOS", false, ".search.suggest.recent.repos")
 
         if (project.hasProperty('pockethub_github_client')) {
             resValue "string", "github_client", pockethub_github_client
@@ -67,7 +79,16 @@ android {
         resValue "string", "github_oauth_scheme", oauth.split("://")[0]
     }
 
+
     buildTypes {
+        debug {
+            addConfigValues("ACCOUNT_TYPE", true)
+            addConfigValues("PROVIDER_AUTHORITY_SYNC", true, ".sync")
+            addConfigValues("PROVIDER_AUTHORITY_SEARCH_SUGGEST_ISSUES", true, ".search.suggest.recent.issues")
+            addConfigValues("PROVIDER_AUTHORITY_SEARCH_SUGGEST_REPOS", true, ".search.suggest.recent.repos")
+            applicationIdSuffix ".debug"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

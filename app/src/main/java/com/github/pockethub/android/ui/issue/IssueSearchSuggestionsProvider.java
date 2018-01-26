@@ -19,13 +19,15 @@ import android.content.Context;
 import android.content.SearchRecentSuggestionsProvider;
 import android.provider.SearchRecentSuggestions;
 
+import com.github.pockethub.android.BuildConfig;
+
 /**
  * Suggestions provider for recently searched for issue queries
  */
 public class IssueSearchSuggestionsProvider extends
         SearchRecentSuggestionsProvider {
 
-    private static final String AUTHORITY = "com.github.search.suggest.recent.issues";
+    private static final String AUTHORITY = BuildConfig.PROVIDER_AUTHORITY_SEARCH_SUGGEST_ISSUES;
 
     /**
      * Save query to history

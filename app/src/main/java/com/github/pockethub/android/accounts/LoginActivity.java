@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.MainActivity;
@@ -46,8 +47,6 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
-
-import static com.github.pockethub.android.accounts.AccountConstants.PROVIDER_AUTHORITY;
 
 /**
  * Activity to login
@@ -80,10 +79,10 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     public static void configureSyncFor(Account account) {
         Log.d(TAG, "Configuring account sync");
 
-        ContentResolver.setIsSyncable(account, PROVIDER_AUTHORITY, 1);
-        ContentResolver.setSyncAutomatically(account, PROVIDER_AUTHORITY, true);
-        ContentResolver.addPeriodicSync(account, PROVIDER_AUTHORITY,
-            new Bundle(), SYNC_PERIOD);
+        ContentResolver.setIsSyncable(account, BuildConfig.PROVIDER_AUTHORITY_SYNC, 1);
+        ContentResolver.setSyncAutomatically(account, BuildConfig.PROVIDER_AUTHORITY_SYNC, true);
+        ContentResolver.addPeriodicSync(account, BuildConfig.PROVIDER_AUTHORITY_SYNC,
+                new Bundle(), SYNC_PERIOD);
     }
 
     private AccountManager accountManager;
