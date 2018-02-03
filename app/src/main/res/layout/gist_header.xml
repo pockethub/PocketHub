@@ -34,7 +34,6 @@
         android:id="@+id/tv_gist_description"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:autoLink="web"
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

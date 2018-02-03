@@ -3,6 +3,7 @@ package com.github.pockethub.android.ui.item.gist;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -78,6 +79,7 @@ public class GistHeaderItem extends BaseDataItem<Gist, GistHeaderItem.ViewHolder
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
+            description.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }

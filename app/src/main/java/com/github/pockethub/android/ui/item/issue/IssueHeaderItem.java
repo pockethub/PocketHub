@@ -3,6 +3,7 @@ package com.github.pockethub.android.ui.item.issue;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.ui.SelectableLinkMovementMethod;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.issue.LabelDrawableSpan;
 import com.github.pockethub.android.ui.item.BaseDataItem;
@@ -178,7 +178,7 @@ public class IssueHeaderItem extends BaseDataItem<Issue, IssueHeaderItem.ViewHol
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            bodyText.setMovementMethod(SelectableLinkMovementMethod.getInstance());
+            bodyText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 

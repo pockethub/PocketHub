@@ -1,6 +1,7 @@
 package com.github.pockethub.android.ui.item.commit;
 
 import android.support.annotation.NonNull;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class CommitCommentItem extends BaseDataItem<GitComment, CommitCommentIte
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
+            body.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }
