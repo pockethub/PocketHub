@@ -29,6 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.R;
 import com.meisolsson.githubsdk.model.User;
 
@@ -39,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static android.accounts.AccountManager.KEY_ACCOUNT_NAME;
 import static android.util.Log.DEBUG;
-import static com.github.pockethub.android.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.pockethub.android.BuildConfig.ACCOUNT_TYPE;
 
 /**
  * Helpers for accessing {@link AccountManager}
@@ -74,8 +75,7 @@ public class AccountUtils {
                 for (AuthenticatorDescription descriptor : types) {
                     if (descriptor != null
                             && ACCOUNT_TYPE.equals(descriptor.type)) {
-                        HAS_AUTHENTICATOR = "com.github.pockethub.android"
-                                .equals(descriptor.packageName);
+                        HAS_AUTHENTICATOR = BuildConfig.APPLICATION_ID.equals(descriptor.packageName);
                         break;
                     }
                 }

@@ -24,10 +24,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.github.pockethub.android.BuildConfig;
+
 import static android.accounts.AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE;
 import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 import static android.accounts.AccountManager.KEY_INTENT;
-import static com.github.pockethub.android.accounts.AccountConstants.ACCOUNT_TYPE;
+import static com.github.pockethub.android.BuildConfig.ACCOUNT_TYPE;
 import static com.github.pockethub.android.accounts.LoginActivity.PARAM_AUTHTOKEN_TYPE;
 import static com.github.pockethub.android.accounts.LoginActivity.PARAM_USERNAME;
 

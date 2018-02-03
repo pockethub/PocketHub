@@ -15,6 +15,6 @@
   ~ limitations under the License.
   -->
 <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accountType="com.github"
-    android:contentAuthority="com.github.sync"
+    android:accountType="@string/account_type"
+    android:contentAuthority="@string/provider_authority_sync"
     android:supportsUploading="false" />

@@ -36,7 +36,7 @@ public class Intents {
     /**
      * Prefix for all intents created
      */
-    public static final String INTENT_PREFIX = "com.github.pockethub.android.";
+    public static final String INTENT_PREFIX = BuildConfig.APPLICATION_ID + ".";
 
     /**
      * Prefix for all extra data added to intents
