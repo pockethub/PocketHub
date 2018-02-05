@@ -2,6 +2,7 @@ package com.github.pockethub.android.ui.item.commit;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,6 +103,7 @@ public class CommitHeaderItem extends BaseDataItem<Commit, CommitHeaderItem.View
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
+            commitMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }
