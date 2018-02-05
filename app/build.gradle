@@ -133,39 +133,39 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     def supportVersion = '27.0.2'
-    compile "com.android.support:appcompat-v7:$supportVersion"
-    compile "com.android.support:support-v4:$supportVersion"
-    compile "com.android.support:design:$supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
 
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
 
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
-    compile 'com.uber.autodispose:autodispose:0.5.1'
-    compile 'com.uber.autodispose:autodispose-android-archcomponents:0.5.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    implementation 'com.uber.autodispose:autodispose:0.5.1'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.5.1'
 
-    compile 'com.bugsnag:bugsnag-android:3.6.0'
+    implementation 'com.bugsnag:bugsnag-android:3.6.0'
 
-    compile 'com.google.dagger:dagger:2.13'
-    compile 'com.google.dagger:dagger-android:2.13'
-    compile 'com.google.dagger:dagger-android-support:2.13'
+    implementation 'com.google.dagger:dagger:2.13'
+    implementation 'com.google.dagger:dagger-android:2.13'
+    implementation 'com.google.dagger:dagger-android-support:2.13'
 
     annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
 
-    provided 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
+    compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
 
-    compile 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    compile 'com.github.meisolsson:githubsdk:0.4.5'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-    compile 'com.xwray:groupie:2.0.3'
+    implementation 'com.github.meisolsson:githubsdk:0.4.5'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.xwray:groupie:2.0.3'
 
     //Libs for testing
     testImplementation 'junit:junit:4.12'
