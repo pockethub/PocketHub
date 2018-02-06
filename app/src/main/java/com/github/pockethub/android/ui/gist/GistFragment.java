@@ -365,7 +365,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                         ((OnLoadListener<Gist>) activity).loaded(fullGist.getGist());
                     }
 
-                    starred = fullGist.isStarred();
+                    starred = fullGist.getStarred();
                     loadFinished = true;
                     gist = fullGist.getGist();
                     comments = fullGist.getComments();

@@ -142,7 +142,7 @@ public class UriLauncherActivity extends Activity {
         } else if (HOST_DEFAULT.equals(data.getHost())) {
             CommitMatch commit = CommitUriMatcher.getCommit(data);
             if (commit != null) {
-                return CommitViewActivity.createIntent(commit.repository, commit.commit);
+                return CommitViewActivity.createIntent(commit.getRepository(), commit.getCommit());
             }
 
             Issue issue = IssueUriMatcher.getIssue(data);
