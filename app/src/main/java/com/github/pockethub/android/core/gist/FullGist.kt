@@ -13,33 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.core.commit;
+package com.github.pockethub.android.core.gist
 
-import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.Gist
+import com.meisolsson.githubsdk.model.GitHubComment
 
 /**
- * Match for a commit in a repository
+ * Gist model with comments and starred status
  */
-public class CommitMatch {
-
-    /**
-     * Repository of commit
-     */
-    public final Repository repository;
-
-    /**
-     * SHA-1 of commit
-     */
-    public final String commit;
-
-    /**
-     * Create match
-     *
-     * @param repository
-     * @param commit
-     */
-    public CommitMatch(final Repository repository, final String commit) {
-        this.repository = repository;
-        this.commit = commit;
-    }
-}
+data class FullGist(val gist: Gist, val starred: Boolean, val comments: List<GitHubComment>)
