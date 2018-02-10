@@ -16,6 +16,10 @@
 
 package com.github.pockethub.android.util;
 
+import android.os.Parcel;
+import android.support.annotation.Nullable;
+
+import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 
@@ -30,32 +34,54 @@ public class ConvertUtilsTest {
 	private static final String REPO_NAME_FIRST_PART = "first";
 	private static final String REPO_NAME_SECOND_PART = "second";
 	private static final String REPO_NAME = REPO_NAME_FIRST_PART + "/" + REPO_NAME_SECOND_PART;
-	private static final String REPO_OWNER_LOGIN = "repo_owner_login";
 
-	private Repository repo;
+	private GitHubEvent event;
 
 	@Before
 	public void setup() {
-		User user = User.builder()
-				.login(REPO_OWNER_LOGIN)
-				.build();
 
-		repo = Repository.builder().
-				name(REPO_NAME)
-				.owner(user)
-				.build();
+		event = GitHubEvent.builder()
+                .repo(new GitHubEvent.RepoIdentifier() {
+                    @Nullable
+                    @Override
+                    public Long id() {
+                        return null;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String url() {
+                        return null;
+                    }
+
+                    @Nullable
+                    @Override
+                    public String repoWithUserName() {
+                        return REPO_NAME;
+                    }
+
+                    @Override
+                    public int describeContents() {
+                        return 0;
+                    }
+
+                    @Override
+                    public void writeToParcel(Parcel parcel, int i) {
+
+                    }
+                })
+                .build();
 	}
 
 	@Test
 	public void testOriginalRepoIsNotChanged() throws Exception {
-		ConvertUtils.eventRepoToRepo(repo);
-		assertThat(repo.owner().login(), equalTo(REPO_OWNER_LOGIN));
-		assertThat(repo.name(), equalTo(REPO_NAME));
+		ConvertUtils.eventRepoToRepo(event.repo());
+		assertThat(event.repo().repoWithUserName(), equalTo(REPO_NAME));
 	}
 
 	@Test
 	public void testNewRepoIsCreated() throws Exception {
-		Repository newRepo = ConvertUtils.eventRepoToRepo(repo);
+		Repository newRepo = ConvertUtils.eventRepoToRepo(event.repo());
 		assertThat(newRepo.owner().login(), equalTo(REPO_NAME_FIRST_PART));
 		assertThat(newRepo.name(), equalTo(REPO_NAME_SECOND_PART));
 	}
