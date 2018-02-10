@@ -26,7 +26,7 @@ public class DeleteEventItem extends NewsItem {
         DeletePayload payload = (DeletePayload) getData().payload();
 
         main.append(" deleted ");
-        main.append(payload.refType().name());
+        main.append(payload.refType().name().toLowerCase());
         main.append(' ');
         main.append(payload.ref());
         main.append(" at ");

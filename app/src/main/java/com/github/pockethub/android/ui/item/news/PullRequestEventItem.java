@@ -28,10 +28,11 @@ public class PullRequestEventItem extends NewsItem {
         boldActor(main, getData());
 
         PullRequestPayload.Action action = payload.action();
-        main.append(' ');
         if (PullRequestPayload.Action.Synchronized.equals(action)) {
             main.append("updated");
         }
+        main.append(' ');
+        main.append(action.name().toLowerCase());
         main.append(' ');
         main.bold("pull request " + payload.number());
         main.append(" on ");

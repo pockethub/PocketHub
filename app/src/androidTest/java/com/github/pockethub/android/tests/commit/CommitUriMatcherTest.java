@@ -48,11 +48,11 @@ public class CommitUriMatcherTest extends AndroidTestCase {
         CommitMatch commit = CommitUriMatcher.getCommit(Uri
                 .parse("https://github.com/defunkt/resque/commit/abcd"));
         assertNotNull(commit);
-        assertEquals("abcd", commit.commit);
-        assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.name());
-        assertNotNull(commit.repository.owner());
-        assertEquals("defunkt", commit.repository.owner().login());
+        assertEquals("abcd", commit.getCommit());
+        assertNotNull(commit.getRepository());
+        assertEquals("resque", commit.getRepository().name());
+        assertNotNull(commit.getRepository().owner());
+        assertEquals("defunkt", commit.getRepository().owner().login());
     }
 
     /**
@@ -62,11 +62,11 @@ public class CommitUriMatcherTest extends AndroidTestCase {
         CommitMatch commit = CommitUriMatcher.getCommit(Uri
                 .parse("https://github.com/defunkt/resque/commit/1234"));
         assertNotNull(commit);
-        assertEquals("1234", commit.commit);
-        assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.name());
-        assertNotNull(commit.repository.owner());
-        assertEquals("defunkt", commit.repository.owner().login());
+        assertEquals("1234", commit.getCommit());
+        assertNotNull(commit.getRepository());
+        assertEquals("resque", commit.getRepository().name());
+        assertNotNull(commit.getRepository().owner());
+        assertEquals("defunkt", commit.getRepository().owner().login());
     }
 
     /**
@@ -77,10 +77,10 @@ public class CommitUriMatcherTest extends AndroidTestCase {
                 .getCommit(Uri
                         .parse("https://github.com/defunkt/resque/commit/a1b2#commitcomment-1605701"));
         assertNotNull(commit);
-        assertEquals("a1b2", commit.commit);
-        assertNotNull(commit.repository);
-        assertEquals("resque", commit.repository.name());
-        assertNotNull(commit.repository.owner());
-        assertEquals("defunkt", commit.repository.owner().login());
+        assertEquals("a1b2", commit.getCommit());
+        assertNotNull(commit.getRepository());
+        assertEquals("resque", commit.getRepository().name());
+        assertNotNull(commit.getRepository().owner());
+        assertEquals("defunkt", commit.getRepository().owner().login());
     }
 }

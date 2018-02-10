@@ -44,7 +44,7 @@ public class IssuesEventItem extends NewsItem {
 
         Issue issue = payload.issue();
         main.append(' ');
-        main.append(action.name());
+        main.append(action.name().toLowerCase());
         main.append(' ');
         main.bold("issue " + issue.number());
         main.append(" on ");

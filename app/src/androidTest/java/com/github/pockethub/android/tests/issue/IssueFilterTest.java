@@ -46,7 +46,7 @@ public class IssueFilterTest extends AndroidTestCase {
         assertEquals(filter1.hashCode(), filter2.hashCode());
 
         User user = User.builder()
-                .id(2)
+                .id(2L)
                 .build();
 
         filter1.setAssignee(user);

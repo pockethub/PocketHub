@@ -25,11 +25,11 @@ public class CreateEventItem extends NewsItem {
         CreatePayload payload = (CreatePayload) getData().payload();
 
         main.append(" created ");
-        String refType = payload.refType().name();
+        String refType = payload.refType().name().toLowerCase();
         main.append(refType);
         main.append(' ');
 
-        if (!"Repository".equals(refType)) {
+        if (!"repository".equals(refType)) {
             main.append(payload.ref());
             main.append(" at ");
             boldRepo(main, getData());
