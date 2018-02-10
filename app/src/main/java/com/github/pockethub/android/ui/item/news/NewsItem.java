@@ -1,6 +1,5 @@
 package com.github.pockethub.android.ui.item.news;
 
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import com.github.pockethub.android.ui.item.BaseViewHolder;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.TimeUtils;
 import com.meisolsson.githubsdk.model.GitHubEvent;
-import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 
 import butterknife.BindView;
@@ -95,18 +93,18 @@ public class NewsItem extends BaseDataItem<GitHubEvent, NewsItem.ViewHolder> {
     }
 
     protected StyledText boldRepo(final StyledText text, final GitHubEvent event) {
-        Repository repo = event.repo();
+        GitHubEvent.RepoIdentifier repo = event.repo();
         if (repo != null) {
-            text.bold(repo.name());
+            text.bold(repo.repoWithUserName());
         }
         return text;
     }
 
     protected StyledText boldRepoName(final StyledText text,
                                     final GitHubEvent event) {
-        Repository repo = event.repo();
+        GitHubEvent.RepoIdentifier repo = event.repo();
         if (repo != null) {
-            String name = repo.name();
+            String name = repo.repoWithUserName();
             if (!TextUtils.isEmpty(name)) {
                 int slash = name.indexOf('/');
                 if (slash != -1 && slash + 1 < name.length()) {

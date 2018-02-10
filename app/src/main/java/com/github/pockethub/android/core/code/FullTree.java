@@ -130,7 +130,7 @@ public class FullTree {
                 return;
             }
 
-            if (entry.type() == GitEntryType.blob) {
+            if (entry.type() == GitEntryType.Blob) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);
@@ -141,7 +141,7 @@ public class FullTree {
                     Entry file = new Entry(entry, this);
                     files.put(file.name, file);
                 }
-            } else if (entry.type() == GitEntryType.tree) {
+            } else if (entry.type() == GitEntryType.Tree) {
                 String[] segments = path.split("/");
                 if (segments.length > 1) {
                     Folder folder = folders.get(segments[0]);

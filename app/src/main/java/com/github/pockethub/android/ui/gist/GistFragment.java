@@ -33,30 +33,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.accounts.AccountUtils;
+import com.github.pockethub.android.core.OnLoadListener;
+import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.ConfirmDialogFragment;
+import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.comment.DeleteCommentListener;
+import com.github.pockethub.android.ui.comment.EditCommentListener;
+import com.github.pockethub.android.ui.item.GitHubCommentItem;
 import com.github.pockethub.android.ui.item.LoadingItem;
 import com.github.pockethub.android.ui.item.gist.GistFileItem;
-import com.github.pockethub.android.ui.item.GitHubCommentItem;
 import com.github.pockethub.android.ui.item.gist.GistHeaderItem;
+import com.github.pockethub.android.util.AvatarLoader;
+import com.github.pockethub.android.util.HttpImageGetter;
+import com.github.pockethub.android.util.ShareUtils;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.core.OnLoadListener;
-import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.ui.ConfirmDialogFragment;
-import com.github.pockethub.android.ui.DialogFragment;
-import com.github.pockethub.android.ui.comment.DeleteCommentListener;
-import com.github.pockethub.android.ui.comment.EditCommentListener;
-import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.HttpImageGetter;
-import com.github.pockethub.android.util.ShareUtils;
-import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.xwray.groupie.GroupAdapter;
@@ -64,12 +64,12 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.Section;
 
-import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -302,7 +302,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             comment = data.getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment, (lhs, rhs) ->
-                        Integer.valueOf(lhs.id()).compareTo(rhs.id()));
+                        Integer.valueOf(lhs.id().intValue()).compareTo(rhs.id().intValue()));
                 imageGetter.removeFromCache(comment.id());
                 comments.set(position, comment);
                 updateList(gist, comments);
@@ -400,8 +400,8 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                         // Update comment list
                         if (comments != null) {
                             int position = Collections.binarySearch(comments,
-                                    comment, (lhs, rhs) -> Integer.valueOf(lhs.id())
-                                            .compareTo(rhs.id()));
+                                    comment, (lhs, rhs) -> Integer.valueOf(lhs.id().intValue())
+                                            .compareTo(rhs.id().intValue()));
                             comments.remove(position);
                             updateList(gist, comments);
                         } else {

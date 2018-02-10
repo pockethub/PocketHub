@@ -24,18 +24,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.users.UserFollowerService;
 import com.meisolsson.githubsdk.service.users.UserService;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -194,7 +195,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     private void followUser() {
         UserFollowerService service = ServiceGenerator.createService(this, UserFollowerService.class);
 
-        Single<Response<Boolean>> followSingle;
+        Single<Response<Void>> followSingle;
         if (isFollowing) {
             followSingle = service.unfollowUser(user.login());
         } else{
@@ -204,7 +205,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
         followSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe(aBoolean -> isFollowing = !isFollowing,
+                .subscribe(aVoid -> isFollowing = !isFollowing,
                         e -> ToastUtils.show(this, isFollowing ? R.string.error_unfollowing_person : R.string.error_following_person));
     }
 

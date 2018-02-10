@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,7 +25,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -38,35 +36,35 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.Intents.Builder;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.accounts.AccountUtils;
+import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.StyledText;
+import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ImageBinPoster;
+import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.PermissionsUtils;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.Intents.Builder;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.StyledText;
-import com.github.pockethub.android.ui.TextWatcherAdapter;
-import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.InfoUtils;
-import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorService;
-import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -461,7 +459,7 @@ public class EditIssueActivity extends BaseActivity {
                 }
 
                 if (issue.milestone() != null) {
-                    request.milestone(issue.milestone().number());
+                    request.milestone(issue.milestone().number().longValue());
                 }
 
                 List<String> labels = new ArrayList<>();

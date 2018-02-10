@@ -18,10 +18,10 @@ package com.github.pockethub.android.ui.repo;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.RequestReader;
 import com.github.pockethub.android.RequestWriter;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 
 import java.io.File;
 import java.io.Serializable;
@@ -64,7 +64,7 @@ public class RecentRepositories implements Comparator<Repository>, Serializable 
      */
     public RecentRepositories(final Context context, final User organization) {
         file = getFile(context, organization);
-        id = organization.id();
+        id = organization.id().intValue();
     }
 
     private void load() {

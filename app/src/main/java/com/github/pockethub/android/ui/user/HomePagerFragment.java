@@ -24,10 +24,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.PreferenceUtils;
+import com.meisolsson.githubsdk.model.User;
 
 public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
 
@@ -50,7 +50,7 @@ public class HomePagerFragment extends TabPagerFragment<HomePagerAdapter> {
 
     @SuppressLint("CommitPrefEdits")
     private void setOrg(User org) {
-        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.id()));
+        PreferenceUtils.save(sharedPreferences.edit().putInt(PREF_ORG_ID, org.id().intValue()));
         this.org = org;
         this.isDefaultUser = AccountUtils.isUser(getActivity(), org);
         configureTabPager();

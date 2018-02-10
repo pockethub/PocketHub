@@ -13,10 +13,6 @@ import com.meisolsson.githubsdk.model.payload.IssuesPayload;
 
 public class IssuesEventItem extends NewsItem {
 
-    private static final String ISSUES_PAYLOAD_ACTION_OPENED = "opened";
-    private static final String ISSUES_PAYLOAD_ACTION_REOPENED = "reopened";
-    private static final String ISSUES_PAYLOAD_ACTION_CLOSED = "closed";
-
     public IssuesEventItem(AvatarLoader avatarLoader, GitHubEvent dataItem) {
         super(avatarLoader, dataItem);
     }
@@ -25,17 +21,17 @@ public class IssuesEventItem extends NewsItem {
     public void bind(@NonNull NewsItem.ViewHolder viewHolder, int position) {
         super.bind(viewHolder, position);
         IssuesPayload payload = (IssuesPayload) getData().payload();
-        String action = payload.action();
+        IssuesPayload.Action action = payload.action();
 
         if (action != null) {
             switch (action) {
-                case ISSUES_PAYLOAD_ACTION_OPENED:
+                case Opened:
                     viewHolder.icon.setText(OcticonTextView.ICON_ISSUE_OPEN);
                     break;
-                case ISSUES_PAYLOAD_ACTION_REOPENED:
+                case Reopened:
                     viewHolder.icon.setText(OcticonTextView.ICON_ISSUE_REOPEN);
                     break;
-                case ISSUES_PAYLOAD_ACTION_CLOSED:
+                case Closed:
                     viewHolder.icon.setText(OcticonTextView.ICON_ISSUE_CLOSE);
                     break;
                 default:
@@ -48,7 +44,7 @@ public class IssuesEventItem extends NewsItem {
 
         Issue issue = payload.issue();
         main.append(' ');
-        main.append(action);
+        main.append(action.name());
         main.append(' ');
         main.bold("issue " + issue.number());
         main.append(" on ");

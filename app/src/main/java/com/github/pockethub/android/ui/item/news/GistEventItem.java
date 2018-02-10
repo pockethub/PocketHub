@@ -26,14 +26,15 @@ public class GistEventItem extends NewsItem {
         GistPayload payload = (GistPayload) getData().payload();
 
         main.append(' ');
-        String action = payload.action();
-        if ("create".equals(action)) {
+        GistPayload.Action action = payload.action();
+        if (GistPayload.Action.Created.equals(action)) {
             main.append("created");
-        } else if ("update".equals(action)) {
+        } else if (GistPayload.Action.Updated.equals(action)) {
             main.append("updated");
         } else {
-            main.append(action);
+            main.append(action.name());
         }
+
         main.append(" Gist ");
         main.append(payload.gist().id());
 

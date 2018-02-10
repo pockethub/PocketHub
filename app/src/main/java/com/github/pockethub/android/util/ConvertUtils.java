@@ -16,6 +16,7 @@
 
 package com.github.pockethub.android.util;
 
+import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Repository;
 
 public class ConvertUtils {
@@ -26,8 +27,8 @@ public class ConvertUtils {
 	 * @param repo The original repo.
 	 * @return A new repo, with a name and a new owner's login.
 	 */
-	public static Repository eventRepoToRepo(Repository repo) {
-		String[] ref = repo.name().split("/");
+	public static Repository eventRepoToRepo(GitHubEvent.RepoIdentifier repo) {
+		String[] ref = repo.repoWithUserName().split("/");
 		return InfoUtils.createRepoFromData(ref[0], ref[1]);
 	}
 }

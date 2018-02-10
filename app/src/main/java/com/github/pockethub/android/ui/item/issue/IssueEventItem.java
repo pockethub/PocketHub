@@ -39,45 +39,45 @@ public class IssueEventItem extends BaseDataItem<IssueEvent, IssueEventItem.View
         IssueEventType eventType = event.event();
 
         switch (eventType) {
-            case assigned:
-            case unassigned:
+            case Assigned:
+            case Unassigned:
                 holder.icon.setText(OcticonTextView.ICON_PERSON);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
-            case labeled:
-            case unlabeled:
+            case Labeled:
+            case Unlabeled:
                 holder.icon.setText(OcticonTextView.ICON_TAG);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
-            case referenced:
+            case Referenced:
                 holder.icon.setText(OcticonTextView.ICON_BOOKMARK);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
-            case milestoned:
-            case demilestoned:
+            case Milestoned:
+            case Demilestoned:
                 holder.icon.setText(OcticonTextView.ICON_MILESTONE);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
-            case closed:
+            case Closed:
                 holder.icon.setText(OcticonTextView.ICON_ISSUE_CLOSE);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.issue_event_closed));
                 break;
-            case reopened:
+            case Reopened:
                 holder.icon.setText(OcticonTextView.ICON_ISSUE_REOPEN);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.issue_event_reopened));
                 break;
-            case renamed:
+            case Renamed:
                 holder.icon.setText(OcticonTextView.ICON_EDIT);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.text_description));
                 break;
-            case merged:
+            case Merged:
                 message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", event.commitId().substring(0, 6),
                         issue.pullRequest().base().ref(),
                         issue.pullRequest().head().ref());
@@ -85,12 +85,12 @@ public class IssueEventItem extends BaseDataItem<IssueEvent, IssueEventItem.View
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.issue_event_merged));
                 break;
-            case locked:
+            case Locked:
                 holder.icon.setText(OcticonTextView.ICON_LOCK);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));
                 break;
-            case unlocked:
+            case Unlocked:
                 holder.icon.setText(OcticonTextView.ICON_KEY);
                 holder.icon.setTextColor(
                         context.getResources().getColor(R.color.issue_event_lock));

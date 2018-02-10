@@ -48,7 +48,7 @@ public class IssueItem extends BaseDataItem<Issue, IssueItem.ViewHolder> {
 
         StyledText numberText = new StyledText();
         numberText.append(String.valueOf(getData().number()));
-        if (IssueState.closed.equals(getData().state())) {
+        if (IssueState.Closed.equals(getData().state())) {
             numberText.strikethroughAll();
         }
 

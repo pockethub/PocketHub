@@ -13,8 +13,6 @@ import com.meisolsson.githubsdk.model.payload.PullRequestPayload;
 
 public class PullRequestEventItem extends NewsItem {
 
-    private static final String ISSUES_PAYLOAD_ACTION_OPENED = "opened";
-
     public PullRequestEventItem(AvatarLoader avatarLoader, GitHubEvent dataItem) {
         super(avatarLoader, dataItem);
     }
@@ -29,12 +27,11 @@ public class PullRequestEventItem extends NewsItem {
         StyledText main = new StyledText();
         boldActor(main, getData());
 
-        String action = payload.action();
-        if ("synchronize".equals(action)) {
-            action = "updated";
-        }
+        PullRequestPayload.Action action = payload.action();
         main.append(' ');
-        main.append(action);
+        if (PullRequestPayload.Action.Synchronized.equals(action)) {
+            main.append("updated");
+        }
         main.append(' ');
         main.bold("pull request " + payload.number());
         main.append(" on ");
@@ -44,7 +41,8 @@ public class PullRequestEventItem extends NewsItem {
         viewHolder.event.setText(main);
 
         StyledText details = new StyledText();
-        if (ISSUES_PAYLOAD_ACTION_OPENED.equals(action) || "closed".equals(action)) {
+        if (PullRequestPayload.Action.Opened.equals(action) ||
+                PullRequestPayload.Action.Closed.equals(action)) {
             PullRequest request = payload.pullRequest();
             if (request != null) {
                 String title = request.title();

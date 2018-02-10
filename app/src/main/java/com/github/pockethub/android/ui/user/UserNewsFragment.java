@@ -17,10 +17,10 @@ package com.github.pockethub.android.ui.user;
 
 import android.os.Bundle;
 
-import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.user.UserEventMatcher.UserPair;
 import com.github.pockethub.android.ui.NewsFragment;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 
@@ -83,7 +83,7 @@ public abstract class UserNewsFragment extends NewsFragment implements
 
     @Override
     public void onOrganizationSelected(User organization) {
-        int previousOrgId = org != null ? org.id() : -1;
+        int previousOrgId = org != null ? org.id().intValue() : -1;
         org = organization;
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != org.id()) {
