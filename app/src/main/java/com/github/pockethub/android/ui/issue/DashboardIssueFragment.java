@@ -32,13 +32,12 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.xwray.groupie.Item;
 
-import javax.inject.Inject;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import io.reactivex.Observable;
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import retrofit2.Response;
 

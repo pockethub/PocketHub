@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.user;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.user.UserUriMatcher;
+import com.meisolsson.githubsdk.model.User;
 
 /**
  * Unit tests of {@link UserUriMatcher}

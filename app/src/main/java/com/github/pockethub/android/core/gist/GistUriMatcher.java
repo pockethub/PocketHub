@@ -18,7 +18,6 @@ package com.github.pockethub.android.core.gist;
 import android.net.Uri;
 import android.text.TextUtils;
 
-
 import com.meisolsson.githubsdk.model.Gist;
 
 import java.util.List;

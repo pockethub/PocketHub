@@ -21,10 +21,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.FragmentPagerAdapter;
 import com.github.pockethub.android.ui.repo.RepositoryListFragment;
+import com.meisolsson.githubsdk.model.User;
 
 import java.util.HashSet;
 import java.util.Set;

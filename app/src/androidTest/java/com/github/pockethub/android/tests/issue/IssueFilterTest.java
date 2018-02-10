@@ -17,10 +17,10 @@ package com.github.pockethub.android.tests.issue;
 
 import android.test.AndroidTestCase;
 
+import com.github.pockethub.android.core.issue.IssueFilter;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.issue.IssueFilter;
 
 /**
  * Unit tests of {@link IssueFilter}

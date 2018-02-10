@@ -21,15 +21,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.github.pockethub.android.core.issue.IssueStore;
+import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 
 import java.util.List;
 
-import static com.github.pockethub.android.Intents.*;
+import static com.github.pockethub.android.Intents.EXTRA_CAN_WRITE_REPO;
+import static com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER;
+import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY_NAME;
+import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY_OWNER;
+import static com.github.pockethub.android.Intents.EXTRA_USER;
 
 
 /**

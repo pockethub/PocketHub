@@ -17,10 +17,10 @@ package com.github.pockethub.android.tests.issue;
 
 import android.test.AndroidTestCase;
 
-import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
 
 import static android.test.MoreAsserts.assertNotEqual;
 

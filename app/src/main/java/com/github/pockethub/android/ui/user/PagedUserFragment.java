@@ -18,10 +18,10 @@ package com.github.pockethub.android.ui.user;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.github.pockethub.android.ui.item.UserItem;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.ui.PagedItemFragment;
+import com.github.pockethub.android.ui.item.UserItem;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.User;
 import com.xwray.groupie.Item;
 
 import javax.inject.Inject;

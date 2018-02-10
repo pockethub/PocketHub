@@ -18,7 +18,6 @@ package com.github.pockethub.android.ui;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabContentFactory;

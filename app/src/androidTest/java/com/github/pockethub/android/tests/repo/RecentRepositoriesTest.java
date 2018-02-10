@@ -17,8 +17,8 @@ package com.github.pockethub.android.tests.repo;
 
 import android.test.AndroidTestCase;
 
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.ui.repo.RecentRepositories;
+import com.meisolsson.githubsdk.model.User;
 
 import static com.github.pockethub.android.ui.repo.RecentRepositories.MAX_SIZE;
 

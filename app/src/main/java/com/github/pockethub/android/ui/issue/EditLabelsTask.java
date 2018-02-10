@@ -15,25 +15,22 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
-
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.BaseActivity;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
-
-import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;

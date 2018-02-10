@@ -41,10 +41,10 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.xwray.groupie.Item;
 
-import javax.inject.Inject;
-
 import java.io.Serializable;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;

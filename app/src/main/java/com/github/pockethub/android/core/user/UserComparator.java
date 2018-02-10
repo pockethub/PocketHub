@@ -18,9 +18,10 @@ package com.github.pockethub.android.core.user;
 import android.accounts.Account;
 
 import com.meisolsson.githubsdk.model.User;
-import javax.inject.Inject;
 
 import java.util.Comparator;
+
+import javax.inject.Inject;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 

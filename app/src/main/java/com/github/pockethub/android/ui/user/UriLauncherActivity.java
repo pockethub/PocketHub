@@ -23,10 +23,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.meisolsson.githubsdk.model.Gist;
-import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitMatch;
 import com.github.pockethub.android.core.commit.CommitUriMatcher;
@@ -38,6 +34,10 @@ import com.github.pockethub.android.ui.commit.CommitViewActivity;
 import com.github.pockethub.android.ui.gist.GistsViewActivity;
 import com.github.pockethub.android.ui.issue.IssuesViewActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
+import com.meisolsson.githubsdk.model.Gist;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 
 import java.net.URI;
 import java.text.MessageFormat;

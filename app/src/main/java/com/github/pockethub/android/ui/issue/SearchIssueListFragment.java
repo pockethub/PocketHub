@@ -19,15 +19,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.item.issue.IssueItem;
+import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import com.xwray.groupie.Item;

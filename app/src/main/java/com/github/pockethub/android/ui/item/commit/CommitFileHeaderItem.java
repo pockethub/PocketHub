@@ -3,7 +3,6 @@ package com.github.pockethub.android.ui.item.commit;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
 

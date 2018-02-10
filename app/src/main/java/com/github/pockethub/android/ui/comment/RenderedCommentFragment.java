@@ -33,6 +33,7 @@ import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;

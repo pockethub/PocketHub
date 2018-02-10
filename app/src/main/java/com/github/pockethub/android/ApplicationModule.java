@@ -6,7 +6,6 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import dagger.Binds;
-import dagger.BindsInstance;
 import dagger.Module;
 
 @Module

@@ -20,18 +20,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.github.pockethub.android.ui.item.dialog.AssigneeDialogItem;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
+import com.github.pockethub.android.ui.item.dialog.AssigneeDialogItem;
 import com.github.pockethub.android.util.AvatarLoader;
+import com.meisolsson.githubsdk.model.User;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 
-import javax.inject.Inject;
-
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 

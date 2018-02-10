@@ -2,14 +2,12 @@ package com.github.pockethub.android.dagger;
 
 import com.github.pockethub.android.accounts.LoginActivity;
 import com.github.pockethub.android.accounts.LoginWebViewActivity;
-import com.github.pockethub.android.dagger.MainFragmentProvider;
 import com.github.pockethub.android.ui.MainActivity;
 import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
 import com.github.pockethub.android.ui.commit.CommitFileViewActivity;
 import com.github.pockethub.android.ui.commit.CommitViewActivity;
 import com.github.pockethub.android.ui.gist.CreateGistActivity;
 import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
-import com.github.pockethub.android.ui.gist.GistsPagerFragment;
 import com.github.pockethub.android.ui.gist.GistsViewActivity;
 import com.github.pockethub.android.ui.issue.EditIssueActivity;
 import com.github.pockethub.android.ui.issue.EditIssuesFilterActivity;

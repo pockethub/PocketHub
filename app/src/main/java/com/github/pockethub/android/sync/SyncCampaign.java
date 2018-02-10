@@ -20,16 +20,15 @@ import android.database.SQLException;
 import android.util.Log;
 
 import com.github.pockethub.android.persistence.DatabaseCache;
-import com.github.pockethub.android.persistence.OrganizationRepositories;
 import com.github.pockethub.android.persistence.OrganizationRepositoriesFactory;
 import com.github.pockethub.android.persistence.Organizations;
 import com.google.auto.factory.AutoFactory;
-import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.User;
-import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A cancelable sync operation to synchronize data for a given account
