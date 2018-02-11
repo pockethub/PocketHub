@@ -39,9 +39,6 @@ public class GistUriMatcher {
      */
     public static Gist getGist(final Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) {
-            return null;
-        }
         if (segments.size() != 1) {
             return null;
         }
