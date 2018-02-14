@@ -128,7 +128,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         NewsItem.ViewHolder viewHolder = item.createViewHolder(itemView);
         item.bind(viewHolder, 0);
 
-        text = viewHolder.event;
+        text = viewHolder.getEvent();
         assertNotNull(text);
     }
 
