@@ -35,9 +35,6 @@ public class RepositoryUriMatcher {
      */
     public static Repository getRepository(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) {
-            return null;
-        }
         if (segments.size() < 2) {
             return null;
         }

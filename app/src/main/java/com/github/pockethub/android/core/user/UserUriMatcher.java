@@ -35,9 +35,6 @@ public class UserUriMatcher {
      */
     public static User getUser(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) {
-            return null;
-        }
         if (segments.size() < 1) {
             return null;
         }

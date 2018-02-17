@@ -39,9 +39,6 @@ public class IssueUriMatcher {
      */
     public static Issue getIssue(Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) {
-            return null;
-        }
         if (segments.size() < 4) {
             return null;
         }
