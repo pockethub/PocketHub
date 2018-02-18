@@ -302,7 +302,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
             comment = data.getParcelableExtra(EXTRA_COMMENT);
             if (comments != null && comment != null) {
                 int position = Collections.binarySearch(comments, comment, (lhs, rhs) ->
-                        Integer.valueOf(lhs.id().intValue()).compareTo(rhs.id().intValue()));
+                        lhs.id().compareTo(rhs.id()));
                 imageGetter.removeFromCache(comment.id());
                 comments.set(position, comment);
                 updateList(gist, comments);
@@ -400,8 +400,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                         // Update comment list
                         if (comments != null) {
                             int position = Collections.binarySearch(comments,
-                                    comment, (lhs, rhs) -> Integer.valueOf(lhs.id().intValue())
-                                            .compareTo(rhs.id().intValue()));
+                                    comment, (lhs, rhs) -> lhs.id().compareTo(rhs.id()));
                             comments.remove(position);
                             updateList(gist, comments);
                         } else {
