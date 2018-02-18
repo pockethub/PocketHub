@@ -26,15 +26,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.pockethub.android.core.issue.IssueFilter.DIRECTION_DESCENDING;
-import static com.github.pockethub.android.core.issue.IssueFilter.FIELD_DIRECTION;
-import static com.github.pockethub.android.core.issue.IssueFilter.FIELD_FILTER;
-import static com.github.pockethub.android.core.issue.IssueFilter.FIELD_SORT;
-import static com.github.pockethub.android.core.issue.IssueFilter.FILTER_ASSIGNED;
-import static com.github.pockethub.android.core.issue.IssueFilter.FILTER_CREATED;
-import static com.github.pockethub.android.core.issue.IssueFilter.FILTER_MENTIONED;
-import static com.github.pockethub.android.core.issue.IssueFilter.FILTER_SUBSCRIBED;
-import static com.github.pockethub.android.core.issue.IssueFilter.SORT_UPDATED;
+import static com.github.pockethub.android.core.issue.IssueFilter.*;
 import static com.github.pockethub.android.ui.issue.DashboardIssueFragment.ARG_FILTER;
 
 /**
