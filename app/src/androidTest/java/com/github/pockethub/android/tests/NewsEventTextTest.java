@@ -16,8 +16,6 @@
 package com.github.pockethub.android.tests;
 
 import android.content.Context;
-import android.os.Parcel;
-import android.support.annotation.Nullable;
 import android.test.InstrumentationTestCase;
 import android.test.UiThreadTest;
 import android.view.LayoutInflater;
@@ -73,35 +71,10 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         super.setUp();
 
         actor = User.builder().login("user").build();
-        repo = new GitHubEvent.RepoIdentifier() {
-            @Nullable
-            @Override
-            public Long id() {
-                return null;
-            }
+        repo = GitHubEvent.RepoIdentifier.builder()
+                .repoWithUserName("user/repo")
+                .build();
 
-            @Nullable
-            @Override
-            public String url() {
-                return null;
-            }
-
-            @Nullable
-            @Override
-            public String repoWithUserName() {
-                return "user/repo";
-            }
-
-            @Override
-            public int describeContents() {
-                return 0;
-            }
-
-            @Override
-            public void writeToParcel(Parcel parcel, int i) {
-
-            }
-        };
         Context context = getInstrumentation().getTargetContext();
         avatarLoader = new AvatarLoader(context);
         layoutInflater = LayoutInflater.from(context);

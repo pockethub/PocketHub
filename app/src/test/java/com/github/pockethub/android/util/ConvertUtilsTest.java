@@ -16,12 +16,8 @@
 
 package com.github.pockethub.android.util;
 
-import android.os.Parcel;
-import android.support.annotation.Nullable;
-
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,40 +32,17 @@ public class ConvertUtilsTest {
 	private static final String REPO_NAME = REPO_NAME_FIRST_PART + "/" + REPO_NAME_SECOND_PART;
 
 	private GitHubEvent event;
+	private GitHubEvent.RepoIdentifier repo;
 
 	@Before
 	public void setup() {
 
+	    repo = GitHubEvent.RepoIdentifier.builder()
+                .repoWithUserName(REPO_NAME)
+                .build();
+
 		event = GitHubEvent.builder()
-                .repo(new GitHubEvent.RepoIdentifier() {
-                    @Nullable
-                    @Override
-                    public Long id() {
-                        return null;
-                    }
-
-                    @Nullable
-                    @Override
-                    public String url() {
-                        return null;
-                    }
-
-                    @Nullable
-                    @Override
-                    public String repoWithUserName() {
-                        return REPO_NAME;
-                    }
-
-                    @Override
-                    public int describeContents() {
-                        return 0;
-                    }
-
-                    @Override
-                    public void writeToParcel(Parcel parcel, int i) {
-
-                    }
-                })
+                .repo(repo)
                 .build();
 	}
 
