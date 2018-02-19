@@ -26,11 +26,17 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 import com.meisolsson.githubsdk.service.gists.GistService;
+import javax.inject.Inject;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import retrofit2.Response;
 
 /**
  * Task to load and store a {@link Gist}.

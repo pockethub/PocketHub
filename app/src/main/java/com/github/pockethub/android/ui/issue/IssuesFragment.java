@@ -28,25 +28,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.pockethub.android.ui.item.issue.IssueFilterHeaderItem;
+import com.github.pockethub.android.ui.item.issue.IssueItem;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.PagedItemFragment;
-import com.github.pockethub.android.ui.item.issue.IssueFilterHeaderItem;
-import com.github.pockethub.android.ui.item.issue.IssueItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Page;
-import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.xwray.groupie.Item;
 
-import java.util.Collection;
-
 import javax.inject.Inject;
+
+import java.util.Collection;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;

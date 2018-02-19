@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.user;
 import android.accounts.Account;
 import android.test.AndroidTestCase;
 
-import com.github.pockethub.android.core.user.UserComparator;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.core.user.UserComparator;
 
 /**
  * Unit tests of {@link UserComparator}

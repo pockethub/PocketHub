@@ -17,11 +17,11 @@ package com.github.pockethub.android.tests.repo;
 
 import android.test.AndroidTestCase;
 
-import com.github.pockethub.android.core.repo.RepositoryEventMatcher;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.core.repo.RepositoryEventMatcher;
 import com.meisolsson.githubsdk.model.payload.ForkPayload;
 
 /**

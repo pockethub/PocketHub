@@ -35,10 +35,10 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.ui.item.TextItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileHeaderItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileLineItem;
-import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -52,12 +52,12 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.Section;
 
+import javax.inject.Inject;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;

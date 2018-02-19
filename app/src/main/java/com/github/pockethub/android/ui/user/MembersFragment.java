@@ -17,13 +17,12 @@ package com.github.pockethub.android.ui.user;
 
 import android.os.Bundle;
 
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
-
 import javax.inject.Inject;
 
 import io.reactivex.Single;

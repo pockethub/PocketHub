@@ -35,28 +35,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.commit.CommitStore;
-import com.github.pockethub.android.core.commit.CommitUtils;
-import com.github.pockethub.android.core.commit.FullCommitFile;
 import com.github.pockethub.android.core.commit.RefreshCommitTaskFactory;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.item.LoadingItem;
-import com.github.pockethub.android.ui.item.TextItem;
 import com.github.pockethub.android.ui.item.commit.CommitCommentItem;
+import com.github.pockethub.android.ui.item.TextItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileHeaderItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileLineItem;
 import com.github.pockethub.android.ui.item.commit.CommitHeaderItem;
 import com.github.pockethub.android.ui.item.commit.CommitParentItem;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.GitHubFile;
+import com.meisolsson.githubsdk.model.Repository;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.core.commit.CommitStore;
+import com.github.pockethub.android.core.commit.CommitUtils;
+import com.github.pockethub.android.core.commit.FullCommitFile;
+import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
-import com.meisolsson.githubsdk.model.Commit;
-import com.meisolsson.githubsdk.model.GitHubFile;
-import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitComment;
 import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.xwray.groupie.GroupAdapter;
@@ -64,11 +64,11 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.Section;
 
+import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;

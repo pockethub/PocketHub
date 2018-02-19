@@ -15,11 +15,11 @@
  */
 package com.github.pockethub.android.tests.issue;
 
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.issue.EditIssuesFilterActivity;
 import com.github.pockethub.android.util.InfoUtils;
-import com.meisolsson.githubsdk.model.Repository;
 
 /**
  * Tests of {@link EditIssuesFilterActivity}

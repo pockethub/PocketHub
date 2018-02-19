@@ -19,8 +19,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 import com.meisolsson.githubsdk.model.Repository;
+import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;

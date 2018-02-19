@@ -29,6 +29,9 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 
 import java.util.ArrayList;
+import java.util.Collection;
+
+import io.reactivex.Observable;
 
 import static android.app.Activity.RESULT_OK;
 

@@ -15,12 +15,16 @@
  */
 package com.github.pockethub.android.core.gist;
 
+import android.content.Context;
+
 import com.github.pockethub.android.core.ItemStore;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 import com.meisolsson.githubsdk.model.request.gist.CreateGist;
 import com.meisolsson.githubsdk.service.gists.GistService;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 

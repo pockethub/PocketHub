@@ -23,7 +23,6 @@ import com.bugsnag.android.Bugsnag;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 

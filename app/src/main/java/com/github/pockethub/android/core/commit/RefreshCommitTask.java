@@ -22,9 +22,14 @@ import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.RxPageUtil;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 

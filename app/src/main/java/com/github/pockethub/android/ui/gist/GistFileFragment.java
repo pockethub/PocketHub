@@ -37,13 +37,13 @@ import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
+import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import butterknife.BindView;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

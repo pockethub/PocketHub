@@ -20,16 +20,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 
-import com.github.pockethub.android.Intents.Builder;
-import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
-import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.Intents.Builder;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.comment.CommentPreviewPagerAdapter;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.request.CommentRequest;
 import com.meisolsson.githubsdk.service.gists.GistCommentService;
 

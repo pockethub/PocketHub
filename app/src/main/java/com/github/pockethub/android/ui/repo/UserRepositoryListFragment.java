@@ -21,13 +21,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.item.repository.RepositoryItem;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.PagedItemFragment;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.xwray.groupie.Item;
 

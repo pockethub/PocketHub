@@ -17,17 +17,17 @@ package com.github.pockethub.android.ui.repo;
 
 import android.content.Context;
 
-import com.github.pockethub.android.core.user.UserEventMatcher.UserPair;
-import com.github.pockethub.android.ui.NewsFragment;
-import com.github.pockethub.android.ui.issue.IssuesViewActivity;
-import com.github.pockethub.android.ui.user.UserViewActivity;
-import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
+import com.github.pockethub.android.core.user.UserEventMatcher.UserPair;
+import com.github.pockethub.android.ui.NewsFragment;
+import com.github.pockethub.android.ui.issue.IssuesViewActivity;
+import com.github.pockethub.android.ui.user.UserViewActivity;
+import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.service.activity.EventService;
 
 import io.reactivex.Single;

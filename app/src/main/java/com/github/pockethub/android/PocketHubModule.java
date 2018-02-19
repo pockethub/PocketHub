@@ -19,7 +19,16 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
+import com.github.pockethub.android.core.commit.CommitStore;
+import com.github.pockethub.android.core.gist.GistStore;
+import com.github.pockethub.android.core.issue.IssueStore;
+import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.persistence.CacheHelper;
+import com.github.pockethub.android.persistence.DatabaseCache;
+
+
 import java.io.File;
+import java.lang.ref.WeakReference;
 
 import javax.inject.Named;
 

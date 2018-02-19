@@ -15,8 +15,11 @@
  */
 package com.github.pockethub.android.core.commit;
 
+import android.content.Context;
+
 import com.github.pockethub.android.core.ItemStore;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;

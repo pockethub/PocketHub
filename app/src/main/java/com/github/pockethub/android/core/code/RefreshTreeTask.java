@@ -20,15 +20,21 @@ import android.text.TextUtils;
 
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.model.git.GitReference;
+import com.meisolsson.githubsdk.model.git.GitTree;
 import com.meisolsson.githubsdk.service.git.GitService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 
 import java.io.IOException;
+import java.sql.Ref;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import retrofit2.Response;
 
 /**

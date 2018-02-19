@@ -18,8 +18,8 @@ package com.github.pockethub.android.tests.repo;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.github.pockethub.android.core.repo.RepositoryUriMatcher;
 import com.meisolsson.githubsdk.model.Repository;
+import com.github.pockethub.android.core.repo.RepositoryUriMatcher;
 
 /**
  * Unit tests of {@link RepositoryUriMatcher}

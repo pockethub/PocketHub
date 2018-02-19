@@ -17,9 +17,9 @@ package com.github.pockethub.android.tests.commit;
 
 import android.test.AndroidTestCase;
 
-import com.github.pockethub.android.core.commit.CommitUtils;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
+import com.github.pockethub.android.core.commit.CommitUtils;
 import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.model.git.GitUser;
 

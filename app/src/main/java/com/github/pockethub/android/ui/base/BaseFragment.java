@@ -16,13 +16,20 @@
 
 package com.github.pockethub.android.ui.base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 
 public abstract class BaseFragment extends DaggerFragment {
 

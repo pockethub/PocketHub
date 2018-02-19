@@ -29,11 +29,11 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.xwray.groupie.Item;
 
+import javax.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;

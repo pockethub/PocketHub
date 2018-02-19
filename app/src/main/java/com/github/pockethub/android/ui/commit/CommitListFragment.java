@@ -26,6 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.pockethub.android.ui.item.commit.CommitItem;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Commit;
+import com.meisolsson.githubsdk.model.Page;
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.ref.RefUtils;
@@ -33,22 +38,17 @@ import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.DialogResultListener;
 import com.github.pockethub.android.ui.ItemListFragment;
 import com.github.pockethub.android.ui.PagedItemFragment;
-import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.ui.ref.RefDialog;
 import com.github.pockethub.android.ui.ref.RefDialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Commit;
-import com.meisolsson.githubsdk.model.Page;
-import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitReference;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
 import com.xwray.groupie.Item;
 
-import java.util.List;
-
 import javax.inject.Inject;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;

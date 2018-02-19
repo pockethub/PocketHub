@@ -38,8 +38,8 @@ import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.item.code.BlobItem;
 import com.github.pockethub.android.ui.item.code.FolderItem;
@@ -60,6 +60,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

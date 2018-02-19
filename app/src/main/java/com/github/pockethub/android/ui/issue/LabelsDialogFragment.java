@@ -31,7 +31,10 @@ import com.xwray.groupie.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+
+import io.reactivex.Observable;
 
 import static android.app.Activity.RESULT_OK;
 

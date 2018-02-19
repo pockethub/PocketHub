@@ -18,11 +18,11 @@ package com.github.pockethub.android.tests.issue;
 import android.view.View;
 import android.widget.EditText;
 
+import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.issue.EditIssueActivity;
 import com.github.pockethub.android.util.InfoUtils;
-import com.meisolsson.githubsdk.model.Repository;
 
 import static android.view.KeyEvent.KEYCODE_DEL;
 

@@ -34,11 +34,12 @@ import android.widget.EditText;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
+
+import java.io.IOException;
+
 import com.github.pockethub.android.util.ImageBinPoster;
 import com.github.pockethub.android.util.PermissionsUtils;
 import com.github.pockethub.android.util.ToastUtils;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import okhttp3.Call;
