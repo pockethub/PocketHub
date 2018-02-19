@@ -1,4 +1,4 @@
-# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
+# PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub) [![Open Source Helpers](https://www.codetriage.com/pockethub/pockethub/badges/users.svg)](https://www.codetriage.com/pockethub/pockethub) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
 
 This repository contains the source code for the PocketHub Android app.
 
@@ -13,7 +13,7 @@ We are actively working towards a re-release to the Play Store, and this app wil
 
 > What's PocketHub?
 
-A name we decided that sounded good. We're a team of a few people helping organizing and prepare this. 
+A name we decided that sounded good. We're a team of a few people helping organizing and prepare this.
 
 > What about the other forks out there?
 
