@@ -26,13 +26,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.repo.RepositoryUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.TabPagerActivity;
 import com.github.pockethub.android.ui.user.UriLauncherActivity;
 import com.github.pockethub.android.ui.user.UserViewActivity;
@@ -40,10 +37,14 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.activity.StarringService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryContentService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryForkService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -255,7 +256,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     private void starRepository() {
         StarringService service = ServiceGenerator.createService(this, StarringService.class);
 
-        Single<Response<Boolean>> starSingle;
+        Single<Response<Void>> starSingle;
         if (isStarred) {
             starSingle = service.unstarRepository(repository.owner().login(), repository.name());
         } else {
@@ -265,7 +266,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
         starSingle.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe(aBoolean -> {
+                .subscribe(aVoid -> {
                     isStarred = !isStarred;
                     setResult(RESOURCE_CHANGED);
                 }, e -> ToastUtils.show(this, isStarred ? R.string.error_unstarring_repository : R.string.error_starring_repository));

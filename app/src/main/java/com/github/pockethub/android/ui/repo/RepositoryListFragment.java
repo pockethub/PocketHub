@@ -24,25 +24,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.pockethub.android.ui.item.repository.RepositoryHeaderItem;
-import com.github.pockethub.android.ui.item.repository.RepositoryItem;
-import com.meisolsson.githubsdk.model.Repository;
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.persistence.AccountDataManager;
 import com.github.pockethub.android.ui.ItemListFragment;
+import com.github.pockethub.android.ui.item.repository.RepositoryHeaderItem;
+import com.github.pockethub.android.ui.item.repository.RepositoryItem;
 import com.github.pockethub.android.ui.user.OrganizationSelectionListener;
 import com.github.pockethub.android.ui.user.OrganizationSelectionProvider;
 import com.github.pockethub.android.ui.user.UserViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Repository;
+import com.meisolsson.githubsdk.model.User;
 import com.xwray.groupie.Item;
-
-import javax.inject.Inject;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -91,7 +91,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Override
     public void onOrganizationSelected(final User organization) {
         User previousOrg = org.get();
-        int previousOrgId = previousOrg != null ? previousOrg.id() : -1;
+        int previousOrgId = previousOrg != null ? previousOrg.id().intValue() : -1;
         org.set(organization);
 
         if (recentRepos != null) {

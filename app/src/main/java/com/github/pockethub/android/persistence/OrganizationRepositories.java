@@ -32,14 +32,14 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.activity.WatchingService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryService;
-import javax.inject.Inject;
-import javax.inject.Provider;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.inject.Provider;
 
 import retrofit2.Response;
 
@@ -80,7 +80,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
                 "repos.watchers", "repos.language", "repos.hasIssues", "repos.mirrorUrl",
                 "repos.permissions_admin", "repos.permissions_pull", "repos.permissions_push" },
                 "repos.orgId=?",
-                new String[] { Integer.toString(org.id()) }, null, null,
+                new String[] { Integer.toString(org.id().intValue()) }, null, null,
                 null);
     }
 
@@ -88,7 +88,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     public Repository loadFrom(Cursor cursor) {
         User owner = User.builder()
                 .login(cursor.getString(3))
-                .id(cursor.getInt(2))
+                .id(cursor.getLong(2))
                 .avatarUrl(cursor.getString(4))
                 .build();
 
@@ -117,7 +117,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
     @Override
     public void store(SQLiteDatabase db, List<Repository> repos) {
         db.delete("repos", "orgId=?",
-                new String[] { Integer.toString(org.id()) });
+                new String[] { Integer.toString(org.id().intValue()) });
         if (repos.isEmpty()) {
             return;
         }

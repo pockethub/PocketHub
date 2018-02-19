@@ -32,13 +32,11 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.IntentCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,14 +64,15 @@ import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.TokenStore;
 import com.meisolsson.githubsdk.model.User;
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+import javax.inject.Singleton;
 
 import butterknife.BindView;
 import io.reactivex.Single;
@@ -286,8 +285,8 @@ public class MainActivity extends BaseActivity
             SubMenu organizationsMenu = organizationContainer.getSubMenu();
             for (int i = 1; i < orgs.size(); i++) {
                 User organization = orgs.get(i);
-                if (organizationsMenu.findItem(organization.id()) == null) {
-                    MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id(), Menu.NONE, organization.name() != null ? organization.name() : organization.login());
+                if (organizationsMenu.findItem(organization.id().intValue()) == null) {
+                    MenuItem organizationMenuItem = organizationsMenu.add(Menu.NONE, organization.id().intValue(), Menu.NONE, organization.name() != null ? organization.name() : organization.login());
                     organizationMenuItem.setIcon(R.drawable.ic_github_organization_black_24dp);
                     //Because of tinting the real image would became a grey block
                     //avatars.bind(organizationMenuItem, organization);

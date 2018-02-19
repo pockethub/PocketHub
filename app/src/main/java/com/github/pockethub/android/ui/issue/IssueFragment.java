@@ -30,13 +30,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.accounts.AccountUtils;
+import com.github.pockethub.android.core.issue.IssueStore;
+import com.github.pockethub.android.core.issue.IssueUtils;
 import com.github.pockethub.android.core.issue.RefreshIssueTaskFactory;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.ConfirmDialogFragment;
+import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.comment.DeleteCommentListener;
+import com.github.pockethub.android.ui.comment.EditCommentListener;
+import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
 import com.github.pockethub.android.ui.item.GitHubCommentItem;
 import com.github.pockethub.android.ui.item.LoadingItem;
 import com.github.pockethub.android.ui.item.issue.IssueEventItem;
 import com.github.pockethub.android.ui.item.issue.IssueHeaderItem;
+import com.github.pockethub.android.util.AvatarLoader;
+import com.github.pockethub.android.util.HttpImageGetter;
+import com.github.pockethub.android.util.InfoUtils;
+import com.github.pockethub.android.util.ShareUtils;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.GitHubComment;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -47,33 +62,18 @@ import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.PullRequest;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.accounts.AccountUtils;
-import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.core.issue.IssueUtils;
-import com.github.pockethub.android.ui.ConfirmDialogFragment;
-import com.github.pockethub.android.ui.DialogFragment;
-import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.comment.DeleteCommentListener;
-import com.github.pockethub.android.ui.comment.EditCommentListener;
-import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
-import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.HttpImageGetter;
-import com.github.pockethub.android.util.InfoUtils;
-import com.github.pockethub.android.util.ShareUtils;
-import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueCommentService;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.Section;
-
-import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -370,7 +370,7 @@ public class IssueFragment extends DialogFragment
 
     private void updateStateItem(Issue issue) {
         if (issue != null && stateItem != null) {
-            if (IssueState.open.equals(issue.state())) {
+            if (IssueState.Open.equals(issue.state())) {
                 stateItem.setTitle(R.string.close);
                 stateItem.setIcon(R.drawable.ic_github_issue_closed_white_24dp);
             } else {
@@ -493,7 +493,7 @@ public class IssueFragment extends DialogFragment
             return true;
         case R.id.m_state:
             if (issue != null) {
-                stateTask.confirm(IssueState.open.equals(issue.state()));
+                stateTask.confirm(IssueState.Open.equals(issue.state()));
             }
             return true;
         default:
@@ -574,7 +574,7 @@ public class IssueFragment extends DialogFragment
     @Override
     public void onStateClicked() {
         if (issue != null) {
-            stateTask.confirm(IssueState.open.equals(issue.state()));
+            stateTask.confirm(IssueState.Open.equals(issue.state()));
         }
     }
 

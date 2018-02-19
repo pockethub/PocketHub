@@ -32,6 +32,6 @@ public class UserReceivedNewsFragment extends UserNewsFragment {
 
     @Override
     protected Single<Response<Page<GitHubEvent>>> loadData(int page) {
-        return service.getUserRecievedEvents(org.login(), page);
+        return service.getUserReceivedEvents(org.login(), page);
     }
 }

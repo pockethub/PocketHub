@@ -80,7 +80,7 @@ public class IssueHeaderItem extends BaseDataItem<Issue, IssueHeaderItem.ViewHol
             holder.commitsView.setVisibility(GONE);
         }
 
-        boolean open = IssueState.open.equals(issue.state());
+        boolean open = IssueState.Open.equals(issue.state());
         if (!open) {
             StyledText text = new StyledText();
             text.bold(context.getString(R.string.closed));

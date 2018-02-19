@@ -28,6 +28,7 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
 import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.ReferenceType;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.Team;
 import com.meisolsson.githubsdk.model.User;
@@ -59,7 +60,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
 
     private User actor;
 
-    private Repository repo;
+    private GitHubEvent.RepoIdentifier repo;
 
     private AvatarLoader avatarLoader;
 
@@ -70,7 +71,10 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         super.setUp();
 
         actor = User.builder().login("user").build();
-        repo = Repository.builder().name("user/repo").build();
+        repo = GitHubEvent.RepoIdentifier.builder()
+                .repoWithUserName("user/repo")
+                .build();
+
         Context context = getInstrumentation().getTargetContext();
         avatarLoader = new AvatarLoader(context);
         layoutInflater = LayoutInflater.from(context);
@@ -100,7 +104,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         NewsItem.ViewHolder viewHolder = item.createViewHolder(itemView);
         item.bind(viewHolder, 0);
 
-        text = viewHolder.event;
+        text = viewHolder.getEvent();
         assertNotNull(text);
     }
 
@@ -122,7 +126,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testCreateRepositoryEvent() {
         CreatePayload payload = CreatePayload.builder()
-                .refType("repository")
+                .refType(ReferenceType.Repository)
                 .build();
 
         GitHubEvent event = createEvent(GitHubEventType.CreateEvent, payload);
@@ -137,7 +141,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testCreateBranchEvent() {
         CreatePayload payload = CreatePayload.builder()
-                .refType("branch")
+                .refType(ReferenceType.Branch)
                 .ref("b1")
                 .build();
 
@@ -153,7 +157,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     @UiThreadTest
     public void testDelete() {
         DeletePayload payload = DeletePayload.builder()
-                .refType("branch")
+                .refType(ReferenceType.Branch)
                 .ref("b1")
                 .build();
 
@@ -192,7 +196,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
                 .build();
 
         GistPayload payload = GistPayload.builder()
-                .action("create")
+                .action(GistPayload.Action.Created)
                 .gist(gist)
                 .build();
 
@@ -242,7 +246,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
                 .build();
 
         IssuesPayload payload = IssuesPayload.builder()
-                .action("closed")
+                .action(IssuesPayload.Action.Closed)
                 .issue(issue)
                 .build();
 
@@ -300,13 +304,13 @@ public class NewsEventTextTest extends InstrumentationTestCase {
     public void testPullRequest() {
         PullRequestPayload payload = PullRequestPayload.builder()
                 .number(30)
-                .action("merged")
+                .action(PullRequestPayload.Action.Closed)
                 .build();
 
         GitHubEvent event = createEvent(GitHubEventType.PullRequestEvent, payload);
         updateView(event);
 
-        verify("user merged pull request 30 on user/repo");
+        verify("user closed pull request 30 on user/repo");
     }
 
     /**

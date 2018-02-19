@@ -17,16 +17,16 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.PageIterator;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.RxPageUtil;
+import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueMilestoneService;
 
 import java.util.ArrayList;
@@ -65,7 +65,8 @@ public class MilestoneDialog {
 
         PageIterator.GitHubRequest<Response<Page<Milestone>>> gitHubRequest = page -> ServiceGenerator
                 .createService(activity, IssueMilestoneService.class)
-                .getRepositoryMilestones(repository.owner().login(), repository.name(), page);
+                .getRepositoryMilestones(repository.owner().login(), repository.name(),
+                        "open", page);
 
         milestoneSingle = RxPageUtil.getAllPages(gitHubRequest, 1)
                 .flatMap(page -> Observable.fromIterable(page.items()))

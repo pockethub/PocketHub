@@ -15,18 +15,17 @@
  */
 package com.github.pockethub.android.ui.issue;
 
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
+import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueState;
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.ConfirmDialogFragment;
-import com.github.pockethub.android.ui.BaseActivity;
-import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -92,7 +91,7 @@ public class EditStateTask {
      */
     public EditStateTask edit(boolean close) {
         int message = close ? R.string.closing_issue : R.string.reopening_issue;
-        IssueState state = close ? IssueState.closed : IssueState.open;
+        IssueState state = close ? IssueState.Closed : IssueState.Open;
 
         try {
             store.changeState(repository, issueNumber, state)

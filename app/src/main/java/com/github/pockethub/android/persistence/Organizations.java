@@ -26,11 +26,12 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.service.organizations.OrganizationService;
 import com.meisolsson.githubsdk.service.users.UserService;
-import javax.inject.Inject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Cache of organization under an account
@@ -62,7 +63,7 @@ public class Organizations implements PersistableResource<User> {
     @Override
     public User loadFrom(Cursor cursor) {
         return User.builder()
-                .id(cursor.getInt(0))
+                .id(cursor.getLong(0))
                 .login(cursor.getString(1))
                 .avatarUrl(cursor.getString(2))
                 .build();
