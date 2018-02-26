@@ -27,6 +27,11 @@ public abstract class BaseDataItem<T, V extends BaseViewHolder> extends Item<V> 
     }
 
     @Override
+    public int getPosition(@NonNull Item item) {
+        return this.isSameAs(item) ? 0 : -1;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof BaseDataItem) {
             return getData().equals(((BaseDataItem) obj).getData());
