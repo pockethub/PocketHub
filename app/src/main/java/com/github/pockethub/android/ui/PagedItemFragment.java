@@ -143,8 +143,10 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
      * Show more events while retaining the current pager state.
      */
     private void showMore() {
-        page++;
-        refresh();
+        if (isUsable() && !isLoading) {
+            page++;
+            refresh();
+        }
     }
 
     @Override
