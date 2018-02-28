@@ -115,8 +115,13 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
                     .observeOn(AndroidSchedulers.mainThread())
                     .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
-                        repository = response.body();
-                        checkReadme();
+                        if (response.isSuccessful()) {
+                            repository = response.body();
+                            checkReadme();
+                        } else {
+                            ToastUtils.show(this, R.string.error_repo_load);
+                            loadingBar.setVisibility(View.GONE);
+                        }
                     }, e -> {
                         ToastUtils.show(this, R.string.error_repo_load);
                         loadingBar.setVisibility(View.GONE);
