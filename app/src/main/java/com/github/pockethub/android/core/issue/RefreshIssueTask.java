@@ -100,7 +100,7 @@ public class RefreshIssueTask {
                 })
                 .flatMap(issue -> getAllComments(repo.owner().login(), repo.name(), issue)
                         .zipWith(Single.just(issue),
-                                (comments, issue1) -> new FullIssue(issue1, comments, null)))
+                                (comments, issue1) -> new FullIssue(issue1, comments, Collections.emptyList())))
                 .zipWith(getAllEvents(repo.owner().login(), repo.name(), issueNumber),
                         (fullIssue, issueEvents) -> new FullIssue(fullIssue.getIssue(),
                                 fullIssue.getComments(), issueEvents))
