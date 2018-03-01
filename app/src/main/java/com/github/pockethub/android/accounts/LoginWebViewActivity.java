@@ -26,11 +26,20 @@ import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.WebView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class LoginWebViewActivity extends AppCompatActivity {
 
@@ -66,6 +75,19 @@ public class LoginWebViewActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
 
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public WebResourceResponse shouldInterceptRequest(android.webkit.WebView view,
+                                                              WebResourceRequest request) {
+                return shouldIntercept(request.getUrl().toString());
+            }
+
+            @Override
+            public WebResourceResponse shouldInterceptRequest(android.webkit.WebView view,
+                                                              String url) {
+                return shouldIntercept(url);
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String url) {
                 Uri uri = Uri.parse(url);
@@ -79,6 +101,52 @@ public class LoginWebViewActivity extends AppCompatActivity {
 
                 return overrideOAuth(request.getUrl())
                         || super.shouldOverrideUrlLoading(view, request);
+            }
+
+            /**
+             * This method will inject polyfills to the auth javascript if the version is
+             * below Lollipop. After Lollipop WebView is updated via the Play Store so the polyfills
+             * are not needed.
+             *
+             * @param url The requests url
+             * @return null if there request should not be altered or a new response
+             *     instance with polyfills.
+             */
+            private WebResourceResponse shouldIntercept(String url) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    return null;
+                }
+
+                if (url.matches(".*frameworks.*.js")) {
+                    InputStream in1 = null;
+                    InputStream in2 = null;
+                    Response response = null;
+                    try {
+                        response = new OkHttpClient.Builder()
+                                .build()
+                                .newCall(new Request.Builder().get().url(url).build())
+                                .execute();
+
+                        if (response.body() != null) {
+                            in1 = response
+                                    .body()
+                                    .byteStream();
+                        }
+
+                        in2 = getAssets().open("polyfills.js");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (response == null) {
+                        return null;
+                    }
+
+                    SequenceInputStream inputStream = new SequenceInputStream(in2, in1);
+                    return new WebResourceResponse("text/javascript", "utf-8", inputStream);
+                } else {
+                    return null;
+                }
             }
 
             private boolean overrideOAuth(Uri uri) {
