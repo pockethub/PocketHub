@@ -86,26 +86,6 @@ import static com.meisolsson.githubsdk.model.GitHubEventType.PushEvent;
  */
 public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
-    /**
-     * Matcher for finding an {@link Issue} from an {@link GitHubEvent}
-     */
-    protected final IssueEventMatcher issueMatcher = new IssueEventMatcher();
-
-    /**
-     * Matcher for finding a {@link Gist} from an {@link GitHubEvent}
-     */
-    protected final GistEventMatcher gistMatcher = new GistEventMatcher();
-
-    /**
-     * Matcher for finding a {@link Repository} from an {@link GitHubEvent}
-     */
-    protected final RepositoryEventMatcher repoMatcher = new RepositoryEventMatcher();
-
-    /**
-     * Matcher for finding a {@link User} from an {@link GitHubEvent}
-     */
-    protected final UserEventMatcher userMatcher = new UserEventMatcher();
-
     @Inject
     protected AvatarLoader avatars;
 
@@ -139,25 +119,25 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
             return;
         }
 
-        Issue issue = issueMatcher.getIssue(event);
+        Issue issue = IssueEventMatcher.getIssue(event);
         if (issue != null) {
             Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
             viewIssue(issue, repo);
             return;
         }
 
-        Gist gist = gistMatcher.getGist(event);
+        Gist gist = GistEventMatcher.getGist(event);
         if (gist != null) {
             startActivity(GistsViewActivity.createIntent(gist));
             return;
         }
 
-        Repository repo = repoMatcher.getRepository(event);
+        Repository repo = RepositoryEventMatcher.getRepository(event);
         if (repo != null) {
             viewRepository(repo);
         }
 
-        UserPair users = userMatcher.getUsers(event);
+        UserPair users = UserEventMatcher.getUsers(event);
         if (users != null) {
             viewUser(users);
         }

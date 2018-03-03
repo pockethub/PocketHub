@@ -52,7 +52,7 @@ public class UserEventMatcher {
      * @param event
      * @return user or null if event doesn't apply
      */
-    public UserPair getUsers(final GitHubEvent event) {
+    public static UserPair getUsers(final GitHubEvent event) {
         if (event == null || event.payload() == null) {
             return null;
         }

@@ -39,7 +39,7 @@ public class RepositoryEventMatcher {
      * @param event
      * @return gist or null if event doesn't apply
      */
-    public Repository getRepository(final GitHubEvent event) {
+    public static Repository getRepository(final GitHubEvent event) {
         if (event == null || event.payload() == null) {
             return null;
         }
