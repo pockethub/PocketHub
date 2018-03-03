@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.util.Log;
 
-import com.github.pockethub.android.core.PageIterator;
+import com.github.pockethub.android.core.GitHubRequest;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.util.RxPageUtil;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -66,7 +66,7 @@ public class LabelsDialog {
         this.activity = activity;
         this.requestCode = requestCode;
 
-        PageIterator.GitHubRequest<Response<Page<Label>>> gitHubRequest = page -> ServiceGenerator
+        GitHubRequest<Response<Page<Label>>> gitHubRequest = page -> ServiceGenerator
                 .createService(activity, IssueLabelService.class)
                 .getRepositoryLabels(repository.owner().login(), repository.name(), page);
 

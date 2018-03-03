@@ -1,6 +1,6 @@
 package com.github.pockethub.android.util;
 
-import com.github.pockethub.android.core.PageIterator;
+import com.github.pockethub.android.core.GitHubRequest;
 import com.meisolsson.githubsdk.model.Page;
 
 import io.reactivex.Observable;
@@ -11,7 +11,7 @@ import retrofit2.Response;
 public class RxPageUtil {
 
     public static  <B> Observable<Page<B>> getAllPages(
-            PageIterator.GitHubRequest<Response<Page<B>>> pagedSingleCall, int i) {
+            GitHubRequest<Response<Page<B>>> pagedSingleCall, int i) {
 
         return pagedSingleCall.execute(i)
                 .subscribeOn(Schedulers.io())
