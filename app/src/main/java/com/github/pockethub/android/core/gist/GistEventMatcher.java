@@ -32,7 +32,7 @@ public class GistEventMatcher {
      * @param event
      * @return gist or null if event doesn't apply
      */
-    public Gist getGist(final GitHubEvent event) {
+    public static Gist getGist(final GitHubEvent event) {
         if (event == null || event.payload() == null) {
             return null;
         }
