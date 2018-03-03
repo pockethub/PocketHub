@@ -22,7 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.github.pockethub.android.core.PageIterator;
+import com.github.pockethub.android.core.GitHubRequest;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -184,7 +184,7 @@ public class OrganizationRepositories implements PersistableResource<Repository>
         }
     }
 
-    private List<Repository> getAllItems(PageIterator.GitHubRequest<Response<Page<Repository>>> request) {
+    private List<Repository> getAllItems(GitHubRequest<Response<Page<Repository>>> request) {
         List<Repository> repos = new ArrayList<>();
         int current = 1;
         int last = -1;

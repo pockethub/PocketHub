@@ -18,7 +18,7 @@ package com.github.pockethub.android.ui.issue;
 import android.util.Log;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.PageIterator;
+import com.github.pockethub.android.core.GitHubRequest;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.util.RxPageUtil;
@@ -63,7 +63,7 @@ public class MilestoneDialog {
         this.activity = activity;
         this.requestCode = requestCode;
 
-        PageIterator.GitHubRequest<Response<Page<Milestone>>> gitHubRequest = page -> ServiceGenerator
+        GitHubRequest<Response<Page<Milestone>>> gitHubRequest = page -> ServiceGenerator
                 .createService(activity, IssueMilestoneService.class)
                 .getRepositoryMilestones(repository.owner().login(), repository.name(),
                         "open", page);
