@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 
@@ -146,6 +147,7 @@ public class RawCommentFragment extends DialogFragment {
             ImageBinPoster.post(getActivity(), data.getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         dismissProgress();
                         if (response.isSuccessful()) {

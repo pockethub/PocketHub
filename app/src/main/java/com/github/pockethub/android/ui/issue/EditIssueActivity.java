@@ -284,6 +284,7 @@ public class EditIssueActivity extends BaseActivity {
             ImageBinPoster.post(this, data.getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
                         progressDialog.dismiss();
                         if (response.isSuccessful()) {
