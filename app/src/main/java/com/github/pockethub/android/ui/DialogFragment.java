@@ -15,9 +15,7 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Parcelable;
 
 import com.github.pockethub.android.ui.base.BaseFragment;
 
@@ -30,36 +28,5 @@ public abstract class DialogFragment extends BaseFragment implements
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
-    }
-
-    /**
-     * Get serializable extra from activity's intent
-     *
-     * @param name
-     * @return extra
-     */
-    @SuppressWarnings("unchecked")
-    protected <V extends Parcelable> V getParcelableExtra(final String name) {
-        Activity activity = getActivity();
-        if (activity != null) {
-            return (V) activity.getIntent().getParcelableExtra(name);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Get string extra from activity's intent
-     *
-     * @param name
-     * @return extra
-     */
-    protected String getStringExtra(final String name) {
-        Activity activity = getActivity();
-        if (activity != null) {
-            return activity.getIntent().getStringExtra(name);
-        } else {
-            return null;
-        }
     }
 }
