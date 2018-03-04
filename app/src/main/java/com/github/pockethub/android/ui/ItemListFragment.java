@@ -196,7 +196,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * Refresh the fragment's list.
      */
     protected void refresh(boolean force) {
-        if (!isUsable() || isLoading) {
+        if (!isAdded() || isLoading) {
             return;
         }
 
@@ -245,7 +245,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      * @param newItems The items added to the list.
      */
     protected void onDataLoaded(List<Item> newItems) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return;
         }
 
@@ -259,7 +259,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
     }
 
     protected void onDataLoadError(Throwable throwable) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return;
         }
 
@@ -391,7 +391,7 @@ public abstract class ItemListFragment<E> extends DialogFragment implements
      */
     public ItemListFragment setListShown(final boolean shown,
             final boolean animate) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return this;
         }
 

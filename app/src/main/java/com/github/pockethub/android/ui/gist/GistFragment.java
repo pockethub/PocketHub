@@ -357,7 +357,7 @@ public class GistFragment extends DialogFragment implements OnItemClickListener 
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(fullGist -> isUsable())
+                .filter(fullGist -> isAdded())
                 .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullGist -> {
                     FragmentActivity activity = getActivity();

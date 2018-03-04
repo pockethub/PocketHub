@@ -44,7 +44,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    if (!isUsable()) {
+                    if (!isAdded()) {
                         return;
                     }
                     if (!hasMore) {
@@ -143,7 +143,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
      * Show more events while retaining the current pager state.
      */
     private void showMore() {
-        if (isUsable() && !isLoading) {
+        if (isAdded() && !isLoading) {
             page++;
             refresh();
         }

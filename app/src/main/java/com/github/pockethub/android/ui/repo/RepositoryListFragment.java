@@ -161,7 +161,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
 
     @Override
     public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
 

@@ -145,7 +145,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
 
     @Override
     public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
 

@@ -148,7 +148,7 @@ public class CommitCompareListFragment extends DialogFragment implements OnItemC
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
 
@@ -177,7 +177,7 @@ public class CommitCompareListFragment extends DialogFragment implements OnItemC
     }
 
     private void updateList(CommitCompare compare) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return;
         }
 
