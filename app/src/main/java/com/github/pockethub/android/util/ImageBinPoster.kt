@@ -9,6 +9,8 @@ import java.io.IOException
 
 object ImageBinPoster {
 
+    private val client = OkHttpClient()
+
     /**
      * Post the image to ImageBin
      *
@@ -50,8 +52,6 @@ object ImageBinPoster {
                 .url("https://imagebin.ca/upload.php")
                 .post(requestBody)
                 .build()
-
-        val client = OkHttpClient()
 
         return Single.fromCallable { client.newCall(request).execute() }
     }
