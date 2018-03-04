@@ -145,7 +145,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
         switch (item.getItemId()) {

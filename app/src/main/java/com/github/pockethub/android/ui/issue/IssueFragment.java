@@ -235,7 +235,7 @@ public class IssueFragment extends DialogFragment
     }
 
     private void updateHeader(final Issue issue) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return;
         }
 
@@ -252,7 +252,7 @@ public class IssueFragment extends DialogFragment
                 .refresh()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter(fullIssue -> isUsable())
+                .filter(fullIssue -> isAdded())
                 .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(fullIssue -> {
                     issue = fullIssue.getIssue();

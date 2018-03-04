@@ -66,7 +66,7 @@ public abstract class GistsFragment extends PagedItemFragment<Gist> {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
         switch (item.getItemId()) {

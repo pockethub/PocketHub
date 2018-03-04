@@ -31,15 +31,6 @@ public abstract class DialogFragment extends BaseFragment implements
 
     private MaterialDialog progressDialog;
 
-    /**
-     * Is this fragment usable from the UI-thread
-     *
-     * @return true if usable, false otherwise
-     */
-    protected boolean isUsable() {
-        return getActivity() != null;
-    }
-
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank

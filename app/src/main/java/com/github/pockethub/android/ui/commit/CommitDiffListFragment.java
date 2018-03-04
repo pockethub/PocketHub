@@ -216,7 +216,7 @@ public class CommitDiffListFragment extends DialogFragment implements OnItemClic
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return false;
         }
 
@@ -296,7 +296,7 @@ public class CommitDiffListFragment extends DialogFragment implements OnItemClic
     }
 
     private void updateList(Commit commit, List<GitComment> comments, List<FullCommitFile> files) {
-        if (!isUsable()) {
+        if (!isAdded()) {
             return;
         }
 
