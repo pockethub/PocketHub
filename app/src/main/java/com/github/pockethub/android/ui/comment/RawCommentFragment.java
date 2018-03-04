@@ -33,6 +33,7 @@ import android.widget.EditText;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 
@@ -143,22 +144,18 @@ public class RawCommentFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
-            showProgressIndeterminate(R.string.loading);
             ImageBinPoster.post(getActivity(), data.getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(RxProgress.bindToLifecycle(getActivity(), R.string.loading))
                     .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
-                        dismissProgress();
                         if (response.isSuccessful()) {
                             insertImage(ImageBinPoster.getUrl(response.body().string()));
                         } else {
                             showImageError();
                         }
-                    }, throwable -> {
-                        dismissProgress();
-                        showImageError();
-                    });
+                    }, throwable -> showImageError());
         }
     }
 

@@ -276,26 +276,18 @@ public class EditIssueActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
-            progressDialog = new MaterialDialog.Builder(this)
-                    .content(R.string.loading)
-                    .progress(true, 0)
-                    .build();
-            progressDialog.show();
             ImageBinPoster.post(this, data.getData())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .compose(RxProgress.bindToLifecycle(this, R.string.loading))
                     .as(AutoDisposeUtils.bindToLifecycle(this))
                     .subscribe(response -> {
-                        progressDialog.dismiss();
                         if (response.isSuccessful()) {
                             insertImage(ImageBinPoster.getUrl(response.body().string()));
                         } else {
                             showImageError();
                         }
-                    }, throwable -> {
-                        progressDialog.dismiss();
-                        showImageError();
-                    });
+                    }, throwable -> showImageError());
         }
     }
 
