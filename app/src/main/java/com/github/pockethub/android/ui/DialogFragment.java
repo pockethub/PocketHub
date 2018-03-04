@@ -18,9 +18,7 @@ package com.github.pockethub.android.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.ui.base.BaseFragment;
 
 /**
@@ -28,8 +26,6 @@ import com.github.pockethub.android.ui.base.BaseFragment;
  */
 public abstract class DialogFragment extends BaseFragment implements
         DialogResultListener {
-
-    private MaterialDialog progressDialog;
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
@@ -65,38 +61,5 @@ public abstract class DialogFragment extends BaseFragment implements
         } else {
             return null;
         }
-    }
-
-    /**
-     * Dismiss and clear progress dialog field
-     */
-    protected void dismissProgress() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-            progressDialog = null;
-        }
-    }
-
-    /**
-     * Show indeterminate progress dialog with given message
-     *
-     * @param message
-     */
-    protected void showProgressIndeterminate(final CharSequence message) {
-        dismissProgress();
-        progressDialog = new MaterialDialog.Builder(getActivity())
-                .content(message)
-                .progress(true, 0)
-                .build();
-        progressDialog.show();
-    }
-
-    /**
-     * Show indeterminate progress dialog with given message
-     *
-     * @param resId
-     */
-    protected void showProgressIndeterminate(@StringRes final int resId) {
-        showProgressIndeterminate(getString(resId));
     }
 }
