@@ -42,6 +42,8 @@ import com.github.pockethub.android.util.PermissionsUtils;
 import com.github.pockethub.android.util.ToastUtils;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -141,23 +143,20 @@ public class RawCommentFragment extends DialogFragment {
 
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
             showProgressIndeterminate(R.string.loading);
-            ImageBinPoster.post(getActivity(), data.getData(), new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    dismissProgress();
-                    showImageError();
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    dismissProgress();
-                    if (response.isSuccessful()) {
-                        insertImage(ImageBinPoster.getUrl(response.body().string()));
-                    } else {
+            ImageBinPoster.post(getActivity(), data.getData())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        dismissProgress();
+                        if (response.isSuccessful()) {
+                            insertImage(ImageBinPoster.getUrl(response.body().string()));
+                        } else {
+                            showImageError();
+                        }
+                    }, throwable -> {
+                        dismissProgress();
                         showImageError();
-                    }
-                }
-            });
+                    });
         }
     }
 

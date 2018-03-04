@@ -281,23 +281,20 @@ public class EditIssueActivity extends BaseActivity {
                     .progress(true, 0)
                     .build();
             progressDialog.show();
-            ImageBinPoster.post(this, data.getData(), new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    progressDialog.dismiss();
-                    showImageError();
-                }
-
-                @Override
-                public void onResponse(Call call, okhttp3.Response response) throws IOException {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        insertImage(ImageBinPoster.getUrl(response.body().string()));
-                    } else {
+            ImageBinPoster.post(this, data.getData())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(response -> {
+                        progressDialog.dismiss();
+                        if (response.isSuccessful()) {
+                            insertImage(ImageBinPoster.getUrl(response.body().string()));
+                        } else {
+                            showImageError();
+                        }
+                    }, throwable -> {
+                        progressDialog.dismiss();
                         showImageError();
-                    }
-                }
-            });
+                    });
         }
     }
 

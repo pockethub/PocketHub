@@ -2,6 +2,7 @@ package com.github.pockethub.android.util
 
 import android.content.Context
 import android.net.Uri
+import io.reactivex.Single
 import okhttp3.*
 import okio.Okio
 import java.io.IOException
@@ -13,11 +14,10 @@ object ImageBinPoster {
      *
      * @param context A context
      * @param uri The content URI
-     * @param callback Request callback
-     * @return If the file was successfully retrieved
+     * @return Single containing the network Response
      */
     @JvmStatic
-    fun post(context: Context, uri: Uri, callback: Callback): Boolean {
+    fun post(context: Context, uri: Uri): Single<Response> {
         var bytes: ByteArray? = null
 
         try {
@@ -27,22 +27,20 @@ object ImageBinPoster {
                 bytes = Okio.buffer(source).readByteArray()
             }
         } catch (e: IOException) {
-            e.printStackTrace()
-            return false
+            return Single.error(e)
         }
 
-        post(bytes, callback)
-        return true
+        return post(bytes)
     }
 
     /**
      * Post the image to ImageBin
      *
      * @param bytes Bytes of the image to post
-     * @param callback Request callback
+     * @return Single containing the network Response
      */
     @JvmStatic
-    fun post(bytes: ByteArray?, callback: Callback) {
+    fun post(bytes: ByteArray?): Single<Response> {
         val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("file", "test", RequestBody.create(MediaType.parse("image/*"), bytes!!))
@@ -54,8 +52,8 @@ object ImageBinPoster {
                 .build()
 
         val client = OkHttpClient()
-        val call = client.newCall(request)
-        call.enqueue(callback)
+
+        return Single.fromCallable { client.newCall(request).execute() }
     }
 
     @JvmStatic
