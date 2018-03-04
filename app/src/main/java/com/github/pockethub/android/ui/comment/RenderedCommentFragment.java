@@ -28,8 +28,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.MarkdownLoader;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
@@ -40,7 +40,7 @@ import butterknife.BindView;
 /**
  * Fragment to display rendered comment fragment
  */
-public class RenderedCommentFragment extends DialogFragment {
+public class RenderedCommentFragment extends BaseFragment {
 
     private static final String ARG_TEXT = "text";
 

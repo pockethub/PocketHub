@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.core.commit.RefreshCommitTaskFactory;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.ui.item.LoadingItem;
 import com.github.pockethub.android.ui.item.commit.CommitCommentItem;
 import com.github.pockethub.android.ui.item.TextItem;
@@ -51,7 +52,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitStore;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.core.commit.FullCommitFile;
-import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.InfoUtils;
@@ -83,7 +83,7 @@ import static com.github.pockethub.android.RequestCodes.COMMENT_CREATE;
 /**
  * Fragment to display commit details with diff output
  */
-public class CommitDiffListFragment extends DialogFragment implements OnItemClickListener {
+public class CommitDiffListFragment extends BaseFragment implements OnItemClickListener {
 
 
     @BindView(android.R.id.list)
