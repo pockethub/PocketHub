@@ -438,7 +438,7 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
         } else if (item instanceof CharSequence) {
             selectPreviousFile(position, item, adapter);
         } else if (item instanceof CommitCommentItem) {
-            if (!TextUtils.isEmpty(((CommitCommentItem) item).getData().path())) {
+            if (!TextUtils.isEmpty(((CommitCommentItem) item).getComment().path())) {
                 selectPreviousFile(position, item, adapter);
             }
         }
