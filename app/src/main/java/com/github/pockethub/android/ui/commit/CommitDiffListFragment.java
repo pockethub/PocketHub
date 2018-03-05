@@ -431,7 +431,7 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
         int position = adapter.getAdapterPosition(item);
 
         if (item instanceof CommitParentItem) {
-            String sha = ((CommitParentItem) item).getData().sha();
+            String sha = ((CommitParentItem) item).getCommit().sha();
             startActivity(CommitViewActivity.createIntent(repository, sha));
         } else if (item instanceof CommitFileHeaderItem) {
             openFile(((CommitFileHeaderItem) item).getFile());
