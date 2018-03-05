@@ -31,7 +31,7 @@ import android.webkit.WebView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.util.PreferenceUtils;
 import com.github.pockethub.android.util.SourceEditor;
 import com.github.pockethub.android.util.ToastUtils;
@@ -54,7 +54,7 @@ import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 /**
  * Fragment to display the content of a file in a Gist
  */
-public class GistFileFragment extends DialogFragment implements
+public class GistFileFragment extends BaseFragment implements
         OnSharedPreferenceChangeListener {
 
     @BindView(R.id.wv_code)

@@ -34,11 +34,11 @@ import android.widget.EditText;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.TextWatcherAdapter;
 
 import java.io.IOException;
 
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.util.ImageBinPoster;
 import com.github.pockethub.android.util.PermissionsUtils;
 import com.github.pockethub.android.util.ToastUtils;
@@ -53,7 +53,7 @@ import okhttp3.Response;
 /**
  * Fragment to display raw comment text
  */
-public class RawCommentFragment extends DialogFragment {
+public class RawCommentFragment extends BaseFragment {
 
     private static final int REQUEST_CODE_SELECT_PHOTO = 0;
     private static final int READ_PERMISSION_REQUEST = 1;

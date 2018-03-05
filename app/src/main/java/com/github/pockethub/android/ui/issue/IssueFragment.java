@@ -39,7 +39,8 @@ import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
-import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.DialogResultListener;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.ui.comment.DeleteCommentListener;
 import com.github.pockethub.android.ui.comment.EditCommentListener;
 import com.github.pockethub.android.ui.commit.CommitCompareViewActivity;
@@ -103,8 +104,8 @@ import static com.github.pockethub.android.RequestCodes.ISSUE_REOPEN;
 /**
  * Fragment to display an issue
  */
-public class IssueFragment extends DialogFragment
-        implements IssueHeaderItem.OnIssueHeaderActionListener {
+public class IssueFragment extends BaseFragment
+        implements IssueHeaderItem.OnIssueHeaderActionListener, DialogResultListener {
 
     private static final String TAG = "IssueFragment";
 

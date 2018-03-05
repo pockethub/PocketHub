@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.util.ToastUtils;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
@@ -53,7 +54,7 @@ import io.reactivex.schedulers.Schedulers;
  * visible.
  *
  */
-public abstract class ItemListFragment<E> extends DialogFragment implements
+public abstract class ItemListFragment<E> extends BaseFragment implements
         SwipeRefreshLayout.OnRefreshListener, OnItemClickListener, OnItemLongClickListener {
 
     /**

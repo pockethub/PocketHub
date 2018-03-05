@@ -38,9 +38,10 @@ import com.github.pockethub.android.core.code.FullTree.Folder;
 import com.github.pockethub.android.core.code.RefreshTreeTask;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.github.pockethub.android.ui.DialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.DialogResultListener;
 import com.github.pockethub.android.ui.StyledText;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.ui.item.code.BlobItem;
 import com.github.pockethub.android.ui.item.code.FolderItem;
 import com.github.pockethub.android.ui.item.code.PathHeaderItem;
@@ -71,7 +72,7 @@ import static com.github.pockethub.android.RequestCodes.REF_UPDATE;
 /**
  * Fragment to display a repository's source code tree
  */
-public class RepositoryCodeFragment extends DialogFragment implements OnItemClickListener {
+public class RepositoryCodeFragment extends BaseFragment implements OnItemClickListener, DialogResultListener {
 
     private static final String TAG = "RepositoryCodeFragment";
 

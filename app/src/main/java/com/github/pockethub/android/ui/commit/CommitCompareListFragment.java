@@ -34,7 +34,7 @@ import android.widget.ProgressBar;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.ui.item.TextItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileHeaderItem;
@@ -70,7 +70,7 @@ import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 /**
  * Fragment to display a list of commits being compared
  */
-public class CommitCompareListFragment extends DialogFragment implements OnItemClickListener {
+public class CommitCompareListFragment extends BaseFragment implements OnItemClickListener {
 
     @BindView(android.R.id.list)
     protected RecyclerView list;

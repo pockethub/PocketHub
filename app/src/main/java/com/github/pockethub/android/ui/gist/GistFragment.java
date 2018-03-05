@@ -41,7 +41,8 @@ import com.github.pockethub.android.core.gist.RefreshGistTaskFactory;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
-import com.github.pockethub.android.ui.DialogFragment;
+import com.github.pockethub.android.ui.DialogResultListener;
+import com.github.pockethub.android.ui.base.BaseFragment;
 import com.github.pockethub.android.ui.comment.DeleteCommentListener;
 import com.github.pockethub.android.ui.comment.EditCommentListener;
 import com.github.pockethub.android.ui.item.GitHubCommentItem;
@@ -87,7 +88,7 @@ import static com.github.pockethub.android.RequestCodes.COMMENT_EDIT;
 /**
  * Activity to display an existing Gist
  */
-public class GistFragment extends DialogFragment implements OnItemClickListener {
+public class GistFragment extends BaseFragment implements OnItemClickListener, DialogResultListener {
 
     private static final String TAG = "GistFragment";
 
