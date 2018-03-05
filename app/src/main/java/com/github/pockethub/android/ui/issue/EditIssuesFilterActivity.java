@@ -97,6 +97,8 @@ public class EditIssuesFilterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_issues_filter_edit);
+
         if (savedInstanceState != null) {
             filter = savedInstanceState.getParcelable(EXTRA_ISSUE_FILTER);
         }
@@ -150,11 +152,6 @@ public class EditIssuesFilterActivity extends BaseActivity {
             default:
                 break;
         }
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_issues_filter_edit;
     }
 
     @Override

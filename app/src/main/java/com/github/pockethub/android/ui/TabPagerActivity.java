@@ -16,6 +16,7 @@
 package com.github.pockethub.android.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.Toolbar;
@@ -121,11 +122,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
         // Intentionally left blank
     }
 
-    @Override
-    protected int getContentView() {
-        return R.layout.pager_with_tabs;
-    }
-
     private void updateCurrentItem(final int newPosition) {
         if (newPosition > -1 && newPosition < adapter.getCount()) {
             pager.setItem(newPosition);
@@ -154,8 +150,8 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
         getSupportActionBar().setElevation(0);

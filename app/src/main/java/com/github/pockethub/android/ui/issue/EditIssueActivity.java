@@ -178,6 +178,8 @@ public class EditIssueActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_issue_edit);
+
         Intent intent = getIntent();
 
         if (savedInstanceState != null) {
@@ -214,11 +216,6 @@ public class EditIssueActivity extends BaseActivity {
         updateSaveMenu();
         titleText.setText(issue.title());
         bodyText.setText(issue.body());
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_issue_edit;
     }
 
     @Override

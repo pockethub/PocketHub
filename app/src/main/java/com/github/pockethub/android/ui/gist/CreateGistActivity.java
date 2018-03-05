@@ -79,6 +79,8 @@ public class CreateGistActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gist_create);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -93,11 +95,6 @@ public class CreateGistActivity extends BaseActivity {
         }
 
         updateCreateMenu();
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_gist_create;
     }
 
     @Override

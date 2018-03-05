@@ -70,6 +70,7 @@ public class CommitCompareViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.commit_compare);
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
@@ -80,11 +81,6 @@ public class CommitCompareViewActivity extends BaseActivity {
 
         fragment = getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.commit_compare;
     }
 
     @Override

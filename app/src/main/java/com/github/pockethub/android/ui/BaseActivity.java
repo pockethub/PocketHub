@@ -43,9 +43,8 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Di
     protected Toolbar toolbar;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(getContentView());
+    public void onContentChanged() {
+        super.onContentChanged();
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
     }
@@ -129,12 +128,4 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Di
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         // Intentionally left blank
     }
-
-    /**
-     * Get content view to be used when {@link #onCreate(Bundle)} is called.
-     *
-     * @return layout resource id
-     */
-    @LayoutRes
-    protected abstract int getContentView();
 }

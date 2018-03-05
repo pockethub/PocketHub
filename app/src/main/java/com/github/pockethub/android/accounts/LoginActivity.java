@@ -95,6 +95,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.login);
 
         clientId = getString(R.string.github_client);
         secret = getString(R.string.github_secret);
@@ -108,11 +109,6 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
             openMain();
         }
         checkOauthConfig();
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.login;
     }
 
     private void checkOauthConfig() {
