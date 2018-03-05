@@ -413,7 +413,7 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
 
             if (item instanceof CommitFileHeaderItem) {
                 if (line != null) {
-                    showFileOptions(line, linePosition, ((CommitFileHeaderItem) item).getData());
+                    showFileOptions(line, linePosition, ((CommitFileHeaderItem) item).getFile());
                 }
                 break;
             } else if (item instanceof CharSequence) {
@@ -434,7 +434,7 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
             String sha = ((CommitParentItem) item).getData().sha();
             startActivity(CommitViewActivity.createIntent(repository, sha));
         } else if (item instanceof CommitFileHeaderItem) {
-            openFile(((CommitFileHeaderItem) item).getData());
+            openFile(((CommitFileHeaderItem) item).getFile());
         } else if (item instanceof CharSequence) {
             selectPreviousFile(position, item, adapter);
         } else if (item instanceof CommitCommentItem) {
