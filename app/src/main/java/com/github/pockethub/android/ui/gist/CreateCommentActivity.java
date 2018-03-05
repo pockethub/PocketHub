@@ -60,6 +60,7 @@ public class CreateCommentActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pager_with_tabs);
 
         gist = getParcelableExtra(EXTRA_GIST);
 

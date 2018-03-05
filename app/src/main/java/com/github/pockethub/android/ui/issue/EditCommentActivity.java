@@ -85,6 +85,7 @@ public class EditCommentActivity extends
         repositoryId = getParcelableExtra(Intents.EXTRA_REPOSITORY);
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pager_with_tabs);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.issue_title) + issueNumber);

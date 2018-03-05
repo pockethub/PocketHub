@@ -72,6 +72,7 @@ public class EditCommentActivity extends
         gist = getParcelableExtra(EXTRA_GIST);
         comment = getIntent().getParcelableExtra(EXTRA_COMMENT);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pager_with_tabs);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.gist_title) + gist.id());

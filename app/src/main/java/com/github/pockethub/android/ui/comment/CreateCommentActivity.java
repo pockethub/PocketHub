@@ -17,6 +17,7 @@ package com.github.pockethub.android.ui.comment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,8 +49,8 @@ public abstract class CreateCommentActivity extends
     protected AvatarLoader avatars;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

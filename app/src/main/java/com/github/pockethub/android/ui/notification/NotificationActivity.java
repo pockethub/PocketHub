@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.TabPagerActivity;
 
 public class NotificationActivity extends TabPagerActivity<NotificationPagerAdapter> {
@@ -11,6 +12,8 @@ public class NotificationActivity extends TabPagerActivity<NotificationPagerAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pager_with_tabs);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
