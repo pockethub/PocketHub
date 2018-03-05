@@ -115,6 +115,7 @@ public class GistsViewActivity extends PagerActivity implements OnLoadListener<G
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pager);
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS);
         gist = getParcelableExtra(EXTRA_GIST);
@@ -145,11 +146,6 @@ public class GistsViewActivity extends PagerActivity implements OnLoadListener<G
     protected void onDestroy() {
         super.onDestroy();
         pager.removeOnPageChangeListener(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_pager;
     }
 
     @Override

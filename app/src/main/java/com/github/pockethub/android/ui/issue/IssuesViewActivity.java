@@ -177,6 +177,8 @@ public class IssuesViewActivity extends PagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pager);
+
         issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS);
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS);
         repoIds = getIntent().getParcelableArrayListExtra(EXTRA_REPOSITORIES);
@@ -209,11 +211,6 @@ public class IssuesViewActivity extends PagerActivity {
     protected void onDestroy() {
         super.onDestroy();
         pager.removeOnPageChangeListener(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_pager;
     }
 
     private void repositoryLoaded(Repository repo) {

@@ -85,6 +85,7 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.tabbed_progress_pager);
 
         user = getIntent().getParcelableExtra(EXTRA_USER);
 
@@ -169,11 +170,6 @@ public class UserViewActivity extends TabPagerActivity<UserPagerAdapter>
     @Override
     protected UserPagerAdapter createAdapter() {
         return new UserPagerAdapter(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.tabbed_progress_pager;
     }
 
     @Override

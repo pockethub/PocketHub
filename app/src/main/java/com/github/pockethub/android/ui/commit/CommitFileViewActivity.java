@@ -123,6 +123,7 @@ public class CommitFileViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_commit_file_view);
 
         repo = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_HEAD);
@@ -148,11 +149,6 @@ public class CommitFileViewActivity extends BaseActivity {
         avatars.bind(actionBar, repo.owner());
 
         loadContent();
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_commit_file_view;
     }
 
     @Override

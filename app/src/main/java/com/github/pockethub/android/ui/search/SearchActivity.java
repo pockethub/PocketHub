@@ -61,6 +61,7 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.tabbed_progress_pager);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -104,11 +105,6 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
     @Override
     protected SearchPagerAdapter createAdapter() {
         return new SearchPagerAdapter(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.tabbed_progress_pager;
     }
 
     @Override

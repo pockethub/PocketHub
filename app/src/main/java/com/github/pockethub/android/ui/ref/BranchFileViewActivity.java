@@ -126,6 +126,7 @@ public class BranchFileViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_commit_file_view);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
         sha = getStringExtra(EXTRA_BASE);
@@ -147,11 +148,6 @@ public class BranchFileViewActivity extends BaseActivity {
         avatars.bind(actionBar, repo.owner());
 
         loadContent();
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_commit_file_view;
     }
 
     @Override

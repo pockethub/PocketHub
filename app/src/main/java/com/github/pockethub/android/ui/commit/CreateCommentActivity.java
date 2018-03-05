@@ -98,6 +98,7 @@ public class CreateCommentActivity extends
         path = getStringExtra(EXTRA_PATH);
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.pager_with_tabs);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.commit_prefix)

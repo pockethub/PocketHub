@@ -95,6 +95,7 @@ public class GistFilesViewActivity extends PagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pager_with_title);
 
         gistId = getStringExtra(EXTRA_GIST_ID);
         initialPosition = getIntExtra(EXTRA_POSITION);
@@ -122,11 +123,6 @@ public class GistFilesViewActivity extends PagerActivity {
                         configurePager();
                     });
         }
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_pager_with_title;
     }
 
     private void configurePager() {

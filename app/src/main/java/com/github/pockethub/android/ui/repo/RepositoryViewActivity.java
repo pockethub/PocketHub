@@ -95,6 +95,7 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.tabbed_progress_pager);
 
         repository = getParcelableExtra(EXTRA_REPOSITORY);
         User owner = repository.owner();
@@ -235,11 +236,6 @@ public class RepositoryViewActivity extends TabPagerActivity<RepositoryPagerAdap
     @Override
     protected RepositoryPagerAdapter createAdapter() {
         return new RepositoryPagerAdapter(this, repository.hasIssues(), hasReadme);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.tabbed_progress_pager;
     }
 
     @Override

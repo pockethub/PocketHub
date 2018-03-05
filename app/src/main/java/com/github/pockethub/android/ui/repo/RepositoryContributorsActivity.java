@@ -56,6 +56,8 @@ public class RepositoryContributorsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_repo_contributors);
+
         repository = getParcelableExtra(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
@@ -65,11 +67,6 @@ public class RepositoryContributorsActivity extends BaseActivity {
 
         User owner = repository.owner();
         avatars.bind(getSupportActionBar(), owner);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_repo_contributors;
     }
 
     @Override

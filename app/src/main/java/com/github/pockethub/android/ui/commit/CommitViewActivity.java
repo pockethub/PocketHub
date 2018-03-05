@@ -116,6 +116,7 @@ public class CommitViewActivity extends PagerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pager);
 
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         ids = getCharSequenceArrayExtra(EXTRA_BASES);
@@ -137,11 +138,6 @@ public class CommitViewActivity extends PagerActivity {
     protected void onDestroy() {
         super.onDestroy();
         pager.removeOnPageChangeListener(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_pager;
     }
 
     @Override

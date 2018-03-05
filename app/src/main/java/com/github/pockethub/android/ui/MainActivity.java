@@ -115,6 +115,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         userLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
@@ -150,11 +152,6 @@ public class MainActivity extends BaseActivity
                 tokenStore.saveToken(AccountsHelper.getUserToken(this, account));
             }
         }
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_main;
     }
 
     @Override

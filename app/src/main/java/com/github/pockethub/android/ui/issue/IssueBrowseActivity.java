@@ -58,6 +58,7 @@ public class IssueBrowseActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_repo_issue_list);
 
         repo = getParcelableExtra(EXTRA_REPOSITORY);
 
@@ -66,11 +67,6 @@ public class IssueBrowseActivity extends BaseActivity {
         actionBar.setSubtitle(repo.owner().login());
         actionBar.setDisplayHomeAsUpEnabled(true);
         avatars.bind(actionBar, repo.owner());
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.activity_repo_issue_list;
     }
 
     @Override

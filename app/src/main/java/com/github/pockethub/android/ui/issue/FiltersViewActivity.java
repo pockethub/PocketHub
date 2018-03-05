@@ -64,6 +64,7 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.issues_filter_list);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
@@ -73,11 +74,6 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
         fragment = (FilterListFragment) getSupportFragmentManager()
             .findFragmentById(android.R.id.list);
         fragment.getListAdapter().setOnItemLongClickListener(this);
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.issues_filter_list;
     }
 
     @Override
