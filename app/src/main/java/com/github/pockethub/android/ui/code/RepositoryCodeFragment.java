@@ -324,7 +324,7 @@ public class RepositoryCodeFragment extends BaseFragment implements OnItemClickL
         }
 
         if (item instanceof BlobItem) {
-            Entry entry = ((BlobItem) item).getData();
+            Entry entry = ((BlobItem) item).getFile();
             startActivity(BranchFileViewActivity.createIntent(repository,
                     tree.branch, entry.entry.path(), entry.entry.sha()));
         } else if (item instanceof FolderItem) {
