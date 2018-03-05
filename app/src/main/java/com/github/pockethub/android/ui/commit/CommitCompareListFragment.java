@@ -273,7 +273,7 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof CommitItem) {
-            openCommit(((CommitItem) item).getData());
+            openCommit(((CommitItem) item).getCommit());
         } else if (item instanceof CommitFileHeaderItem) {
             openFile(((CommitFileHeaderItem) item).getFile());
         } else if (item instanceof CommitFileLineItem) {
