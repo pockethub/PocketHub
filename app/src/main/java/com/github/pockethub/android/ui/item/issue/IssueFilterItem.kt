@@ -25,7 +25,7 @@ class IssueFilterItem(private val avatarLoader: AvatarLoader, val issueFilter: I
         }
 
         val labels = issueFilter.labels
-        if (labels != null && !labels.isEmpty()) {
+        if (labels != null && labels.isNotEmpty()) {
             LabelDrawableSpan.setText(holder.root.tv_filter_labels, labels)
             holder.root.tv_filter_labels.visibility = View.VISIBLE
         } else {
