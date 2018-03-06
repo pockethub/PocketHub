@@ -108,7 +108,7 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
     @Override
     public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof IssueFilterItem) {
-            IssueFilter filter = ((IssueFilterItem) item).getData();
+            IssueFilter filter = ((IssueFilterItem) item).getIssueFilter();
             Bundle args = new Bundle();
             args.putParcelable(ARG_FILTER, filter);
             ConfirmDialogFragment.show(this, REQUEST_DELETE,
