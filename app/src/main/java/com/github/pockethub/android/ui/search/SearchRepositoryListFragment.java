@@ -103,7 +103,7 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof RepositoryItem) {
-            final Repository result = ((RepositoryItem) item).getData();
+            final Repository result = ((RepositoryItem) item).getRepo();
             ServiceGenerator.createService(getContext(), RepositoryService.class)
                     .getRepository(result.owner().login(), result.name())
                     .subscribeOn(Schedulers.io())
