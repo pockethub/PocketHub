@@ -15,10 +15,10 @@ public class IssueDashboardItem extends IssueItem {
     }
 
     @Override
-    public void bind(@NonNull ViewHolder holder, int position) {
+    public void bind(@NonNull ItemViewHolder holder, int position) {
         super.bind(holder, position);
         TextView textView = holder.getRoot().findViewById(R.id.tv_issue_repo_name);
-        textView.setText(InfoUtils.createRepoId(getData().repository()));
+        textView.setText(InfoUtils.createRepoId(getIssue().repository()));
     }
 
     @Override

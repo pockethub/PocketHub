@@ -117,7 +117,7 @@ public class IssuesFragment extends PagedItemFragment<Issue> {
             int position = getListAdapter().getAdapterPosition(item) - 1;
             Collection<Issue> issues = Observable.fromIterable(items)
                     .filter(mapItem -> mapItem instanceof IssueItem)
-                    .map(mapItem -> ((IssueItem) mapItem).getData())
+                    .map(mapItem -> ((IssueItem) mapItem).getIssue())
                     .toList()
                     .blockingGet();
 

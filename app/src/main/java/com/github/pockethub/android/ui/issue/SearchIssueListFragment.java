@@ -83,7 +83,7 @@ public class SearchIssueListFragment extends PagedItemFragment<Issue> {
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof IssueItem) {
-            Issue searchIssue = ((IssueItem) item).getData();
+            Issue searchIssue = ((IssueItem) item).getIssue();
             startActivity(IssuesViewActivity.createIntent(searchIssue, repository));
         }
     }
