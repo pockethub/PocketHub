@@ -5,9 +5,9 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.User
 
-class ContributorItem(avatarLoader: AvatarLoader, val user: User) : UserItem(avatarLoader, user) {
+class ContributorItem(avatarLoader: AvatarLoader, override val user: User) : UserItem(avatarLoader, user) {
 
-    override fun bind(holder: UserItem.ViewHolder, position: Int) {
+    override fun bind(holder: UserItem.ItemViewHolder, position: Int) {
         super.bind(holder, position)
         val contributions = holder.root.findViewById<TextView>(R.id.tv_contributions)
 
