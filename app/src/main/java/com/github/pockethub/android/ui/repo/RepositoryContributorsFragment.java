@@ -85,7 +85,7 @@ public class RepositoryContributorsFragment extends PagedItemFragment<User> {
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof ContributorItem) {
-            User contributor = ((ContributorItem) item).getData();
+            User contributor = ((ContributorItem) item).getUser();
             ServiceGenerator.createService(getContext(), UserService.class)
                     .getUser(contributor.login())
                     .subscribeOn(Schedulers.io())
