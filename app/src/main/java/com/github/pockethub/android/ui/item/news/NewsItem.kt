@@ -9,19 +9,19 @@ import android.widget.TextView
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.ui.item.BaseDataItem
-import com.github.pockethub.android.ui.item.BaseViewHolder
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.*
 import com.meisolsson.githubsdk.model.User
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.news_item.view.*
 
 open class NewsItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) :
-        BaseDataItem<GitHubEvent, NewsItem.ViewHolder>(avatarLoader, dataItem,
+        BaseDataItem<GitHubEvent, NewsItem.ItemViewHolder>(avatarLoader, dataItem,
                 dataItem.id()!!.hashCode().toLong()) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: ItemViewHolder, position: Int) {
         avatarLoader.bind(viewHolder.avatar, data.actor())
         viewHolder.date.text = TimeUtils.getRelativeTime(data.createdAt())
     }
@@ -66,9 +66,9 @@ open class NewsItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) :
 
     override fun getLayout(): Int = R.layout.news_item
 
-    override fun createViewHolder(itemView: View): ViewHolder = ViewHolder(itemView)
+    override fun createViewHolder(itemView: View): ItemViewHolder = ItemViewHolder(itemView)
 
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
+    inner class ItemViewHolder(rootView: View) : ViewHolder(rootView) {
 
         @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
         var event: TextView

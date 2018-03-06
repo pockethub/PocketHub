@@ -11,7 +11,7 @@ import com.meisolsson.githubsdk.model.payload.CreatePayload
 class CreateEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) :
     NewsItem(avatarLoader, dataItem) {
 
-    override fun bind(viewHolder: ViewHolder, position: Int) {
+    override fun bind(viewHolder: ItemViewHolder, position: Int) {
         super.bind(viewHolder, position)
         viewHolder.icon.text = OcticonTextView.ICON_CREATE
 

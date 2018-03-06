@@ -7,19 +7,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.item.BaseDataItem
-import com.github.pockethub.android.ui.item.BaseViewHolder
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.Issue
 import com.meisolsson.githubsdk.model.IssueEvent
 import com.meisolsson.githubsdk.model.IssueEventType.*
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.comment_event.view.*
 
 class IssueEventItem(avatarLoader: AvatarLoader, private val context: Context, private val issue: Issue, dataItem: IssueEvent)
-    : BaseDataItem<IssueEvent, IssueEventItem.ViewHolder>(avatarLoader, dataItem, dataItem.id()!!.toLong()) {
+    : BaseDataItem<IssueEvent, IssueEventItem.ItemViewHolder>(avatarLoader, dataItem, dataItem.id()!!.toLong()) {
 
-    override fun bind(holder: ViewHolder, position: Int) {
+    override fun bind(holder: ItemViewHolder, position: Int) {
         val event = data
         var message = String.format("<b>%s</b> %s", event.actor()!!.login(), event.event())
         avatarLoader.bind(holder.itemView.iv_avatar, event.actor())
@@ -88,9 +88,9 @@ class IssueEventItem(avatarLoader: AvatarLoader, private val context: Context, p
 
     override fun getLayout(): Int = R.layout.comment_event_item
 
-    override fun createViewHolder(itemView: View): ViewHolder = ViewHolder(itemView)
+    override fun createViewHolder(itemView: View): ItemViewHolder = ItemViewHolder(itemView)
 
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
+    inner class ItemViewHolder(rootView: View) : ViewHolder(rootView) {
 
         var icon: TextView
         var event: TextView
