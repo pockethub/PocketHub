@@ -16,6 +16,7 @@
 package com.github.pockethub.android.ui.issue;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
@@ -29,7 +30,6 @@ import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import java.util.ArrayList;
@@ -96,7 +96,7 @@ public class EditLabelsTask {
      * @param labels
      * @return this task
      */
-    public EditLabelsTask edit(@Nonnull List<Label> labels) {
+    public EditLabelsTask edit(@NonNull List<Label> labels) {
         List<String> labelNames = new ArrayList<>();
         for (Label label : labels) {
             labelNames.add(label.name());
