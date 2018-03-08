@@ -287,7 +287,7 @@ public abstract class ItemListFragment<E> extends BaseFragment implements
      * @param defaultMessage
      */
     protected void showError(final Throwable e, final int defaultMessage) {
-        ToastUtils.show(getActivity(), e, defaultMessage);
+        ToastUtils.show(getActivity(), defaultMessage);
     }
 
     /**

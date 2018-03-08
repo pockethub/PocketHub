@@ -100,7 +100,7 @@ public class LabelsDialog {
                     activity.getString(R.string.select_labels), null, new ArrayList<>(labels), checked);
         }, error -> {
             Log.e(TAG, "Exception loading labels", error);
-            ToastUtils.show(activity, error, R.string.error_labels_load);
+            ToastUtils.show(activity, R.string.error_labels_load);
         });
     }
 }

@@ -197,7 +197,7 @@ public class RepositoryCodeFragment extends BaseFragment implements OnItemClickL
                     Log.d(TAG, "Exception loading tree", e);
 
                     showLoading(false);
-                    ToastUtils.show(getActivity(), e, R.string.error_code_load);
+                    ToastUtils.show(getActivity(), R.string.error_code_load);
                 });
     }
 

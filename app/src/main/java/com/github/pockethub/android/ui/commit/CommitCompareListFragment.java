@@ -173,7 +173,7 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
                     diffStyler.setFiles(files);
                     Collections.sort(files, new CommitFileComparator());
                     updateList(compareCommit);
-                }, error -> ToastUtils.show(getActivity(), error, R.string.error_commits_load));
+                }, error -> ToastUtils.show(getActivity(), R.string.error_commits_load));
     }
 
     private void updateList(CommitCompare compare) {
