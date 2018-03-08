@@ -269,7 +269,7 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
 
                     updateList(full.getCommit(), full, full.getFiles());
                 }, e -> {
-                    ToastUtils.show(getActivity(), e, R.string.error_commit_load);
+                    ToastUtils.show(getActivity(), R.string.error_commit_load);
                     progress.setVisibility(View.GONE);
                 });
     }

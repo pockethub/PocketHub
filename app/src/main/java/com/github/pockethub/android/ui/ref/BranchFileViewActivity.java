@@ -274,7 +274,7 @@ public class BranchFileViewActivity extends BaseActivity {
 
                     loadingBar.setVisibility(View.GONE);
                     codeView.setVisibility(View.VISIBLE);
-                    ToastUtils.show(this, e, R.string.error_file_load);
+                    ToastUtils.show(this, R.string.error_file_load);
                 });
     }
 

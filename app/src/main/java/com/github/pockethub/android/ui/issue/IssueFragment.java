@@ -262,7 +262,7 @@ public class IssueFragment extends BaseFragment
                     items.addAll(fullIssue.getComments());
                     updateList(fullIssue.getIssue(), items);
                 }, e -> {
-                    ToastUtils.show(getActivity(), e, R.string.error_issue_load);
+                    ToastUtils.show(getActivity(), R.string.error_issue_load);
                     progress.setVisibility(GONE);
                 });
     }

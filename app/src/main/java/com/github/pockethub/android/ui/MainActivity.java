@@ -187,7 +187,7 @@ public class MainActivity extends BaseActivity
                 .subscribe(this::onOrgsLoaded,
                         e -> {
                             Log.e(TAG, "Exception loading organizations", e);
-                            ToastUtils.show(this, e, R.string.error_orgs_load);
+                            ToastUtils.show(this, R.string.error_orgs_load);
                         });
     }
 

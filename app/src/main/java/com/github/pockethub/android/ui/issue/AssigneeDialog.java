@@ -94,7 +94,7 @@ public class AssigneeDialog {
                     checked);
         }, error -> {
             Log.d(TAG, "Exception loading collaborators", error);
-            ToastUtils.show(activity, error, R.string.error_collaborators_load);
+            ToastUtils.show(activity, R.string.error_collaborators_load);
         });
     }
 }

@@ -371,7 +371,7 @@ public class GistFragment extends BaseFragment implements OnItemClickListener, D
                     gist = fullGist.getGist();
                     comments = fullGist.getComments();
                     updateList(fullGist.getGist(), fullGist.getComments());
-                }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_load));
+                }, e -> ToastUtils.show(getActivity(), R.string.error_gist_load));
     }
 
     @Override

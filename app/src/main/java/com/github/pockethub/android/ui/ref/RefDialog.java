@@ -101,7 +101,7 @@ public class RefDialog {
                     activity.getString(R.string.select_ref), null, new ArrayList<>(refs), checked);
         }, e -> {
             Log.d(TAG, "Exception loading references", e);
-            ToastUtils.show(activity, e, R.string.error_refs_load);
+            ToastUtils.show(activity, R.string.error_refs_load);
         });
     }
 }
