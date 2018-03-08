@@ -139,27 +139,27 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    def supportVersion = '27.0.2'
+    def supportVersion = '27.1.0'
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
-    implementation 'com.uber.autodispose:autodispose:0.5.1'
-    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.5.1'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
+    implementation 'com.uber.autodispose:autodispose:0.6.1'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
 
-    implementation 'com.bugsnag:bugsnag-android:3.6.0'
+    implementation 'com.bugsnag:bugsnag-android:4.3.1'
 
-    implementation 'com.google.dagger:dagger:2.13'
-    implementation 'com.google.dagger:dagger-android:2.13'
-    implementation 'com.google.dagger:dagger-android-support:2.13'
+    implementation 'com.google.dagger:dagger:2.15'
+    implementation 'com.google.dagger:dagger-android:2.15'
+    implementation 'com.google.dagger:dagger-android-support:2.15'
 
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
 
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
@@ -174,6 +174,6 @@ dependencies {
     //Libs for testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation "org.mockito:mockito-core:1.9.5"
-    testImplementation "org.robolectric:robolectric:3.6.1"
+    testImplementation "org.mockito:mockito-core:2.15.0"
+    testImplementation "org.robolectric:robolectric:3.7.1"
 }
