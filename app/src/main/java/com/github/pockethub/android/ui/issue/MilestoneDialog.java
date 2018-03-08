@@ -96,7 +96,7 @@ public class MilestoneDialog {
                     new ArrayList<>(milestones), checked);
         }, error -> {
             Log.e(TAG, "Exception loading milestones", error);
-            ToastUtils.show(activity, error, R.string.error_milestones_load);
+            ToastUtils.show(activity, R.string.error_milestones_load);
         });
     }
 }

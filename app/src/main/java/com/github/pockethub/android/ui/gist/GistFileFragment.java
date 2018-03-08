@@ -169,7 +169,7 @@ public class GistFileFragment extends BaseFragment implements
                     if (file.content() != null) {
                         showSource();
                     }
-                }, e -> ToastUtils.show(getActivity(), e, R.string.error_gist_file_load));
+                }, e -> ToastUtils.show(getActivity(), R.string.error_gist_file_load));
     }
 
     private void showSource() {

@@ -278,7 +278,7 @@ public class CommitFileViewActivity extends BaseActivity {
 
                     loadingBar.setVisibility(View.GONE);
                     codeView.setVisibility(View.VISIBLE);
-                    ToastUtils.show(this, error, R.string.error_file_load);
+                    ToastUtils.show(this, R.string.error_file_load);
                 });
     }
 
