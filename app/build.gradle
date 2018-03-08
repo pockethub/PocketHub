@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
 apply from: 'quality.gradle'
 
@@ -158,14 +159,14 @@ dependencies {
     implementation 'com.google.dagger:dagger-android:2.13'
     implementation 'com.google.dagger:dagger-android-support:2.13'
 
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.13'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.13'
+    kapt 'com.google.dagger:dagger-compiler:2.13'
+    kapt 'com.google.dagger:dagger-android-processor:2.13'
 
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
-    annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
+    kapt 'com.google.auto.factory:auto-factory:1.0-beta5'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation 'com.github.meisolsson:githubsdk:0.5.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
