@@ -32,7 +32,6 @@ import com.squareup.picasso.Transformation
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import java.io.File
-import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -95,27 +94,9 @@ class AvatarLoader @Inject constructor(context: Context) {
      * Sets the logo on the [ActionBar] to the user's avatar.
      *
      * @param actionBar An ActionBar object on which you're placing the user's avatar.
-     * @param user      An AtomicReference that points to the desired user.
-     * @return this helper
+     * @param user
      */
     fun bind(actionBar: ActionBar, user: User) {
-        bind(actionBar, AtomicReference(user))
-    }
-
-    /**
-     * Sets the logo on the [ActionBar] to the user's avatar.
-     *
-     * @param actionBar     An ActionBar object on which you're placing the user's avatar.
-     * @param userReference An AtomicReference that points to the desired user.
-     * @return this helper
-     */
-    fun bind(actionBar: ActionBar, userReference: AtomicReference<User>?) {
-        if (userReference == null) {
-            return
-        }
-
-        val user = userReference.get() ?: return
-
         var avatarUrl = user.avatarUrl()
         if (avatarUrl.isNullOrEmpty()) {
             return

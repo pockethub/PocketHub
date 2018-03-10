@@ -168,7 +168,7 @@ public class IssuesViewActivity extends PagerActivity {
     @Inject
     protected IssueStore store;
 
-    private final AtomicReference<User> user = new AtomicReference<>();
+    private User user;
 
     private boolean canWrite;
 
@@ -188,7 +188,7 @@ public class IssuesViewActivity extends PagerActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (repo != null) {
             actionBar.setSubtitle(InfoUtils.createRepoId(repo));
-            user.set(repo.owner());
+            user = repo.owner();
             avatars.bind(actionBar, user);
         }
 
@@ -214,7 +214,7 @@ public class IssuesViewActivity extends PagerActivity {
     }
 
     private void repositoryLoaded(Repository repo) {
-        if (issueNumbers.length == 1 && (user.get() == null || user.get().avatarUrl() == null)) {
+        if (issueNumbers.length == 1 && (user == null || user.avatarUrl() == null)) {
             avatars.bind(getSupportActionBar(), repo.owner());
         }
 
@@ -274,7 +274,7 @@ public class IssuesViewActivity extends PagerActivity {
             if (issue != null) {
                 Repository fullRepo = issue.repository();
                 if (fullRepo != null && fullRepo.owner() != null) {
-                    user.set(fullRepo.owner());
+                    user = fullRepo.owner();
                     avatars.bind(actionBar, user);
                 } else {
                     actionBar.setLogo(null);
