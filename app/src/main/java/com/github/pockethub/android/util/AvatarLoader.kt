@@ -187,12 +187,16 @@ class AvatarLoader @Inject constructor(context: Context) {
             actionBar.setLogo(InsetDrawable(drawable, 0, 0, insetPx, 0))
         }
 
-        override fun onBitmapFailed(errorDrawable: Drawable) {
-            actionBar.setLogo(errorDrawable)
+        override fun onBitmapFailed(errorDrawable: Drawable?) {
+            if (errorDrawable != null) {
+                actionBar.setLogo(errorDrawable)
+            }
         }
 
-        override fun onPrepareLoad(placeHolderDrawable: Drawable) {
-            actionBar.setLogo(placeHolderDrawable)
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+            if (placeHolderDrawable != null) {
+                actionBar.setLogo(placeHolderDrawable)
+            }
         }
     }
 
