@@ -36,6 +36,8 @@ import com.meisolsson.githubsdk.model.Repository;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Fragment to display rendered comment fragment
@@ -103,6 +105,8 @@ public class RenderedCommentFragment extends BaseFragment {
 
     private void loadMarkdown(String raw, Repository repo) {
         MarkdownLoader.load(getActivity(), raw, repo, imageGetter, true)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(rendered -> {
                     bodyText.setText(rendered);
                     showLoading(false);

@@ -232,6 +232,8 @@ public class CommitFileViewActivity extends BaseActivity {
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
 
         MarkdownLoader.load(this, markdown, repo, imageGetter, false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(rendered -> {
                     loadingBar.setVisibility(View.GONE);
                     codeView.setVisibility(View.VISIBLE);

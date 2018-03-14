@@ -51,6 +51,7 @@ import com.meisolsson.githubsdk.service.git.GitService;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -229,6 +230,8 @@ public class BranchFileViewActivity extends BaseActivity {
 
         String markdown = new String(Base64.decode(blob.content(), Base64.DEFAULT));
         MarkdownLoader.load(this, markdown, repo, imageGetter, false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(rendered -> {
                     loadingBar.setVisibility(View.GONE);
                     codeView.setVisibility(View.VISIBLE);
