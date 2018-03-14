@@ -74,7 +74,7 @@ public class FilterListFragment extends ItemListFragment<IssueFilter> implements
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof IssueFilterItem) {
-            IssueFilter filter = ((IssueFilterItem) item).getData();
+            IssueFilter filter = ((IssueFilterItem) item).getIssueFilter();
             startActivity(IssueBrowseActivity.createIntent(filter));
         }
     }

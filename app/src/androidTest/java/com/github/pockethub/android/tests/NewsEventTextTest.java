@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.github.pockethub.android.ui.item.news.GistEventItem;
 import com.github.pockethub.android.ui.item.news.NewsItem;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GitHubEvent;
@@ -32,7 +31,6 @@ import com.meisolsson.githubsdk.model.ReferenceType;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.Team;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.payload.CommitCommentPayload;
 import com.meisolsson.githubsdk.model.payload.CreatePayload;
@@ -46,7 +44,6 @@ import com.meisolsson.githubsdk.model.payload.MemberPayload;
 import com.meisolsson.githubsdk.model.payload.PullRequestPayload;
 import com.meisolsson.githubsdk.model.payload.PushPayload;
 import com.meisolsson.githubsdk.model.payload.TeamAddPayload;
-import com.xwray.groupie.GroupAdapter;
 
 import java.util.Collections;
 import java.util.Date;
@@ -101,7 +98,7 @@ public class NewsEventTextTest extends InstrumentationTestCase {
         NewsItem item = NewsItem.createNewsItem(avatarLoader, event);
 
         View itemView = layoutInflater.inflate(item.getLayout(), null);
-        NewsItem.ViewHolder viewHolder = item.createViewHolder(itemView);
+        NewsItem.ItemViewHolder viewHolder = item.createViewHolder(itemView);
         item.bind(viewHolder, 0);
 
         text = viewHolder.getEvent();

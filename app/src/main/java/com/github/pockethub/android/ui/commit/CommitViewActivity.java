@@ -76,7 +76,7 @@ public class CommitViewActivity extends PagerActivity {
         String[] ids = new String[commits.size()];
         int index = 0;
         for (Item item : commits) {
-            Commit commit = ((CommitItem) item).getData();
+            Commit commit = ((CommitItem) item).getCommit();
             ids[index++] = commit.sha();
         }
         return createIntent(repository, position, ids);

@@ -97,7 +97,7 @@ public class MilestoneDialogFragment extends SingleChoiceDialogFragment {
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         super.onItemClick(item, view);
         if (item instanceof MilestoneDialogItem) {
-            getArguments().putParcelable(ARG_SELECTED, ((MilestoneDialogItem) item).getData());
+            getArguments().putParcelable(ARG_SELECTED, ((MilestoneDialogItem) item).getMilestone());
             onResult(RESULT_OK);
         }
     }

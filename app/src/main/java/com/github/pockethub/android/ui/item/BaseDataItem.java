@@ -5,8 +5,9 @@ import android.view.View;
 
 import com.github.pockethub.android.util.AvatarLoader;
 import com.xwray.groupie.Item;
+import com.xwray.groupie.ViewHolder;
 
-public abstract class BaseDataItem<T, V extends BaseViewHolder> extends Item<V> {
+public abstract class BaseDataItem<T, V extends ViewHolder> extends Item<V> {
 
     private AvatarLoader avatarLoader;
 
