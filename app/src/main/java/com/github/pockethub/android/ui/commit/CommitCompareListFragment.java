@@ -112,19 +112,14 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        diffStyler = new DiffStyler(getResources());
-        compareCommits();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         mainSection.add(commitsSection);
         mainSection.add(filesSection);
         adapter.add(mainSection);
 
         adapter.setOnItemClickListener(this);
+
+        diffStyler = new DiffStyler(getResources());
+        compareCommits();
     }
 
     @Override

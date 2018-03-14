@@ -133,6 +133,12 @@ public class GistFragment extends BaseFragment implements OnItemClickListener, D
         super.onCreate(savedInstanceState);
         gistId = getArguments().getString(EXTRA_GIST_ID);
         gist = store.getGist(gistId);
+
+        mainSection.add(filesSection);
+        mainSection.add(commentsSection);
+        adapter.add(mainSection);
+
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -156,12 +162,6 @@ public class GistFragment extends BaseFragment implements OnItemClickListener, D
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainSection.add(filesSection);
-        mainSection.add(commentsSection);
-        adapter.add(mainSection);
-
-        adapter.setOnItemClickListener(this);
-
         if (gist != null) {
             updateHeader(gist);
             updateFiles(gist);

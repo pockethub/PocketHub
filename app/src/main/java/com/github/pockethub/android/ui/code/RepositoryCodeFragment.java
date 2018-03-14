@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -106,18 +107,16 @@ public class RepositoryCodeFragment extends BaseFragment implements OnItemClickL
     private RefDialog dialog;
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Activity activity = (Activity) context;
-        repository = activity.getIntent().getParcelableExtra(EXTRA_REPOSITORY);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter.add(mainSection);
+        adapter.setOnItemClickListener(this);
+        repository = getActivity().getIntent().getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        adapter.add(mainSection);
-        adapter.setOnItemClickListener(this);
 
         if (tree == null || folder == null) {
             refreshTree(null);

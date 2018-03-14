@@ -133,11 +133,6 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
         Bundle args = getArguments();
         base = args.getString(EXTRA_BASE);
         repository = args.getParcelable(EXTRA_REPOSITORY);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         mainSection.add(commitSection);
         mainSection.add(filesSection);
@@ -145,7 +140,11 @@ public class CommitDiffListFragment extends BaseFragment implements OnItemClickL
 
         adapter.add(mainSection);
         adapter.setOnItemClickListener(this);
+    }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         commit = store.getCommit(repository, base);
 
         if (files == null

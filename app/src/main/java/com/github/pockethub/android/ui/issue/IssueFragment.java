@@ -186,6 +186,8 @@ public class IssueFragment extends BaseFragment
         labelsTask = labelsTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
         assigneeTask = assigneeTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
         stateTask = stateTaskFactory.create(dialogActivity, repositoryId, issueNumber, createObserver());
+
+        adapter.add(mainSection);
     }
 
     private Consumer<Issue> createObserver() {
@@ -199,9 +201,6 @@ public class IssueFragment extends BaseFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         issue = store.getIssue(repositoryId, issueNumber);
-
-        adapter.add(mainSection);
-
         if (issue == null || (issue.comments() > 0 && items == null)) {
             mainSection.setFooter(new LoadingItem(R.string.loading_comments));
         }
