@@ -3,7 +3,6 @@ package com.github.pockethub.android.ui.item.gist;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +10,7 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.item.BaseDataItem;
 import com.github.pockethub.android.ui.item.BaseViewHolder;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.meisolsson.githubsdk.model.Gist;
 
 import java.util.Date;
@@ -74,12 +74,11 @@ public class GistHeaderItem extends BaseDataItem<Gist, GistHeaderItem.ViewHolder
 
     public class ViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_gist_creation) TextView created;
-        @BindView(R.id.tv_gist_description) TextView description;
+        @BindView(R.id.tv_gist_description) LinkTextView description;
         @BindView(R.id.tv_gist_updated) TextView updated;
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            description.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }

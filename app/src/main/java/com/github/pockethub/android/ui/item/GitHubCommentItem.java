@@ -1,7 +1,6 @@
 package com.github.pockethub.android.ui.item;
 
 import android.support.annotation.NonNull;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.comment.DeleteCommentListener;
 import com.github.pockethub.android.ui.comment.EditCommentListener;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.TimeUtils;
@@ -79,7 +79,7 @@ public class GitHubCommentItem extends BaseDataItem<GitHubComment, GitHubComment
 
     public class ViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.tv_comment_body) TextView body;
+        @BindView(R.id.tv_comment_body) LinkTextView body;
         @BindView(R.id.tv_comment_author) TextView author;
         @BindView(R.id.tv_comment_date) TextView date;
         @BindView(R.id.iv_avatar) ImageView avatar;
@@ -88,7 +88,6 @@ public class GitHubCommentItem extends BaseDataItem<GitHubComment, GitHubComment
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            body.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }
