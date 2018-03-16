@@ -40,8 +40,7 @@ open class NewsItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) :
         return text
     }
 
-    protected fun boldRepoName(text: StyledText,
-                               event: GitHubEvent?): StyledText {
+    protected fun boldRepoName(text: StyledText, event: GitHubEvent?): StyledText {
         val repo = event?.repo()
         val name = repo?.repoWithUserName()
         if (!TextUtils.isEmpty(name)) {
