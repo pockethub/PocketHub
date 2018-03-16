@@ -30,7 +30,7 @@
         android:paddingRight="10dp"
         android:singleLine="true" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.LinkTextView
         android:id="@+id/tv_gist_description"
         style="@style/ListTitleText"
         android:layout_width="match_parent"

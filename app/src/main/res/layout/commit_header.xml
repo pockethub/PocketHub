@@ -90,7 +90,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
+    <com.github.pockethub.android.ui.view.LinkTextView
         android:id="@+id/tv_commit_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

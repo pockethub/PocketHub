@@ -1,12 +1,11 @@
 package com.github.pockethub.android.ui.item.code;
 
 import android.support.annotation.NonNull;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.item.BaseViewHolder;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.xwray.groupie.Item;
 
 import butterknife.BindView;
@@ -37,11 +36,10 @@ public class PathHeaderItem extends Item<PathHeaderItem.ViewHolder> {
     }
 
     public class ViewHolder extends BaseViewHolder {
-        @BindView(R.id.tv_path) TextView path;
+        @BindView(R.id.tv_path) LinkTextView path;
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            path.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }

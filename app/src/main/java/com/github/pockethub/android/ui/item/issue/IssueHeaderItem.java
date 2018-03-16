@@ -3,7 +3,6 @@ package com.github.pockethub.android.ui.item.issue;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +14,7 @@ import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.issue.LabelDrawableSpan;
 import com.github.pockethub.android.ui.item.BaseDataItem;
 import com.github.pockethub.android.ui.item.BaseViewHolder;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.meisolsson.githubsdk.model.Issue;
@@ -173,12 +173,11 @@ public class IssueHeaderItem extends BaseDataItem<Issue, IssueHeaderItem.ViewHol
         @BindView(R.id.ll_milestone)LinearLayout milestoneArea;
         @BindView(R.id.tv_milestone) TextView milestoneText;
         @BindView(R.id.v_closed) View milestoneProgressArea;
-        @BindView(R.id.tv_issue_body) TextView bodyText;
+        @BindView(R.id.tv_issue_body) LinkTextView bodyText;
 
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            bodyText.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 

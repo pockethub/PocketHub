@@ -17,22 +17,20 @@ package com.github.pockethub.android.ui.comment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.MarkdownLoader;
 import com.github.pockethub.android.ui.base.BaseFragment;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.github.pockethub.android.util.HttpImageGetter;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -52,7 +50,7 @@ public class RenderedCommentFragment extends BaseFragment {
     protected ProgressBar progress;
 
     @BindView(R.id.tv_comment_body)
-    protected TextView bodyText;
+    protected LinkTextView bodyText;
 
     @Inject
     protected HttpImageGetter imageGetter;
@@ -95,12 +93,6 @@ public class RenderedCommentFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_comment_preview, null);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        bodyText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void loadMarkdown(String raw, Repository repo) {

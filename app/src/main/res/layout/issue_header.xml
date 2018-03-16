@@ -136,7 +136,7 @@
             android:textColor="@color/text" />
     </LinearLayout>
 
-    <TextView
+    <com.github.pockethub.android.ui.view.LinkTextView
         android:id="@+id/tv_issue_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

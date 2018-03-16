@@ -27,7 +27,7 @@
         android:layout_centerVertical="true"
         android:text="@string/icon_folders" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.LinkTextView
         android:id="@+id/tv_path"
         style="@style/HeaderTitleText"
         android:layout_centerVertical="true"

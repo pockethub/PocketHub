@@ -33,7 +33,7 @@
             style="@style/ListSpinner"
             android:layout_centerInParent="true" />
 
-        <TextView
+        <com.github.pockethub.android.ui.view.LinkTextView
             android:id="@+id/tv_comment_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

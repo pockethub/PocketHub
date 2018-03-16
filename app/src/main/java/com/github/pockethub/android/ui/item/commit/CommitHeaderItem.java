@@ -2,7 +2,6 @@ package com.github.pockethub.android.ui.item.commit;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +12,7 @@ import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.ui.StyledText;
 import com.github.pockethub.android.ui.item.BaseDataItem;
 import com.github.pockethub.android.ui.item.BaseViewHolder;
+import com.github.pockethub.android.ui.view.LinkTextView;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.model.Commit;
 
@@ -99,11 +99,10 @@ public class CommitHeaderItem extends BaseDataItem<Commit, CommitHeaderItem.View
         @BindView(R.id.iv_committer) ImageView committerAvatar;
         @BindView(R.id.tv_committer) TextView committerName;
         @BindView(R.id.tv_commit_date) TextView committerDate;
-        @BindView(R.id.tv_commit_message) TextView commitMessage;
+        @BindView(R.id.tv_commit_message) LinkTextView commitMessage;
 
         public ViewHolder(@NonNull View rootView) {
             super(rootView);
-            commitMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }
