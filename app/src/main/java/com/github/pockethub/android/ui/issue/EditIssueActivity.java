@@ -295,18 +295,14 @@ public class EditIssueActivity extends BaseActivity {
 
     @OnClick(R.id.fab_add_image)
     protected void onAddImageClicked() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            Activity activity = EditIssueActivity.this;
-            String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        Activity activity = EditIssueActivity.this;
+        String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-            if (ContextCompat.checkSelfPermission(activity, permission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
-                        permission, R.string.read_permission_title,
-                        R.string.read_permission_content);
-            } else {
-                startImagePicker();
-            }
+        if (ContextCompat.checkSelfPermission(activity, permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            PermissionsUtils.askForPermission(activity, READ_PERMISSION_REQUEST,
+                    permission, R.string.read_permission_title,
+                    R.string.read_permission_content);
         } else {
             startImagePicker();
         }

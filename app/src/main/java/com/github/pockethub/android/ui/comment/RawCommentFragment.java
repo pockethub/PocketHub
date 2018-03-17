@@ -73,27 +73,17 @@ public class RawCommentFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // @TargetApi(…) required to ensure build passes
-        // noinspection Convert2Lambda
-        addImageFab.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    Fragment fragment = RawCommentFragment.this;
-                    String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+        addImageFab.setOnClickListener(v -> {
+            Fragment fragment = RawCommentFragment.this;
+            String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
 
-                    if (ContextCompat.checkSelfPermission(getActivity(), permission)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        PermissionsUtils.askForPermission(fragment, READ_PERMISSION_REQUEST,
-                                permission, R.string.read_permission_title,
-                                R.string.read_permission_content);
-                    } else {
-                        startImagePicker();
-                    }
-                } else {
-                    startImagePicker();
-                }
+            if (ContextCompat.checkSelfPermission(getActivity(), permission)
+                    != PackageManager.PERMISSION_GRANTED) {
+                PermissionsUtils.askForPermission(fragment, READ_PERMISSION_REQUEST,
+                        permission, R.string.read_permission_title,
+                        R.string.read_permission_content);
+            } else {
+                startImagePicker();
             }
         });
 
