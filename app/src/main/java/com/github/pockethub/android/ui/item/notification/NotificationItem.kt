@@ -1,55 +1,35 @@
 package com.github.pockethub.android.ui.item.notification
 
 import android.view.View
-import android.widget.TextView
-import butterknife.BindView
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.item.BaseDataItem
-import com.github.pockethub.android.ui.item.BaseViewHolder
 import com.github.pockethub.android.ui.notification.NotificationListFragment
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.NotificationThread
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.notification_item.*
 
-class NotificationItem(dataItem: NotificationThread, private val notificationReadListener: NotificationListFragment) : BaseDataItem<NotificationThread, NotificationItem.ViewHolder>(null, dataItem, dataItem.id()!!.hashCode().toLong()) {
+class NotificationItem(val notificationThread: NotificationThread, private val notificationReadListener: NotificationListFragment) : Item(notificationThread.id()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.notification_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        val thread = data
-
-        val type = thread.subject()!!.type()
+        val type = notificationThread.subject()!!.type()
         when (type) {
-            "Issue" -> holder.icon.text = OcticonTextView.ICON_ISSUE_OPEN
-            "Release" -> holder.icon.text = OcticonTextView.ICON_TAG
-            else -> holder.icon.text = OcticonTextView.ICON_PULL_REQUEST
+            "Issue" -> holder.tv_notification_icon.text = OcticonTextView.ICON_ISSUE_OPEN
+            "Release" -> holder.tv_notification_icon.text = OcticonTextView.ICON_TAG
+            else -> holder.tv_notification_icon.text = OcticonTextView.ICON_PULL_REQUEST
         }
 
-        holder.title.text = thread.subject()!!.title()
-        holder.date.text = TimeUtils.getRelativeTime(thread.updatedAt())
+        holder.tv_notification_title.text = notificationThread.subject()!!.title()
+        holder.tv_notification_date.text = TimeUtils.getRelativeTime(notificationThread.updatedAt())
 
-        holder.readIcon.text = OcticonTextView.ICON_READ
-        holder.readIcon.visibility = if (thread.unread()!!) View.VISIBLE else View.GONE
+        holder.tv_notification_read_icon.text = OcticonTextView.ICON_READ
+        holder.tv_notification_read_icon.visibility = if (notificationThread.unread()!!) View.VISIBLE else View.GONE
 
-        if (!holder.readIcon.hasOnClickListeners()) {
-            holder.readIcon.setOnClickListener { _ -> notificationReadListener.readNotification(data) }
+        if (!holder.tv_notification_read_icon.hasOnClickListeners()) {
+            holder.tv_notification_read_icon.setOnClickListener { _ -> notificationReadListener.readNotification(notificationThread) }
         }
-    }
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.tv_notification_icon)
-        lateinit var icon: TextView
-
-        @BindView(R.id.tv_notification_title)
-        lateinit var title: TextView
-
-        @BindView(R.id.tv_notification_date)
-        lateinit var date: TextView
-
-        @BindView(R.id.tv_notification_read_icon)
-        lateinit var readIcon: TextView
     }
 }

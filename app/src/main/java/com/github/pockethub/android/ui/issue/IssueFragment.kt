@@ -249,8 +249,9 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
             return
         }
 
-        mainSection.setHeader(
-                IssueHeaderItem(avatars, bodyImageGetter, activity, this, issue))
+        if (issue != null) {
+            mainSection.setHeader(IssueHeaderItem(avatars, bodyImageGetter, requireContext(), this, issue))
+        }
 
         progress.visibility = GONE
         list.visibility = VISIBLE

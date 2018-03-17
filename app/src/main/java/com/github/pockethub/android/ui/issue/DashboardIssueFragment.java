@@ -94,7 +94,7 @@ public class DashboardIssueFragment extends PagedItemFragment<Issue> {
             Collection<Issue> issues = new ArrayList<>();
             for (Item item : items) {
                 if (item instanceof IssueDashboardItem) {
-                    issues.add(((IssueItem) item).getData());
+                    issues.add(((IssueItem) item).getIssue());
                 }
             }
             startActivityForResult(IssuesViewActivity.createIntent(issues, position), ISSUE_VIEW);

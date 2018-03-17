@@ -94,7 +94,7 @@ public class UserRepositoryListFragment extends PagedItemFragment<Repository> {
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof RepositoryItem) {
-            Repository repo = ((RepositoryItem) item).getData();
+            Repository repo = ((RepositoryItem) item).getRepo();
             startActivityForResult(RepositoryViewActivity.createIntent(repo), REPOSITORY_VIEW);
         }
     }

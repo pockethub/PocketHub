@@ -3,99 +3,65 @@ package com.github.pockethub.android.ui.item.issue
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
-import butterknife.BindViews
-import butterknife.ButterKnife
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.ui.StyledText
-import com.github.pockethub.android.ui.item.BaseDataItem
-import com.github.pockethub.android.ui.item.BaseViewHolder
 import com.github.pockethub.android.util.AvatarLoader
-import com.github.pockethub.android.util.ButterKnifeUtils
 import com.meisolsson.githubsdk.model.Issue
 import com.meisolsson.githubsdk.model.IssueState
-import com.meisolsson.githubsdk.model.Label
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.issue_details.*
+import kotlinx.android.synthetic.main.issue_number.*
+import kotlinx.android.synthetic.main.repo_issue_item.*
 
-open class IssueItem @JvmOverloads constructor(avatarLoader: AvatarLoader, dataItem: Issue, private val showLabels: Boolean = true) : BaseDataItem<Issue, IssueItem.ViewHolder>(avatarLoader, dataItem, dataItem.id()!!) {
+open class IssueItem @JvmOverloads constructor(private val avatarLoader: AvatarLoader, val issue: Issue, private val showLabels: Boolean = true) : Item(issue.id()!!) {
 
     override fun getLayout() = R.layout.repo_issue_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        val labels = data.labels()
+        val labels = issue.labels()
+        val labelViews = listOf(holder.v_label0, holder.v_label1, holder.v_label2, holder.v_label3, holder.v_label4, holder.v_label5, holder.v_label6, holder.v_label7)
         if (showLabels && labels != null && !labels.isEmpty()) {
-            ButterKnife.apply(holder.labels, LABEL_SETTER, labels)
+            labelViews.forEachIndexed { i, labelView ->
+                if (i >= 0 && i < labels.size) {
+                    val label = labels[i]
+                    if (!TextUtils.isEmpty(label.color())) {
+                        labelView.setBackgroundColor(Color.parseColor('#' + label.color()!!))
+                        labelView.visibility = View.VISIBLE
+                        return@forEachIndexed
+                    }
+                }
+
+                labelView.visibility = View.GONE
+            }
         } else {
-            ButterKnife.apply(holder.labels, ButterKnifeUtils.GONE)
+            labelViews.forEach { it.visibility = View.GONE }
         }
 
         val numberText = StyledText()
-        numberText.append(data.number().toString())
-        if (IssueState.Closed == data.state()) {
+        numberText.append(issue.number().toString())
+        if (IssueState.Closed == issue.state()) {
             numberText.strikethroughAll()
         }
 
-        holder.number.text = numberText
+        holder.tv_issue_number.text = numberText
 
-        avatarLoader.bind(holder.avatar, data.user())
+        avatarLoader.bind(holder.iv_avatar, issue.user())
 
-        if (IssueUtils.isPullRequest(data)) {
-            holder.pullRequest.visibility = View.VISIBLE
+        if (IssueUtils.isPullRequest(issue)) {
+            holder.tv_pull_request_icon.visibility = View.VISIBLE
         } else {
-            holder.pullRequest.visibility = View.GONE
+            holder.tv_pull_request_icon.visibility = View.GONE
         }
 
-        holder.title.text = data.title()
-        holder.comments.text = data.comments().toString()
+        holder.tv_issue_title.text = issue.title()
+        holder.tv_issue_comments.text = issue.comments().toString()
 
         val reporterText = StyledText()
-        reporterText.bold(data.user()!!.login())
+        reporterText.bold(issue.user()!!.login())
         reporterText.append(' ')
-        reporterText.append(data.createdAt())
-        holder.creation.text = reporterText
-    }
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.tv_issue_number)
-        lateinit var number: TextView
-
-        @BindView(R.id.tv_issue_title)
-        lateinit var title: TextView
-
-        @BindView(R.id.iv_avatar)
-        lateinit var avatar: ImageView
-
-        @BindView(R.id.tv_issue_creation)
-        lateinit var creation: TextView
-
-        @BindView(R.id.tv_issue_comments)
-        lateinit var comments: TextView
-
-        @BindView(R.id.tv_pull_request_icon)
-        lateinit var pullRequest: TextView
-
-        @BindViews(R.id.v_label0, R.id.v_label1, R.id.v_label2, R.id.v_label3, R.id.v_label4, R.id.v_label5, R.id.v_label6, R.id.v_label7)
-        lateinit var labels: List<View>
-    }
-
-    companion object {
-
-        private val LABEL_SETTER = ButterKnife.Setter<View, List<Label>> { view, labels, i ->
-            if (i >= 0 && i < labels.size) {
-                val label = labels[i]
-                if (!TextUtils.isEmpty(label.color())) {
-                    view.setBackgroundColor(Color.parseColor('#' + label.color()!!))
-                    view.visibility = View.VISIBLE
-                    return@Setter
-                }
-            }
-
-            view.visibility = View.GONE
-        }
+        reporterText.append(issue.createdAt())
+        holder.tv_issue_creation.text = reporterText
     }
 }

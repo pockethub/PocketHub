@@ -7,25 +7,27 @@ import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.IssuesPayload
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.news_item.*
 
-class IssuesEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsItem(avatarLoader, dataItem) {
+class IssuesEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
 
-    override fun bind(viewHolder: NewsItem.ViewHolder, position: Int) {
-        super.bind(viewHolder, position)
-        val payload = data.payload() as IssuesPayload?
+    override fun bind(holder: ViewHolder, position: Int) {
+        super.bind(holder, position)
+        val payload = gitHubEvent.payload() as IssuesPayload?
         val action = payload?.action()
 
         if (action != null) {
             when (action) {
-                IssuesPayload.Action.Opened -> viewHolder.icon.text = OcticonTextView.ICON_ISSUE_OPEN
-                IssuesPayload.Action.Reopened -> viewHolder.icon.text = OcticonTextView.ICON_ISSUE_REOPEN
-                IssuesPayload.Action.Closed -> viewHolder.icon.text = OcticonTextView.ICON_ISSUE_CLOSE
-                else -> viewHolder.icon.visibility = View.GONE
+                IssuesPayload.Action.Opened -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_OPEN
+                IssuesPayload.Action.Reopened -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_REOPEN
+                IssuesPayload.Action.Closed -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_CLOSE
+                else -> holder.tv_event_icon.visibility = View.GONE
             }
         }
 
         val main = StyledText()
-        boldActor(main, data)
+        boldActor(main, gitHubEvent)
 
         val issue = payload?.issue()
         main.append(' ')
@@ -34,17 +36,17 @@ class IssuesEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsI
         main.bold("issue " + issue?.number())
         main.append(" on ")
 
-        boldRepo(main, data)
+        boldRepo(main, gitHubEvent)
 
         val details = StyledText()
         appendText(details, issue?.title())
 
         if (TextUtils.isEmpty(details)) {
-            viewHolder.details.visibility = View.GONE
+            holder.tv_event_details.visibility = View.GONE
         } else {
-            viewHolder.details.text = details
+            holder.tv_event_details.text = details
         }
 
-        viewHolder.event.text = main
+        holder.tv_event.text = main
     }
 }

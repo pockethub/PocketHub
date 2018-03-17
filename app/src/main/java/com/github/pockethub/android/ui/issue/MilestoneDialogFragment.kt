@@ -74,7 +74,7 @@ class MilestoneDialogFragment : SingleChoiceDialogFragment() {
     override fun onItemClick(item: Item<*>, view: View) {
         super.onItemClick(item, view)
         if (item is MilestoneDialogItem) {
-            arguments!!.putParcelable(SingleChoiceDialogFragment.ARG_SELECTED, item.data)
+            arguments!!.putParcelable(SingleChoiceDialogFragment.ARG_SELECTED, item.milestone)
             onResult(RESULT_OK)
         }
     }

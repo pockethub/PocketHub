@@ -259,7 +259,7 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
         while (--position >= 0) {
             item = adapter.getItem(position);
             if (item instanceof CommitFileHeaderItem) {
-                openFile(((CommitFileHeaderItem) item).getData());
+                openFile(((CommitFileHeaderItem) item).getFile());
                 return;
             }
         }
@@ -268,9 +268,9 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof CommitItem) {
-            openCommit(((CommitItem) item).getData());
+            openCommit(((CommitItem) item).getCommit());
         } else if (item instanceof CommitFileHeaderItem) {
-            openFile(((CommitFileHeaderItem) item).getData());
+            openFile(((CommitFileHeaderItem) item).getFile());
         } else if (item instanceof CommitFileLineItem) {
             int position = adapter.getAdapterPosition(item);
             openLine(adapter, position);

@@ -102,7 +102,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
             return;
         }
 
-        GitHubEvent event = ((NewsItem) item).getData();
+        GitHubEvent event = ((NewsItem) item).getGitHubEvent();
 
         if (DownloadEvent.equals(event.type())) {
             openDownload(event);
@@ -154,7 +154,7 @@ public abstract class NewsFragment extends PagedItemFragment<GitHubEvent> {
         }
 
 
-        final GitHubEvent event = ((NewsItem) item).getData();
+        final GitHubEvent event = ((NewsItem) item).getGitHubEvent();
         final Repository repo = ConvertUtils.eventRepoToRepo(event.repo());
         final User user = event.actor();
 

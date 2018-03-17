@@ -105,7 +105,7 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof UserItem) {
-            User result = ((UserItem) item).getData();
+            User result = ((UserItem) item).getUser();
             ServiceGenerator.createService(getContext(), UserService.class)
                     .getUser(result.login())
                     .subscribeOn(Schedulers.io())

@@ -1,85 +1,54 @@
 package com.github.pockethub.android.ui.item.issue
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import butterknife.BindView
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueFilter
 import com.github.pockethub.android.ui.issue.LabelDrawableSpan
-import com.github.pockethub.android.ui.item.BaseDataItem
-import com.github.pockethub.android.ui.item.BaseViewHolder
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.issues_filter_details.*
+import kotlinx.android.synthetic.main.issues_filter_item.*
 
-class IssueFilterItem(avatarLoader: AvatarLoader, issueFilter: IssueFilter) : BaseDataItem<IssueFilter, IssueFilterItem.ViewHolder>(avatarLoader, issueFilter, issueFilter.hashCode().toLong()) {
+class IssueFilterItem(private val avatarLoader: AvatarLoader, val issueFilter: IssueFilter) : Item(issueFilter.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.issues_filter_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        avatarLoader.bind(holder.avatar, data.repository.owner())
+        avatarLoader.bind(holder.iv_avatar, issueFilter.repository.owner())
 
-        holder.repoName.text = InfoUtils.createRepoId(data.repository)
+        holder.tv_repo_name.text = InfoUtils.createRepoId(issueFilter.repository)
 
-        if (data.isOpen) {
-            holder.filterState.setText(R.string.open_issues)
+        if (issueFilter.isOpen) {
+            holder.tv_filter_state.setText(R.string.open_issues)
         } else {
-            holder.filterState.setText(R.string.closed_issues)
+            holder.tv_filter_state.setText(R.string.closed_issues)
         }
 
-        val labels = data.labels
+        val labels = issueFilter.labels
         if (labels != null && !labels.isEmpty()) {
-            LabelDrawableSpan.setText(holder.filterLabels, labels)
-            holder.filterLabels.visibility = View.VISIBLE
+            LabelDrawableSpan.setText(holder.tv_filter_labels, labels)
+            holder.tv_filter_labels.visibility = View.VISIBLE
         } else {
-            holder.filterLabels.visibility = View.GONE
+            holder.tv_filter_labels.visibility = View.GONE
         }
 
-        val milestone = data.milestone
+        val milestone = issueFilter.milestone
         if (milestone != null) {
-            holder.filterMilestone.text = milestone.title()
-            holder.filterMilestone.visibility = View.VISIBLE
+            holder.tv_filter_milestone.text = milestone.title()
+            holder.tv_filter_milestone.visibility = View.VISIBLE
         } else {
-            holder.filterMilestone.visibility = View.GONE
+            holder.tv_filter_milestone.visibility = View.GONE
         }
 
-        val assignee = data.assignee
+        val assignee = issueFilter.assignee
         if (assignee != null) {
-            avatarLoader.bind(holder.assigneeAvatar, assignee)
-            holder.filterAssignee.text = assignee.login()
-            holder.filterAssignee.visibility = View.VISIBLE
+            avatarLoader.bind(holder.iv_assignee_avatar, assignee)
+            holder.tv_filter_assignee.text = assignee.login()
+            holder.tv_filter_assignee.visibility = View.VISIBLE
         } else {
-            holder.assignee.visibility = View.GONE
+            holder.ll_assignee.visibility = View.GONE
         }
-    }
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.iv_avatar)
-        lateinit var avatar: ImageView
-
-        @BindView(R.id.tv_repo_name)
-        lateinit var repoName: TextView
-
-        @BindView(R.id.tv_filter_state)
-        lateinit var filterState: TextView
-
-        @BindView(R.id.tv_filter_labels)
-        lateinit var filterLabels: TextView
-
-        @BindView(R.id.tv_filter_milestone)
-        lateinit var filterMilestone: TextView
-
-        @BindView(R.id.ll_assignee)
-        lateinit var assignee: LinearLayout
-
-        @BindView(R.id.tv_filter_assignee)
-        lateinit var filterAssignee: TextView
-
-        @BindView(R.id.iv_assignee_avatar)
-        lateinit var assigneeAvatar: ImageView
     }
 }

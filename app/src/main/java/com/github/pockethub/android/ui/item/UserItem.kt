@@ -1,30 +1,18 @@
 package com.github.pockethub.android.ui.item
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
 import com.github.pockethub.android.R
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.User
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.user_item.*
 
-open class UserItem(avatarLoader: AvatarLoader, dataItem: User) : BaseDataItem<User, UserItem.ViewHolder>(avatarLoader, dataItem, dataItem.id()!!) {
+open class UserItem(private val avatarLoader: AvatarLoader, open val user: User) : Item(user.id()!!) {
 
     override fun getLayout() = R.layout.user_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        avatarLoader.bind(holder.avatar, data)
-        holder.login.text = data.login()
-    }
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.iv_avatar)
-        lateinit var avatar: ImageView
-
-        @BindView(R.id.tv_login)
-        lateinit var login: TextView
+        avatarLoader.bind(holder.iv_avatar, user)
+        holder.tv_login.text = user.login()
     }
 }

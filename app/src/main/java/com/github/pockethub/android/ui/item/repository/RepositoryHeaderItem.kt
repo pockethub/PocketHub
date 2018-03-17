@@ -1,29 +1,19 @@
 package com.github.pockethub.android.ui.item.repository
 
-import android.view.View
-import android.widget.TextView
-import butterknife.BindView
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.item.BaseViewHolder
-import com.xwray.groupie.Item
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.repo_header_item.*
 
-class RepositoryHeaderItem(private val id: String) : Item<RepositoryHeaderItem.ViewHolder>(id.hashCode().toLong()) {
+class RepositoryHeaderItem(private val id: String) : Item(id.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.repo_header_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        holder.header.text = id
+        holder.tv_header.text = id
     }
 
     override fun isClickable() = false
 
     override fun isLongClickable() = false
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.tv_header)
-        lateinit var header: TextView
-    }
 }

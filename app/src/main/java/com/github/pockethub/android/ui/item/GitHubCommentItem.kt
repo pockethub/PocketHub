@@ -1,68 +1,44 @@
 package com.github.pockethub.android.ui.item
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import butterknife.BindView
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.comment.DeleteCommentListener
 import com.github.pockethub.android.ui.comment.EditCommentListener
-import com.github.pockethub.android.ui.view.LinkTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.HttpImageGetter
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.GitHubComment
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.comment.*
 
-class GitHubCommentItem(avatarLoader: AvatarLoader, private val imageGetter: HttpImageGetter, private val editCommentListener: EditCommentListener?, private val deleteCommentListener: DeleteCommentListener?, private val username: String, private val canWrite: Boolean, dataItem: GitHubComment) : BaseDataItem<GitHubComment, GitHubCommentItem.ViewHolder>(avatarLoader, dataItem, dataItem.id()!!) {
+class GitHubCommentItem(private val avatarLoader: AvatarLoader, private val imageGetter: HttpImageGetter, private val editCommentListener: EditCommentListener?, private val deleteCommentListener: DeleteCommentListener?, private val username: String, private val canWrite: Boolean, val gitHubComment: GitHubComment) : Item(gitHubComment.id()!!) {
 
     override fun getLayout() = R.layout.comment_item
 
-    override fun createViewHolder(itemView: View) = ViewHolder(itemView)
-
     override fun bind(holder: ViewHolder, position: Int) {
-        imageGetter.bind(holder.body, data.body(), data.id())
-        avatarLoader.bind(holder.avatar, data.user())
+        imageGetter.bind(holder.tv_comment_body, gitHubComment.body(), gitHubComment.id())
+        avatarLoader.bind(holder.iv_avatar, gitHubComment.user())
 
-        holder.author.text = data.user()!!.login()
-        holder.date.text = TimeUtils.getRelativeTime(data.updatedAt())
+        holder.tv_comment_author.text = gitHubComment.user()!!.login()
+        holder.tv_comment_date.text = TimeUtils.getRelativeTime(gitHubComment.updatedAt())
 
-        val canEdit = (canWrite || data.user()!!.login() == username) && editCommentListener != null
+        val canEdit = (canWrite || gitHubComment.user()!!.login() == username) && editCommentListener != null
 
-        val canDelete = (canWrite || data.user()!!.login() == username) && deleteCommentListener != null
+        val canDelete = (canWrite || gitHubComment.user()!!.login() == username) && deleteCommentListener != null
 
         if (canDelete) {
-            holder.deleteIcon.visibility = View.VISIBLE
-            holder.deleteIcon.setOnClickListener { _ -> deleteCommentListener!!.onDeleteComment(data) }
+            holder.iv_delete.visibility = View.VISIBLE
+            holder.iv_delete.setOnClickListener { _ -> deleteCommentListener!!.onDeleteComment(gitHubComment) }
         } else {
-            holder.deleteIcon.visibility = View.INVISIBLE
+            holder.iv_delete.visibility = View.INVISIBLE
         }
 
         if (canEdit) {
-            holder.editIcon.visibility = View.VISIBLE
-            holder.editIcon.setOnClickListener { _ -> editCommentListener!!.onEditComment(data) }
+            holder.iv_edit.visibility = View.VISIBLE
+            holder.iv_edit.setOnClickListener { _ -> editCommentListener!!.onEditComment(gitHubComment) }
         } else {
-            holder.editIcon.visibility = View.INVISIBLE
+            holder.iv_edit.visibility = View.INVISIBLE
         }
-    }
-
-    inner class ViewHolder(rootView: View) : BaseViewHolder(rootView) {
-
-        @BindView(R.id.tv_comment_body)
-        lateinit var body: LinkTextView
-
-        @BindView(R.id.tv_comment_author)
-        lateinit var author: TextView
-
-        @BindView(R.id.tv_comment_date)
-        lateinit var date: TextView
-
-        @BindView(R.id.iv_avatar)
-        lateinit var avatar: ImageView
-
-        @BindView(R.id.iv_edit)
-        lateinit var editIcon: ImageView
-
-        @BindView(R.id.iv_delete)
-        lateinit var deleteIcon: ImageView
     }
 }

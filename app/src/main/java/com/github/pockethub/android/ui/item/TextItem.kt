@@ -3,11 +3,10 @@ package com.github.pockethub.android.ui.item
 import android.support.annotation.IdRes
 import android.support.annotation.LayoutRes
 import android.widget.TextView
+import com.xwray.groupie.kotlinandroidextensions.Item
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
-import com.xwray.groupie.Item
-import com.xwray.groupie.ViewHolder
-
-class TextItem(@param:LayoutRes private val layoutId: Int, @param:IdRes private val textViewId: Int, private val text: CharSequence) : Item<ViewHolder>(text.hashCode().toLong()) {
+class TextItem(@param:LayoutRes private val layoutId: Int, @param:IdRes private val textViewId: Int, private val text: CharSequence) : Item(text.hashCode().toLong()) {
 
     override fun getLayout() = layoutId
 
