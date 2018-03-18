@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
-import com.github.pockethub.android.android.text.append
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.commit.CommitUtils
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Commit

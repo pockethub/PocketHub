@@ -30,7 +30,7 @@ import butterknife.BindView
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.REF_UPDATE
-import com.github.pockethub.android.android.text.url
+import com.github.pockethub.android.util.android.text.url
 import com.github.pockethub.android.core.code.FullTree
 import com.github.pockethub.android.core.code.FullTree.Folder
 import com.github.pockethub.android.core.code.RefreshTreeTask

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.text.buildSpannedString
 import androidx.text.underline
 import com.github.pockethub.android.R
-import com.github.pockethub.android.android.text.monospace
+import com.github.pockethub.android.util.android.text.monospace
 import com.github.pockethub.android.core.commit.CommitUtils
 import com.meisolsson.githubsdk.model.Commit
 import com.xwray.groupie.kotlinandroidextensions.Item

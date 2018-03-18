@@ -7,7 +7,7 @@ import androidx.text.bold
 import androidx.text.buildSpannedString
 import androidx.text.strikeThrough
 import com.github.pockethub.android.R
-import com.github.pockethub.android.android.text.append
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Issue

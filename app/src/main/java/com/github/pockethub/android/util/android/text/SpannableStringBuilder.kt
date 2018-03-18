@@ -1,4 +1,4 @@
-package com.github.pockethub.android.android.text
+package com.github.pockethub.android.util.android.text
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned

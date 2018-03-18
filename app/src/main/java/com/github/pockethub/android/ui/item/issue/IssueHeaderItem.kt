@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import androidx.text.bold
 import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
-import com.github.pockethub.android.android.text.append
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.ui.issue.LabelDrawableSpan
 import com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT
