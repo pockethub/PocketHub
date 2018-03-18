@@ -34,6 +34,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import butterknife.BindView
 import butterknife.OnClick
 import butterknife.OnTextChanged
@@ -45,7 +47,6 @@ import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
 import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.*
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Issue
@@ -323,7 +324,11 @@ class EditIssueActivity : BaseActivity() {
         val assignee = issue!!.assignee()
         val login = assignee?.login()
         if (!TextUtils.isEmpty(login)) {
-            assigneeText.text = StyledText().bold(login)
+            assigneeText.text = buildSpannedString {
+                bold {
+                    append(login)
+                }
+            }
             assigneeAvatar.visibility = VISIBLE
             avatars.bind(assigneeAvatar, assignee)
         } else {
