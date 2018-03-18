@@ -15,9 +15,10 @@
  */
 package com.github.pockethub.android.core.commit
 
+import android.text.SpannedString
 import android.text.TextUtils
 import android.widget.ImageView
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Commit
 import com.meisolsson.githubsdk.model.GitHubFile
@@ -200,46 +201,45 @@ object CommitUtils {
     }
 
     /**
-     * Format stats into [StyledText]
+     * Format stats into [SpannedString]
      *
      * @param files
      * @return styled text
      */
     @JvmStatic
-    fun formatStats(files: Collection<GitHubFile>?): StyledText {
-        val fileDetails = StyledText()
-        var added = 0
-        var deleted = 0
-        var changed = 0
-        if (files != null) {
-            for (file in files) {
-                added += file.additions()!!
-                deleted += file.deletions()!!
-                changed++
+    fun formatStats(files: Collection<GitHubFile>?): SpannedString {
+        return buildSpannedString {
+            var added = 0
+            var deleted = 0
+            var changed = 0
+            if (files != null) {
+                for (file in files) {
+                    added += file.additions()!!
+                    deleted += file.deletions()!!
+                    changed++
+                }
+            }
+
+            if (changed != 1) {
+                append("${FORMAT.format(changed.toLong())} changed files")
+            } else {
+                append("1 changed file")
+            }
+            append(" with ")
+
+            if (added != 1) {
+                append("${FORMAT.format(added.toLong())} additions")
+            } else {
+                append("1 addition ")
+            }
+            append(" and ")
+
+            if (deleted != 1) {
+                append("${FORMAT.format(deleted.toLong())} deletions")
+            } else {
+                append("1 deletion")
             }
         }
-
-        if (changed != 1) {
-            fileDetails.append(FORMAT.format(changed.toLong())).append(" changed files")
-        } else {
-            fileDetails.append("1 changed file")
-        }
-        fileDetails.append(" with ")
-
-        if (added != 1) {
-            fileDetails.append(FORMAT.format(added.toLong())).append(" additions")
-        } else {
-            fileDetails.append("1 addition ")
-        }
-        fileDetails.append(" and ")
-
-        if (deleted != 1) {
-            fileDetails.append(FORMAT.format(deleted.toLong())).append(" deletions")
-        } else {
-            fileDetails.append("1 deletion")
-        }
-
-        return fileDetails
     }
 
     /**
