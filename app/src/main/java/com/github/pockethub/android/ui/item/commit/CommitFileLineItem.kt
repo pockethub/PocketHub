@@ -6,7 +6,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.commit_diff_line.*
 
-class CommitFileLineItem(private val diffStyler: DiffStyler, val line: CharSequence) : Item(line.hashCode().toLong()) {
+class CommitFileLineItem(
+        private val diffStyler: DiffStyler,
+        val line: CharSequence
+) : Item(line.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.commit_diff_line
 

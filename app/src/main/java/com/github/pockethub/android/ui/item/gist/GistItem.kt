@@ -9,7 +9,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.gist_item.*
 
-class GistItem(private val avatarLoader: AvatarLoader, val gist: Gist) : Item(gist.id()!!.hashCode().toLong()) {
+class GistItem(
+        private val avatarLoader: AvatarLoader,
+        val gist: Gist
+) : Item(gist.id()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.gist_item
 

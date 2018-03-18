@@ -13,7 +13,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-open class NewsItem(private val avatarLoader: AvatarLoader, open val gitHubEvent: GitHubEvent) : Item(gitHubEvent.id()!!.hashCode().toLong()) {
+open class NewsItem(
+        private val avatarLoader: AvatarLoader,
+        val gitHubEvent: GitHubEvent
+) : Item(gitHubEvent.id()!!.hashCode().toLong()) {
 
     override fun getLayout(): Int = R.layout.news_item
 
@@ -84,7 +87,8 @@ open class NewsItem(private val avatarLoader: AvatarLoader, open val gitHubEvent
                     MemberEvent -> MemberEventItem(avatars, item)
                     PublicEvent -> PublicEventItem(avatars, item)
                     PullRequestEvent -> PullRequestEventItem(avatars, item)
-                    PullRequestReviewCommentEvent -> PullRequestReviewCommentEventItem(avatars, item)
+                    PullRequestReviewCommentEvent ->
+                        PullRequestReviewCommentEventItem(avatars, item)
                     PushEvent -> PushEventItem(avatars, item)
                     TeamAddEvent -> TeamAddEventItem(avatars, item)
                     WatchEvent -> WatchEventItem(avatars, item)

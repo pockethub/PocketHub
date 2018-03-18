@@ -9,7 +9,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.issues_filter_details.*
 
-class IssueFilterHeaderItem(private val avatarLoader: AvatarLoader, val issueFilter: IssueFilter) : Item(issueFilter.hashCode().toLong()) {
+class IssueFilterHeaderItem(
+        private val avatarLoader: AvatarLoader,
+        val issueFilter: IssueFilter
+) : Item(issueFilter.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.issues_filter_header
 

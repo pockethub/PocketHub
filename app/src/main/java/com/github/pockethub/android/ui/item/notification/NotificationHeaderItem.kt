@@ -7,7 +7,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.notification_item_header.*
 
-class NotificationHeaderItem(val repository: Repository, private val notificationReadListener: NotificationListFragment) : Item(repository.id()!!) {
+class NotificationHeaderItem(
+        val repository: Repository,
+        private val notificationReadListener: NotificationListFragment
+) : Item(repository.id()!!) {
 
     override fun getLayout() = R.layout.notification_item_header
 
@@ -16,7 +19,9 @@ class NotificationHeaderItem(val repository: Repository, private val notificatio
 
         holder.tv_notifications_read_icon.text = "\uf03a"
         if (!holder.tv_notifications_read_icon.hasOnClickListeners()) {
-            holder.tv_notifications_read_icon.setOnClickListener { _ -> notificationReadListener.readNotifications(repository) }
+            holder.tv_notifications_read_icon.setOnClickListener { _ ->
+                notificationReadListener.readNotifications(repository)
+            }
         }
     }
 

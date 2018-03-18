@@ -9,7 +9,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.blob_item.*
 
-class BlobItem(private val context: Context, val file: FullTree.Entry, private val indented: Boolean) : Item(file.entry.sha()!!.hashCode().toLong()) {
+class BlobItem(
+        private val context: Context,
+        val file: FullTree.Entry,
+        private val indented: Boolean
+) : Item(file.entry.sha()!!.hashCode().toLong()) {
 
     companion object {
 

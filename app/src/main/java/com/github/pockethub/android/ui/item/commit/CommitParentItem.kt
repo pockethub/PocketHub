@@ -9,7 +9,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.commit_parent_item.*
 
-class CommitParentItem(private val context: Context, val commit: Commit) : Item(commit.sha()!!.hashCode().toLong()) {
+class CommitParentItem(
+        private val context: Context,
+        val commit: Commit
+) : Item(commit.sha()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.commit_parent_item
 

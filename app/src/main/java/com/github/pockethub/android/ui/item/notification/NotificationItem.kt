@@ -10,7 +10,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.notification_item.*
 
-class NotificationItem(val notificationThread: NotificationThread, private val notificationReadListener: NotificationListFragment) : Item(notificationThread.id()!!.hashCode().toLong()) {
+class NotificationItem(
+        val notificationThread: NotificationThread,
+        private val notificationReadListener: NotificationListFragment
+) : Item(notificationThread.id()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.notification_item
 
@@ -26,10 +29,16 @@ class NotificationItem(val notificationThread: NotificationThread, private val n
         holder.tv_notification_date.text = TimeUtils.getRelativeTime(notificationThread.updatedAt())
 
         holder.tv_notification_read_icon.text = OcticonTextView.ICON_READ
-        holder.tv_notification_read_icon.visibility = if (notificationThread.unread()!!) View.VISIBLE else View.GONE
+        holder.tv_notification_read_icon.visibility = if (notificationThread.unread()!!) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
 
         if (!holder.tv_notification_read_icon.hasOnClickListeners()) {
-            holder.tv_notification_read_icon.setOnClickListener { _ -> notificationReadListener.readNotification(notificationThread) }
+            holder.tv_notification_read_icon.setOnClickListener { _ ->
+                notificationReadListener.readNotification(notificationThread)
+            }
         }
     }
 }

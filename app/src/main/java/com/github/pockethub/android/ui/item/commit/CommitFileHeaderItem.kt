@@ -10,7 +10,10 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.commit_diff_file_header.*
 import java.text.NumberFormat
 
-class CommitFileHeaderItem(context: Context, val file: GitHubFile) : Item(file.sha()!!.hashCode().toLong()) {
+class CommitFileHeaderItem(
+        context: Context,
+        val file: GitHubFile
+) : Item(file.sha()!!.hashCode().toLong()) {
 
     private val addTextColor = context.resources.getColor(R.color.diff_add_text)
     private val removeTextColor = context.resources.getColor(R.color.diff_remove_text)

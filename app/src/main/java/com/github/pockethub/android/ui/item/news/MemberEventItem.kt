@@ -9,7 +9,10 @@ import com.meisolsson.githubsdk.model.payload.MemberPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class MemberEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class MemberEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)

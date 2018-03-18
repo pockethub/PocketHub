@@ -11,7 +11,10 @@ import com.meisolsson.githubsdk.model.payload.CommitCommentPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class CommitCommentEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class CommitCommentEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)

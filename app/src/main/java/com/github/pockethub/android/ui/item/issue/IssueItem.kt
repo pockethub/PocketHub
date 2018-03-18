@@ -15,13 +15,26 @@ import kotlinx.android.synthetic.main.issue_details.*
 import kotlinx.android.synthetic.main.issue_number.*
 import kotlinx.android.synthetic.main.repo_issue_item.*
 
-open class IssueItem @JvmOverloads constructor(private val avatarLoader: AvatarLoader, val issue: Issue, private val showLabels: Boolean = true) : Item(issue.id()!!) {
+open class IssueItem @JvmOverloads constructor(
+        private val avatarLoader: AvatarLoader,
+        val issue: Issue,
+        private val showLabels: Boolean = true
+) : Item(issue.id()!!) {
 
     override fun getLayout() = R.layout.repo_issue_item
 
     override fun bind(holder: ViewHolder, position: Int) {
         val labels = issue.labels()
-        val labelViews = listOf(holder.v_label0, holder.v_label1, holder.v_label2, holder.v_label3, holder.v_label4, holder.v_label5, holder.v_label6, holder.v_label7)
+        val labelViews = listOf(
+                holder.v_label0,
+                holder.v_label1,
+                holder.v_label2,
+                holder.v_label3,
+                holder.v_label4,
+                holder.v_label5,
+                holder.v_label6,
+                holder.v_label7
+        )
         if (showLabels && labels != null && !labels.isEmpty()) {
             labelViews.forEachIndexed { i, labelView ->
                 if (i >= 0 && i < labels.size) {

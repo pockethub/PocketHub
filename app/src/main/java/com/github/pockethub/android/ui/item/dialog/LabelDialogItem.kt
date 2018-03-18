@@ -7,7 +7,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.label_item.*
 
-class LabelDialogItem(val label: Label, selected: Boolean) : Item(label.name()!!.hashCode().toLong()) {
+class LabelDialogItem(
+        val label: Label,
+        selected: Boolean
+) : Item(label.name()!!.hashCode().toLong()) {
 
     var isSelected: Boolean = selected
         private set

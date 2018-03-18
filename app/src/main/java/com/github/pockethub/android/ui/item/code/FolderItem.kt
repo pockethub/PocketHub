@@ -9,7 +9,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.folder_item.*
 
-class FolderItem(context: Context, val folder: FullTree.Folder, private val indented: Boolean) : Item(folder.entry.sha()!!.hashCode().toLong()) {
+class FolderItem(
+        context: Context,
+        val folder: FullTree.Folder,
+        private val indented: Boolean
+) : Item(folder.entry.sha()!!.hashCode().toLong()) {
 
     companion object {
 

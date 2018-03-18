@@ -11,7 +11,10 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 import java.text.NumberFormat
 
-class PushEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class PushEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)

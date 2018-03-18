@@ -7,7 +7,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.collaborator_item.*
 
-class AssigneeDialogItem(private val avatarLoader: AvatarLoader, val user: User, private val selected: Int) : Item(user.id()!!) {
+class AssigneeDialogItem(
+        private val avatarLoader: AvatarLoader,
+        val user: User,
+        private val selected: Int
+) : Item(user.id()!!) {
 
     override fun getLayout() = R.layout.collaborator_item
 

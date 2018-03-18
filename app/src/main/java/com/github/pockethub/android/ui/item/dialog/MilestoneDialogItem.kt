@@ -8,7 +8,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.milestone_item.*
 
-class MilestoneDialogItem(val milestone: Milestone, private val selected: Int) : Item(milestone.id()!!) {
+class MilestoneDialogItem(
+        val milestone: Milestone,
+        private val selected: Int
+) : Item(milestone.id()!!) {
 
     override fun getLayout() = R.layout.milestone_item
 

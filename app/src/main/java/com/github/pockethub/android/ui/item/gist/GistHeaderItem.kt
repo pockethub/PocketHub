@@ -11,7 +11,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.gist_header.*
 
-class GistHeaderItem(private val context: Context, val gist: Gist) : Item(gist.id()!!.hashCode().toLong()) {
+class GistHeaderItem(
+        private val context: Context,
+        val gist: Gist
+) : Item(gist.id()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.gist_header
 

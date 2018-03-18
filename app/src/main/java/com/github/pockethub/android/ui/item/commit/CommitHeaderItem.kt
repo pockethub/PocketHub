@@ -11,7 +11,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.commit_header.*
 
-class CommitHeaderItem(private val avatarLoader: AvatarLoader, private val context: Context, val commit: Commit) : Item(commit.sha()!!.hashCode().toLong()) {
+class CommitHeaderItem(
+        private val avatarLoader: AvatarLoader,
+        private val context: Context,
+        val commit: Commit
+) : Item(commit.sha()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.commit_header
 

@@ -6,7 +6,7 @@ import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.User
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 
-class ContributorItem(avatarLoader: AvatarLoader, override val user: User) : UserItem(avatarLoader, user) {
+class ContributorItem(avatarLoader: AvatarLoader, user: User) : UserItem(avatarLoader, user) {
 
     override fun getLayout() = R.layout.contributor_item
 

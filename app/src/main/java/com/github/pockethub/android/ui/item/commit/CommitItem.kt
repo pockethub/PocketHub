@@ -9,7 +9,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.commit_item.*
 
-class CommitItem(private val avatarLoader: AvatarLoader, val commit: Commit) : Item(commit.sha()!!.hashCode().toLong()) {
+class CommitItem(
+        private val avatarLoader: AvatarLoader,
+        val commit: Commit
+) : Item(commit.sha()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.commit_item
 

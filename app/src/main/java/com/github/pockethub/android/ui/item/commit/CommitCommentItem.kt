@@ -9,9 +9,18 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.comment.*
 
-class CommitCommentItem @JvmOverloads constructor(private val avatarLoader: AvatarLoader, private val imageGetter: HttpImageGetter, val comment: GitComment, private val isLineComment: Boolean = false) : Item(comment.id()!!) {
+class CommitCommentItem @JvmOverloads constructor(
+        private val avatarLoader: AvatarLoader,
+        private val imageGetter: HttpImageGetter,
+        val comment: GitComment,
+        private val isLineComment: Boolean = false
+) : Item(comment.id()!!) {
 
-    override fun getLayout() = if (isLineComment) R.layout.diff_comment_item else R.layout.commit_comment_item
+    override fun getLayout() = if (isLineComment) {
+        R.layout.diff_comment_item
+    } else {
+        R.layout.commit_comment_item
+    }
 
     override fun bind(holder: ViewHolder, position: Int) {
         avatarLoader.bind(holder.iv_avatar, comment.user())

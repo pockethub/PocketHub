@@ -7,7 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.user_item.*
 
-open class UserItem(private val avatarLoader: AvatarLoader, open val user: User) : Item(user.id()!!) {
+open class UserItem(private val avatarLoader: AvatarLoader, val user: User) : Item(user.id()!!) {
 
     override fun getLayout() = R.layout.user_item
 

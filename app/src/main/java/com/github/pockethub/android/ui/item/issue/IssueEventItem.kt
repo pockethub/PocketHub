@@ -14,12 +14,21 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.comment_event.*
 import kotlinx.android.synthetic.main.comment_event.view.*
 
-class IssueEventItem(private val avatarLoader: AvatarLoader, private val context: Context, private val issue: Issue, val issueEvent: IssueEvent) : Item(issueEvent.id()!!.toLong()) {
+class IssueEventItem(
+        private val avatarLoader: AvatarLoader,
+        private val context: Context,
+        private val issue: Issue,
+        val issueEvent: IssueEvent
+) : Item(issueEvent.id()!!.toLong()) {
 
     override fun getLayout(): Int = R.layout.comment_event_item
 
     override fun bind(holder: ViewHolder, position: Int) {
-        var message = String.format("<b>%s</b> %s", issueEvent.actor()!!.login(), issueEvent.event())
+        var message = String.format(
+                "<b>%s</b> %s",
+                issueEvent.actor()!!.login(),
+                issueEvent.event()
+        )
         avatarLoader.bind(holder.itemView.iv_avatar, issueEvent.actor())
 
         val eventType = issueEvent.event()
@@ -47,14 +56,21 @@ class IssueEventItem(private val avatarLoader: AvatarLoader, private val context
             }
             Reopened -> {
                 holder.tv_event.text = OcticonTextView.ICON_ISSUE_REOPEN
-                holder.tv_event.setTextColor(context.resources.getColor(R.color.issue_event_reopened))
+                holder.tv_event.setTextColor(
+                        context.resources.getColor(R.color.issue_event_reopened)
+                )
             }
             Renamed -> {
                 holder.tv_event.text = OcticonTextView.ICON_EDIT
                 holder.tv_event.setTextColor(context.resources.getColor(R.color.text_description))
             }
             Merged -> {
-                message += String.format(" commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>", issueEvent.commitId()!!.substring(0, 6), issue.pullRequest()!!.base()!!.ref(), issue.pullRequest()!!.head()!!.ref())
+                message += String.format(
+                        " commit <b>%s</b> into <tt>%s</tt> from <tt>%s</tt>",
+                        issueEvent.commitId()!!.substring(0, 6),
+                        issue.pullRequest()!!.base()!!.ref(),
+                        issue.pullRequest()!!.head()!!.ref()
+                )
                 holder.tv_event.text = OcticonTextView.ICON_MERGE
                 holder.tv_event.setTextColor(context.resources.getColor(R.color.issue_event_merged))
             }

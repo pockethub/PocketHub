@@ -10,7 +10,10 @@ import com.meisolsson.githubsdk.model.payload.PullRequestPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class PullRequestEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class PullRequestEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
@@ -36,7 +39,9 @@ class PullRequestEventItem(avatarLoader: AvatarLoader, override val gitHubEvent:
         holder.tv_event.text = main
 
         val details = StyledText()
-        if (PullRequestPayload.Action.Opened == action || PullRequestPayload.Action.Closed == action) {
+        if (PullRequestPayload.Action.Opened == action ||
+                PullRequestPayload.Action.Closed == action
+        ) {
             val request = payload.pullRequest()
             if (request != null) {
                 val title: String? = request.title()

@@ -9,7 +9,10 @@ import com.meisolsson.githubsdk.model.payload.TeamAddPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class TeamAddEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class TeamAddEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)

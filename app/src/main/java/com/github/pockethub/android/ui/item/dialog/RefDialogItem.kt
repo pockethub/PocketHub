@@ -7,7 +7,10 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.ref_item.*
 
-class RefDialogItem(val gitReference: GitReference, private val selected: Int) : Item(gitReference.ref()!!.hashCode().toLong()) {
+class RefDialogItem(
+        val gitReference: GitReference,
+        private val selected: Int
+) : Item(gitReference.ref()!!.hashCode().toLong()) {
 
     override fun getLayout() = R.layout.ref_item
 

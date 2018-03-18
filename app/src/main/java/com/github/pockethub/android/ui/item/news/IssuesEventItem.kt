@@ -10,7 +10,10 @@ import com.meisolsson.githubsdk.model.payload.IssuesPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class IssuesEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class IssuesEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
@@ -19,9 +22,12 @@ class IssuesEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitH
 
         if (action != null) {
             when (action) {
-                IssuesPayload.Action.Opened -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_OPEN
-                IssuesPayload.Action.Reopened -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_REOPEN
-                IssuesPayload.Action.Closed -> holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_CLOSE
+                IssuesPayload.Action.Opened ->
+                    holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_OPEN
+                IssuesPayload.Action.Reopened ->
+                    holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_REOPEN
+                IssuesPayload.Action.Closed ->
+                    holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_CLOSE
                 else -> holder.tv_event_icon.visibility = View.GONE
             }
         }

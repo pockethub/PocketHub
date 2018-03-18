@@ -19,7 +19,13 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.issue_header.*
 import kotlinx.android.synthetic.main.milestone.*
 
-class IssueHeaderItem(private val avatarLoader: AvatarLoader, private val imageGetter: HttpImageGetter, private val context: Context, private val actionListener: OnIssueHeaderActionListener, val issue: Issue) : Item(issue.id()!!) {
+class IssueHeaderItem(
+        private val avatarLoader: AvatarLoader,
+        private val imageGetter: HttpImageGetter,
+        private val context: Context,
+        private val actionListener: OnIssueHeaderActionListener,
+        val issue: Issue
+) : Item(issue.id()!!) {
 
     override fun getLayout() = R.layout.issue_header
 
@@ -42,12 +48,18 @@ class IssueHeaderItem(private val avatarLoader: AvatarLoader, private val imageG
 
         avatarLoader.bind(holder.iv_avatar, issue.user())
 
-        if (IssueUtils.isPullRequest(issue) && issue.pullRequest()!!.commits() != null && issue.pullRequest()!!.commits()!! > 0) {
+        if (IssueUtils.isPullRequest(issue) &&
+                issue.pullRequest()!!.commits() != null &&
+                issue.pullRequest()!!.commits()!! > 0
+        ) {
             holder.ll_issue_commits.visibility = VISIBLE
 
             holder.tv_commit_icon.text = ICON_COMMIT
 
-            val commits = context.getString(R.string.pull_request_commits, issue.pullRequest()!!.commits())
+            val commits = context.getString(
+                    R.string.pull_request_commits,
+                    issue.pullRequest()!!.commits()
+            )
             holder.tv_pull_request_commits.text = commits
         } else {
             holder.ll_issue_commits.visibility = GONE

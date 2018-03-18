@@ -12,7 +12,10 @@ import com.meisolsson.githubsdk.model.payload.IssueCommentPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.news_item.*
 
-class IssueCommentEventItem(avatarLoader: AvatarLoader, override val gitHubEvent: GitHubEvent) : NewsItem(avatarLoader, gitHubEvent) {
+class IssueCommentEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
@@ -25,8 +28,11 @@ class IssueCommentEventItem(avatarLoader: AvatarLoader, override val gitHubEvent
 
         val payload = gitHubEvent.payload() as IssueCommentPayload?
         val issue = payload?.issue()
-        val numberAsText: String = if (IssueUtils.isPullRequest(issue)) "pull request " + issue?.number()
-        else "issue " + issue?.number()
+        val numberAsText: String = if (IssueUtils.isPullRequest(issue)) {
+            "pull request " + issue?.number()
+        } else {
+            "issue " + issue?.number()
+        }
         main.bold(numberAsText)
 
         main.append(" on ")
