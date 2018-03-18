@@ -4,8 +4,8 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
 import com.meisolsson.githubsdk.model.Gist
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -21,10 +21,9 @@ class GistHeaderItem(
     override fun bind(holder: ViewHolder, position: Int) {
         val createdAt = gist.createdAt()
         if (createdAt != null) {
-            val text = StyledText()
-            text.append(context.getString(R.string.prefix_created))
-            text.append(createdAt)
-            holder.tv_gist_creation.text = text
+            holder.tv_gist_creation.text = buildSpannedString {
+                append("${context.getString(R.string.prefix_created)}$createdAt")
+            }
             holder.tv_gist_creation.visibility = VISIBLE
         } else {
             holder.tv_gist_creation.visibility = GONE
@@ -32,10 +31,9 @@ class GistHeaderItem(
 
         val updatedAt = gist.updatedAt()
         if (updatedAt != null && updatedAt != createdAt) {
-            val text = StyledText()
-            text.append(context.getString(R.string.prefix_updated))
-            text.append(updatedAt)
-            holder.tv_gist_updated.text = text
+            holder.tv_gist_updated.text = buildSpannedString {
+                append("$context.getString(R.string.prefix_updated)}$updatedAt")
+            }
             holder.tv_gist_updated.visibility = VISIBLE
         } else {
             holder.tv_gist_updated.visibility = GONE

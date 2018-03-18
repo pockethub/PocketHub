@@ -1,8 +1,9 @@
 package com.github.pockethub.android.ui.item.commit
 
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Commit
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -19,11 +20,12 @@ class CommitItem(
     override fun bind(holder: ViewHolder, position: Int) {
         holder.tv_commit_id.text = CommitUtils.abbreviate(commit.sha())
 
-        val authorText = StyledText()
-        authorText.bold(CommitUtils.getAuthor(commit))
-        authorText.append(' ')
-        authorText.append(CommitUtils.getAuthorDate(commit))
-        holder.tv_commit_author.text = authorText
+        holder.tv_commit_author.text = buildSpannedString {
+            bold {
+                append(CommitUtils.getAuthor(commit))
+            }
+            append(" ${CommitUtils.getAuthorDate(commit)}")
+        }
 
         CommitUtils.bindAuthor(commit, avatarLoader, holder.iv_avatar)
         holder.tv_commit_message.text = commit.commit()!!.message()

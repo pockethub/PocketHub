@@ -1,8 +1,10 @@
 package com.github.pockethub.android.ui.item.gist
 
 import android.text.TextUtils
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Gist
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -29,16 +31,20 @@ class GistItem(
         val user = gist.owner()
         avatarLoader.bind(holder.iv_avatar, user)
 
-        val authorText = StyledText()
-        if (user != null) {
-            authorText.bold(user.login())
-        } else {
-            val res = holder.root.resources
-            authorText.bold(res.getString(R.string.anonymous))
+        holder.tv_gist_author.text = buildSpannedString {
+            if (user != null) {
+                bold {
+                    append(user.login())
+                }
+            } else {
+                val res = holder.root.resources
+                bold {
+                    append(res.getString(R.string.anonymous))
+                }
+            }
+            append(' ')
+            append(gist.createdAt()!!)
         }
-        authorText.append(' ')
-        authorText.append(gist.createdAt())
-        holder.tv_gist_author.text = authorText
 
         holder.tv_gist_comments.text = gist.comments().toString()
         holder.tv_gist_files.text = gist.files()!!.size.toString()

@@ -2,9 +2,10 @@ package com.github.pockethub.android.ui.item.commit
 
 import android.content.Context
 import android.view.View
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.commit.CommitUtils
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Commit
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -28,15 +29,15 @@ class CommitHeaderItem(
         if (commitAuthor != null) {
             CommitUtils.bindAuthor(commit, avatarLoader, holder.iv_author)
             holder.tv_author.text = commitAuthor
-            val styledAuthor = StyledText()
-            styledAuthor.append(context.getString(R.string.authored))
+            holder.tv_author_date.text = buildSpannedString {
+                append(context.getString(R.string.authored))
 
-            val commitAuthorDate = CommitUtils.getAuthorDate(commit)
-            if (commitAuthorDate != null) {
-                styledAuthor.append(' ').append(commitAuthorDate)
+                val commitAuthorDate = CommitUtils.getAuthorDate(commit)
+                if (commitAuthorDate != null) {
+                    append(' ')
+                    append(commitAuthorDate)
+                }
             }
-
-            holder.tv_author_date.text = styledAuthor
             holder.ll_author.visibility = View.VISIBLE
         } else {
             holder.ll_author.visibility = View.GONE
@@ -45,15 +46,15 @@ class CommitHeaderItem(
         if (isDifferentCommitter(commitAuthor, commitCommitter)) {
             CommitUtils.bindCommitter(commit, avatarLoader, holder.iv_committer)
             holder.tv_committer.text = commitCommitter
-            val styledCommitter = StyledText()
-            styledCommitter.append(context.getString(R.string.committed))
+            holder.tv_commit_date.text = buildSpannedString {
+                append(context.getString(R.string.committed))
 
-            val commitCommitterDate = CommitUtils.getCommitterDate(commit)
-            if (commitCommitterDate != null) {
-                styledCommitter.append(' ').append(commitCommitterDate)
+                val commitCommitterDate = CommitUtils.getCommitterDate(commit)
+                if (commitCommitterDate != null) {
+                    append(' ')
+                    append(commitCommitterDate)
+                }
             }
-
-            holder.tv_commit_date.text = styledCommitter
             holder.ll_committer.visibility = View.VISIBLE
         } else {
             holder.ll_committer.visibility = View.GONE

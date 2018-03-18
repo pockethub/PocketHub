@@ -3,9 +3,12 @@ package com.github.pockethub.android.ui.item.issue
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
+import androidx.text.bold
+import androidx.text.buildSpannedString
+import androidx.text.strikeThrough
 import com.github.pockethub.android.R
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.issue.IssueUtils
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Issue
 import com.meisolsson.githubsdk.model.IssueState
@@ -52,13 +55,15 @@ open class IssueItem @JvmOverloads constructor(
             labelViews.forEach { it.visibility = View.GONE }
         }
 
-        val numberText = StyledText()
-        numberText.append(issue.number().toString())
-        if (IssueState.Closed == issue.state()) {
-            numberText.strikethroughAll()
+        holder.tv_issue_number.text = buildSpannedString {
+            if (IssueState.Closed == issue.state()) {
+                strikeThrough {
+                    append(issue.number().toString())
+                }
+            } else {
+                append(issue.number().toString())
+            }
         }
-
-        holder.tv_issue_number.text = numberText
 
         avatarLoader.bind(holder.iv_avatar, issue.user())
 
@@ -71,10 +76,12 @@ open class IssueItem @JvmOverloads constructor(
         holder.tv_issue_title.text = issue.title()
         holder.tv_issue_comments.text = issue.comments().toString()
 
-        val reporterText = StyledText()
-        reporterText.bold(issue.user()!!.login())
-        reporterText.append(' ')
-        reporterText.append(issue.createdAt())
-        holder.tv_issue_creation.text = reporterText
+        holder.tv_issue_creation.text = buildSpannedString {
+            bold {
+                append(issue.user()!!.login())
+            }
+            append(' ')
+            append(issue.createdAt()!!)
+        }
     }
 }

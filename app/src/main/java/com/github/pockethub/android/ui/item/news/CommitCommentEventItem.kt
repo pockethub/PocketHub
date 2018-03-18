@@ -1,8 +1,10 @@
 package com.github.pockethub.android.ui.item.news
 
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.buildSpannedString
+import com.github.pockethub.android.util.android.text.monospace
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -20,16 +22,17 @@ class CommitCommentEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_COMMENT
 
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-        main.append(" commented on ")
-        boldRepo(main, gitHubEvent)
-        holder.tv_event.text = main
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" commented on ")
+            boldRepo(this, gitHubEvent)
+        }
 
-        val details = StyledText()
-        val payload = gitHubEvent.payload() as CommitCommentPayload?
+        val details = buildSpannedString {
+            val payload = gitHubEvent.payload() as CommitCommentPayload?
+            appendCommitComment(this, payload?.comment())
+        }
 
-        appendCommitComment(details, payload?.comment())
         if (TextUtils.isEmpty(details)) {
             holder.tv_event_details.visibility = View.GONE
         } else {
@@ -37,7 +40,7 @@ class CommitCommentEventItem(
         }
     }
 
-    private fun appendCommitComment(details: StyledText, comment: GitComment?) {
+    private fun appendCommitComment(details: SpannableStringBuilder, comment: GitComment?) {
         if (comment == null) {
             return
         }
@@ -49,8 +52,10 @@ class CommitCommentEventItem(
             }
             appendText(details, "Comment in")
             details.append(' ')
-            details.monospace(id)
-            details.append(':').append('\n')
+            details.monospace {
+                append(id)
+            }
+            details.append(":\n")
         }
         appendText(details, comment.body())
     }

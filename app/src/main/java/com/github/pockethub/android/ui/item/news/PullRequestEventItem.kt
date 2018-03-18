@@ -2,7 +2,8 @@ package com.github.pockethub.android.ui.item.news
 
 import android.text.TextUtils
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -20,33 +21,31 @@ class PullRequestEventItem(
         holder.tv_event_icon.text = OcticonTextView.ICON_PULL_REQUEST
 
         val payload = gitHubEvent.payload() as PullRequestPayload
-
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-
         val action = payload.action()
-        if (PullRequestPayload.Action.Synchronized == action) {
-            main.append("updated")
+
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            if (PullRequestPayload.Action.Synchronized == action) {
+                append("updated")
+            }
+            append(" ${action?.name?.toLowerCase()} ")
+            bold {
+                append("pull request " + payload.number())
+            }
+            append(" on ")
+            boldRepo(this, gitHubEvent)
         }
-        main.append(' ')
-        main.append(action?.name?.toLowerCase())
-        main.append(' ')
-        main.bold("pull request " + payload.number())
-        main.append(" on ")
 
-        boldRepo(main, gitHubEvent)
-
-        holder.tv_event.text = main
-
-        val details = StyledText()
-        if (PullRequestPayload.Action.Opened == action ||
-                PullRequestPayload.Action.Closed == action
-        ) {
-            val request = payload.pullRequest()
-            if (request != null) {
-                val title: String? = request.title()
-                if (!TextUtils.isEmpty(title)) {
-                    details.append(title)
+        val details = buildSpannedString {
+            if (PullRequestPayload.Action.Opened == action
+                    || PullRequestPayload.Action.Closed == action
+            ) {
+                val request = payload.pullRequest()
+                if (request != null) {
+                    val title: String? = request.title()
+                    if (!TextUtils.isEmpty(title)) {
+                        append(title)
+                    }
                 }
             }
         }

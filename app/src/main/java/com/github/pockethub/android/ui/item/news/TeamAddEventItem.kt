@@ -1,7 +1,8 @@
 package com.github.pockethub.android.ui.item.news
 
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -17,29 +18,30 @@ class TeamAddEventItem(
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_ADD_MEMBER
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" added ")
 
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
+            val payload = gitHubEvent.payload() as TeamAddPayload?
+            val repo = payload?.repository()
+            val repoName = repo?.name()
+            if (repoName != null) {
+                bold {
+                    append(repoName)
+                }
+            }
 
-        main.append(" added ")
+            append(" to team")
 
-        val payload = gitHubEvent.payload() as TeamAddPayload?
-        val repo = payload?.repository()
-        val repoName = repo?.name()
-
-        if (repoName != null) {
-            main.bold(repoName)
+            val team = payload?.team()
+            val teamName = team?.name()
+            if (teamName != null) {
+                append(' ')
+                bold {
+                    append(teamName)
+                }
+            }
         }
-
-        main.append(" to team")
-
-        val team = payload?.team()
-        val teamName = team?.name()
-        if (teamName != null) {
-            main.append(' ').bold(teamName)
-        }
-
-        holder.tv_event.text = main
         holder.tv_event_details.visibility = View.GONE
     }
 }

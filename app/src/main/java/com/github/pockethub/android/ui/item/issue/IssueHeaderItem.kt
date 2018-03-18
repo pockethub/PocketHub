@@ -5,9 +5,11 @@ import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.R
+import com.github.pockethub.android.util.android.text.append
 import com.github.pockethub.android.core.issue.IssueUtils
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.ui.issue.LabelDrawableSpan
 import com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT
 import com.github.pockethub.android.util.AvatarLoader
@@ -41,10 +43,9 @@ class IssueHeaderItem(
 
         holder.tv_issue_author.text = issue.user()!!.login()
 
-        val created = StyledText()
-        created.append(context.getString(R.string.prefix_opened))
-        created.append(issue.createdAt())
-        holder.tv_issue_creation_date.text = created
+        holder.tv_issue_creation_date.text = buildSpannedString {
+            append("${context.getString(R.string.prefix_opened)}${issue.createdAt()}")
+        }
 
         avatarLoader.bind(holder.iv_avatar, issue.user())
 
@@ -67,13 +68,16 @@ class IssueHeaderItem(
 
         val open = IssueState.Open == issue.state()
         if (!open) {
-            val text = StyledText()
-            text.bold(context.getString(R.string.closed))
-            val closedAt = issue.closedAt()
-            if (closedAt != null) {
-                text.append(' ').append(closedAt)
+            holder.tv_state.text = buildSpannedString {
+                bold {
+                    append(context.getString(R.string.closed))
+                }
+                val closedAt = issue.closedAt()
+                if (closedAt != null) {
+                    append(' ')
+                    append(closedAt)
+                }
             }
-            holder.tv_state.text = text
             holder.tv_state.visibility = VISIBLE
         } else {
             holder.tv_state.visibility = GONE
@@ -81,10 +85,12 @@ class IssueHeaderItem(
 
         val assignee = issue.assignee()
         if (assignee != null) {
-            val name = StyledText()
-            name.bold(assignee.login())
-            name.append(' ').append(context.getString(R.string.assigned))
-            holder.tv_assignee_name.text = name
+            holder.tv_assignee_name.text = buildSpannedString {
+                bold {
+                    append(assignee.login())
+                }
+                append(" ${context.getString(R.string.assigned)}")
+            }
             holder.iv_assignee_avatar.visibility = VISIBLE
             avatarLoader.bind(holder.iv_assignee_avatar, assignee)
         } else {
@@ -102,12 +108,13 @@ class IssueHeaderItem(
 
         if (issue.milestone() != null) {
             val milestone = issue.milestone()
-            val milestoneLabel = StyledText()
-            milestoneLabel.append(context.getString(R.string.milestone_prefix))
-            milestoneLabel.append(' ')
-            milestoneLabel.bold(milestone!!.title())
-            holder.tv_milestone.text = milestoneLabel
-            val closed = milestone.closedIssues()!!.toFloat()
+            holder.tv_milestone.text = buildSpannedString {
+                append("${context.getString(R.string.milestone_prefix)} ")
+                bold {
+                    append(milestone!!.title())
+                }
+            }
+            val closed = milestone!!.closedIssues()!!.toFloat()
             val total = closed + milestone.openIssues()!!
             if (total > 0) {
                 (holder.v_closed.layoutParams as LinearLayout.LayoutParams).weight = closed / total

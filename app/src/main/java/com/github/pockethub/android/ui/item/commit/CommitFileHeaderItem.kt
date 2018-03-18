@@ -2,8 +2,9 @@ package com.github.pockethub.android.ui.item.commit
 
 import android.content.Context
 import android.view.View
+import androidx.text.buildSpannedString
+import androidx.text.color
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
 import com.meisolsson.githubsdk.model.GitHubFile
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -35,12 +36,14 @@ class CommitFileHeaderItem(
 
         val numberFormat = NumberFormat.getIntegerInstance()
 
-        val stats = StyledText()
-        stats.foreground('+', addTextColor)
-        stats.foreground(numberFormat.format(file.additions()), addTextColor)
-        stats.append(' ').append(' ').append(' ')
-        stats.foreground('-', removeTextColor)
-        stats.foreground(numberFormat.format(file.deletions()), removeTextColor)
-        holder.tv_stats.text = stats
+        holder.tv_stats.text = buildSpannedString {
+            color(addTextColor) {
+                append("+${numberFormat.format(file.additions())}")
+            }
+            append("   ")
+            color(removeTextColor) {
+                append("-${numberFormat.format(file.deletions())}")
+            }
+        }
     }
 }
