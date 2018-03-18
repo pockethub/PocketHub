@@ -94,7 +94,7 @@ public class RefDialogFragment extends SingleChoiceDialogFragment {
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         super.onItemClick(item, view);
         if (item instanceof RefDialogItem) {
-            getArguments().putParcelable(ARG_SELECTED, ((RefDialogItem) item).getData());
+            getArguments().putParcelable(ARG_SELECTED, ((RefDialogItem) item).getGitReference());
             onResult(RESULT_OK);
         }
     }

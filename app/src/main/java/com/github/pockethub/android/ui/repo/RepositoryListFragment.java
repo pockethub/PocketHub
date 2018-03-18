@@ -149,7 +149,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof RepositoryItem) {
-            Repository repo = ((RepositoryItem) item).getData();
+            Repository repo = ((RepositoryItem) item).getRepo();
             if (recentRepos != null) {
                 recentRepos.add(repo);
             }
@@ -166,7 +166,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         }
 
         if (item instanceof RepositoryItem) {
-            Repository repo = ((RepositoryItem) item).getData();
+            Repository repo = ((RepositoryItem) item).getRepo();
             if (repo == null) {
                 return false;
             }
@@ -230,7 +230,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         }
 
         // Add recent header if at least one recent repository
-        Repository first = ((RepositoryItem) repos.get(0)).getData();
+        Repository first = ((RepositoryItem) repos.get(0)).getRepo();
         if (recentRepos.contains(first)) {
             repos.add(0, new RepositoryHeaderItem(getString(R.string.recently_viewed)));
         }
@@ -240,7 +240,7 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         for (index = 0; index < repos.size(); index++) {
             Item item = repos.get(index);
             if (item instanceof RepositoryItem) {
-                Repository repository = ((RepositoryItem) item).getData();
+                Repository repository = ((RepositoryItem) item).getRepo();
                 if (!recentRepos.contains(repository.id())) {
                     break;
                 }
@@ -252,12 +252,12 @@ public class RepositoryListFragment extends ItemListFragment<Repository>
         }
 
         // Register header for first character
-        Repository current = ((RepositoryItem) repos.get(index)).getData();
+        Repository current = ((RepositoryItem) repos.get(index)).getRepo();
         char start = Character.toLowerCase(current.name().charAt(0));
         repos.add(index, new RepositoryHeaderItem(Character.toString(start).toUpperCase(US)));
 
         for (index = index + 1; index < repos.size(); index++) {
-            current = ((RepositoryItem) repos.get(index)).getData();
+            current = ((RepositoryItem) repos.get(index)).getRepo();
             char repoStart = Character.toLowerCase(current.name().charAt(0));
             if (repoStart <= start) {
                 continue;

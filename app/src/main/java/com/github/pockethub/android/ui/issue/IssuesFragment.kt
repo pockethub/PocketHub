@@ -82,7 +82,7 @@ class IssuesFragment : PagedItemFragment<Issue>() {
 
     override fun configureList(recyclerView: RecyclerView) {
         super.configureList(recyclerView)
-        mainSection.setHeader(IssueFilterHeaderItem(avatars, filter))
+        mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -97,7 +97,7 @@ class IssuesFragment : PagedItemFragment<Issue>() {
             val position = listAdapter.getAdapterPosition(item) - 1
             val issues = items
                     .filterIsInstance<IssueItem>()
-                    .map { it.data }
+                    .map { it.issue }
 
             startActivityForResult(IssuesViewActivity.createIntent(issues, repository, position), ISSUE_VIEW)
         } else if (item is IssueFilterHeaderItem) {
@@ -149,7 +149,7 @@ class IssuesFragment : PagedItemFragment<Issue>() {
             val newFilter = data.getParcelableExtra<IssueFilter>(EXTRA_ISSUE_FILTER)
             if (filter != newFilter) {
                 filter = newFilter
-                mainSection.setHeader(IssueFilterHeaderItem(avatars, filter))
+                mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
                 refreshWithProgress()
                 return
             }

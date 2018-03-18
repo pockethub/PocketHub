@@ -7,18 +7,23 @@ import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.PushPayload
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.news_item.*
 import java.text.NumberFormat
 
-class PushEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsItem(avatarLoader, dataItem) {
+class PushEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
-    override fun bind(viewHolder: NewsItem.ViewHolder, position: Int) {
-        super.bind(viewHolder, position)
-        viewHolder.icon.text = OcticonTextView.ICON_PUSH
+    override fun bind(holder: ViewHolder, position: Int) {
+        super.bind(holder, position)
+        holder.tv_event_icon.text = OcticonTextView.ICON_PUSH
 
-        val payload = data.payload() as PushPayload?
+        val payload = gitHubEvent.payload() as PushPayload?
 
         val main = StyledText()
-        boldActor(main, data)
+        boldActor(main, gitHubEvent)
 
         main.append(" pushed to ")
         var ref = payload?.ref()
@@ -28,8 +33,8 @@ class PushEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsIte
         main.bold(ref)
         main.append(" at ")
 
-        boldRepo(main, data)
-        viewHolder.event.text = main
+        boldRepo(main, gitHubEvent)
+        holder.tv_event.text = main
 
         val details = StyledText()
         val commits = payload?.commits()
@@ -74,9 +79,9 @@ class PushEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsIte
         }
 
         if (TextUtils.isEmpty(details)) {
-            viewHolder.details.visibility = View.GONE
+            holder.tv_event_details.visibility = View.GONE
         } else {
-            viewHolder.details.text = details
+            holder.tv_event_details.text = details
         }
     }
 }

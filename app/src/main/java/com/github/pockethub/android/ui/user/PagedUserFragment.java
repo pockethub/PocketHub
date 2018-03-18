@@ -45,7 +45,7 @@ public abstract class PagedUserFragment extends PagedItemFragment<User> {
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof UserItem) {
-            User user = ((UserItem) item).getData();
+            User user = ((UserItem) item).getUser();
             startActivity(UserViewActivity.createIntent(user));
         }
     }

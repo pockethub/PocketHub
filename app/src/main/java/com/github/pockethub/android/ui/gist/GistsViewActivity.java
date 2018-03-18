@@ -87,7 +87,7 @@ public class GistsViewActivity extends PagerActivity implements OnLoadListener<G
         String[] ids = new String[items.size()];
         int index = 0;
         for (Item item : items) {
-            Gist gist = ((GistItem) item).getData();
+            Gist gist = ((GistItem) item).getGist();
             ids[index++] = gist.id();
         }
         return new Builder("gists.VIEW")

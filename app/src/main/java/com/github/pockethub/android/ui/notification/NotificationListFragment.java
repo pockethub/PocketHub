@@ -87,15 +87,15 @@ public class NotificationListFragment extends ItemListFragment<NotificationThrea
         }
 
         Collections.sort(notifications, (i1, i2) -> {
-            Repository r1 = ((NotificationItem) i1).getData().repository();
-            Repository r2 = ((NotificationItem) i2).getData().repository();
+            Repository r1 = ((NotificationItem) i1).getNotificationThread().repository();
+            Repository r2 = ((NotificationItem) i2).getNotificationThread().repository();
             return r1.fullName().compareToIgnoreCase(r2.fullName());
         });
 
         Repository repoFound = null;
         for (int i = 0; i < notifications.size(); i++) {
             NotificationItem item = (NotificationItem) notifications.get(i);
-            NotificationThread thread = item.getData();
+            NotificationThread thread = item.getNotificationThread();
             String fullName = thread.repository().fullName();
 
             if (repoFound == null || !fullName.equals(repoFound.fullName())) {
@@ -151,7 +151,7 @@ public class NotificationListFragment extends ItemListFragment<NotificationThrea
     @Override
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         if (item instanceof NotificationItem) {
-            NotificationThread thread = ((NotificationItem) item).getData();
+            NotificationThread thread = ((NotificationItem) item).getNotificationThread();
             String url = thread.subject().url();
 
             Issue issue = IssueUriMatcher.getApiIssue(url);

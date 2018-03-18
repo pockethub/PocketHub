@@ -98,7 +98,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
     public void onItemClick(@NonNull Item item, @NonNull View view) {
         super.onItemClick(item, view);
         if (item instanceof AssigneeDialogItem) {
-            getArguments().putParcelable(ARG_SELECTED, ((AssigneeDialogItem) item).getData());
+            getArguments().putParcelable(ARG_SELECTED, ((AssigneeDialogItem) item).getUser());
             onResult(RESULT_OK);
         }
     }

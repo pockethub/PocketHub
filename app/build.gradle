@@ -135,6 +135,10 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+}
+
 kapt {
     correctErrorTypes = true
 }
@@ -175,6 +179,7 @@ dependencies {
     implementation 'com.github.meisolsson:githubsdk:0.5.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.xwray:groupie:2.0.3'
+    implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
 
     //Libs for testing
     testImplementation 'junit:junit:4.12'

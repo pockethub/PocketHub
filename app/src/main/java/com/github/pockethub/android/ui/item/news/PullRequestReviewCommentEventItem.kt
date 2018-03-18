@@ -8,29 +8,32 @@ import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.ReviewComment
 import com.meisolsson.githubsdk.model.payload.PullRequestReviewCommentPayload
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.news_item.*
 
-class PullRequestReviewCommentEventItem(avatarLoader: AvatarLoader, dataItem: GitHubEvent) : NewsItem(avatarLoader, dataItem) {
+class PullRequestReviewCommentEventItem(
+        avatarLoader: AvatarLoader,
+        gitHubEvent: GitHubEvent
+) : NewsItem(avatarLoader, gitHubEvent) {
 
-    override fun bind(viewHolder: NewsItem.ViewHolder, position: Int) {
-        super.bind(viewHolder, position)
-        viewHolder.icon.text = OcticonTextView.ICON_COMMENT
-
-        val event = data
+    override fun bind(holder: ViewHolder, position: Int) {
+        super.bind(holder, position)
+        holder.tv_event_icon.text = OcticonTextView.ICON_COMMENT
 
         val main = StyledText()
-        boldActor(main, event)
+        boldActor(main, gitHubEvent)
         main.append(" commented on ")
-        boldRepo(main, event)
-        viewHolder.event.text = main
+        boldRepo(main, gitHubEvent)
+        holder.tv_event.text = main
 
         val details = StyledText()
-        val payload = event.payload() as PullRequestReviewCommentPayload?
+        val payload = gitHubEvent.payload() as PullRequestReviewCommentPayload?
         appendReviewComment(details, payload?.comment())
 
         if (TextUtils.isEmpty(details)) {
-            viewHolder.details.visibility = View.GONE
+            holder.tv_event_details.visibility = View.GONE
         } else {
-            viewHolder.details.text = details
+            holder.tv_event_details.text = details
         }
     }
 
