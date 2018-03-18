@@ -2,7 +2,8 @@ package com.github.pockethub.android.ui.item.news
 
 import android.text.TextUtils
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.bold
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -32,20 +33,11 @@ class IssuesEventItem(
             }
         }
 
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-
         val issue = payload?.issue()
-        main.append(' ')
-        main.append(action?.name?.toLowerCase())
-        main.append(' ')
-        main.bold("issue " + issue?.number())
-        main.append(" on ")
 
-        boldRepo(main, gitHubEvent)
-
-        val details = StyledText()
-        appendText(details, issue?.title())
+        val details = buildSpannedString {
+            appendText(this, issue?.title())
+        }
 
         if (TextUtils.isEmpty(details)) {
             holder.tv_event_details.visibility = View.GONE
@@ -53,6 +45,14 @@ class IssuesEventItem(
             holder.tv_event_details.text = details
         }
 
-        holder.tv_event.text = main
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" ${action?.name?.toLowerCase()} ")
+            bold {
+                append("issue " + issue?.number())
+            }
+            append(" on ")
+            boldRepo(this, gitHubEvent)
+        }
     }
 }

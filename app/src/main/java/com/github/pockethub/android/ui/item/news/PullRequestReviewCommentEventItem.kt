@@ -1,8 +1,10 @@
 package com.github.pockethub.android.ui.item.news
 
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.buildSpannedString
+import com.github.pockethub.android.android.text.monospace
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -19,16 +21,16 @@ class PullRequestReviewCommentEventItem(
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_COMMENT
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" commented on ")
+            boldRepo(this, gitHubEvent)
+        }
 
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-        main.append(" commented on ")
-        boldRepo(main, gitHubEvent)
-        holder.tv_event.text = main
-
-        val details = StyledText()
-        val payload = gitHubEvent.payload() as PullRequestReviewCommentPayload?
-        appendReviewComment(details, payload?.comment())
+        val details = buildSpannedString {
+            val payload = gitHubEvent.payload() as PullRequestReviewCommentPayload?
+            appendReviewComment(this, payload?.comment())
+        }
 
         if (TextUtils.isEmpty(details)) {
             holder.tv_event_details.visibility = View.GONE
@@ -37,7 +39,7 @@ class PullRequestReviewCommentEventItem(
         }
     }
 
-    private fun appendReviewComment(details: StyledText, comment: ReviewComment?) {
+    private fun appendReviewComment(details: SpannableStringBuilder, comment: ReviewComment?) {
         if (comment == null) {
             return
         }
@@ -49,7 +51,9 @@ class PullRequestReviewCommentEventItem(
             }
             appendText(details, "Comment in")
             details.append(' ')
-            details.monospace(id)
+            details.monospace {
+                append(id)
+            }
             details.append(':').append('\n')
         }
         appendText(details, comment.body())

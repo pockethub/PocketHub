@@ -153,6 +153,8 @@ dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
 
+    implementation 'androidx.core:core-ktx:0.2'
+
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 

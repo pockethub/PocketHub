@@ -1,9 +1,10 @@
 package com.github.pockethub.android.ui.item.news
 
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.util.Log
+import androidx.text.bold
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -25,34 +26,36 @@ open class NewsItem(
         holder.tv_event_date.text = TimeUtils.getRelativeTime(gitHubEvent.createdAt())
     }
 
-    protected fun boldActor(text: StyledText, event: GitHubEvent?): StyledText =
+    protected fun boldActor(text: SpannableStringBuilder, event: GitHubEvent?) =
             boldUser(text, event?.actor())
 
-    protected fun boldUser(text: StyledText, user: User?): StyledText {
-        text.bold(user?.login())
-        return text
+    protected fun boldUser(text: SpannableStringBuilder, user: User?) {
+        text.bold {
+            append(user?.login())
+        }
     }
 
-    protected fun boldRepo(text: StyledText, event: GitHubEvent?): StyledText {
+    protected fun boldRepo(text: SpannableStringBuilder, event: GitHubEvent?) {
         val repo = event?.repo()
-        text.bold(repo?.repoWithUserName())
-        return text
+        text.bold {
+            append(repo?.repoWithUserName())
+        }
     }
 
-
-    protected fun boldRepoName(text: StyledText, event: GitHubEvent?): StyledText {
+    protected fun boldRepoName(text: SpannableStringBuilder, event: GitHubEvent?) {
         val repo = event?.repo()
         val name = repo?.repoWithUserName()
         if (!TextUtils.isEmpty(name)) {
             val slash: Int = name!!.indexOf('/')
             if (slash != -1 && slash + 1 < name.length) {
-                text.bold(name.substring(slash + 1))
+                text.bold {
+                    append(name.substring(slash + 1))
+                }
             }
         }
-        return text
     }
 
-    protected fun appendText(text: StyledText, toAppend: String?) {
+    protected fun appendText(text: SpannableStringBuilder, toAppend: String?) {
         var textToAppend: String? = toAppend ?: return
         textToAppend = textToAppend!!.trim { it <= ' ' }
         if (textToAppend.isEmpty()) {

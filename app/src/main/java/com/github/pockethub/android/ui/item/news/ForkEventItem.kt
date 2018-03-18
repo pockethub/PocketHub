@@ -1,7 +1,7 @@
 package com.github.pockethub.android.ui.item.news
 
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -16,13 +16,11 @@ class ForkEventItem(
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_FORK
-
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-        main.append(" forked repository ")
-        boldRepo(main, gitHubEvent)
-
-        holder.tv_event.text = main
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" forked repository ")
+            boldRepo(this, gitHubEvent)
+        }
         holder.tv_event_details.visibility = View.GONE
     }
 }

@@ -99,28 +99,6 @@ public class StyledText extends SpannableStringBuilder {
     }
 
     /**
-     * Append text in bold
-     *
-     * @param text
-     * @param color
-     * @return this text
-     */
-    public StyledText background(final CharSequence text, final int color) {
-        return append(text, new BackgroundColorSpan(color));
-    }
-
-    /**
-     * Append text in with custom foreground color
-     *
-     * @param text
-     * @param color
-     * @return this text
-     */
-    public StyledText foreground(final CharSequence text, final int color) {
-        return append(text, new ForegroundColorSpan(color));
-    }
-
-    /**
      * Append text in with custom foreground color
      *
      * @param text
@@ -129,27 +107,6 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText foreground(final char text, final int color) {
         return append(text, new ForegroundColorSpan(color));
-    }
-
-    /**
-     * Append text in monospace typeface
-     *
-     * @param text
-     * @return this text
-     */
-    public StyledText monospace(final CharSequence text) {
-        return append(text, new TypefaceSpan("monospace"));
-    }
-
-    public StyledText underlineAll() {
-        setSpan(new UnderlineSpan(), 0, length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-        return this;
-    }
-
-
-    public StyledText strikethroughAll() {
-        setSpan(new StrikethroughSpan(), 0, length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-        return this;
     }
 
     /**
@@ -178,28 +135,5 @@ public class StyledText extends SpannableStringBuilder {
      */
     public StyledText url(final CharSequence text) {
         return append(text, new URLSpan(text.toString()));
-    }
-
-    /**
-     * Append given date in relative time format
-     *
-     * @param date
-     * @return this text
-     */
-    public StyledText append(final Date date) {
-        final CharSequence time = TimeUtils.getRelativeTime(date);
-        // Un-capitalize time string if there is already a prefix.
-        // So you get "opened in 5 days" instead of "opened In 5 days".
-        final int timeLength = time.length();
-        if (length() > 0 && timeLength > 0
-                && Character.isUpperCase(time.charAt(0))) {
-            append(time.subSequence(0, 1).toString()
-                    .toLowerCase(Locale.getDefault()));
-            append(time.subSequence(1, timeLength));
-        } else {
-            append(time);
-        }
-
-        return this;
     }
 }

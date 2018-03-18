@@ -2,7 +2,9 @@ package com.github.pockethub.android.ui.item.news
 
 import android.text.TextUtils
 import android.view.View
-import com.github.pockethub.android.ui.StyledText
+import androidx.text.bold
+import androidx.text.buildSpannedString
+import com.github.pockethub.android.android.text.monospace
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -22,58 +24,61 @@ class PushEventItem(
 
         val payload = gitHubEvent.payload() as PushPayload?
 
-        val main = StyledText()
-        boldActor(main, gitHubEvent)
-
-        main.append(" pushed to ")
-        var ref = payload?.ref()
-        if (ref!!.startsWith("refs/heads/")) {
-            ref = ref.substring(11)
-        }
-        main.bold(ref)
-        main.append(" at ")
-
-        boldRepo(main, gitHubEvent)
-        holder.tv_event.text = main
-
-        val details = StyledText()
-        val commits = payload?.commits()
-        val size = commits!!.size
-        if (size > 0) {
-            if (size != 1) {
-                val numberFormat = NumberFormat.getIntegerInstance()
-                details.append(numberFormat.format(size.toLong())).append(" new commits")
-            } else {
-                details.append("1 new commit")
+        holder.tv_event.text = buildSpannedString {
+            boldActor(this, gitHubEvent)
+            append(" pushed to ")
+            var ref = payload?.ref()
+            if (ref!!.startsWith("refs/heads/")) {
+                ref = ref.substring(11)
             }
+            bold {
+                append(ref)
+            }
+            append(" at ")
+            boldRepo(this, gitHubEvent)
+        }
 
-            val max = 3
-            var appended = 0
-            for (commit in commits) {
-
-                val sha = commit.sha()
-
-                details.append('\n')
-                if (sha!!.length > 7) {
-                    details.monospace(sha.substring(0, 7))
+        val details = buildSpannedString {
+            val commits = payload?.commits()
+            val size = commits!!.size
+            if (size > 0) {
+                if (size != 1) {
+                    val numberFormat = NumberFormat.getIntegerInstance()
+                    append(numberFormat.format(size.toLong())).append(" new commits")
                 } else {
-                    details.monospace(sha)
+                    append("1 new commit")
                 }
 
-                val message = commit.message()
-                if (!TextUtils.isEmpty(message)) {
-                    details.append(' ')
-                    val newline = message!!.indexOf('\n')
-                    if (newline > 0) {
-                        details.append(message.subSequence(0, newline))
-                    } else {
-                        details.append(message)
+                val max = 3
+                var appended = 0
+                for (commit in commits) {
+
+                    val sha = commit.sha()
+
+                    append('\n')
+                    monospace {
+                        if (sha!!.length > 7) {
+                            append(sha.substring(0, 7))
+                        } else {
+                            append(sha)
+                        }
                     }
-                }
 
-                appended++
-                if (appended == max) {
-                    break
+                    val message = commit.message()
+                    if (!TextUtils.isEmpty(message)) {
+                        append(' ')
+                        val newline = message!!.indexOf('\n')
+                        if (newline > 0) {
+                            append(message.subSequence(0, newline))
+                        } else {
+                            append(message)
+                        }
+                    }
+
+                    appended++
+                    if (appended == max) {
+                        break
+                    }
                 }
             }
         }

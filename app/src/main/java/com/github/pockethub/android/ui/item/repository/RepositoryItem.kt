@@ -2,8 +2,10 @@ package com.github.pockethub.android.ui.item.repository
 
 import android.text.TextUtils
 import android.view.View
+import androidx.text.bold
+import androidx.text.buildSpannedString
+import androidx.text.color
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.ui.view.OcticonTextView.*
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.model.User
@@ -25,18 +27,21 @@ class RepositoryItem(val repo: Repository, private val user: User?) : Item(repo.
             descriptionColor = holder.root.resources.getColor(R.color.text_description)
         }
 
-        val name = StyledText()
-        if (user == null) {
-            name.append(repo.owner()!!.login()).append('/')
-        } else {
-            if (user.login() != repo.owner()!!.login()) {
-                name.foreground(repo.owner()!!.login(), descriptionColor)
-                        .foreground('/', descriptionColor)
+        holder.tv_repo_name.text = buildSpannedString {
+            if (user == null) {
+                append(repo.owner()!!.login()).append('/')
+            } else {
+                if (user.login() != repo.owner()!!.login()) {
+                    color(descriptionColor) {
+                        append("${repo.owner()!!.login()}/")
+                    }
+                }
+            }
+
+            bold {
+                append(repo.name())
             }
         }
-
-        name.bold(repo.name())
-        holder.tv_repo_name.text = name
 
         if (TextUtils.isEmpty(repo.mirrorUrl())) {
             when {
