@@ -18,26 +18,24 @@ package com.github.pockethub.android.ui.issue
 import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Color.WHITE
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface.DEFAULT_BOLD
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.PaintDrawable
 import android.text.style.DynamicDrawableSpan
 import android.widget.TextView
-
+import androidx.text.buildSpannedString
+import androidx.text.inSpans
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.util.ServiceUtils
 import com.meisolsson.githubsdk.model.Label
-
-import java.util.Arrays
-
-import android.graphics.Color.WHITE
-import android.graphics.Typeface.DEFAULT_BOLD
 import java.lang.Integer.MIN_VALUE
 import java.lang.String.CASE_INSENSITIVE_ORDER
+import java.util.*
 import java.util.Locale.US
 
 
@@ -166,19 +164,21 @@ class LabelDrawableSpan(private val resources: Resources, private val textSize: 
             }
 
             val textSize = view.textSize
-            val text = StyledText()
-            for (i in labels.indices) {
-                val bounds = Rect()
-                bounds.right = Math.round(nameWidths[i].toFloat() + paddingLeft + paddingRight + 0.5f)
-                bounds.bottom = Math.round(textHeight.toFloat() + paddingTop + paddingBottom + 0.5f)
+            view.text = buildSpannedString {
+                for (i in labels.indices) {
+                    val bounds = Rect()
+                    bounds.right = Math.round(nameWidths[i].toFloat() + paddingLeft + paddingRight + 0.5f)
+                    bounds.bottom = Math.round(textHeight.toFloat() + paddingTop + paddingBottom + 0.5f)
 
-                text.append('\uFFFC', LabelDrawableSpan(resources, textSize, labels[i].color()!!, paddingLeft, textHeight.toFloat(), bounds, names[i]!!))
+                    inSpans(LabelDrawableSpan(resources, textSize, labels[i].color()!!, paddingLeft, textHeight.toFloat(), bounds, names[i]!!)) {
+                        append('\uFFFC')
+                    }
 
-                if (i + 1 < labels.size) {
-                    text.append(' ')
+                    if (i + 1 < labels.size) {
+                        append(' ')
+                    }
                 }
             }
-            view.text = text
         }
     }
 }
