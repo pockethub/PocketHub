@@ -1,13 +1,24 @@
 package com.github.pockethub.android.android.text
 
 import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.style.TypefaceSpan
+import android.text.style.URLSpan
+import android.view.View
 import androidx.text.inSpans
 import com.github.pockethub.android.util.TimeUtils
 import java.util.*
 
 fun SpannableStringBuilder.monospace(builderAction: SpannableStringBuilder.() -> Unit) {
     inSpans(TypefaceSpan("monospace"), builderAction = builderAction)
+}
+
+fun SpannableStringBuilder.url(text: String, listener: (View) -> Unit) {
+    setSpan(object : URLSpan(text) {
+        override fun onClick(widget: View) {
+            listener(widget)
+        }
+    }, length, length + text.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
 }
 
 fun SpannableStringBuilder.append(date: Date) {

@@ -23,10 +23,14 @@ import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.text.bold
+import androidx.text.buildSpannedString
+import androidx.text.color
 import butterknife.BindView
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.REF_UPDATE
+import com.github.pockethub.android.android.text.url
 import com.github.pockethub.android.core.code.FullTree
 import com.github.pockethub.android.core.code.FullTree.Folder
 import com.github.pockethub.android.core.code.RefreshTreeTask
@@ -34,7 +38,6 @@ import com.github.pockethub.android.core.ref.RefUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.ui.BaseActivity
 import com.github.pockethub.android.ui.DialogResultListener
-import com.github.pockethub.android.ui.StyledText
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.ui.item.code.BlobItem
 import com.github.pockethub.android.ui.item.code.FolderItem
@@ -245,20 +248,28 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
         if (folder.entry != null) {
             val textLightColor = resources.getColor(R.color.text_light)
             val segments = folder.entry.path()!!.split("/")
-            val text = StyledText()
-            for (i in 0 until segments.size - 1) {
-                text.url(segments[i]) { _ ->
-                    var clicked: Folder? = folder
-                    for (i1 in i until segments.size - 1) {
-                        clicked = clicked!!.parent
-                        if (clicked == null) {
-                            return@url
+            val text = buildSpannedString {
+                for (i in 0 until segments.size - 1) {
+                    url(segments[i]) {
+                        var clicked: Folder? = folder
+                        for (i1 in i until segments.size - 1) {
+                            clicked = clicked!!.parent
+                            if (clicked == null) {
+                                return@url
+                            }
                         }
+                        setFolder(tree, clicked!!)
                     }
-                    setFolder(tree, clicked!!)
-                }.append(' ').foreground('/', textLightColor).append(' ')
+                    append(' ')
+                    color(textLightColor) {
+                        append('/')
+                    }
+                    append(' ')
+                }
+                bold {
+                    append(segments[segments.size - 1])
+                }
             }
-            text.bold(segments[segments.size - 1])
 
             if (!pathShowing) {
                 mainSection.setHeader(PathHeaderItem(text))
