@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.annotation.DimenRes;
 import android.text.Html.ImageGetter;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -63,8 +64,8 @@ public class HttpImageGetter implements ImageGetter {
 
         private final Drawable image;
 
-        private LoadingImageGetter(final Context context, final int size) {
-            int imageSize = ServiceUtils.getIntPixels(context, size);
+        private LoadingImageGetter(final Context context, @DimenRes final int size) {
+            int imageSize = context.getResources().getDimensionPixelSize(size);
             image = context.getResources().getDrawable(
                     R.drawable.image_loading_icon);
             image.setBounds(0, 0, imageSize, imageSize);
@@ -106,7 +107,7 @@ public class HttpImageGetter implements ImageGetter {
         this.context = context;
         dir = context.getCacheDir();
         width = ServiceUtils.getDisplayWidth(context);
-        loading = new LoadingImageGetter(context, 24);
+        loading = new LoadingImageGetter(context, R.dimen.image_loading_size);
         okHttpClient = new OkHttpClient();
     }
 
