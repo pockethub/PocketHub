@@ -153,8 +153,6 @@ public abstract class TabPagerActivity<V extends PagerAdapter & FragmentProvider
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        // On Lollipop, the action bar shadow is provided by default, so have to remove it explicitly
-        getSupportActionBar().setElevation(0);
         pager.addOnPageChangeListener(this);
     }
 
