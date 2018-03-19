@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.format.Formatter
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.code.FullTree
-import com.github.pockethub.android.util.ServiceUtils
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.blob_item.*
@@ -15,12 +14,8 @@ class BlobItem(
         private val indented: Boolean
 ) : Item(file.entry.sha()!!.hashCode().toLong()) {
 
-    companion object {
-
-        private const val INDENTED_PADDING = 16
-    }
-
-    private val indentedPaddingLeft = ServiceUtils.getIntPixels(context.resources, INDENTED_PADDING)
+    private val indentedPaddingLeft =
+            context.resources.getDimensionPixelSize(R.dimen.blob_indentation)
 
     override fun getLayout() = R.layout.blob_item
 

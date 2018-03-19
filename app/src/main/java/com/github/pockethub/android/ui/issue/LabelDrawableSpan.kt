@@ -110,11 +110,6 @@ class LabelDrawableSpan(private val resources: Resources, private val textSize: 
 
     companion object {
 
-        private const val PADDING_LEFT = 10
-        private const val PADDING_RIGHT = 10
-        private const val PADDING_TOP = 8
-        private const val PADDING_BOTTOM = 8
-
         /**
          * Set text on view to be given labels
          *
@@ -141,10 +136,10 @@ class LabelDrawableSpan(private val resources: Resources, private val textSize: 
 
         private fun setText(view: TextView, labels: Array<Label>) {
             val resources = view.resources
-            val paddingTop = ServiceUtils.getPixels(resources, PADDING_TOP)
-            val paddingLeft = ServiceUtils.getPixels(resources, PADDING_LEFT)
-            val paddingRight = ServiceUtils.getPixels(resources, PADDING_RIGHT)
-            val paddingBottom = ServiceUtils.getPixels(resources, PADDING_BOTTOM)
+            val paddingTop = resources.getDimension(R.dimen.label_padding_top)
+            val paddingLeft = resources.getDimension(R.dimen.label_padding_left)
+            val paddingRight = resources.getDimension(R.dimen.label_padding_right)
+            val paddingBottom = resources.getDimension(R.dimen.label_padding_bottom)
 
             val p = Paint()
             p.typeface = DEFAULT_BOLD
