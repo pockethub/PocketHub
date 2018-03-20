@@ -30,9 +30,7 @@
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/AvatarSmall"
-        android:layout_toRightOf="@id/tv_event_icon"
         android:layout_toEndOf="@id/tv_event_icon"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:contentDescription="@string/avatar"
         android:layout_centerVertical="true"/>
@@ -40,9 +38,7 @@
     <TextView
         android:id="@+id/tv_event"
         style="@style/ListTitleText"
-        android:layout_toRightOf="@id/iv_avatar"
         android:layout_toEndOf="@id/iv_avatar"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:textSize="15sp"
         android:textStyle="normal"

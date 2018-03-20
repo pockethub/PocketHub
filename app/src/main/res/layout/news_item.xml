@@ -20,10 +20,8 @@
     <ImageView
         android:id="@+id/iv_avatar"
         style="@style/AvatarLarge"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:contentDescription="@string/avatar" />
 
@@ -31,7 +29,6 @@
         android:id="@+id/tv_event"
         style="@style/ListTitleText"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/iv_avatar"
         android:layout_toEndOf="@id/iv_avatar"
         android:paddingBottom="5dp"
         android:textSize="15sp"
@@ -40,7 +37,6 @@
     <TextView
         android:id="@+id/tv_event_details"
         style="@style/ListTitleText"
-        android:layout_alignLeft="@id/tv_event"
         android:layout_alignStart="@id/tv_event"
         android:layout_below="@+id/tv_event"
         android:lineSpacingExtra="3dp"
@@ -53,7 +49,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_event_details"
         android:layout_alignStart="@id/tv_event_details"
         android:layout_below="@+id/tv_event_details"
         android:gravity="center_vertical"
@@ -66,7 +61,6 @@
         <TextView
             android:id="@+id/tv_event_date"
             style="@style/ListSubtitleText"
-            android:paddingLeft="5dp"
             android:paddingStart="5dp"
             android:singleLine="true" />
     </LinearLayout>

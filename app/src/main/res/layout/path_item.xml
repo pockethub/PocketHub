@@ -22,7 +22,6 @@
     <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_folder_icon"
         style="@style/PrimaryIcon"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:text="@string/icon_folders" />
@@ -31,7 +30,6 @@
         android:id="@+id/tv_path"
         style="@style/HeaderTitleText"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/tv_folder_icon"
         android:layout_toEndOf="@id/tv_folder_icon"
         android:lineSpacingExtra="2dp"
         android:paddingTop="2dp"

@@ -16,8 +16,7 @@
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/ListItem"
-    android:paddingStart="0dp"
-    android:paddingLeft="0dp" >
+    android:paddingStart="0dp">
 
     <include
         android:id="@+id/ll_issue_number"
@@ -28,9 +27,7 @@
         style="@style/ListSubtitleText"
         android:layout_width="match_parent"
         android:layout_alignBaseline="@id/ll_issue_number"
-        android:layout_toRightOf="@id/ll_issue_number"
         android:layout_toEndOf="@id/ll_issue_number"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:singleLine="true" />
 
@@ -39,9 +36,7 @@
         style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:layout_below="@id/tv_issue_repo_name"
-        android:layout_toRightOf="@id/ll_issue_number"
         android:layout_toEndOf="@id/ll_issue_number"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:singleLine="true" />
 
@@ -49,13 +44,11 @@
         android:id="@+id/ll_lines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_issue_title"
         android:layout_alignStart="@id/tv_issue_title"
         android:layout_below="@id/tv_issue_title"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:paddingTop="2dp" >
 

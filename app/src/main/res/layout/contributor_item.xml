@@ -32,7 +32,6 @@
         <TextView
             android:id="@+id/tv_login"
             style="@style/ListTitleText"
-            android:paddingLeft="10dp"
             android:paddingStart="10dp"
             android:paddingBottom="0dp"
             android:singleLine="true"
@@ -41,7 +40,6 @@
         <TextView
             android:id="@+id/tv_contributions"
             style="@style/ListSubtitleText"
-            android:paddingLeft="10dp"
             android:paddingStart="10dp"
             android:singleLine="true"
             android:textStyle="normal" />

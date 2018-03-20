@@ -31,7 +31,6 @@
         android:id="@+id/tv_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:textColor="@color/text"
         android:textSize="16sp" />

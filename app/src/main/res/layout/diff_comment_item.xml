@@ -18,7 +18,6 @@
     style="@style/CommentListItem"
     android:background="?selectableItemBackground"
     android:paddingBottom="5dp"
-    android:paddingLeft="15dp"
     android:paddingStart="15dp"
     android:paddingTop="5dp" >
 
