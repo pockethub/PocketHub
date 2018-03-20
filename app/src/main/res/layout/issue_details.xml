@@ -26,16 +26,13 @@
         style="@style/ListSubtitleText"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
-        android:paddingRight="2dp"
         android:paddingEnd="2dp"
         android:singleLine="true" />
 
     <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_pull_request_icon"
         style="@style/ListIcon"
-        android:paddingRight="5dp"
         android:paddingEnd="5dp"
         android:text="@string/icon_pull_request" />
 
@@ -47,7 +44,6 @@
     <TextView
         android:id="@+id/tv_issue_comments"
         style="@style/ListNumericSubtitleText"
-        android:paddingStart="5dp"
-        android:paddingLeft="5dp" />
+        android:paddingStart="5dp" />
 
 </merge>

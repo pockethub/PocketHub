@@ -20,8 +20,6 @@
     android:layout_width="match_parent"
     android:background="?selectableItemBackground"
     android:paddingBottom="1dp"
-    android:paddingLeft="15dp"
     android:paddingStart="15dp"
-    android:paddingRight="10dp"
     android:paddingEnd="10dp"
     android:paddingTop="1dp" />

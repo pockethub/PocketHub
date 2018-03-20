@@ -45,7 +45,6 @@
                 android:includeFontPadding="true"
                 android:singleLine="true"
                 android:paddingBottom="0dp"
-                android:paddingLeft="10dp"
                 android:paddingStart="10dp"
                 android:textStyle="normal" />
         </LinearLayout>
@@ -79,7 +78,6 @@
                 android:includeFontPadding="true"
                 android:maxLines="2"
                 android:paddingBottom="0dp"
-                android:paddingLeft="10dp"
                 android:paddingStart="10dp"
                 android:textStyle="normal" />
         </LinearLayout>

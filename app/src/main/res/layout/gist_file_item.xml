@@ -20,7 +20,6 @@
     <com.github.pockethub.android.ui.view.OcticonTextView
         android:id="@+id/tv_file_icon"
         style="@style/PrimaryIcon"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="@string/icon_file" />
@@ -30,10 +29,8 @@
         style="@style/ListTitleText"
         android:layout_width="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/tv_file_icon"
         android:layout_toEndOf="@id/tv_file_icon"
         android:paddingBottom="0dp"
-        android:paddingLeft="10dp"
         android:paddingStart="10dp"
         android:singleLine="true" />
 
