@@ -250,7 +250,7 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
             val segments = folder.entry.path()!!.split("/")
             val text = buildSpannedString {
                 for (i in 0 until segments.size - 1) {
-                    url(segments[i]) {
+                    url(segments[i], onClick = {
                         var clicked: Folder? = folder
                         for (i1 in i until segments.size - 1) {
                             clicked = clicked!!.parent
@@ -259,6 +259,8 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
                             }
                         }
                         setFolder(tree, clicked!!)
+                    }) {
+                        append(segments[i])
                     }
                     append(' ')
                     color(textLightColor) {
