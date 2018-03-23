@@ -38,7 +38,7 @@ import dagger.android.support.DaggerAppCompatActivity;
  * is never set or if it is set to null then error {@link AccountManager#ERROR_CODE_CANCELED}
  * will be called on the response.
  *
- * Based on <a href="https://github.com/mccrajs">@mccrajs's</a> implementation <a href="https://github.com/rtyley/roboguice-sherlock/blob/master/src/main/java/com/github/rtyley/android/sherlock/android/accounts/SherlockAccountAuthenticatorActivity.java">here</a>.
+ * Based on {@link android.accounts.AccountAuthenticatorActivity}.
  */
 public abstract class AccountAuthenticatorAppCompatActivity extends BaseActivity {
 
