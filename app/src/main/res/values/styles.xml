@@ -20,11 +20,6 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <style name="AvatarActionBar">
-        <item name="android:layout_width">28dp</item>
-        <item name="android:layout_height">28dp</item>
-    </style>
-
     <style name="AvatarXLarge">
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
@@ -44,10 +39,6 @@
         <item name="android:layout_width">16dp</item>
         <item name="android:layout_height">16dp</item>
     </style>
-
-    <style name="commentEditIcon" parent="AvatarMedium"/>
-
-    <style name="commentDeleteIcon" parent="AvatarMedium"/>
 
     <style name="EditText" parent="Global">
         <item name="android:textColor">@color/text</item>
@@ -90,12 +81,6 @@
         <item name="android:layout_height">35dp</item>
         <item name="android:layout_marginTop">-7dp</item>
         <item name="android:textSize">28sp</item>
-    </style>
-
-    <style name="TabIcon" parent="TextIcon">
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_marginTop">-4dp</item>
-        <item name="android:layout_height">26dp</item>
     </style>
 
     <style name="IssueNumber">
@@ -184,15 +169,6 @@
         <item name="android:background">@color/background</item>
     </style>
 
-    <style name="DropdownItem">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
-    </style>
-
     <style name="Spinner">
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateDuration">2000</item>
@@ -202,19 +178,6 @@
     <style name="ListSpinner" parent="Spinner">
         <item name="android:layout_width">64dp</item>
         <item name="android:layout_height">64dp</item>
-    </style>
-
-    <style name="FooterSeparator">
-        <item name="android:layout_height">10dp</item>
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
-    <style name="TabText" parent="Global">
-        <item name="android:textColor">@color/tab_text_colors</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:padding">16dp</item>
     </style>
 
     <style name="NavigationView">
