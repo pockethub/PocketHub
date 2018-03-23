@@ -279,6 +279,11 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
                 bold {
                     append(segments[segments.size - 1])
                 }
+                append(' ')
+                color(textLightColor) {
+                    append('/')
+                }
+                append(' ')
             }
 
             mainSection.setHeader(PathHeaderItem(text))
