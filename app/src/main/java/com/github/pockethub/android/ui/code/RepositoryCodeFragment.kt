@@ -30,7 +30,6 @@ import butterknife.BindView
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.REF_UPDATE
-import com.github.pockethub.android.util.android.text.url
 import com.github.pockethub.android.core.code.FullTree
 import com.github.pockethub.android.core.code.FullTree.Folder
 import com.github.pockethub.android.core.code.RefreshTreeTask
@@ -46,6 +45,7 @@ import com.github.pockethub.android.ui.ref.BranchFileViewActivity
 import com.github.pockethub.android.ui.ref.RefDialog
 import com.github.pockethub.android.ui.ref.RefDialogFragment
 import com.github.pockethub.android.util.ToastUtils
+import com.github.pockethub.android.util.android.text.url
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.model.git.GitReference
 import com.xwray.groupie.*
@@ -245,6 +245,18 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
             val textLightColor = resources.getColor(R.color.text_light)
             val segments = folder.entry.path()!!.split("/")
             val text = buildSpannedString {
+                bold {
+                    url(repository!!.name()!!, onClick = {
+                        setFolder(tree, tree.root)
+                    }) {
+                        append(repository!!.name()!!)
+                    }
+                }
+                append(' ')
+                color(textLightColor) {
+                    append('/')
+                }
+                append(' ')
                 for (i in 0 until segments.size - 1) {
                     url(segments[i], onClick = {
                         var clicked: Folder? = folder
