@@ -281,16 +281,14 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
         }
 
 
-        val indented = folder.entry != null
-
         val items = mutableListOf<Item<*>>()
 
         for (folder1 in folder.folders.values) {
-            items.add(FolderItem(activity!!, folder1, indented))
+            items.add(FolderItem(folder1))
         }
 
         for (blob in folder.files.values) {
-            items.add(BlobItem(activity!!, blob, indented))
+            items.add(BlobItem(activity!!, blob))
         }
 
         mainSection.update(items)

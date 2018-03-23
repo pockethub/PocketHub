@@ -10,28 +10,13 @@ import kotlinx.android.synthetic.main.blob_item.*
 
 class BlobItem(
         private val context: Context,
-        val file: FullTree.Entry,
-        private val indented: Boolean
+        val file: FullTree.Entry
 ) : Item(file.entry.sha()!!.hashCode().toLong()) {
-
-    private val indentedPaddingLeft =
-            context.resources.getDimensionPixelSize(R.dimen.blob_indentation)
 
     override fun getLayout() = R.layout.blob_item
 
     override fun bind(holder: ViewHolder, position: Int) {
         holder.tv_file.text = file.name
         holder.tv_size.text = Formatter.formatFileSize(context, file.entry.size()!!.toLong())
-
-        val paddingLeft = holder.root.paddingLeft
-        val paddingRight = holder.root.paddingRight
-        val paddingTop = holder.root.paddingTop
-        val paddingBottom = holder.root.paddingBottom
-
-        if (indented) {
-            holder.root.setPadding(indentedPaddingLeft, paddingTop, paddingRight, paddingBottom)
-        } else {
-            holder.root.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-        }
     }
 }
