@@ -79,8 +79,6 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
 
     private var tree: FullTree? = null
 
-    private var pathShowing: Boolean = false
-
     private var folder: Folder? = null
 
     private var repository: Repository? = null
@@ -213,9 +211,7 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
 
         branchFooterView.setOnClickListener { _ -> switchBranches() }
 
-        if (pathShowing) {
-            mainSection.setHeader(PathHeaderItem(""))
-        }
+        mainSection.setHeader(PathHeaderItem(""))
     }
 
     /**
@@ -273,13 +269,9 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
                 }
             }
 
-            if (!pathShowing) {
-                mainSection.setHeader(PathHeaderItem(text))
-                pathShowing = true
-            }
-        } else if (pathShowing) {
+            mainSection.setHeader(PathHeaderItem(text))
+        } else {
             mainSection.removeHeader()
-            pathShowing = false
         }
 
 
