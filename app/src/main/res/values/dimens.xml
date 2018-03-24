@@ -20,7 +20,6 @@
     <dimen name="nav_drawer_header_height">152dp</dimen>
     <dimen name="touch_target">48dp</dimen>
     <dimen name="activity_content_padding">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="label_padding_left">10dp</dimen>
     <dimen name="label_padding_right">10dp</dimen>
     <dimen name="label_padding_top">8dp</dimen>
