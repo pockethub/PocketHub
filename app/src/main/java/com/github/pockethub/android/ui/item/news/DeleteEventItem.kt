@@ -17,7 +17,7 @@ class DeleteEventItem(
     override fun bind(holder: ViewHolder, position: Int) {
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_DELETE
-        holder.tv_event_icon.text = buildSpannedString {
+        holder.tv_event.text = buildSpannedString {
             boldActor(this, gitHubEvent)
             val payload = gitHubEvent.payload() as DeletePayload?
             append(" deleted ${payload?.refType()?.name?.toLowerCase()} ${payload?.ref()} at ")
