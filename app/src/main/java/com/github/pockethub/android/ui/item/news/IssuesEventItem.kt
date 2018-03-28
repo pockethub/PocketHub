@@ -48,13 +48,14 @@ class IssuesEventItem(
         }
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(holder.root.context, this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" ${action?.name?.toLowerCase()} ")
             bold {
                 append("issue " + issue?.number())
             }
             append(" on ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
     }
 }

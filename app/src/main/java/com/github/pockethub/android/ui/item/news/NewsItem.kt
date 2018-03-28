@@ -6,8 +6,10 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.core.text.bold
 import com.github.pockethub.android.R
+import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader
+import com.github.pockethub.android.util.ConvertUtils
 import com.github.pockethub.android.util.TimeUtils
 import com.github.pockethub.android.util.android.text.url
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -64,10 +66,15 @@ open class NewsItem(
         }
     }
 
-    protected fun boldRepo(text: SpannableStringBuilder, event: GitHubEvent?) {
-        val repo = event?.repo()
+    protected fun boldRepo(context: Context, text: SpannableStringBuilder, event: GitHubEvent?) {
         text.bold {
-            append(repo?.repoWithUserName())
+            val eventRepo = event?.repo()!!
+            url(eventRepo.repoWithUserName()!!, onClick = {
+                val repository = ConvertUtils.eventRepoToRepo(eventRepo)
+                context.startActivity(RepositoryViewActivity.createIntent(repository))
+            }) {
+                append(eventRepo.repoWithUserName())
+            }
         }
     }
 

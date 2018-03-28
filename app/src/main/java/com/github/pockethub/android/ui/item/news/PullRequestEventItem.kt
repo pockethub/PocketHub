@@ -24,7 +24,8 @@ class PullRequestEventItem(
         val action = payload.action()
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(holder.root.context, this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             if (PullRequestPayload.Action.Synchronized == action) {
                 append("updated")
             }
@@ -33,7 +34,7 @@ class PullRequestEventItem(
                 append("pull request " + payload.number())
             }
             append(" on ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
 
         val details = buildSpannedString {

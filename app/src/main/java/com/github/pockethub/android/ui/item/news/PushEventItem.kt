@@ -25,7 +25,8 @@ class PushEventItem(
         val payload = gitHubEvent.payload() as PushPayload?
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(holder.root.context, this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" pushed to ")
             var ref = payload?.ref()
             if (ref!!.startsWith("refs/heads/")) {
@@ -35,7 +36,7 @@ class PushEventItem(
                 append(ref)
             }
             append(" at ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
 
         val details = buildSpannedString {

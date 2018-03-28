@@ -19,14 +19,15 @@ class MemberEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_ADD_MEMBER
         holder.tv_event.text = buildSpannedString {
+            val context = holder.root.context
             val payload = gitHubEvent.payload() as MemberPayload?
-            boldActor(holder.root.context, this, gitHubEvent)
+            boldActor(context, this, gitHubEvent)
             append(" added ")
             bold {
                 append(payload?.member()?.login())
             }
             append(" as a collaborator to ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
         holder.tv_event_details.visibility = View.GONE
     }

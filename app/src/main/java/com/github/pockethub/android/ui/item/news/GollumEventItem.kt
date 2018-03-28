@@ -17,9 +17,10 @@ class GollumEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_WIKI
         holder.tv_event.text = buildSpannedString {
-            boldActor(holder.root.context, this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" updated the wiki in ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
         holder.tv_event_details.visibility = View.GONE
     }
