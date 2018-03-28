@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Avfølger…</string>
     <string name="starring_repository">Stjernemerker…</string>
     <string name="unstarring_repository">Avstjerner…</string>
-    <string name="navigate_to">Navigér til…</string>
     <string name="navigate_to_user">Navigér til %s</string>
     <string name="contributions">%d innsjekkinger</string>
 

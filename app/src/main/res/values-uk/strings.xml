@@ -230,7 +230,6 @@
     <string name="unfollowing_user">Відписка…</string>
     <string name="starring_repository">Додавання до улюблених…</string>
     <string name="unstarring_repository">Видалення із улюблених…</string>
-    <string name="navigate_to">Перейти до…</string>
 
     <!-- Tab titles, should be as short as possible -->
     <string name="tab_repositories">репозиторії</string>

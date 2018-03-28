@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Končí sledování…</string>
     <string name="starring_repository">Přidávání do oblíbených…</string>
     <string name="unstarring_repository">Odebírání z oblíbených…</string>
-    <string name="navigate_to">Navigovat do…</string>
     <string name="navigate_to_user">Navigovat na %s</string>
     <string name="contributions">%d commitů</string>
 

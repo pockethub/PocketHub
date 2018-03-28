@@ -251,7 +251,6 @@
     <string name="unstarring_repository">Încetare apreciere…</string>
     <string name="forking_repository">Ramificând…</string>
     <string name="deleting_repository">Ștergere…</string>
-    <string name="navigate_to">Navighează la…</string>
     <string name="navigate_to_user">Navighează către %s</string>
     <string name="contributions">%d înregistrări</string>
 

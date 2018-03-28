@@ -253,7 +253,6 @@
     <string name="unstarring_repository">Tar bort stjärnmärkning&#8230;</string>
     <string name="forking_repository">Forkar repot&#8230;</string>
     <string name="deleting_repository">Raderar repot&#8230;</string>
-    <string name="navigate_to">Navigera till&#8230;</string>
     <string name="navigate_to_user">Navigera till %s</string>
     <string name="contributions">%d commits</string>
 

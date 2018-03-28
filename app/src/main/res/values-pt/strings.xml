@@ -236,7 +236,6 @@
     <string name="unfollowing_user">Deixando de seguir…</string>
     <string name="starring_repository">Marcando estrela…</string>
     <string name="unstarring_repository">Desmarcando estrela…</string>
-    <string name="navigate_to">Navegando para…</string>
     <string name="navigate_to_user">Navegando para %s</string>
     <string name="contributions">%d commits</string>
 

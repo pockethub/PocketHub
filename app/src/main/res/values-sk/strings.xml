@@ -246,7 +246,6 @@
     <string name="starring_repository">Označujem ako obľúbený…</string>
     <string name="unstarring_repository">Ruším obľúbený…</string>
     <string name="forking_repository">Forkujem…</string>
-    <string name="navigate_to">Navigovať do…</string>
     <string name="navigate_to_user">Navigovať na %s</string>
     <string name="contributions">%d commitov</string>
 

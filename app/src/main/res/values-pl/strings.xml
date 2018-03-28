@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Unfollowing…</string>
     <string name="starring_repository">Starring…</string>
     <string name="unstarring_repository">Unstarring…</string>
-    <string name="navigate_to">Nawiguj do…</string>
     <string name="navigate_to_user">Nawiguj do %s</string>
     <string name="contributions">%d popełnień</string>
 

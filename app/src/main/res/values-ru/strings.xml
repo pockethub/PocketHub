@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Отписываюсь…</string>
     <string name="starring_repository">Отмечаем репозиторий…</string>
     <string name="unstarring_repository">Снимаем отметку с репозитория…</string>
-    <string name="navigate_to">Перейти к…</string>
     <string name="navigate_to_user">Перейти к %s</string>
     <string name="contributions">%d коммитов</string>
 

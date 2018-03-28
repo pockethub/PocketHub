@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Μη Ακολούθηση…</string>
     <string name="starring_repository">Επισήμανση…</string>
     <string name="unstarring_repository">Μη Επισήμανση…</string>
-    <string name="navigate_to">Πλοήγηση σε…</string>
     <string name="navigate_to_user">Πλοήγηση σε %s</string>
     <string name="contributions">%d υποβολές</string>
 
