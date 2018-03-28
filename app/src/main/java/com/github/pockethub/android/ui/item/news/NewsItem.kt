@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.core.text.bold
 import com.github.pockethub.android.R
+import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.TimeUtils
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -40,6 +41,11 @@ open class NewsItem(
 
     override fun bind(holder: ViewHolder, position: Int) {
         avatarLoader.bind(holder.iv_avatar, gitHubEvent.actor())
+        holder.iv_avatar.setOnClickListener {
+            val context = holder.root.context
+            val user = gitHubEvent.actor()!!
+            context.startActivity(UserViewActivity.createIntent(user))
+        }
         holder.tv_event_date.text = TimeUtils.getRelativeTime(gitHubEvent.createdAt())
     }
 
