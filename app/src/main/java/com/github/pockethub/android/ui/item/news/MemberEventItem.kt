@@ -1,7 +1,6 @@
 package com.github.pockethub.android.ui.item.news
 
 import android.view.View
-import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
@@ -23,9 +22,7 @@ class MemberEventItem(
             val payload = gitHubEvent.payload() as MemberPayload?
             boldActor(context, this, gitHubEvent)
             append(" added ")
-            bold {
-                append(payload?.member()?.login())
-            }
+            boldUser(context, this, payload?.member())
             append(" as a collaborator to ")
             boldRepo(context, this, gitHubEvent)
         }
