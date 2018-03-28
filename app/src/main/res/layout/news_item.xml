@@ -25,7 +25,7 @@
         android:layout_marginEnd="10dp"
         android:contentDescription="@string/avatar" />
 
-    <TextView
+    <com.github.pockethub.android.ui.view.LinkTextView
         android:id="@+id/tv_event"
         style="@style/ListTitleText"
         android:layout_alignParentTop="true"

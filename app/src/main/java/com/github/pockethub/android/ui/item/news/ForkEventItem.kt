@@ -17,7 +17,7 @@ class ForkEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_FORK
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" forked repository ")
             boldRepo(this, gitHubEvent)
         }

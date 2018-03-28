@@ -18,7 +18,7 @@ class CreateEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_CREATE
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             val payload = gitHubEvent.payload() as CreatePayload?
 
             val refType: String? = payload?.refType()?.name?.toLowerCase()

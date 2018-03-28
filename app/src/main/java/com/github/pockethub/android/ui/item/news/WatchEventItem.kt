@@ -17,7 +17,7 @@ class WatchEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_STAR
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" starred ")
             boldRepo(this, gitHubEvent)
         }

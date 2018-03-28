@@ -37,7 +37,7 @@ class IssueCommentEventItem(
         }
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" commented on ")
             bold {
                 val issue = payload?.issue()

@@ -48,7 +48,7 @@ class IssuesEventItem(
         }
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" ${action?.name?.toLowerCase()} ")
             bold {
                 append("issue " + issue?.number())

@@ -1,5 +1,6 @@
 package com.github.pockethub.android.ui.item.news
 
+import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.util.Log
@@ -8,6 +9,7 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.TimeUtils
+import com.github.pockethub.android.util.android.text.url
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CommitCommentEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CreateEvent
@@ -49,12 +51,16 @@ open class NewsItem(
         holder.tv_event_date.text = TimeUtils.getRelativeTime(gitHubEvent.createdAt())
     }
 
-    protected fun boldActor(text: SpannableStringBuilder, event: GitHubEvent?) =
-            boldUser(text, event?.actor())
+    protected fun boldActor(context: Context, text: SpannableStringBuilder, event: GitHubEvent?) =
+            boldUser(context, text, event?.actor())
 
-    protected fun boldUser(text: SpannableStringBuilder, user: User?) {
+    protected fun boldUser(context: Context, text: SpannableStringBuilder, user: User?) {
         text.bold {
-            append(user?.login())
+            url(user!!.login()!!, onClick = {
+                context.startActivity(UserViewActivity.createIntent(user))
+            }) {
+                append(user.login())
+            }
         }
     }
 

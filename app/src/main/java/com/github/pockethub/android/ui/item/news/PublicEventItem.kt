@@ -17,7 +17,7 @@ class PublicEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_PUBLIC
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" open sourced repository ")
             boldRepo(this, gitHubEvent)
         }

@@ -18,7 +18,7 @@ class GistEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_GIST
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
 
             val payload = gitHubEvent.payload() as GistPayload?
             val action = payload?.action()

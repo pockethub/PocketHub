@@ -20,7 +20,7 @@ class MemberEventItem(
         holder.tv_event_icon.text = OcticonTextView.ICON_ADD_MEMBER
         holder.tv_event.text = buildSpannedString {
             val payload = gitHubEvent.payload() as MemberPayload?
-            boldActor(this, gitHubEvent)
+            boldActor(holder.root.context, this, gitHubEvent)
             append(" added ")
             bold {
                 append(payload?.member()?.login())
