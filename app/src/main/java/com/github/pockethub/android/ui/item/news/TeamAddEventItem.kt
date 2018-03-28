@@ -3,8 +3,10 @@ package com.github.pockethub.android.ui.item.news
 import android.view.View
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
+import com.github.pockethub.android.util.android.text.url
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.TeamAddPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -19,7 +21,8 @@ class TeamAddEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_ADD_MEMBER
         holder.tv_event.text = buildSpannedString {
-            boldActor(holder.root.context, this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" added ")
 
             val payload = gitHubEvent.payload() as TeamAddPayload?
@@ -27,7 +30,12 @@ class TeamAddEventItem(
             val repoName = repo?.name()
             if (repoName != null) {
                 bold {
-                    append(repoName)
+                    url("", onClick = {
+                        val user = gitHubEvent.actor()!!
+                        context.startActivity(UserViewActivity.createIntent(user))
+                    }) {
+                        append(repoName)
+                    }
                 }
             }
 
