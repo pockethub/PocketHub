@@ -78,14 +78,23 @@ open class NewsItem(
         }
     }
 
-    protected fun boldRepoName(text: SpannableStringBuilder, event: GitHubEvent?) {
+    protected fun boldRepoName(
+            context: Context,
+            text: SpannableStringBuilder,
+            event: GitHubEvent?
+    ) {
         val repo = event?.repo()
         val name = repo?.repoWithUserName()
         if (!TextUtils.isEmpty(name)) {
             val slash: Int = name!!.indexOf('/')
             if (slash != -1 && slash + 1 < name.length) {
                 text.bold {
-                    append(name.substring(slash + 1))
+                    url("", onClick = {
+                        val repository = ConvertUtils.eventRepoToRepo(repo)
+                        context.startActivity(RepositoryViewActivity.createIntent(repository))
+                    }) {
+                        append(name.substring(slash + 1))
+                    }
                 }
             }
         }

@@ -29,7 +29,7 @@ class CreateEventItem(
                 append("${payload?.ref()} at ")
                 boldRepo(context, this, gitHubEvent)
             } else {
-                boldRepoName(this, gitHubEvent)
+                boldRepoName(context, this, gitHubEvent)
             }
         }
         holder.tv_event_details.visibility = View.GONE
