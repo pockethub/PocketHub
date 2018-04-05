@@ -142,8 +142,8 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
             repoFragment.setListShown(false);
             userFragment.setListShown(false);
 
-            repoFragment.refresh();
-            userFragment.refresh();
+            repoFragment.forceRefresh();
+            userFragment.forceRefresh();
         }
     }
 
@@ -157,9 +157,9 @@ public class SearchActivity extends TabPagerActivity<SearchPagerAdapter> {
         if (repoFragment == null || userFragment == null) {
             FragmentManager fm = getSupportFragmentManager();
             repoFragment = (SearchRepositoryListFragment) fm.findFragmentByTag(
-                "android:switcher:" + pager.getId() + ":" + 0);
+                    "android:switcher:" + pager.getId() + ":" + 0);
             userFragment = (SearchUserListFragment) fm.findFragmentByTag(
-                "android:switcher:" + pager.getId() + ":" + 1);
+                    "android:switcher:" + pager.getId() + ":" + 1);
         }
     }
 }

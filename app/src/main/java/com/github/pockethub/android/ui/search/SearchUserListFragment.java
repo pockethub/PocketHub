@@ -34,6 +34,8 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
 import com.xwray.groupie.Item;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Single;
@@ -91,10 +93,21 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
     }
 
     @Override
+    public void forceRefresh(){
+        query = getStringExtra(QUERY);
+        super.forceRefresh();
+    }
+    @Override
     public void refresh() {
         query = getStringExtra(QUERY);
 
-        super.refresh();
+        super.refresh(true);
+    }
+
+    @Override
+    protected void onDataLoaded(List<Item> newItems) {
+        items.clear();
+        super.onDataLoaded(newItems);
     }
 
     @Override
