@@ -99,7 +99,7 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     @Override
     public void refresh() {
         start();
-        super.refresh(true);
+        super.refresh();
     }
 
     private void start() {
@@ -154,12 +154,6 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
                 });
 
         return true;
-    }
-
-    @Override
-    protected void onDataLoaded(List<Item> newItems) {
-        items.clear();
-        super.onDataLoaded(newItems);
     }
 
     @Override

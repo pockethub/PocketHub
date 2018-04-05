@@ -20,21 +20,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
+import com.github.pockethub.android.ui.PagedItemFragment;
 import com.github.pockethub.android.ui.item.UserItem;
+import com.github.pockethub.android.ui.user.UserViewActivity;
+import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.SearchPage;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.PagedItemFragment;
-import com.github.pockethub.android.ui.user.UserViewActivity;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
 import com.xwray.groupie.Item;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -97,17 +95,11 @@ public class SearchUserListFragment extends PagedItemFragment<User> {
         query = getStringExtra(QUERY);
         super.forceRefresh();
     }
+
     @Override
     public void refresh() {
         query = getStringExtra(QUERY);
-
-        super.refresh(true);
-    }
-
-    @Override
-    protected void onDataLoaded(List<Item> newItems) {
-        items.clear();
-        super.onDataLoaded(newItems);
+        super.refresh();
     }
 
     @Override
