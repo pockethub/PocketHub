@@ -35,9 +35,8 @@ class ResourceLoadingIndicator(loadingResId: Int, private val section: Section) 
      * Set visibility of entire indicator view.
      *
      * @param visible
-     * @return this indicator
      */
-    fun setVisible(visible: Boolean): ResourceLoadingIndicator {
+    fun setVisible(visible: Boolean) {
         if (showing != visible) {
             if (visible) {
                 section.setFooter(loadingItem)
@@ -46,6 +45,5 @@ class ResourceLoadingIndicator(loadingResId: Int, private val section: Section) 
             }
         }
         showing = visible
-        return this
     }
 }
