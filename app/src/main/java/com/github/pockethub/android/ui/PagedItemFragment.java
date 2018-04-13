@@ -85,8 +85,7 @@ public abstract class PagedItemFragment<E> extends ItemListFragment<E> {
     @Override
     protected void configureList(RecyclerView recyclerView) {
         super.configureList(recyclerView);
-        loadingIndicator = new ResourceLoadingIndicator(getLoadingMessage());
-        loadingIndicator.setSection(getMainSection());
+        loadingIndicator = new ResourceLoadingIndicator(getLoadingMessage(), getMainSection());
     }
 
     @Override

@@ -23,25 +23,13 @@ import com.xwray.groupie.Section
  * custom footer view
  *
  * @param loadingResId string resource id to show when loading
+ * @param section the adapter that this indicator should be added as a footer to.
  */
-class ResourceLoadingIndicator(loadingResId: Int) {
-
-    private var section: Section? = null
+class ResourceLoadingIndicator(loadingResId: Int, private val section: Section) {
 
     private var showing: Boolean = false
 
     private val loadingItem = LoadingItem(loadingResId)
-
-    /**
-     * Set the adapter that this indicator should be added as a footer to.
-     *
-     * @param section
-     * @return this indicator
-     */
-    fun setSection(section: Section): ResourceLoadingIndicator {
-        this.section = section
-        return this
-    }
 
     /**
      * Set visibility of entire indicator view.
@@ -50,11 +38,11 @@ class ResourceLoadingIndicator(loadingResId: Int) {
      * @return this indicator
      */
     fun setVisible(visible: Boolean): ResourceLoadingIndicator {
-        if (showing != visible && section != null) {
+        if (showing != visible) {
             if (visible) {
-                section!!.setFooter(loadingItem)
+                section.setFooter(loadingItem)
             } else {
-                section!!.removeFooter()
+                section.removeFooter()
             }
         }
         showing = visible
