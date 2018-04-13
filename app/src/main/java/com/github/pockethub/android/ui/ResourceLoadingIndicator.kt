@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.ui;
+package com.github.pockethub.android.ui
 
-import com.github.pockethub.android.ui.item.LoadingItem;
-import com.xwray.groupie.Section;
+import com.github.pockethub.android.ui.item.LoadingItem
+import com.xwray.groupie.Section
 
 /**
  * Helper for showing more items are being loaded at the bottom of a list via a
  * custom footer view
+ *
+ * @param loadingResId string resource id to show when loading
  */
-public class ResourceLoadingIndicator {
+class ResourceLoadingIndicator(loadingResId: Int) {
 
-    private Section section;
+    private var section: Section? = null
 
-    private boolean showing;
+    private var showing: Boolean = false
 
-    private final LoadingItem loadingItem;
-
-    /**
-     * Create indicator using given inflater.
-     *
-     * @param loadingResId
-     *            string resource id to show when loading
-     */
-    public ResourceLoadingIndicator(final int loadingResId) {
-        loadingItem = new LoadingItem(loadingResId);
-    }
+    private val loadingItem = LoadingItem(loadingResId)
 
     /**
      * Set the adapter that this indicator should be added as a footer to.
@@ -46,9 +38,9 @@ public class ResourceLoadingIndicator {
      * @param section
      * @return this indicator
      */
-    public ResourceLoadingIndicator setSection(final Section section) {
-        this.section = section;
-        return this;
+    fun setSection(section: Section): ResourceLoadingIndicator {
+        this.section = section
+        return this
     }
 
     /**
@@ -57,15 +49,15 @@ public class ResourceLoadingIndicator {
      * @param visible
      * @return this indicator
      */
-    public ResourceLoadingIndicator setVisible(final boolean visible) {
+    fun setVisible(visible: Boolean): ResourceLoadingIndicator {
         if (showing != visible && section != null) {
             if (visible) {
-                section.setFooter(loadingItem);
+                section!!.setFooter(loadingItem)
             } else {
-                section.removeFooter();
+                section!!.removeFooter()
             }
         }
-        showing = visible;
-        return this;
+        showing = visible
+        return this
     }
 }
