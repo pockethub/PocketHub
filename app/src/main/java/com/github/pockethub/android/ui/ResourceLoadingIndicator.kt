@@ -27,23 +27,20 @@ import com.xwray.groupie.Section
  */
 class ResourceLoadingIndicator(loadingResId: Int, private val section: Section) {
 
-    private var showing: Boolean = false
-
     private val loadingItem = LoadingItem(loadingResId)
 
     /**
-     * Set visibility of entire indicator view.
-     *
-     * @param visible
+     * Visibility of entire indicator view.
      */
-    fun setVisible(visible: Boolean) {
-        if (showing != visible) {
-            if (visible) {
-                section.setFooter(loadingItem)
-            } else {
-                section.removeFooter()
+    var visible: Boolean = false
+        set(value) {
+            if (visible != value) {
+                if (value) {
+                    section.setFooter(loadingItem)
+                } else {
+                    section.removeFooter()
+                }
+                field = value
             }
         }
-        showing = visible
-    }
 }
