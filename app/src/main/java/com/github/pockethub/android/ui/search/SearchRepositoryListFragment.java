@@ -38,6 +38,7 @@ import com.meisolsson.githubsdk.service.search.SearchService;
 import com.xwray.groupie.Item;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -87,6 +88,12 @@ public class SearchRepositoryListFragment extends PagedItemFragment<Repository> 
     public void onAttach(Context context) {
         super.onAttach(context);
         start();
+    }
+
+    @Override
+    public void forceRefresh(){
+        start();
+        super.forceRefresh();
     }
 
     @Override
