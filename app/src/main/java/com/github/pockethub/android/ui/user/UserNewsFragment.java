@@ -87,7 +87,7 @@ public abstract class UserNewsFragment extends NewsFragment implements
         org = organization;
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != org.id()) {
-            refreshWithProgress();
+            pagedListFetcher.refresh();
         }
     }
 

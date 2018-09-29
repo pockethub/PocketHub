@@ -17,8 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-
+import androidx.fragment.app.Fragment;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
 
@@ -27,7 +26,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.pockethub.android.core.issue.IssueFilter.*;
-import static com.github.pockethub.android.ui.issue.DashboardIssueFragment.ARG_FILTER;
 
 /**
  * Pager adapter for the issues dashboard
@@ -76,7 +74,7 @@ public class IssueDashboardPagerAdapter extends FragmentStatePagerAdapter {
         filterData.put(FIELD_SORT, SORT_UPDATED);
         filterData.put(FIELD_DIRECTION, DIRECTION_DESCENDING);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_FILTER, (Serializable) filterData);
+        bundle.putSerializable(DashboardIssueFragment.Companion.getARG_FILTER(), (Serializable) filterData);
         DashboardIssueFragment fragment = new DashboardIssueFragment();
         fragment.setArguments(bundle);
         return fragment;

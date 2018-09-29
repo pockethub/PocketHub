@@ -23,7 +23,7 @@ import android.view.View;
  * {@link ViewPager} extension with support for horizontally scrolling an
  * embedded {@link WebView}
  */
-public class ViewPager extends android.support.v4.view.ViewPager {
+public class ViewPager extends androidx.viewpager.widget.ViewPager {
 
     /**
      * @param context

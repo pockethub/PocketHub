@@ -17,10 +17,6 @@ package com.github.pockethub.android.ui.ref;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -29,36 +25,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-
-import com.github.pockethub.android.rx.AutoDisposeUtils;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
-import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.Intents.Builder;
+import androidx.appcompat.app.ActionBar;
+import butterknife.BindView;
+import com.github.pockethub.android.Intents.*;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
+import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MarkdownLoader;
-import com.github.pockethub.android.util.AvatarLoader;
-import com.github.pockethub.android.util.HttpImageGetter;
-import com.github.pockethub.android.util.InfoUtils;
-import com.github.pockethub.android.util.MarkdownUtils;
-import com.github.pockethub.android.util.PreferenceUtils;
-import com.github.pockethub.android.util.ShareUtils;
-import com.github.pockethub.android.util.SourceEditor;
-import com.github.pockethub.android.util.ToastUtils;
+import com.github.pockethub.android.util.*;
+import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.git.GitBlob;
 import com.meisolsson.githubsdk.service.git.GitService;
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.github.pockethub.android.Intents.EXTRA_BASE;
-import static com.github.pockethub.android.Intents.EXTRA_HEAD;
-import static com.github.pockethub.android.Intents.EXTRA_PATH;
-import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
+import javax.inject.Inject;
+
+import static com.github.pockethub.android.Intents.*;
 import static com.github.pockethub.android.util.PreferenceUtils.RENDER_MARKDOWN;
 import static com.github.pockethub.android.util.PreferenceUtils.WRAP;
 

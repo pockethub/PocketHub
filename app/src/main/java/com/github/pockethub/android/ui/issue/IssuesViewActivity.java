@@ -17,9 +17,8 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
@@ -44,7 +43,6 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicReference;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;

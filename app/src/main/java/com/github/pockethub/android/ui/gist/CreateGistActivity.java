@@ -16,12 +16,10 @@
 package com.github.pockethub.android.ui.gist;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
+import com.google.android.material.appbar.AppBarLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,7 +31,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
 import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.TextWatcherAdapter;
 import com.github.pockethub.android.util.ShareUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -45,7 +42,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.OnCheckedChanged;
 import butterknife.OnFocusChange;
 import butterknife.OnTextChanged;

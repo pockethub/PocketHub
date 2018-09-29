@@ -19,27 +19,24 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.github.pockethub.android.ui.BaseActivity;
-import com.meisolsson.githubsdk.model.Repository;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
+import com.meisolsson.githubsdk.model.Repository;
+
 import javax.inject.Inject;
 
 import static android.app.SearchManager.APP_DATA;
 import static android.app.SearchManager.QUERY;
-import static android.content.Intent.ACTION_SEARCH;
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static android.content.Intent.*;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
 
 /**
@@ -110,7 +107,7 @@ public class IssueSearchActivity extends BaseActivity {
         }
 
         issueFragment = (SearchIssueListFragment) getSupportFragmentManager()
-            .findFragmentById(android.R.id.list);
+            .findFragmentById(R.id.list);
 
         handleIntent(getIntent());
     }
@@ -118,9 +115,8 @@ public class IssueSearchActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
-        issueFragment.setListShown(false);
         handleIntent(intent);
-        issueFragment.refresh();
+        issueFragment.pagedListFetcher.refresh();
     }
 
     private void handleIntent(Intent intent) {

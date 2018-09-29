@@ -17,15 +17,20 @@ package com.github.pockethub.android.ui.code
 
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.text.bold
-import androidx.text.buildSpannedString
-import androidx.text.color
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
@@ -48,17 +53,21 @@ import com.github.pockethub.android.util.ToastUtils
 import com.github.pockethub.android.util.android.text.url
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.model.git.GitReference
-import com.xwray.groupie.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Item
+import com.xwray.groupie.OnItemClickListener
+import com.xwray.groupie.Section
+import com.xwray.groupie.ViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.*
+import java.util.LinkedList
 
 /**
  * Fragment to display a repository's source code tree
  */
 class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
 
-    @BindView(android.R.id.list)
+    @BindView(R.id.list)
     lateinit var recyclerView: RecyclerView
 
     @BindView(R.id.pb_loading)

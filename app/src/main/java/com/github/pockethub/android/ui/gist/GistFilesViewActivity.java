@@ -17,9 +17,9 @@ package com.github.pockethub.android.ui.gist;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.tabs.TabLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -30,9 +30,7 @@ import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.core.gist.FullGist;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.core.gist.RefreshGistTask;
 import com.github.pockethub.android.ui.FragmentProvider;
 import com.github.pockethub.android.ui.PagerActivity;
 import com.github.pockethub.android.ui.ViewPager;
@@ -40,7 +38,6 @@ import com.github.pockethub.android.util.AvatarLoader;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 

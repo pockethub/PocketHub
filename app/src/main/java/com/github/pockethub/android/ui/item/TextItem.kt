@@ -1,7 +1,7 @@
 package com.github.pockethub.android.ui.item
 
-import android.support.annotation.IdRes
-import android.support.annotation.LayoutRes
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import android.widget.TextView
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

@@ -20,37 +20,42 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
+import androidx.appcompat.widget.SearchView
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import com.github.pockethub.android.Intents.*
+import com.github.pockethub.android.ItemListHandler
+import com.github.pockethub.android.PagedListFetcher
+import com.github.pockethub.android.PagedScrollListener
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.*
 import com.github.pockethub.android.core.issue.IssueFilter
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.persistence.AccountDataManager
-import com.github.pockethub.android.ui.PagedItemFragment
+import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.ui.item.issue.IssueFilterHeaderItem
 import com.github.pockethub.android.ui.item.issue.IssueItem
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ToastUtils
-import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Issue
 import com.meisolsson.githubsdk.model.Page
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.service.issues.IssueService
 import com.xwray.groupie.Item
+import com.xwray.groupie.OnItemClickListener
 import io.reactivex.Single
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import retrofit2.Response
 import javax.inject.Inject
 
 /**
  * Fragment to display a list of issues
  */
-class IssuesFragment : PagedItemFragment<Issue>() {
+class IssuesFragment : BaseFragment() {
 
     @Inject
     lateinit var cache: AccountDataManager
@@ -61,9 +66,21 @@ class IssuesFragment : PagedItemFragment<Issue>() {
     @Inject
     lateinit var avatars: AvatarLoader
 
-    private var service = ServiceGenerator.createService(activity, IssueService::class.java)
+    @Inject
+    lateinit var service: IssueService
+
+    private lateinit var pagedListFetcher: PagedListFetcher<Issue>
+
+    private lateinit var itemListHandler: ItemListHandler
+
+    private lateinit var pagedScrollListener: PagedScrollListener
+
     private var filter: IssueFilter? = null
     private var repository: Repository? = null
+
+    val loadingMessage = R.string.loading_issues
+
+    val errorMessage= R.string.error_issues_load
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -80,24 +97,50 @@ class IssuesFragment : PagedItemFragment<Issue>() {
         }
     }
 
-    override fun configureList(recyclerView: RecyclerView) {
-        super.configureList(recyclerView)
-        mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_item_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        itemListHandler = ItemListHandler(
+            view.list,
+            view.empty,
+            lifecycle,
+            activity,
+            OnItemClickListener(this::onItemClick)
+        )
 
-        setEmptyText(R.string.no_issues)
+        pagedListFetcher = PagedListFetcher(
+            view.swipe_item,
+            lifecycle,
+            itemListHandler,
+            { t -> ToastUtils.show(activity, errorMessage)},
+            this::loadData,
+            this::createItem
+        )
+
+        pagedScrollListener = PagedScrollListener(
+            itemListHandler.mainSection,
+            pagedListFetcher,
+            view.list,
+            loadingMessage
+        )
+        itemListHandler.setEmptyText(R.string.no_issues)
+        itemListHandler.mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
     }
 
-    override fun onItemClick(item: Item<*>, view: View) {
+    private fun onItemClick(item: Item<*>, view: View) {
         if (item is IssueItem) {
             // Remove one since we have a header
-            val position = listAdapter.getAdapterPosition(item) - 1
-            val issues = items
-                    .filterIsInstance<IssueItem>()
-                    .map { it.issue }
+            val position = itemListHandler.getItemPosition(item) - 1
+            val issues = itemListHandler.items
+                .filterIsInstance<IssueItem>()
+                .map { it.issue }
 
             startActivityForResult(IssuesViewActivity.createIntent(issues, repository, position), ISSUE_VIEW)
         } else if (item is IssueFilterHeaderItem) {
@@ -124,7 +167,7 @@ class IssuesFragment : PagedItemFragment<Issue>() {
         }
         when (item.itemId) {
             R.id.m_refresh -> {
-                forceRefresh()
+                pagedListFetcher.refresh()
                 return true
             }
             R.id.create_issue -> {
@@ -149,21 +192,20 @@ class IssuesFragment : PagedItemFragment<Issue>() {
             val newFilter = data.getParcelableExtra<IssueFilter>(EXTRA_ISSUE_FILTER)
             if (filter != newFilter) {
                 filter = newFilter
-                mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
-                refreshWithProgress()
+                itemListHandler.mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))
+                pagedListFetcher.refresh()
                 return
             }
         }
 
         if (requestCode == ISSUE_VIEW) {
-            notifyDataSetChanged()
-            forceRefresh()
+            pagedListFetcher.refresh()
             return
         }
 
         if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
             val created = data!!.getParcelableExtra<Issue>(EXTRA_ISSUE)
-            forceRefresh()
+            pagedListFetcher.refresh()
             startActivityForResult(IssuesViewActivity.createIntent(created, repository), ISSUE_VIEW)
             return
         }
@@ -171,13 +213,14 @@ class IssuesFragment : PagedItemFragment<Issue>() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun loadData(page: Int): Single<Response<Page<Issue>>> {
-        return service.getRepositoryIssues(repository!!.owner()!!.login(), repository!!.name(), filter!!.toFilterMap(), page.toLong())
+    private fun loadData(page: Int): Single<Response<Page<Issue>>> {
+        return service.getRepositoryIssues(
+            repository!!.owner()!!.login(),
+            repository!!.name(),
+            filter!!.toFilterMap(),
+            page.toLong()
+        )
     }
 
-    override fun getLoadingMessage() = R.string.loading_issues
-
-    override fun getErrorMessage() = R.string.error_issues_load
-
-    override fun createItem(item: Issue) = IssueItem(avatars, item)
+    private fun createItem(item: Issue) = IssueItem(avatars, item)
 }

@@ -1,7 +1,7 @@
 package com.github.pockethub.android.rx;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 

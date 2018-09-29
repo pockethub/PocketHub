@@ -2,11 +2,15 @@ package com.github.pockethub.android.ui.item.repository
 
 import android.text.TextUtils
 import android.view.View
-import androidx.text.bold
-import androidx.text.buildSpannedString
-import androidx.text.color
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.view.OcticonTextView.*
+import com.github.pockethub.android.ui.view.OcticonTextView.ICON_FORK
+import com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PRIVATE
+import com.github.pockethub.android.ui.view.OcticonTextView.ICON_MIRROR_PUBLIC
+import com.github.pockethub.android.ui.view.OcticonTextView.ICON_PRIVATE
+import com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.model.User
 import com.xwray.groupie.kotlinandroidextensions.Item

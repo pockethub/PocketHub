@@ -1,18 +1,19 @@
 package com.github.pockethub.android;
 
 import android.content.Context;
-
 import com.meisolsson.githubsdk.core.ServiceGenerator;
+import com.meisolsson.githubsdk.service.activity.NotificationService;
 import com.meisolsson.githubsdk.service.gists.GistService;
 import com.meisolsson.githubsdk.service.issues.IssueService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommentService;
 import com.meisolsson.githubsdk.service.repositories.RepositoryCommitService;
+import com.meisolsson.githubsdk.service.repositories.RepositoryService;
+import com.meisolsson.githubsdk.service.search.SearchService;
 import com.meisolsson.githubsdk.service.users.UserService;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
 
 @Module
 public class GitHubModule {
@@ -45,5 +46,23 @@ public class GitHubModule {
     @Singleton
     IssueService providesIssueService(Context context) {
         return ServiceGenerator.createService(context, IssueService.class);
+    }
+
+    @Provides
+    @Singleton
+    RepositoryService providesRepositoryService(Context context) {
+        return ServiceGenerator.createService(context, RepositoryService.class);
+    }
+
+    @Provides
+    @Singleton
+    NotificationService providesNotificationService(Context context) {
+        return ServiceGenerator.createService(context, NotificationService.class);
+    }
+
+    @Provides
+    @Singleton
+    SearchService providesSearchService(Context context) {
+        return ServiceGenerator.createService(context, SearchService.class);
     }
 }

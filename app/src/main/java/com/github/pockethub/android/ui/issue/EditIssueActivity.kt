@@ -21,8 +21,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
@@ -34,8 +34,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout.LayoutParams
 import android.widget.TextView
-import androidx.text.bold
-import androidx.text.buildSpannedString
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
 import butterknife.BindView
 import butterknife.OnClick
 import butterknife.OnTextChanged
@@ -206,11 +206,11 @@ class EditIssueActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK) {
-            ImageBinPoster.post(this, data.data!!)
+            ImageBinPoster.post(this, data?.data!!)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .compose(RxProgress.bindToLifecycle(this, R.string.loading))

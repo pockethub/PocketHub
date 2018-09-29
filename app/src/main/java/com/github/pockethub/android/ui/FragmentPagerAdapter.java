@@ -15,10 +15,10 @@
  */
 package com.github.pockethub.android.ui;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.ViewGroup;
 
 import java.util.HashSet;
@@ -28,7 +28,7 @@ import java.util.Set;
  * Pager adapter that provides the current fragment
  */
 public abstract class FragmentPagerAdapter extends
-    android.support.v4.app.FragmentPagerAdapter implements FragmentProvider {
+        androidx.fragment.app.FragmentPagerAdapter implements FragmentProvider {
 
     private final AppCompatActivity activity;
 

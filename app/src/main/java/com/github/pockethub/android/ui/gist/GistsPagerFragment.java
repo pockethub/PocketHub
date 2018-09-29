@@ -18,8 +18,8 @@ package com.github.pockethub.android.ui.gist;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +30,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.TabPagerFragment;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;

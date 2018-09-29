@@ -18,21 +18,16 @@ package com.github.pockethub.android.ui.gist;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ProgressBar;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.accounts.AccountUtils;
 import com.github.pockethub.android.core.OnLoadListener;
@@ -64,26 +59,21 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.Section;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
-
-import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.github.pockethub.android.Intents.EXTRA_COMMENT;
 import static com.github.pockethub.android.Intents.EXTRA_GIST_ID;
-import static com.github.pockethub.android.RequestCodes.COMMENT_CREATE;
-import static com.github.pockethub.android.RequestCodes.COMMENT_DELETE;
-import static com.github.pockethub.android.RequestCodes.COMMENT_EDIT;
+import static com.github.pockethub.android.RequestCodes.*;
 
 /**
  * Activity to display an existing Gist
@@ -98,7 +88,7 @@ public class GistFragment extends BaseFragment implements OnItemClickListener, D
 
     private Gist gist;
 
-    @BindView(android.R.id.list)
+    @BindView(R.id.list)
     protected RecyclerView list;
 
     @BindView(R.id.pb_loading)

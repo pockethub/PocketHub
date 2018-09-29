@@ -3,7 +3,7 @@ package com.github.pockethub.android.ui.item.news
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.view.View
-import androidx.text.buildSpannedString
+import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.util.android.text.monospace
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader

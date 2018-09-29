@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
-apply from: 'quality.gradle'
+//apply from: 'quality.gradle'
 
 repositories {
     flatDir {
@@ -30,8 +30,7 @@ def addConfigValues = { name, isDebug, suffix = "" ->
 }
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId 'com.github.pockethub.android'
@@ -146,14 +145,13 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    def supportVersion = '27.1.0'
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'androidx.core:core-ktx:0.2'
+    implementation 'androidx.core:core-ktx:1.0.0'
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -175,8 +173,8 @@ dependencies {
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     kapt 'com.google.auto.factory:auto-factory:1.0-beta5'
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
+    kapt 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
 
     implementation 'com.github.meisolsson:githubsdk:0.5.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
@@ -186,6 +184,6 @@ dependencies {
     //Libs for testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation "org.mockito:mockito-core:2.15.0"
+    testImplementation "org.mockito:mockito-core:2.18.3"
     testImplementation "org.robolectric:robolectric:3.7.1"
 }

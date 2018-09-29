@@ -15,8 +15,6 @@
  */
 package com.github.pockethub.android.ui.user;
 
-import android.os.Bundle;
-
 import com.github.pockethub.android.R;
 
 
@@ -26,10 +24,8 @@ import com.github.pockethub.android.R;
 public abstract class FollowersFragment extends PagedUserFragment {
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        setEmptyText(R.string.no_followers);
+    protected int getEmptyText() {
+        return R.string.no_followers;
     }
 
     @Override

@@ -4,7 +4,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.TypefaceSpan
 import android.text.style.URLSpan
 import android.view.View
-import androidx.text.inSpans
+import androidx.core.text.inSpans
 import com.github.pockethub.android.util.TimeUtils
 import java.util.*
 

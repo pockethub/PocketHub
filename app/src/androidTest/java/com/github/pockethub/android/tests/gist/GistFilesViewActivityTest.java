@@ -15,27 +15,19 @@
  */
 package com.github.pockethub.android.tests.gist;
 
-import android.app.Application;
-import android.app.Instrumentation;
 import android.content.Context;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewPager;
+import androidx.collection.ArrayMap;
+import androidx.viewpager.widget.ViewPager;
 
-import com.github.pockethub.android.GitHubModule;
 import com.github.pockethub.android.PocketHub;
-import com.github.pockethub.android.PocketHubModule;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import java.util.Map;
-
-import dagger.Component;
 
 /**
  * Tests of {@link GistFilesViewActivity}

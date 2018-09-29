@@ -20,9 +20,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,7 +86,7 @@ import static com.github.pockethub.android.RequestCodes.COMMENT_CREATE;
 public class CommitDiffListFragment extends BaseFragment implements OnItemClickListener {
 
 
-    @BindView(android.R.id.list)
+    @BindView(R.id.list)
     protected RecyclerView list;
 
     @BindView(R.id.pb_loading)

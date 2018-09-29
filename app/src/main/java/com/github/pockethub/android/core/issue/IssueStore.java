@@ -16,22 +16,18 @@
 package com.github.pockethub.android.core.issue;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.widget.Toast;
 
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.ItemStore;
 import com.github.pockethub.android.util.InfoUtils;
-import com.github.pockethub.android.util.ToastUtils;
-import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.IssueState;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 import com.meisolsson.githubsdk.service.issues.IssueService;
-import com.meisolsson.githubsdk.service.pull_request.PullRequestService;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 

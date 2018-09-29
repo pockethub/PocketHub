@@ -18,27 +18,21 @@ package com.github.pockethub.android.ui.commit;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.ProgressBar;
-
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.commit.CommitUtils;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.ui.base.BaseFragment;
-import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.ui.item.TextItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileHeaderItem;
 import com.github.pockethub.android.ui.item.commit.CommitFileLineItem;
+import com.github.pockethub.android.ui.item.commit.CommitItem;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -51,28 +45,23 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.Section;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import javax.inject.Inject;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.github.pockethub.android.Intents.EXTRA_BASE;
-import static com.github.pockethub.android.Intents.EXTRA_HEAD;
-import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
+import static com.github.pockethub.android.Intents.*;
 
 /**
  * Fragment to display a list of commits being compared
  */
 public class CommitCompareListFragment extends BaseFragment implements OnItemClickListener {
 
-    @BindView(android.R.id.list)
+    @BindView(R.id.list)
     protected RecyclerView list;
 
     @BindView(R.id.pb_loading)
@@ -132,7 +121,7 @@ public class CommitCompareListFragment extends BaseFragment implements OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_commit_diff_list, container);
+        return inflater.inflate(R.layout.fragment_commit_diff_list, container, false);
     }
 
     @Override

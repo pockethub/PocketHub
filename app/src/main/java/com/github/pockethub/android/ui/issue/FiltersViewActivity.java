@@ -17,31 +17,29 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.View;
-
+import androidx.appcompat.app.ActionBar;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.AccountDataManager;
-import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.github.pockethub.android.ui.MainActivity;
-import com.github.pockethub.android.ui.item.issue.IssueFilterItem;
-import com.xwray.groupie.Item;
-import com.xwray.groupie.OnItemLongClickListener;
+import io.reactivex.disposables.CompositeDisposable;
 
 import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+import static com.github.pockethub.android.ui.issue.FilterListFragment.ARG_FILTER;
+import static com.github.pockethub.android.ui.issue.FilterListFragment.REQUEST_DELETE;
 
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends BaseActivity implements OnItemLongClickListener {
+public class FiltersViewActivity extends BaseActivity {
+
+    private CompositeDisposable disposables;
 
     /**
      * Create intent to browse issue filters
@@ -51,10 +49,6 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
     public static Intent createIntent() {
         return new Builder("repo.issues.filters.VIEW").toIntent();
     }
-
-    private static final String ARG_FILTER = "filter";
-
-    private static final int REQUEST_DELETE = 1;
 
     @Inject
     protected AccountDataManager cache;
@@ -72,24 +66,31 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         fragment = (FilterListFragment) getSupportFragmentManager()
-            .findFragmentById(android.R.id.list);
-        fragment.getListAdapter().setOnItemLongClickListener(this);
+            .findFragmentById(R.id.list);
     }
 
     @Override
     public void onDialogResult(int requestCode, int resultCode, Bundle arguments) {
         if (requestCode == REQUEST_DELETE && resultCode == RESULT_OK) {
             IssueFilter filter = arguments.getParcelable(ARG_FILTER);
-            cache.removeIssueFilter(filter)
-                .subscribe(response -> {
-                    if (fragment != null) {
-                        fragment.refresh();
-                    }
-                });
+            disposables.add(
+                    cache.removeIssueFilter(filter)
+                            .subscribe(response -> {
+                                if (fragment != null) {
+                                    fragment.listFetcher.forceRefresh();
+                                }
+                            })
+            );
             return;
         }
 
         super.onDialogResult(requestCode, resultCode, arguments);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.dispose();
     }
 
     @Override
@@ -105,18 +106,4 @@ public class FiltersViewActivity extends BaseActivity implements OnItemLongClick
         }
     }
 
-    @Override
-    public boolean onItemLongClick(@NonNull Item item, @NonNull View view) {
-        if (item instanceof IssueFilterItem) {
-            IssueFilter filter = ((IssueFilterItem) item).getIssueFilter();
-            Bundle args = new Bundle();
-            args.putParcelable(ARG_FILTER, filter);
-            ConfirmDialogFragment.show(this, REQUEST_DELETE,
-                    getString(R.string.confirm_bookmark_delete_title),
-                    getString(R.string.confirm_bookmark_delete_message), args);
-            return true;
-        }
-
-        return false;
-    }
 }

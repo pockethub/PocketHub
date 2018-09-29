@@ -16,8 +16,8 @@
 package com.github.pockethub.android.ui.commit;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
