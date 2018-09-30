@@ -15,23 +15,28 @@
  */
 package com.github.pockethub.android.tests.repo;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
+import com.github.pockethub.android.core.repo.RepositoryEventMatcher;
 import com.meisolsson.githubsdk.model.GitHubEvent;
 import com.meisolsson.githubsdk.model.GitHubEventType;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.repo.RepositoryEventMatcher;
 import com.meisolsson.githubsdk.model.payload.ForkPayload;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link RepositoryEventMatcher}
  */
-public class RepositoryEventMatcherTest extends AndroidTestCase {
+@SmallTest
+public class RepositoryEventMatcherTest {
 
     /**
      * Test fork event that has an incomplete forkee in the payload
      */
+    @Test
     public void testIncompleteRepositoryFork() {
         RepositoryEventMatcher matcher = new RepositoryEventMatcher();
         ForkPayload payload = ForkPayload.builder().build();

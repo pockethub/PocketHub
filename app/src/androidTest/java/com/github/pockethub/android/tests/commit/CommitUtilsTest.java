@@ -15,24 +15,31 @@
  */
 package com.github.pockethub.android.tests.commit;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
+import com.github.pockethub.android.core.commit.CommitUtils;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
-import com.github.pockethub.android.core.commit.CommitUtils;
 import com.meisolsson.githubsdk.model.git.GitCommit;
 import com.meisolsson.githubsdk.model.git.GitUser;
+import org.junit.Test;
 
 import java.util.Date;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test of {@link CommitUtils}
  */
-public class CommitUtilsTest extends AndroidTestCase {
+@SmallTest
+public class CommitUtilsTest {
 
     /**
      * Test commit SHA-1 abbreviation
      */
+    @Test
     public void testAbbreviate() {
         assertNull(CommitUtils.abbreviate((GitCommit) null));
         assertNull(CommitUtils.abbreviate((Commit) null));
@@ -57,6 +64,7 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test commit name parsing from path
      */
+    @Test
     public void testGetName() {
         assertNull(CommitUtils.getName((String) null));
         assertNull(CommitUtils.getName((GitHubFile) null));
@@ -70,8 +78,8 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test commit SHA-1 evaluation
      */
+    @Test
     public void testIsValidCommit() {
-        assertFalse(CommitUtils.isValidCommit(null));
         assertFalse(CommitUtils.isValidCommit(""));
         assertTrue(CommitUtils.isValidCommit("a"));
         assertTrue(CommitUtils.isValidCommit("bbbbb"));
@@ -82,6 +90,7 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test parsing author from commit
      */
+    @Test
     public void testGetAuthor() {
         Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getAuthor(commit));
@@ -114,6 +123,7 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test parsing committer from commit
      */
+    @Test
     public void testGetCommitter() {
         Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getCommitter(commit));
@@ -155,6 +165,7 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test parsing author date from commit
      */
+    @Test
     public void testGetAuthorDate() {
         Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getAuthorDate(commit));
@@ -189,6 +200,7 @@ public class CommitUtilsTest extends AndroidTestCase {
     /**
      * Test parsing committer date from commit
      */
+    @Test
     public void testGetCommitterDate() {
         Commit commit = Commit.builder().build();
         assertNull(CommitUtils.getCommitterDate(commit));

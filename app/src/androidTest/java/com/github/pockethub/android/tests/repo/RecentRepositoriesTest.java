@@ -15,27 +15,32 @@
  */
 package com.github.pockethub.android.tests.repo;
 
-import android.test.AndroidTestCase;
-
-import com.meisolsson.githubsdk.model.User;
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.ui.repo.RecentRepositories;
+import com.meisolsson.githubsdk.model.User;
+import org.junit.Test;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static com.github.pockethub.android.ui.repo.RecentRepositories.MAX_SIZE;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Unit tests of {@link RecentRepositories}
  */
-public class RecentRepositoriesTest extends AndroidTestCase {
+@SmallTest
+public class RecentRepositoriesTest {
 
     /**
      * Verify bad input
      */
+    @Test
     public void testBadInput() {
         User org = User.builder()
                 .id(20L)
                 .build();
 
-        RecentRepositories recent = new RecentRepositories(getContext(), org);
+        RecentRepositories recent = new RecentRepositories(getTargetContext(), org);
         assertFalse(recent.contains(null));
         assertFalse(recent.contains(-1));
     }
@@ -43,12 +48,13 @@ public class RecentRepositoriesTest extends AndroidTestCase {
     /**
      * Verify eviction
      */
+    @Test
     public void testMaxReached() {
         User org = User.builder()
                 .id(20L)
                 .build();
 
-        RecentRepositories recent = new RecentRepositories(getContext(), org);
+        RecentRepositories recent = new RecentRepositories(getTargetContext(), org);
 
         for (int i = 0; i < MAX_SIZE; i++) {
             recent.add(i);
@@ -67,29 +73,31 @@ public class RecentRepositoriesTest extends AndroidTestCase {
     /**
      * Verify input/output to disk of {@link RecentRepositories} state
      */
+    @Test
     public void testIO() {
         User org = User.builder()
                 .id(20L)
                 .build();
 
-        RecentRepositories recent1 = new RecentRepositories(getContext(), org);
+        RecentRepositories recent1 = new RecentRepositories(getTargetContext(), org);
         long id = 1234;
         recent1.add(id);
         assertTrue(recent1.contains(id));
         recent1.save();
-        RecentRepositories recent2 = new RecentRepositories(getContext(), org);
+        RecentRepositories recent2 = new RecentRepositories(getTargetContext(), org);
         assertTrue(recent2.contains(id));
     }
 
     /**
      * Verify repositories are scoped to organization
      */
+    @Test
     public void testScopedStorage() {
         User org1 = User.builder()
                 .id(20L)
                 .build();
 
-        RecentRepositories recent1 = new RecentRepositories(getContext(), org1);
+        RecentRepositories recent1 = new RecentRepositories(getTargetContext(), org1);
         long id1 = 1234;
         recent1.add(id1);
         assertTrue(recent1.contains(id1));
@@ -98,14 +106,14 @@ public class RecentRepositoriesTest extends AndroidTestCase {
                 .id(40L)
                 .build();
 
-        RecentRepositories recent2 = new RecentRepositories(getContext(), org2);
+        RecentRepositories recent2 = new RecentRepositories(getTargetContext(), org2);
         assertFalse(recent2.contains(id1));
         long id2 = 2345;
         recent2.add(id2);
         assertTrue(recent2.contains(id2));
 
         recent2.save();
-        recent1 = new RecentRepositories(getContext(), org1);
+        recent1 = new RecentRepositories(getTargetContext(), org1);
         assertFalse(recent1.contains(id2));
     }
 }

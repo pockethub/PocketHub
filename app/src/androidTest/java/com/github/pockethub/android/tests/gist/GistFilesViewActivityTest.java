@@ -17,38 +17,38 @@ package com.github.pockethub.android.tests.gist;
 
 import android.content.Context;
 import androidx.collection.ArrayMap;
+import androidx.test.rule.ActivityTestRule;
 import androidx.viewpager.widget.ViewPager;
-
 import com.github.pockethub.android.PocketHub;
 import com.github.pockethub.android.R.id;
 import com.github.pockethub.android.core.gist.GistStore;
-import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.GistFilesViewActivity;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.util.Map;
+
+import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests of {@link GistFilesViewActivity}
  */
-public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivity> {
+public class GistFilesViewActivityTest {
 
     protected GistStore store;
 
     private Gist gist;
 
-    /**
-     * Create navigation_drawer_header_background
-     */
-    public GistFilesViewActivityTest() {
-        super(GistFilesViewActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<GistFilesViewActivity> activityTestRule =
+            new ActivityTestRule<>(GistFilesViewActivity.class, false, false);
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() {
         Context context = getInstrumentation().getTargetContext();
         PocketHub pocketHub = (PocketHub) context.getApplicationContext();
         store = pocketHub.applicationComponent().gistStore();
@@ -73,7 +73,7 @@ public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivit
                 .build();
 
         store.addGist(gist);
-        setActivityIntent(GistFilesViewActivity.createIntent(gist, 0));
+        activityTestRule.launchActivity(GistFilesViewActivity.createIntent(gist, 0));
     }
 
     /**
@@ -81,13 +81,14 @@ public class GistFilesViewActivityTest extends ActivityTest<GistFilesViewActivit
      *
      * @throws Throwable
      */
+    @Test
     public void testChangingPages() throws Throwable {
-        final ViewPager pager = (ViewPager) getActivity().findViewById(
-            id.vp_pages);
+        final ViewPager pager = activityTestRule.getActivity().findViewById(id.vp_pages);
+
         assertEquals(0, pager.getCurrentItem());
-        ui(() -> pager.setCurrentItem(1, true));
+        activityTestRule.runOnUiThread(() -> pager.setCurrentItem(1, true));
         assertEquals(1, pager.getCurrentItem());
-        ui(() -> pager.setCurrentItem(0, true));
+        activityTestRule.runOnUiThread(() -> pager.setCurrentItem(0, true));
         assertEquals(0, pager.getCurrentItem());
     }
 }

@@ -16,37 +16,42 @@
 package com.github.pockethub.android.tests.gist;
 
 import android.content.Intent;
-import android.view.View;
-import android.widget.EditText;
-
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.rule.ActivityTestRule;
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.R.id;
-import com.github.pockethub.android.tests.ActivityTest;
 import com.github.pockethub.android.ui.gist.CreateGistActivity;
+import org.junit.Rule;
+import org.junit.Test;
 
 import static android.content.Intent.EXTRA_TEXT;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Tests of {@link CreateGistActivity}
  */
-public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
+public class CreateGistActivityTest {
 
-    /**
-     * Create navigation_drawer_header_background
-     */
-    public CreateGistActivityTest() {
-        super(CreateGistActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<CreateGistActivity> activityTestRule =
+            new ActivityTestRule<>(CreateGistActivity.class, false, false);
 
     /**
      * Create Gist with initial text
      */
+    @Test
     public void testCreateWithInitialText() {
-        setActivityIntent(new Intent().putExtra(EXTRA_TEXT, "gist content"));
+        activityTestRule.launchActivity(new Intent().putExtra(EXTRA_TEXT, "gist content"));
 
-        View createMenu = view(id.create_gist);
-        assertTrue(createMenu.isEnabled());
-        EditText content = editText(id.et_gist_content);
-        assertEquals("gist content", content.getText().toString());
+        onView(withId(id.create_gist))
+                .check(ViewAssertions.matches(isEnabled()));
+
+        onView(withId(id.et_gist_content))
+                .check(ViewAssertions.matches(withText("gist content")));
     }
 
     /**
@@ -54,12 +59,16 @@ public class CreateGistActivityTest extends ActivityTest<CreateGistActivity> {
      *
      * @throws Throwable
      */
+    @Test
     public void testCreateWithNoInitialText() throws Throwable {
-        View createMenu = view(id.create_gist);
-        assertFalse(createMenu.isEnabled());
-        EditText content = editText(id.et_gist_content);
-        focus(content);
-        send("gist content");
-        assertTrue(createMenu.isEnabled());
+        activityTestRule.launchActivity(new Intent());
+        ViewInteraction createMenu = onView(withId(R.id.create_gist));
+        ViewInteraction content = onView(withId(R.id.et_gist_content));
+
+        createMenu.check(ViewAssertions.matches(not(isEnabled())));
+
+        content.perform(ViewActions.typeText("gist content"));
+
+        createMenu.check(ViewAssertions.matches(isEnabled()));
     }
 }

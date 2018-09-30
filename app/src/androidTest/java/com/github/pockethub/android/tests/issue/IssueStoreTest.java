@@ -15,23 +15,27 @@
  */
 package com.github.pockethub.android.tests.issue;
 
-import android.test.AndroidTestCase;
-
-import com.meisolsson.githubsdk.model.Issue;
-import com.meisolsson.githubsdk.model.Repository;
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Issue;
+import com.meisolsson.githubsdk.model.Repository;
+import org.junit.Test;
 
-import static android.test.MoreAsserts.assertNotEqual;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link IssueStore}
  */
-public class IssueStoreTest extends AndroidTestCase {
+@SmallTest
+public class IssueStoreTest {
 
     /**
      * Verify issue is updated when re-added
      */
+    @Test
     public void testReuseIssue() {
         IssueStore store = new IssueStore();
         Repository repo = InfoUtils.createRepoFromData("owner", "name");
@@ -52,8 +56,8 @@ public class IssueStoreTest extends AndroidTestCase {
                 .body("body2")
                 .build();
 
-        assertNotEqual(issue, store.addIssue(issue2));
-        assertNotEqual(issue2.body(), issue.body());
-        assertNotEqual(issue, store.getIssue(repo, 1));
+        assertNotEquals(issue, store.addIssue(issue2));
+        assertNotEquals(issue2.body(), issue.body());
+        assertNotEquals(issue, store.getIssue(repo, 1));
     }
 }

@@ -15,34 +15,35 @@
  */
 package com.github.pockethub.android.tests.commit;
 
-import android.view.View;
-import android.widget.EditText;
-
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.rule.ActivityTestRule;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.ui.commit.CreateCommentActivity;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R.id;
-import com.github.pockethub.android.tests.ActivityTest;
-import com.github.pockethub.android.ui.commit.CreateCommentActivity;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
-import static android.view.KeyEvent.KEYCODE_DEL;
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Tests of {@link CreateCommentActivity}
  */
-public class CreateCommentActivityTest extends
-    ActivityTest<CreateCommentActivity> {
+public class CreateCommentActivityTest {
 
-    /**
-     * Create navigation_drawer_header_background
-     */
-    public CreateCommentActivityTest() {
-        super(CreateCommentActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<CreateCommentActivity> activityTestRule =
+            new ActivityTestRule<>(CreateCommentActivity.class, false, false);
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() {
         User user = User.builder()
                 .login("owner")
                 .build();
@@ -51,7 +52,8 @@ public class CreateCommentActivityTest extends
                 .name("name")
                 .owner(user)
                 .build();
-        setActivityIntent(CreateCommentActivity.createIntent(repo, "abcdef"));
+
+        activityTestRule.launchActivity(CreateCommentActivity.createIntent(repo, "abcdef"));
     }
 
     /**
@@ -61,14 +63,19 @@ public class CreateCommentActivityTest extends
      *
      * @throws Throwable
      */
-    public void testEmptyCommentIsProhitibed() throws Throwable {
-        View createMenu = view(id.m_apply);
-        assertFalse(createMenu.isEnabled());
-        final EditText comment = editText(id.et_comment);
-        focus(comment);
-        send("a");
-        assertTrue(createMenu.isEnabled());
-        sendKeys(KEYCODE_DEL);
-        assertFalse(createMenu.isEnabled());
+    @Test
+    public void testEmptyCommentIsProhibited() {
+        ViewInteraction createMenu = onView(withId(R.id.m_apply));
+        ViewInteraction comment = onView(withId(R.id.et_comment));
+
+        createMenu.check(ViewAssertions.matches(not(isEnabled())));
+
+        closeSoftKeyboard();
+        comment.perform(ViewActions.typeText("a"));
+
+        createMenu.check(ViewAssertions.matches(isEnabled()));
+        comment.perform(ViewActions.replaceText(""));
+
+        createMenu.check(ViewAssertions.matches(not(isEnabled())));
     }
 }

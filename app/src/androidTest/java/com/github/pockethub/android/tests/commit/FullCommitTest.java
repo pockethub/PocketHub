@@ -15,25 +15,31 @@
  */
 package com.github.pockethub.android.tests.commit;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.commit.FullCommit;
 import com.meisolsson.githubsdk.model.Commit;
 import com.meisolsson.githubsdk.model.GitHubFile;
 import com.meisolsson.githubsdk.model.git.GitComment;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Tests of {@link FullCommit}
  */
-public class FullCommitTest extends AndroidTestCase {
+@SmallTest
+public class FullCommitTest {
 
     /**
      * Test commit with one file and one line comment
      */
+    @Test
     public void testSingleLineCommentSingleFile() {
         GitHubFile file = GitHubFile.builder()
                 .filename("a.txt")
@@ -59,6 +65,7 @@ public class FullCommitTest extends AndroidTestCase {
     /**
      * Test commit with one file and one commit comment
      */
+    @Test
     public void testSingleCommentSingleFile() {
         GitHubFile file = GitHubFile.builder()
                 .filename("a.txt")
@@ -79,6 +86,7 @@ public class FullCommitTest extends AndroidTestCase {
     /**
      * Test commit with no files and one commit comment
      */
+    @Test
     public void testSingleCommentNoFiles() {
         GitComment comment = GitComment.builder().build();
 
@@ -93,6 +101,7 @@ public class FullCommitTest extends AndroidTestCase {
     /**
      * Test commit with no comments and one file
      */
+    @Test
     public void testNoCommentsSingleFile() {
         GitHubFile file = GitHubFile.builder()
                 .filename("a.txt")
@@ -110,6 +119,7 @@ public class FullCommitTest extends AndroidTestCase {
     /**
      * Test commit with line and global comments
      */
+    @Test
     public void testBothTypesOfComments() {
         GitHubFile file = GitHubFile.builder()
                 .filename("a.txt")

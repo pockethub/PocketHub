@@ -15,35 +15,37 @@
  */
 package com.github.pockethub.android.tests.issue;
 
-import android.view.View;
-import android.widget.EditText;
-
-import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.R.id;
-import com.github.pockethub.android.tests.ActivityTest;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.rule.ActivityTestRule;
+import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.issue.EditIssueActivity;
 import com.github.pockethub.android.util.InfoUtils;
+import com.meisolsson.githubsdk.model.Repository;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
-import static android.view.KeyEvent.KEYCODE_DEL;
+import static androidx.test.espresso.Espresso.closeSoftKeyboard;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.CoreMatchers.not;
 
 /**
  * Tests of {@link EditIssueActivity}
  */
-public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
+public class EditIssueActivityTest {
 
-    /**
-     * Create navigation_drawer_header_background
-     */
-    public EditIssueActivityTest() {
-        super(EditIssueActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<EditIssueActivity> activityTestRule =
+            new ActivityTestRule<>(EditIssueActivity.class, false, false);
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() {
         Repository repo = InfoUtils.createRepoFromData("owner", "repo");
-        setActivityIntent(EditIssueActivity.createIntent(repo));
+        activityTestRule.launchActivity(EditIssueActivity.Companion.createIntent(repo));
     }
 
     /**
@@ -52,14 +54,18 @@ public class EditIssueActivityTest extends ActivityTest<EditIssueActivity> {
      *
      * @throws Throwable
      */
-    public void testSaveMenuEnabled() throws Throwable {
-        View saveMenu = view(id.m_apply);
-        assertFalse(saveMenu.isEnabled());
-        EditText title = editText(id.et_issue_title);
-        focus(title);
-        send("a");
-        assertTrue(saveMenu.isEnabled());
-        sendKeys(KEYCODE_DEL);
-        assertFalse(saveMenu.isEnabled());
+    @Test
+    public void testSaveMenuEnabled() {
+        ViewInteraction createMenu = onView(withId(R.id.m_apply));
+        ViewInteraction comment = onView(withId(R.id.et_issue_title));
+
+        createMenu.check(ViewAssertions.matches(not(isEnabled())));
+
+        closeSoftKeyboard();
+        comment.perform(ViewActions.typeText("a"));
+        createMenu.check(ViewAssertions.matches(isEnabled()));
+        comment.perform(ViewActions.replaceText(""));
+
+        createMenu.check(ViewAssertions.matches(not(isEnabled())));
     }
 }

@@ -16,19 +16,25 @@
 package com.github.pockethub.android.tests.issue;
 
 import android.net.Uri;
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.issue.IssueUriMatcher;
 import com.meisolsson.githubsdk.model.Issue;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link IssueUriMatcher}
  */
-public class IssueUriMatcherTest extends AndroidTestCase {
+@SmallTest
+public class IssueUriMatcherTest {
 
     /**
      * Verify empty uri
      */
+    @Test
     public void testEmptyUri() {
         assertNull(IssueUriMatcher.getIssue(Uri.parse("")));
     }
@@ -36,6 +42,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     /**
      * Verify non-numeric issue number in uri
      */
+    @Test
     public void testNonNumericIssueNumber() {
         assertNull(IssueUriMatcher.getIssue(Uri
                 .parse("https://github.com/defunkt/resque/issues/fourty")));
@@ -44,6 +51,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     /**
      * Verify http uri
      */
+    @Test
     public void testHttpUri() {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("https://github.com/defunkt/resque/issues/3"));
@@ -58,6 +66,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     /**
      * Verify pull uri
      */
+    @Test
     public void testPullUri() {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("https://github.com/defunkt/resque/pull/3"));
@@ -72,6 +81,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     /**
      * Verify https uri
      */
+    @Test
     public void testHttpsUri() {
         Issue issue = IssueUriMatcher.getIssue(Uri
                 .parse("http://github.com/defunkt/resque/issues/15"));
@@ -86,6 +96,7 @@ public class IssueUriMatcherTest extends AndroidTestCase {
     /**
      * Verify uri with comment fragment
      */
+    @Test
     public void testCommentUri() {
         Issue issue = IssueUriMatcher
                 .getIssue(Uri

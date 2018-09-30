@@ -15,20 +15,27 @@
  */
 package com.github.pockethub.android.tests.ref;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.meisolsson.githubsdk.model.git.GitReference;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 /**
  * Tests of {@link RefUtils}
  */
-public class RefUtilsTest extends AndroidTestCase {
+@SmallTest
+public class RefUtilsTest {
 
     /**
      * Verify {@link RefUtils#isBranch(GitReference)}
      */
+    @Test
     public void testIsBranch() {
         assertFalse(RefUtils.isBranch(null));
         assertFalse(RefUtils.isBranch(GitReference.builder().build()));
@@ -42,6 +49,7 @@ public class RefUtilsTest extends AndroidTestCase {
     /**
      * Verify {@link RefUtils#isTag(GitReference)}
      */
+    @Test
     public void testIsTag() {
         assertFalse(RefUtils.isTag((GitReference) null));
         assertFalse(RefUtils.isTag(GitReference.builder().build()));
@@ -55,6 +63,7 @@ public class RefUtilsTest extends AndroidTestCase {
     /**
      * Verify {@link RefUtils#isValid(GitReference)}
      */
+    @Test
     public void testIsValid() {
         assertFalse(RefUtils.isValid(null));
         assertFalse(RefUtils.isValid(GitReference.builder().build()));
@@ -69,6 +78,7 @@ public class RefUtilsTest extends AndroidTestCase {
     /**
      * Verify {@link RefUtils#getName(GitReference)}
      */
+    @Test
     public void testGetName() {
         assertNull(RefUtils.getName((GitReference) null));
         assertNull(RefUtils.getName(GitReference.builder().build()));
@@ -87,6 +97,7 @@ public class RefUtilsTest extends AndroidTestCase {
     /**
      * Verify {@link RefUtils#getPath(GitReference)}
      */
+    @Test
     public void testGetPath() {
         assertNull(RefUtils.getPath(null));
         assertNull(RefUtils.getPath(GitReference.builder().build()));

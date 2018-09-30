@@ -16,9 +16,10 @@
 package com.github.pockethub.android.tests.repo;
 
 import android.content.Intent;
-
-import com.github.pockethub.android.tests.ActivityTest;
+import androidx.test.rule.ActivityTestRule;
 import com.github.pockethub.android.ui.search.SearchActivity;
+import org.junit.Before;
+import org.junit.Rule;
 
 import static android.app.SearchManager.QUERY;
 import static android.content.Intent.ACTION_SEARCH;
@@ -26,20 +27,17 @@ import static android.content.Intent.ACTION_SEARCH;
 /**
  * Tests of {@link SearchActivity}
  */
-public class SearchActivityTest extends
-    ActivityTest<SearchActivity> {
+public class SearchActivityTest {
 
-    /**
-     * Create navigation_drawer_header_background
-     */
-    public SearchActivityTest() {
-        super(SearchActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<SearchActivity> activityTestRule =
+            new ActivityTestRule<>(SearchActivity.class);
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() {
+        Intent intent = new Intent(ACTION_SEARCH)
+                .putExtra(QUERY, "navigation_drawer_header_background");
 
-        setActivityIntent(new Intent(ACTION_SEARCH).putExtra(QUERY, "navigation_drawer_header_background"));
+        activityTestRule.launchActivity(intent);
     }
 }

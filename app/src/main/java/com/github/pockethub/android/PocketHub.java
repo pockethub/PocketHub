@@ -16,19 +16,28 @@
 
 package com.github.pockethub.android;
 
+import android.content.Context;
+import android.os.Build;
 import android.util.Log;
-
+import androidx.multidex.MultiDex;
 import com.bugsnag.android.Bugsnag;
-
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
-import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 
 public class PocketHub extends DaggerApplication {
 
     private ApplicationComponent applicationComponent;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        if (!"robolectric".equals(Build.FINGERPRINT)) {
+            MultiDex.install(this);
+        }
+    }
 
     @Override
     public void onCreate() {

@@ -16,19 +16,23 @@
 package com.github.pockethub.android.tests.repo;
 
 import android.net.Uri;
-import android.test.AndroidTestCase;
-
-import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.core.repo.RepositoryUriMatcher;
+import com.meisolsson.githubsdk.model.Repository;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link RepositoryUriMatcher}
  */
-public class RepositoryUriMatcherTest extends AndroidTestCase {
+public class RepositoryUriMatcherTest {
 
     /**
      * Verity empty uri
      */
+    @Test
     public void testEmptyUri() {
         assertNull(RepositoryUriMatcher.getRepository(Uri.parse("")));
     }
@@ -36,6 +40,7 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with no owner
      */
+    @Test
     public void testUriWithNoOnwer() {
         assertNull(RepositoryUriMatcher.getRepository(Uri
                 .parse("http://github.com")));
@@ -48,6 +53,7 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with owner but no name
      */
+    @Test
     public void testUriWithNoName() {
         assertNull(RepositoryUriMatcher.getRepository(Uri
                 .parse("http://github.com/defunkt")));
@@ -58,6 +64,7 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with owner but no name
      */
+    @Test
     public void testHttpUriWithOwnerAndName() {
         Repository repo = RepositoryUriMatcher.getRepository(Uri
                 .parse("http://github.com/defunkt/resque"));
@@ -70,6 +77,7 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with owner but no name
      */
+    @Test
     public void testHttpsUriWithOwnerAndName() {
         Repository repo = RepositoryUriMatcher.getRepository(Uri
                 .parse("https://github.com/mojombo/jekyll"));
@@ -82,6 +90,7 @@ public class RepositoryUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with white-listed owner
      */
+    @Test
     public void testInvalidOwner() {
         assertNull(RepositoryUriMatcher.getRepository(Uri
                 .parse("http://github.com/blog/page1")));

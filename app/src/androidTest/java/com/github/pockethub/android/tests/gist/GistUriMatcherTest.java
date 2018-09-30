@@ -16,19 +16,25 @@
 package com.github.pockethub.android.tests.gist;
 
 import android.net.Uri;
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.gist.GistUriMatcher;
 import com.meisolsson.githubsdk.model.Gist;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link GistUriMatcher}
  */
-public class GistUriMatcherTest extends AndroidTestCase {
+@SmallTest
+public class GistUriMatcherTest {
 
     /**
      * Verify empty uri
      */
+    @Test
     public void testEmptyUri() {
         assertNull(GistUriMatcher.getGist(Uri.parse("")));
     }
@@ -36,6 +42,7 @@ public class GistUriMatcherTest extends AndroidTestCase {
     /**
      * Verify invalid Gist ids in URIs
      */
+    @Test
     public void testNonGistId() {
         assertNull(GistUriMatcher.getGist(Uri
                 .parse("https://gist.github.com/TEST")));
@@ -48,6 +55,7 @@ public class GistUriMatcherTest extends AndroidTestCase {
     /**
      * Verify public Gist id
      */
+    @Test
     public void testPublicGist() {
         Gist gist = GistUriMatcher.getGist(Uri
                 .parse("https://gist.github.com/1234"));
@@ -58,6 +66,7 @@ public class GistUriMatcherTest extends AndroidTestCase {
     /**
      * Verify public Gist id
      */
+    @Test
     public void testPrivateGist() {
         Gist gist = GistUriMatcher.getGist(Uri
                 .parse("https://gist.github.com/abcd1234abcd1234abcd"));
