@@ -357,7 +357,8 @@
         </activity>
 
         <activity android:name=".accounts.LoginWebViewActivity"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <service
             android:name=".sync.SyncAdapterService"
