@@ -446,6 +446,10 @@ class EditIssueActivity : BaseActivity() {
                     if (response.code() == 204) {
                         showCollaboratorOptions()
                     }
+                }, { e ->
+                    showMainContent()
+                    Log.e(TAG, "Exception creating issue", e)
+                    ToastUtils.show(this, e.message)
                 })
     }
 

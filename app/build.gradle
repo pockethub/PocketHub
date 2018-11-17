@@ -149,15 +149,13 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:multidex:1.0.3'
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'androidx.core:core-ktx:1.0.0'
+    implementation 'androidx.core:core-ktx:1.0.1'
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -169,12 +167,12 @@ dependencies {
 
     implementation 'com.bugsnag:bugsnag-android:4.3.1'
 
-    implementation 'com.google.dagger:dagger:2.15'
+    implementation 'com.google.dagger:dagger:2.16'
     implementation 'com.google.dagger:dagger-android:2.15'
     implementation 'com.google.dagger:dagger-android-support:2.15'
     
-    kapt 'com.google.dagger:dagger-compiler:2.15'
-    kapt 'com.google.dagger:dagger-android-processor:2.15'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
+    kapt 'com.google.dagger:dagger-android-processor:2.16'
 
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     kapt 'com.google.auto.factory:auto-factory:1.0-beta5'
