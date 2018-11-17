@@ -30,6 +30,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import com.squareup.picasso.Transformation
 import okhttp3.Cache
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import java.io.File
 import javax.inject.Inject
@@ -147,10 +148,18 @@ class AvatarLoader @Inject constructor(context: Context) {
         }
 
         val avatarUrl = user.avatarUrl()
-        return if (avatarUrl.isNullOrEmpty()) {
+        val email = user.email()
+        return if (avatarUrl != null && avatarUrl.isNotBlank()) {
+            HttpUrl.parse(avatarUrl)
+                ?.newBuilder()
+                ?.addQueryParameter("size", avatarSize.toString())
+                ?.build()
+                ?.toString()
+        } else if (email != null && email.isNotBlank()){
             getAvatarUrl(GravatarUtils.getHash(user.email()))
         } else {
-            avatarUrl
+            // This redirects to avatar URL
+            "http://github.com/${user.login()}.png?size=$avatarSize"
         }
     }
 
