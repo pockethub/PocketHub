@@ -87,10 +87,11 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
         codePrefs!!.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    override fun onCreateOptionsMenu(optionsMenu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.fragment_code_view, optionsMenu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_code_view, menu)
 
-        wrapItem = optionsMenu!!.findItem(R.id.m_wrap)
+        wrapItem = menu.findItem(R.id.m_wrap)
         updateWrapItem()
     }
 
@@ -105,8 +106,8 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
     }
 
     @SuppressLint("CommitPrefEdits")
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.m_wrap -> {
                 if (editor.wrap) {
                     item.setTitle(R.string.enable_wrapping)

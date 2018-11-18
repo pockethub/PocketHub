@@ -108,11 +108,11 @@ abstract class GistsFragment : BaseFragment() {
 
     protected abstract fun loadData(page: Int): Single<Response<Page<Gist>>>
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (!isAdded) {
             return false
         }
-        return when (item!!.itemId) {
+        return when (item.itemId) {
             R.id.m_create -> {
                 startActivityForResult(Intent(activity,
                     CreateGistActivity::class.java), GIST_CREATE)

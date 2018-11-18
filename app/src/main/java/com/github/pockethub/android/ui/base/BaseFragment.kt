@@ -17,9 +17,16 @@
 package com.github.pockethub.android.ui.base
 
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.annotation.CallSuper
+import com.github.pockethub.android.ui.OptionsMenuListener
 import dagger.android.support.DaggerFragment
 
 abstract class BaseFragment : DaggerFragment() {
+
+    var optionsMenuListener: OptionsMenuListener? = null
 
     /**
      * Get parcelable extra from activity's intent
@@ -33,5 +40,28 @@ abstract class BaseFragment : DaggerFragment() {
      */
     protected fun getStringExtra(name: String): String? {
         return activity?.intent?.getStringExtra(name)
+    }
+
+    @CallSuper
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        optionsMenuListener?.onCreateOptionsMenu(menu, inflater)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+
+    @CallSuper
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val usedEvent = optionsMenuListener?.onOptionsItemSelected(item)
+        if (usedEvent != null && usedEvent) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    @CallSuper
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        optionsMenuListener?.onPrepareOptionsMenu(menu)
+        super.onPrepareOptionsMenu(menu)
     }
 }

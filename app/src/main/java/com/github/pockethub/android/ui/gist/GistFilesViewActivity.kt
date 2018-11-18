@@ -28,8 +28,8 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.gist.GistStore
 import com.github.pockethub.android.core.gist.RefreshGistTaskFactory
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.FragmentProvider
-import com.github.pockethub.android.ui.PagerActivity
+import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Gist
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -40,7 +40,7 @@ import javax.inject.Inject
 /**
  * Activity to page through the content of all the files in a Gist
  */
-class GistFilesViewActivity : PagerActivity() {
+class GistFilesViewActivity : BaseActivity() {
 
     private var gistId: String? = null
 
@@ -57,7 +57,7 @@ class GistFilesViewActivity : PagerActivity() {
     @Inject
     lateinit var refreshGistTaskFactory: RefreshGistTaskFactory
 
-    private var adapter: GistFilesPagerAdapter? = null
+    private var pagerHandler: PagerHandler<GistFilesPagerAdapter>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,14 +106,19 @@ class GistFilesViewActivity : PagerActivity() {
         vp_pages.visibility = View.VISIBLE
         sliding_tabs_layout.visibility = View.VISIBLE
 
-        adapter = GistFilesPagerAdapter(this, gist)
-        vp_pages.adapter = adapter
+        val adapter = GistFilesPagerAdapter(this, gist)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        lifecycle.addObserver(pagerHandler!!)
         sliding_tabs_layout.setupWithViewPager(vp_pages)
 
-        if (initialPosition < adapter!!.count) {
-            vp_pages!!.scheduleSetItem(initialPosition)
-            onPageSelected(initialPosition)
+        if (initialPosition < adapter.count) {
+            vp_pages.scheduleSetItem(initialPosition)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.removeObserver(pagerHandler!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,10 +133,6 @@ class GistFilesViewActivity : PagerActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun getProvider(): FragmentProvider? {
-        return adapter
     }
 
     companion object {

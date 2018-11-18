@@ -57,7 +57,9 @@ class RawCommentFragment : BaseFragment() {
      * @return text
      */
     var text: String?
-        get() = et_comment.text.toString()
+        get() {
+            return et_comment.text.toString()
+        }
         set(comment) = if (et_comment != null) {
             et_comment!!.setText(comment)
             et_comment!!.selectAll()
@@ -88,7 +90,6 @@ class RawCommentFragment : BaseFragment() {
         et_comment.addTextChangedListener(object : TextWatcherAdapter() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val activity = activity
                 activity?.invalidateOptionsMenu()
             }
         })

@@ -90,7 +90,7 @@ public class EditCommentActivity extends
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.issue_title) + issueNumber);
         actionBar.setSubtitle(InfoUtils.createRepoId(repositoryId));
-        avatars.bind(actionBar, (User) getParcelableExtra(EXTRA_USER));
+        getAvatars().bind(actionBar, (User) getParcelableExtra(EXTRA_USER));
     }
 
     @Override

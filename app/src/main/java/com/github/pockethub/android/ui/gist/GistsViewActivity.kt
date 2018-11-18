@@ -31,10 +31,10 @@ import com.github.pockethub.android.core.OnLoadListener
 import com.github.pockethub.android.core.gist.GistStore
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
+import com.github.pockethub.android.ui.BaseActivity
 import com.github.pockethub.android.ui.ConfirmDialogFragment
-import com.github.pockethub.android.ui.FragmentProvider
 import com.github.pockethub.android.ui.MainActivity
-import com.github.pockethub.android.ui.PagerActivity
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.ui.item.gist.GistItem
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.util.AvatarLoader
@@ -52,7 +52,7 @@ import javax.inject.Inject
 /**
  * Activity to display a collection of Gists in a pager
  */
-class GistsViewActivity : PagerActivity(), OnLoadListener<Gist> {
+class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
 
     @Inject
     lateinit var store: GistStore
@@ -66,7 +66,7 @@ class GistsViewActivity : PagerActivity(), OnLoadListener<Gist> {
 
     private var initialPosition: Int = 0
 
-    private var adapter: GistsPagerAdapter? = null
+    private var pagerHandler: PagerHandler<GistsPagerAdapter>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,16 +90,16 @@ class GistsViewActivity : PagerActivity(), OnLoadListener<Gist> {
             gists = arrayOf(gist!!.id()!!)
         }
 
-        adapter = GistsPagerAdapter(this, gists)
-        vp_pages.adapter = adapter
-        vp_pages.addOnPageChangeListener(this)
-        vp_pages.scheduleSetItem(initialPosition, this)
-        onPageSelected(initialPosition)
+        val adapter = GistsPagerAdapter(this, gists)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        lifecycle.addObserver(pagerHandler!!)
+        pagerHandler!!.onPagedChanged = this::onPageChanged
+        vp_pages.scheduleSetItem(initialPosition, pagerHandler)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        vp_pages.removeOnPageChangeListener(this)
+        lifecycle.removeObserver(pagerHandler!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -144,14 +144,13 @@ class GistsViewActivity : PagerActivity(), OnLoadListener<Gist> {
             return
         }
 
-        adapter!!.onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
+        pagerHandler!!.adapter
+            .onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
 
         super.onDialogResult(requestCode, resultCode, arguments)
     }
 
-    override fun onPageSelected(position: Int) {
-        super.onPageSelected(position)
-
+    private fun onPageChanged(position: Int) {
         val gistId = gists!![position]
         val gist = store.getGist(gistId)
         updateActionBar(gist, gistId)
@@ -164,10 +163,6 @@ class GistsViewActivity : PagerActivity(), OnLoadListener<Gist> {
         } else {
             super.startActivity(intent)
         }
-    }
-
-    override fun getProvider(): FragmentProvider? {
-        return adapter
     }
 
     private fun updateActionBar(gist: Gist?, gistId: String) {

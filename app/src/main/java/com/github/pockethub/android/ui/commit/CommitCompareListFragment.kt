@@ -120,17 +120,17 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
         return inflater.inflate(R.layout.fragment_commit_diff_list, container, false)
     }
 
-    override fun onCreateOptionsMenu(optionsMenu: Menu?,
-        inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.fragment_refresh, optionsMenu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_refresh, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (!isAdded) {
             return false
         }
 
-        return when (item!!.itemId) {
+        return when (item.itemId) {
             R.id.m_refresh -> {
                 compareCommits()
                 true

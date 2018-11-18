@@ -31,13 +31,10 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED
 import com.github.pockethub.android.core.repo.RepositoryUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.TabPagerActivity
+import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.ui.user.UserViewActivity
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_CODE
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_COMMIT
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_ISSUE_OPEN
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_NEWS
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
 import com.github.pockethub.android.util.ShareUtils
@@ -59,7 +56,7 @@ import javax.inject.Inject
 /**
  * Activity to view a repository
  */
-class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
+class RepositoryViewActivity : BaseActivity() {
 
     @Inject
     lateinit var avatars: AvatarLoader
@@ -71,6 +68,8 @@ class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
     private var starredStatusChecked: Boolean = false
 
     private var hasReadme: Boolean = false
+
+    private var pagerHandler: PagerHandler<RepositoryPagerAdapter>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +88,6 @@ class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
         } else {
             avatars.bind(supportActionBar!!, owner)
             pb_loading.visibility = View.VISIBLE
-            setGone(true)
             ServiceGenerator.createService(this, RepositoryService::class.java)
                 .getRepository(repository!!.owner()!!.login(), repository!!.name())
                 .subscribeOn(Schedulers.io())
@@ -129,7 +127,7 @@ class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
     }
 
     override fun onBackPressed() {
-        if (adapter == null || vp_pages.currentItem != adapter!!.itemCode || !adapter!!.onBackPressed()) {
+        if (pagerHandler?.adapter == null || vp_pages.currentItem != pagerHandler?.adapter!!.itemCode || !pagerHandler?.adapter!!.onBackPressed()) {
             super.onBackPressed()
         }
     }
@@ -152,10 +150,20 @@ class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
 
     private fun configurePager() {
         avatars.bind(supportActionBar!!, repository!!.owner()!!)
-        configureTabPager()
+
+        val adapter = RepositoryPagerAdapter(this, repository!!.hasIssues()!!, hasReadme)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        lifecycle.addObserver(pagerHandler!!)
+        pagerHandler!!.tabs = sliding_tabs_layout
+
         pb_loading.visibility = View.GONE
-        setGone(false)
+        pagerHandler!!.setGone(false)
         checkStarredRepositoryStatus()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.removeObserver(pagerHandler!!)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -211,21 +219,7 @@ class RepositoryViewActivity : TabPagerActivity<RepositoryPagerAdapter>() {
     }
 
     override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {
-        adapter!!.onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
-    }
-
-    override fun createAdapter(): RepositoryPagerAdapter {
-        return RepositoryPagerAdapter(this, repository!!.hasIssues()!!, hasReadme)
-    }
-
-    override fun getIcon(position: Int): String? {
-        return when (position) {
-            0 -> ICON_NEWS
-            1 -> ICON_CODE
-            2 -> ICON_COMMIT
-            3 -> ICON_ISSUE_OPEN
-            else -> super.getIcon(position)
-        }
+        pagerHandler?.adapter!!.onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
     }
 
     private fun starRepository() {

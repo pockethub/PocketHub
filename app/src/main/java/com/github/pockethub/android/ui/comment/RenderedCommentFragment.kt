@@ -49,7 +49,7 @@ class RenderedCommentFragment : BaseFragment() {
      * @param raw
      * @param repo
      */
-    fun setText(raw: String, repo: Repository) {
+    fun setText(raw: String, repo: Repository?) {
         loadMarkdown(raw, repo)
         hideSoftKeyboard()
         showLoading(true)
@@ -81,7 +81,7 @@ class RenderedCommentFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_comment_preview, null)
     }
 
-    private fun loadMarkdown(raw: String, repo: Repository) {
+    private fun loadMarkdown(raw: String, repo: Repository?) {
         MarkdownLoader.load(activity, raw, repo, imageGetter, true)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -17,6 +17,9 @@ package com.github.pockethub.android.ui
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.Menu
+import android.view.MenuItem
+import androidx.annotation.CallSuper
 import com.github.pockethub.android.R
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -24,6 +27,9 @@ import dagger.android.support.DaggerAppCompatActivity
  * Activity that display dialogs
  */
 abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
+
+    var optionsMenuListener: OptionsMenuListener? = null
+    var menuCreated = false
 
     override fun onContentChanged() {
         super.onContentChanged()
@@ -102,5 +108,36 @@ abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
 
     override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {
         // Intentionally left blank
+    }
+
+    @CallSuper
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        optionsMenuListener?.onCreateOptionsMenu(menu, menuInflater)
+        val created = super.onCreateOptionsMenu(menu)
+        //menuCreated = true
+        return created
+    }
+
+    @CallSuper
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val usedEvent = optionsMenuListener?.onOptionsItemSelected(item)
+        if (usedEvent != null && usedEvent) {
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    @CallSuper
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        optionsMenuListener?.onPrepareOptionsMenu(menu)
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    @CallSuper
+    override fun invalidateOptionsMenu() {
+        if (menuCreated) {
+            super.invalidateOptionsMenu()
+        }
     }
 }

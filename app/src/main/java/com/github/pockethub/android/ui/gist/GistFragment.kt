@@ -197,14 +197,16 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
         list.visibility = VISIBLE
     }
 
-    override fun onCreateOptionsMenu(options: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.fragment_gist_view, options)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_gist_view, menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
         val owner = isOwner
         if (!owner) {
-            menu!!.removeItem(R.id.m_delete)
+            menu.removeItem(R.id.m_delete)
             val starItem = menu.findItem(R.id.m_star)
             starItem.isEnabled = loadFinished && !owner
             if (starred) {
@@ -213,16 +215,16 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
                 starItem.setTitle(R.string.star)
             }
         } else {
-            menu!!.removeItem(R.id.m_star)
+            menu.removeItem(R.id.m_star)
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (gist == null) {
             return super.onOptionsItemSelected(item)
         }
 
-        when (item!!.itemId) {
+        when (item.itemId) {
             R.id.m_comment -> {
                 startActivityForResult(CreateCommentActivity.createIntent(gist),
                     COMMENT_CREATE)

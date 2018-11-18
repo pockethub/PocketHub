@@ -29,8 +29,8 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.FragmentProvider
-import com.github.pockethub.android.ui.PagerActivity
+import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.util.AvatarLoader
@@ -49,7 +49,7 @@ import javax.inject.Inject
 /**
  * Activity to display a collection of issues or pull requests in a pager
  */
-class IssuesViewActivity : PagerActivity() {
+class IssuesViewActivity : BaseActivity() {
 
     @Inject
     lateinit var avatars: AvatarLoader
@@ -69,7 +69,7 @@ class IssuesViewActivity : PagerActivity() {
 
     private var canWrite: Boolean = false
 
-    private var adapter: IssuesPagerAdapter? = null
+    private var pagerHandler: PagerHandler<IssuesPagerAdapter>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +105,7 @@ class IssuesViewActivity : PagerActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        vp_pages.removeOnPageChangeListener(this)
+        lifecycle.removeObserver(pagerHandler!!)
     }
 
     private fun repositoryLoaded(repo: Repository) {
@@ -123,16 +123,16 @@ class IssuesViewActivity : PagerActivity() {
     private fun configurePager() {
         val initialPosition = getIntExtra(EXTRA_POSITION)
 
-        adapter = if (repo != null) {
+        val adapter = if (repo != null) {
             IssuesPagerAdapter(this, repo, issueNumbers, canWrite)
         } else {
             IssuesPagerAdapter(this, repoIds, issueNumbers, store, canWrite)
         }
-        vp_pages.adapter = adapter
 
-        vp_pages.addOnPageChangeListener(this)
-        vp_pages.scheduleSetItem(initialPosition, this)
-        onPageSelected(initialPosition)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        pagerHandler!!.onPagedChanged = this::onPageChange
+        lifecycle.addObserver(pagerHandler!!)
+        vp_pages.scheduleSetItem(initialPosition, pagerHandler)
     }
 
     private fun updateTitle(position: Int) {
@@ -146,9 +146,7 @@ class IssuesViewActivity : PagerActivity() {
         }
     }
 
-    override fun onPageSelected(position: Int) {
-        super.onPageSelected(position)
-
+    private fun onPageChange(position: Int) {
         if (repo != null) {
             updateTitle(position)
             return
@@ -182,7 +180,8 @@ class IssuesViewActivity : PagerActivity() {
     }
 
     override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {
-        adapter!!.onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
+        pagerHandler!!.adapter
+            .onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
     }
 
     override fun startActivity(intent: Intent) {
@@ -192,10 +191,6 @@ class IssuesViewActivity : PagerActivity() {
         } else {
             super.startActivity(intent)
         }
-    }
-
-    override fun getProvider(): FragmentProvider? {
-        return adapter
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

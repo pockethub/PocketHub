@@ -351,9 +351,9 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        val editItem = menu!!.findItem(R.id.m_edit)
+        val editItem = menu.findItem(R.id.m_edit)
         val stateItem = menu.findItem(R.id.m_state)
         if (editItem != null && stateItem != null) {
             var isCreator = false
@@ -366,9 +366,10 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
         updateStateItem(issue)
     }
 
-    override fun onCreateOptionsMenu(optionsMenu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.fragment_issue_view, optionsMenu)
-        stateItem = optionsMenu!!.findItem(R.id.m_state)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_issue_view, menu)
+        stateItem = menu.findItem(R.id.m_state)
         updateStateItem(issue)
     }
 
@@ -436,8 +437,8 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.m_edit -> {
                 if (issue != null) {
                     startActivityForResult(EditIssueActivity.createIntent(issue,

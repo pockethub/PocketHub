@@ -65,7 +65,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
-// TODO: Move pager logic to composition instead of inheritance
 // TODO: Have another think about MVI
 // TODO: Figure out good way to inject github-sdk services dynamically with Dagger. If possible
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {

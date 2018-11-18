@@ -89,8 +89,8 @@ class EditIssueActivity : BaseActivity() {
     private var labelsDialog: LabelsDialog? = null
 
     private val titleTextWatcher = object : TextWatcherAdapter() {
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            updateSaveMenu(s!!)
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            updateSaveMenu(s)
         }
     }
 
@@ -340,16 +340,14 @@ class EditIssueActivity : BaseActivity() {
     }
 
     private fun updateSaveMenu(text: CharSequence = et_issue_title.text) {
-        if (saveItem != null) {
-            saveItem!!.isEnabled = !TextUtils.isEmpty(text)
-        }
+        saveItem?.isEnabled = text.isNotEmpty()
     }
 
-    override fun onCreateOptionsMenu(options: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_issue_edit, options)
-        saveItem = options.findItem(R.id.m_apply)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_issue_edit, menu)
+        saveItem = menu.findItem(R.id.m_apply)
         updateSaveMenu()
-        return super.onCreateOptionsMenu(options)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

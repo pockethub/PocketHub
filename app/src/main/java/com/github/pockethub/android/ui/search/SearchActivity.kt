@@ -28,10 +28,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import com.github.pockethub.android.R
+import com.github.pockethub.android.ui.BaseActivity
 import com.github.pockethub.android.ui.MainActivity
-import com.github.pockethub.android.ui.TabPagerActivity
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_PERSON
-import com.github.pockethub.android.ui.view.OcticonTextView.ICON_PUBLIC
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.util.ToastUtils
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 import kotlinx.android.synthetic.main.tabbed_progress_pager.*
@@ -39,7 +38,7 @@ import kotlinx.android.synthetic.main.tabbed_progress_pager.*
 /**
  * Activity to view search results
  */
-class SearchActivity : TabPagerActivity<SearchPagerAdapter>() {
+class SearchActivity : BaseActivity() {
 
     private var repoFragment: SearchRepositoryListFragment? = null
 
@@ -48,6 +47,9 @@ class SearchActivity : TabPagerActivity<SearchPagerAdapter>() {
     private var searchView: SearchView? = null
 
     private var lastQuery: String? = null
+
+    private var pagerHandler: PagerHandler<SearchPagerAdapter>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,15 +62,15 @@ class SearchActivity : TabPagerActivity<SearchPagerAdapter>() {
         handleIntent(intent)
     }
 
-    override fun onCreateOptionsMenu(options: Menu): Boolean {
-        menuInflater.inflate(R.menu.activity_search, options)
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.activity_search, menu)
 
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchItem = options.findItem(R.id.m_search)
+        val searchItem = menu.findItem(R.id.m_search)
         searchView = searchItem.actionView as SearchView
         searchView!!.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
-        return true
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -89,18 +91,6 @@ class SearchActivity : TabPagerActivity<SearchPagerAdapter>() {
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun createAdapter(): SearchPagerAdapter {
-        return SearchPagerAdapter(this)
-    }
-
-    override fun getIcon(position: Int): String? {
-        return when (position) {
-            0 -> ICON_PUBLIC
-            1 -> ICON_PERSON
-            else -> super.getIcon(position)
         }
     }
 
@@ -131,9 +121,17 @@ class SearchActivity : TabPagerActivity<SearchPagerAdapter>() {
     }
 
     private fun configurePager() {
-        configureTabPager()
+        val adapter = SearchPagerAdapter(this)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        lifecycle.addObserver(pagerHandler!!)
+        pagerHandler!!.tabs = sliding_tabs_layout
+
         pb_loading.visibility = View.GONE
-        setGone(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.removeObserver(pagerHandler!!)
     }
 
     private fun findFragments() {

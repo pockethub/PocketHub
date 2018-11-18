@@ -192,16 +192,17 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onCreateOptionsMenu(optionsMenu: Menu?, inflater: MenuInflater?) {
-        inflater!!.inflate(R.menu.fragment_commit_view, optionsMenu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.fragment_commit_view, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (!isAdded) {
             return false
         }
 
-        when (item!!.itemId) {
+        when (item.itemId) {
             R.id.m_refresh -> {
                 refreshCommit()
                 return true

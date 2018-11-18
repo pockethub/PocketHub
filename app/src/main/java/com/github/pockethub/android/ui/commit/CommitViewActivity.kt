@@ -26,8 +26,8 @@ import com.github.pockethub.android.Intents.EXTRA_POSITION
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
-import com.github.pockethub.android.ui.FragmentProvider
-import com.github.pockethub.android.ui.PagerActivity
+import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.PagerHandler
 import com.github.pockethub.android.ui.item.commit.CommitItem
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.util.AvatarLoader
@@ -40,7 +40,7 @@ import javax.inject.Inject
 /**
  * Activity to display a commit
  */
-class CommitViewActivity : PagerActivity() {
+class CommitViewActivity : BaseActivity() {
     
     @Inject
     lateinit var avatars: AvatarLoader
@@ -51,9 +51,9 @@ class CommitViewActivity : PagerActivity() {
 
     private var initialPosition: Int = 0
 
-    private var adapter: CommitPagerAdapter? = null
+    private lateinit var pagerHandler: PagerHandler<CommitPagerAdapter>
 
-    protected override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pager)
 
@@ -61,21 +61,23 @@ class CommitViewActivity : PagerActivity() {
         ids = getCharSequenceArrayExtra(EXTRA_BASES)
         initialPosition = getIntExtra(EXTRA_POSITION)
 
-        adapter = CommitPagerAdapter(this, repository, ids)
-        vp_pages.adapter = adapter
-        vp_pages.addOnPageChangeListener(this)
-        vp_pages.scheduleSetItem(initialPosition, this)
-        onPageSelected(initialPosition)
+        val adapter = CommitPagerAdapter(this, repository, ids)
+        pagerHandler = PagerHandler(this, vp_pages, adapter)
+        lifecycle.addObserver(pagerHandler)
+
+        pagerHandler.onPagedChanged = this::onPageChanged
+        vp_pages.scheduleSetItem(initialPosition, pagerHandler)
+        onPageChanged(initialPosition)
 
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
-        actionBar.setSubtitle(InfoUtils.createRepoId(repository!!))
+        actionBar.subtitle = InfoUtils.createRepoId(repository!!)
         avatars.bind(actionBar, repository!!.owner()!!)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        vp_pages.removeOnPageChangeListener(this)
+        lifecycle.removeObserver(pagerHandler)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -90,15 +92,9 @@ class CommitViewActivity : PagerActivity() {
         }
     }
 
-    override fun onPageSelected(position: Int) {
-        super.onPageSelected(position)
-
+    private fun onPageChanged(position: Int) {
         val id = CommitUtils.abbreviate(ids!![position].toString())
         supportActionBar!!.title = getString(R.string.commit_prefix) + id!!
-    }
-
-    override fun getProvider(): FragmentProvider? {
-        return adapter
     }
 
     companion object {
