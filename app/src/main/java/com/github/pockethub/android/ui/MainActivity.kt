@@ -65,7 +65,6 @@ import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
-// TODO: Remove ButterKnife in favour of Kotlin's view handling
 // TODO: Move pager logic to composition instead of inheritance
 // TODO: Have another think about MVI
 // TODO: Figure out good way to inject github-sdk services dynamically with Dagger. If possible
@@ -284,31 +283,37 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val itemId = menuItem.itemId
 
-        if (itemId == R.id.navigation_home) {
-            switchFragment(HomePagerFragment(), org)
-            supportActionBar!!.setTitle(R.string.app_name)
-            return true
-        } else if (itemId == R.id.navigation_gists) {
-            switchFragment(GistsPagerFragment(), null)
-            supportActionBar!!.title = menuItem.title
-            return true
-        } else if (itemId == R.id.navigation_issue_dashboard) {
-            switchFragment(IssueDashboardPagerFragment(), null)
-            supportActionBar!!.title = menuItem.title
-            return true
-        } else if (itemId == R.id.navigation_bookmarks) {
-            switchFragment(FilterListFragment(), null)
-            supportActionBar!!.title = menuItem.title
-            return true
-        } else if (itemId == R.id.navigation_log_out) {
-            logout()
-            return false
-        } else if (menuItemOrganizationMap.containsKey(menuItem)) {
-            switchFragment(HomePagerFragment(), menuItemOrganizationMap[menuItem])
-            navigation_view.menu.findItem(R.id.navigation_home).isChecked = true
-            return false
-        } else {
-            throw IllegalStateException("MenuItem $menuItem not known")
+        when {
+            itemId == R.id.navigation_home -> {
+                switchFragment(HomePagerFragment(), org)
+                supportActionBar!!.setTitle(R.string.app_name)
+                return true
+            }
+            itemId == R.id.navigation_gists -> {
+                switchFragment(GistsPagerFragment(), null)
+                supportActionBar!!.title = menuItem.title
+                return true
+            }
+            itemId == R.id.navigation_issue_dashboard -> {
+                switchFragment(IssueDashboardPagerFragment(), null)
+                supportActionBar!!.title = menuItem.title
+                return true
+            }
+            itemId == R.id.navigation_bookmarks -> {
+                switchFragment(FilterListFragment(), null)
+                supportActionBar!!.title = menuItem.title
+                return true
+            }
+            itemId == R.id.navigation_log_out -> {
+                logout()
+                return false
+            }
+            menuItemOrganizationMap.containsKey(menuItem) -> {
+                switchFragment(HomePagerFragment(), menuItemOrganizationMap[menuItem])
+                navigation_view.menu.findItem(R.id.navigation_home).isChecked = true
+                return false
+            }
+            else -> throw IllegalStateException("MenuItem $menuItem not known")
         }
     }
 
