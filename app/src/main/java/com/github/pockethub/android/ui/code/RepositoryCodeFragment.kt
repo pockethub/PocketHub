@@ -24,14 +24,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.text.color
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.REF_UPDATE
@@ -60,27 +56,14 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.ViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_repo_code.*
+import kotlinx.android.synthetic.main.ref_footer.*
 import java.util.LinkedList
 
 /**
  * Fragment to display a repository's source code tree
  */
 class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
-
-    @BindView(R.id.list)
-    lateinit var recyclerView: RecyclerView
-
-    @BindView(R.id.pb_loading)
-    lateinit var progressView: ProgressBar
-
-    @BindView(R.id.tv_branch_icon)
-    lateinit var branchIconView: TextView
-
-    @BindView(R.id.tv_branch)
-    lateinit var branchView: TextView
-
-    @BindView(R.id.rl_branch)
-    lateinit var branchFooterView: View
 
     private val adapter = GroupAdapter<ViewHolder>()
 
@@ -134,13 +117,13 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
 
     private fun showLoading(loading: Boolean) {
         if (loading) {
-            progressView.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
-            branchFooterView.visibility = View.GONE
+            pb_loading.visibility = View.VISIBLE
+            list.visibility = View.GONE
+            rl_branch.visibility = View.GONE
         } else {
-            progressView.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
-            branchFooterView.visibility = View.VISIBLE
+            pb_loading.visibility = View.GONE
+            list.visibility = View.VISIBLE
+            rl_branch.visibility = View.VISIBLE
         }
     }
 
@@ -215,10 +198,10 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = adapter
+        list.layoutManager = LinearLayoutManager(activity)
+        list.adapter = adapter
 
-        branchFooterView.setOnClickListener { _ -> switchBranches() }
+        rl_branch.setOnClickListener { _ -> switchBranches() }
 
         mainSection.setHeader(PathHeaderItem(""))
     }
@@ -243,11 +226,11 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
 
         showLoading(false)
 
-        branchView.text = tree!!.branch
+        tv_branch.text = tree!!.branch
         if (RefUtils.isTag(tree.reference)) {
-            branchIconView.setText(R.string.icon_tag)
+            tv_branch_icon.setText(R.string.icon_tag)
         } else {
-            branchIconView.setText(R.string.icon_fork)
+            tv_branch_icon.setText(R.string.icon_fork)
         }
 
         if (folder.entry != null) {
@@ -322,10 +305,10 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
         if (item is BlobItem) {
             val entry = item.file
             startActivity(BranchFileViewActivity.createIntent(
-                    repository,
+                    repository!!,
                     tree!!.branch,
-                    entry.entry.path(),
-                    entry.entry.sha()
+                    entry.entry.path()!!,
+                    entry.entry.sha()!!
             ))
         } else if (item is FolderItem) {
             val folder = item.folder

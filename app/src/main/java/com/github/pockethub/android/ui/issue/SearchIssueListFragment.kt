@@ -124,7 +124,7 @@ class SearchIssueListFragment : BaseFragment() {
     fun onItemClick(item: Item<*>, view: View) {
         if (item is IssueItem) {
             val searchIssue = item.issue
-            startActivity(IssuesViewActivity.createIntent(searchIssue, repository))
+            startActivity(IssuesViewActivity.createIntent(searchIssue, repository!!))
         }
     }
 

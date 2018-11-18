@@ -81,7 +81,7 @@ public class IssueSearchActivity extends BaseActivity {
                 ToastUtils.show(this, R.string.search_history_cleared);
                 return true;
             case android.R.id.home:
-                Intent intent = RepositoryViewActivity.createIntent(repository);
+                Intent intent = RepositoryViewActivity.Companion.createIntent(repository);
                 intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;

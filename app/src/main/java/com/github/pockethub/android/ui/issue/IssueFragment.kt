@@ -15,21 +15,37 @@
  */
 package com.github.pockethub.android.ui.issue
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ProgressBar
-
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.pockethub.android.Intents.EXTRA_CAN_WRITE_REPO
+import com.github.pockethub.android.Intents.EXTRA_COMMENT
+import com.github.pockethub.android.Intents.EXTRA_ISSUE
+import com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER
+import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_NAME
+import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_OWNER
+import com.github.pockethub.android.Intents.EXTRA_USER
 import com.github.pockethub.android.R
+import com.github.pockethub.android.RequestCodes.COMMENT_CREATE
+import com.github.pockethub.android.RequestCodes.COMMENT_DELETE
+import com.github.pockethub.android.RequestCodes.COMMENT_EDIT
+import com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE
+import com.github.pockethub.android.RequestCodes.ISSUE_CLOSE
+import com.github.pockethub.android.RequestCodes.ISSUE_EDIT
+import com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE
+import com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE
+import com.github.pockethub.android.RequestCodes.ISSUE_REOPEN
 import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.core.issue.IssueUtils
@@ -64,36 +80,13 @@ import com.meisolsson.githubsdk.service.issues.IssueCommentService
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
-import butterknife.BindView
+import com.xwray.groupie.ViewHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-
-import android.app.Activity.RESULT_OK
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import com.github.pockethub.android.Intents.EXTRA_CAN_WRITE_REPO
-import com.github.pockethub.android.Intents.EXTRA_COMMENT
-import com.github.pockethub.android.Intents.EXTRA_ISSUE
-import com.github.pockethub.android.Intents.EXTRA_ISSUE_NUMBER
-import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_NAME
-import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_OWNER
-import com.github.pockethub.android.Intents.EXTRA_USER
-import com.github.pockethub.android.RequestCodes.COMMENT_CREATE
-import com.github.pockethub.android.RequestCodes.COMMENT_DELETE
-import com.github.pockethub.android.RequestCodes.COMMENT_EDIT
-import com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE
-import com.github.pockethub.android.RequestCodes.ISSUE_CLOSE
-import com.github.pockethub.android.RequestCodes.ISSUE_EDIT
-import com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE
-import com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE
-import com.github.pockethub.android.RequestCodes.ISSUE_REOPEN
-import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.fragment_comment_list.*
+import java.util.ArrayList
+import javax.inject.Inject
 
 /**
  * Fragment to display an issue
@@ -125,12 +118,6 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
     private var stateTask: EditStateTask? = null
 
     private var stateItem: MenuItem? = null
-
-    @BindView(R.id.list)
-    lateinit var list: RecyclerView
-
-    @BindView(R.id.pb_loading)
-    lateinit var progress: ProgressBar
 
     @Inject
     lateinit var avatars: AvatarLoader
@@ -253,7 +240,7 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
             mainSection.setHeader(IssueHeaderItem(avatars, bodyImageGetter, requireContext(), this, issue))
         }
 
-        progress.visibility = GONE
+        pb_loading.visibility = GONE
         list.visibility = VISIBLE
         updateStateItem(issue)
     }
@@ -273,7 +260,7 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
                     updateList(fullIssue.issue, items)
                 }, { _ ->
                     ToastUtils.show(activity, R.string.error_issue_load)
-                    progress.visibility = GONE
+                    pb_loading.visibility = GONE
                 })
     }
 

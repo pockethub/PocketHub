@@ -73,7 +73,7 @@ public class RepositoryContributorsActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = RepositoryViewActivity.createIntent(repository);
+                Intent intent = RepositoryViewActivity.Companion.createIntent(repository);
                 intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;

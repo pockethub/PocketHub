@@ -58,10 +58,6 @@ public class CreateCommentActivityTest {
 
     /**
      * Verify empty comment can't be created
-     *
-     * TODO: The testing framework moves to fast and is not waiting until the menu item is disabled
-     *
-     * @throws Throwable
      */
     @Test
     public void testEmptyCommentIsProhibited() {

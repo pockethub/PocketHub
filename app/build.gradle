@@ -177,9 +177,6 @@ dependencies {
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     kapt 'com.google.auto.factory:auto-factory:1.0-beta5'
 
-    implementation 'com.jakewharton:butterknife:9.0.0-SNAPSHOT'
-    kapt 'com.jakewharton:butterknife-compiler:9.0.0-SNAPSHOT'
-
     implementation 'com.github.meisolsson:githubsdk:0.5.1'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.xwray:groupie:2.0.3'

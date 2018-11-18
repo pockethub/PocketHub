@@ -187,7 +187,7 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
         if (item is CommitItem) {
             val position = itemListHandler.getItemPosition(item)
             startActivityForResult(
-                CommitViewActivity.createIntent(repo, position, itemListHandler.items),
+                CommitViewActivity.createIntent(repo!!, position, itemListHandler.items),
                 COMMIT_VIEW
             )
         }

@@ -36,6 +36,6 @@ public class EditIssuesFilterActivityTest {
     public void setUp() {
         Repository repo = InfoUtils.createRepoFromData("owner", "name");
         IssueFilter filter = new IssueFilter(repo);
-        activityTestRule.launchActivity(EditIssuesFilterActivity.createIntent(filter));
+        activityTestRule.launchActivity(EditIssuesFilterActivity.Companion.createIntent(filter));
     }
 }

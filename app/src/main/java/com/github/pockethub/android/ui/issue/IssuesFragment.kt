@@ -142,9 +142,9 @@ class IssuesFragment : BaseFragment() {
                 .filterIsInstance<IssueItem>()
                 .map { it.issue }
 
-            startActivityForResult(IssuesViewActivity.createIntent(issues, repository, position), ISSUE_VIEW)
+            startActivityForResult(IssuesViewActivity.createIntent(issues, repository!!, position), ISSUE_VIEW)
         } else if (item is IssueFilterHeaderItem) {
-            startActivityForResult(EditIssuesFilterActivity.createIntent(filter), ISSUE_FILTER_EDIT)
+            startActivityForResult(EditIssuesFilterActivity.createIntent(filter!!), ISSUE_FILTER_EDIT)
         }
     }
 
@@ -175,7 +175,7 @@ class IssuesFragment : BaseFragment() {
                 return true
             }
             R.id.m_filter -> {
-                startActivityForResult(EditIssuesFilterActivity.createIntent(filter), ISSUE_FILTER_EDIT)
+                startActivityForResult(EditIssuesFilterActivity.createIntent(filter!!), ISSUE_FILTER_EDIT)
                 return true
             }
             R.id.m_bookmark -> {
@@ -206,7 +206,10 @@ class IssuesFragment : BaseFragment() {
         if (requestCode == ISSUE_CREATE && resultCode == RESULT_OK) {
             val created = data!!.getParcelableExtra<Issue>(EXTRA_ISSUE)
             pagedListFetcher.refresh()
-            startActivityForResult(IssuesViewActivity.createIntent(created, repository), ISSUE_VIEW)
+            startActivityForResult(
+                IssuesViewActivity.createIntent(created, repository!!),
+                ISSUE_VIEW
+            )
             return
         }
 

@@ -106,7 +106,7 @@ public class GistsPagerFragment extends TabPagerFragment<GistQueriesPagerAdapter
                 .compose(RxProgress.bindToLifecycle(getActivity(), R.string.random_gist))
                 .as(AutoDisposeUtils.bindToLifecycle(this))
                 .subscribe(gist -> getActivity().startActivityForResult(
-                        GistsViewActivity.createIntent(gist), GIST_VIEW), e -> {
+                        GistsViewActivity.Companion.createIntent(gist), GIST_VIEW), e -> {
                     Log.d(TAG, "Exception opening random Gist", e);
                     ToastUtils.show((Activity) getContext(), e.getMessage());
                 });

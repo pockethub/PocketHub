@@ -248,7 +248,7 @@ abstract class NewsFragment : BaseFragment() {
 
         val sha = comment.commitId()
         if (!TextUtils.isEmpty(sha)) {
-            startActivity(CommitViewActivity.createIntent(repo, sha))
+            startActivity(CommitViewActivity.createIntent(repo!!, sha!!))
         }
     }
 
@@ -271,7 +271,7 @@ abstract class NewsFragment : BaseFragment() {
             val commit = commits[0]
             val sha = commit?.sha()
             if (!TextUtils.isEmpty(sha)) {
-                startActivity(CommitViewActivity.createIntent(repo, sha))
+                startActivity(CommitViewActivity.createIntent(repo, sha!!))
             }
         }
     }
@@ -282,7 +282,7 @@ abstract class NewsFragment : BaseFragment() {
      * @param repository
      */
     protected open fun viewRepository(repository: Repository?) {
-        startActivity(RepositoryViewActivity.createIntent(repository))
+        startActivity(RepositoryViewActivity.createIntent(repository!!))
     }
 
     /**

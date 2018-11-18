@@ -21,8 +21,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Parcelable
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
@@ -30,24 +28,30 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout.LayoutParams
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
-import butterknife.BindView
-import butterknife.OnClick
-import butterknife.OnTextChanged
-import com.github.pockethub.android.Intents.*
+import com.github.pockethub.android.Intents.Builder
+import com.github.pockethub.android.Intents.EXTRA_ISSUE
+import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_NAME
+import com.github.pockethub.android.Intents.EXTRA_REPOSITORY_OWNER
+import com.github.pockethub.android.Intents.EXTRA_USER
 import com.github.pockethub.android.R
-import com.github.pockethub.android.RequestCodes.*
+import com.github.pockethub.android.RequestCodes.ISSUE_ASSIGNEE_UPDATE
+import com.github.pockethub.android.RequestCodes.ISSUE_LABELS_UPDATE
+import com.github.pockethub.android.RequestCodes.ISSUE_MILESTONE_UPDATE
 import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
 import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.util.*
+import com.github.pockethub.android.ui.TextWatcherAdapter
+import com.github.pockethub.android.util.AvatarLoader
+import com.github.pockethub.android.util.ImageBinPoster
+import com.github.pockethub.android.util.InfoUtils
+import com.github.pockethub.android.util.PermissionsUtils
+import com.github.pockethub.android.util.ToastUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Issue
 import com.meisolsson.githubsdk.model.Repository
@@ -58,41 +62,16 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryCollaboratorServi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_issue_edit.*
+import kotlinx.android.synthetic.main.milestone.*
 import retrofit2.Response
-import java.util.*
+import java.util.ArrayList
 import javax.inject.Inject
 
 /**
  * Activity to edit or create an issue
  */
 class EditIssueActivity : BaseActivity() {
-
-    @BindView(R.id.et_issue_title)
-    lateinit var titleText: EditText
-
-    @BindView(R.id.et_issue_body)
-    lateinit var bodyText: EditText
-
-    @BindView(R.id.ll_milestone_graph)
-    lateinit var milestoneGraph: View
-
-    @BindView(R.id.tv_milestone)
-    lateinit var milestoneText: TextView
-
-    @BindView(R.id.v_closed)
-    lateinit var milestoneClosed: View
-
-    @BindView(R.id.iv_assignee_avatar)
-    lateinit var assigneeAvatar: ImageView
-
-    @BindView(R.id.tv_assignee_name)
-    lateinit var assigneeText: TextView
-
-    @BindView(R.id.tv_labels)
-    lateinit var labelsText: TextView
-
-    @BindView(R.id.fab_add_image)
-    lateinit var addImageFab: FloatingActionButton
 
     @Inject
     lateinit var avatars: AvatarLoader
@@ -108,6 +87,12 @@ class EditIssueActivity : BaseActivity() {
     private var assigneeDialog: AssigneeDialog? = null
 
     private var labelsDialog: LabelsDialog? = null
+
+    private val titleTextWatcher = object : TextWatcherAdapter() {
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            updateSaveMenu(s!!)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,8 +131,16 @@ class EditIssueActivity : BaseActivity() {
         avatars.bind(actionBar, intent.getParcelableExtra<Parcelable>(EXTRA_USER) as User)
 
         updateSaveMenu()
-        titleText.setText(issue!!.title())
-        bodyText.setText(issue!!.body())
+        et_issue_title.setText(issue!!.title())
+        et_issue_body.setText(issue!!.body())
+
+        fab_add_image.setOnClickListener { onAddImageClicked() }
+        et_issue_title.addTextChangedListener(titleTextWatcher)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        et_issue_title.removeTextChangedListener(titleTextWatcher)
     }
 
     override fun onRequestPermissionsResult(
@@ -225,12 +218,6 @@ class EditIssueActivity : BaseActivity() {
         }
     }
 
-    @OnTextChanged(R.id.et_issue_title)
-    fun onIssueTitleChange(text: CharSequence) {
-        updateSaveMenu(text)
-    }
-
-    @OnClick(R.id.fab_add_image)
     fun onAddImageClicked() {
         val activity = this@EditIssueActivity
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
@@ -255,7 +242,7 @@ class EditIssueActivity : BaseActivity() {
     }
 
     private fun insertImage(url: String?) {
-        runOnUiThread { bodyText.append("![]($url)") }
+        runOnUiThread { et_issue_body.append("![]($url)") }
     }
 
     private fun showMainContent() {
@@ -304,19 +291,19 @@ class EditIssueActivity : BaseActivity() {
     private fun updateMilestone() {
         val milestone = issue!!.milestone()
         if (milestone != null) {
-            milestoneText.text = milestone.title()
+            tv_milestone.text = milestone.title()
             val closed = milestone.closedIssues()!!.toFloat()
             val total = closed + milestone.openIssues()!!
             if (total > 0) {
-                (milestoneClosed.layoutParams as LayoutParams).weight = closed / total
-                milestoneClosed.visibility = VISIBLE
+                (v_closed.layoutParams as LayoutParams).weight = closed / total
+                v_closed.visibility = VISIBLE
             } else {
-                milestoneClosed.visibility = GONE
+                v_closed.visibility = GONE
             }
-            milestoneGraph.visibility = VISIBLE
+            ll_milestone_graph.visibility = VISIBLE
         } else {
-            milestoneText.setText(R.string.none)
-            milestoneGraph.visibility = GONE
+            tv_milestone.setText(R.string.none)
+            ll_milestone_graph.visibility = GONE
         }
     }
 
@@ -324,25 +311,25 @@ class EditIssueActivity : BaseActivity() {
         val assignee = issue!!.assignee()
         val login = assignee?.login()
         if (!TextUtils.isEmpty(login)) {
-            assigneeText.text = buildSpannedString {
+            tv_assignee_name.text = buildSpannedString {
                 bold {
                     append(login)
                 }
             }
-            assigneeAvatar.visibility = VISIBLE
-            avatars.bind(assigneeAvatar, assignee)
+            iv_assignee_avatar.visibility = VISIBLE
+            avatars.bind(iv_assignee_avatar, assignee)
         } else {
-            assigneeAvatar.visibility = GONE
-            assigneeText.setText(R.string.unassigned)
+            iv_assignee_avatar.visibility = GONE
+            tv_assignee_name.setText(R.string.unassigned)
         }
     }
 
     private fun updateLabels() {
         val labels = issue!!.labels()
         if (labels != null && !labels.isEmpty()) {
-            LabelDrawableSpan.setText(labelsText, labels)
+            LabelDrawableSpan.setText(tv_labels, labels)
         } else {
-            labelsText.setText(R.string.none)
+            tv_labels.setText(R.string.none)
         }
     }
 
@@ -352,7 +339,7 @@ class EditIssueActivity : BaseActivity() {
         outState!!.putParcelable(EXTRA_ISSUE, issue)
     }
 
-    private fun updateSaveMenu(text: CharSequence = titleText.text) {
+    private fun updateSaveMenu(text: CharSequence = et_issue_title.text) {
         if (saveItem != null) {
             saveItem!!.isEnabled = !TextUtils.isEmpty(text)
         }
@@ -369,8 +356,8 @@ class EditIssueActivity : BaseActivity() {
         when (item.itemId) {
             R.id.m_apply -> {
                 val request = IssueRequest.builder()
-                        .body(bodyText.text.toString())
-                        .title(titleText.text.toString())
+                        .body(et_issue_body.text.toString())
+                        .title(et_issue_title.text.toString())
                         .state(issue!!.state())
 
                 if (issue!!.assignee() != null) {

@@ -73,7 +73,7 @@ public class GistFilesViewActivityTest {
                 .build();
 
         store.addGist(gist);
-        activityTestRule.launchActivity(GistFilesViewActivity.createIntent(gist, 0));
+        activityTestRule.launchActivity(GistFilesViewActivity.Companion.createIntent(gist, 0));
     }
 
     /**

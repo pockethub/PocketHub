@@ -137,27 +137,27 @@ public class UriLauncherActivity extends Activity {
         if (HOST_GISTS.equals(data.getHost())) {
             Gist gist = GistUriMatcher.getGist(data);
             if (gist != null) {
-                return GistsViewActivity.createIntent(gist);
+                return GistsViewActivity.Companion.createIntent(gist);
             }
         } else if (HOST_DEFAULT.equals(data.getHost())) {
             CommitMatch commit = CommitUriMatcher.getCommit(data);
             if (commit != null) {
-                return CommitViewActivity.createIntent(commit.getRepository(), commit.getCommit());
+                return CommitViewActivity.Companion.createIntent(commit.getRepository(), commit.getCommit());
             }
 
             Issue issue = IssueUriMatcher.getIssue(data);
             if (issue != null) {
-                return IssuesViewActivity.createIntent(issue, issue.repository());
+                return IssuesViewActivity.Companion.createIntent(issue, issue.repository());
             }
 
             Repository repository = RepositoryUriMatcher.getRepository(data);
             if (repository != null) {
-                return RepositoryViewActivity.createIntent(repository);
+                return RepositoryViewActivity.Companion.createIntent(repository);
             }
 
             User user = UserUriMatcher.getUser(data);
             if (user != null) {
-                return UserViewActivity.createIntent(user);
+                return UserViewActivity.Companion.createIntent(user);
             }
         }
 

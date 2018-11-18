@@ -94,7 +94,7 @@ public abstract class UserNewsFragment extends NewsFragment implements
     @Override
     protected boolean viewUser(User user) {
         if (org.id() != user.id()) {
-            startActivity(UserViewActivity.createIntent(user));
+            startActivity(UserViewActivity.Companion.createIntent(user));
             return true;
         }
         return false;

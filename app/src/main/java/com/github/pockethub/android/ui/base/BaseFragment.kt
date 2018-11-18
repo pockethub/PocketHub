@@ -16,18 +16,10 @@
 
 package com.github.pockethub.android.ui.base
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
-import butterknife.ButterKnife
 import dagger.android.support.DaggerFragment
 
 abstract class BaseFragment : DaggerFragment() {
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        ButterKnife.bind(this, view)
-    }
 
     /**
      * Get parcelable extra from activity's intent

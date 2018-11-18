@@ -166,7 +166,7 @@ class NotificationListFragment : BaseFragment(), NotificationReadListener {
 
             val issue = IssueUriMatcher.getApiIssue(url)
             if (issue != null) {
-                val intent = IssuesViewActivity.createIntent(issue, thread.repository())
+                val intent = IssuesViewActivity.createIntent(issue, thread.repository()!!)
                 startActivity(intent)
             } else {
                 ToastUtils.show(activity, R.string.releases_not_yet_in_app)

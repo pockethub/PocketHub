@@ -60,7 +60,7 @@ public abstract class CreateCommentActivity extends
     @Override
     public void onPageSelected(int position) {
         super.onPageSelected(position);
-        adapter.setCurrentItem(position);
+        getAdapter().setCurrentItem(position);
     }
 
     @Override
@@ -68,8 +68,8 @@ public abstract class CreateCommentActivity extends
         super.invalidateOptionsMenu();
 
         if (applyItem != null) {
-            applyItem.setEnabled(adapter != null
-                    && !TextUtils.isEmpty(adapter.getCommentText()));
+            applyItem.setEnabled(getAdapter() != null
+                    && !TextUtils.isEmpty(getAdapter().getCommentText()));
         }
     }
 
@@ -77,7 +77,7 @@ public abstract class CreateCommentActivity extends
     protected void setCurrentItem(int position) {
         super.setCurrentItem(position);
 
-        adapter.setCurrentItem(position);
+        getAdapter().setCurrentItem(position);
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class CreateCommentActivity extends
                 finish();
                 return true;
             case R.id.m_apply:
-                createComment(adapter.getCommentText());
+                createComment(getAdapter().getCommentText());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
