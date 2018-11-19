@@ -60,7 +60,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.Collections
-import java.util.HashMap
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton

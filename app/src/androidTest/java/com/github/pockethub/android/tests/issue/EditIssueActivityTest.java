@@ -15,11 +15,14 @@
  */
 package com.github.pockethub.android.tests.issue;
 
+import android.view.View;
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.rule.ActivityTestRule;
 import com.github.pockethub.android.R;
+import com.github.pockethub.android.tests.ViewVisibilityIdlingResource;
 import com.github.pockethub.android.ui.issue.EditIssueActivity;
 import com.github.pockethub.android.util.InfoUtils;
 import com.meisolsson.githubsdk.model.Repository;
@@ -40,7 +43,7 @@ public class EditIssueActivityTest {
 
     @Rule
     public ActivityTestRule<EditIssueActivity> activityTestRule =
-            new ActivityTestRule<>(EditIssueActivity.class, false, false);
+            new ActivityTestRule<>(EditIssueActivity.class, true, false);
 
     @Before
     public void setUp() {
@@ -58,7 +61,14 @@ public class EditIssueActivityTest {
     public void testSaveMenuEnabled() {
         ViewInteraction createMenu = onView(withId(R.id.m_apply));
         ViewInteraction comment = onView(withId(R.id.et_issue_title));
+        ViewVisibilityIdlingResource idlingResource =
+                new ViewVisibilityIdlingResource(
+                        activityTestRule.getActivity(),
+                        R.id.sv_issue_content,
+                        View.VISIBLE
+                );
 
+        IdlingRegistry.getInstance().register(idlingResource);
         createMenu.check(ViewAssertions.matches(not(isEnabled())));
 
         closeSoftKeyboard();
@@ -67,5 +77,6 @@ public class EditIssueActivityTest {
         comment.perform(ViewActions.replaceText(""));
 
         createMenu.check(ViewAssertions.matches(not(isEnabled())));
+        IdlingRegistry.getInstance().unregister(idlingResource);
     }
 }
