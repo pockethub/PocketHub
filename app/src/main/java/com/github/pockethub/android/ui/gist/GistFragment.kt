@@ -145,6 +145,7 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         gistId = arguments!!.getString(EXTRA_GIST_ID)
         gist = store.getGist(gistId)
 

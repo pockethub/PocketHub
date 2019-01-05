@@ -18,7 +18,7 @@ class NotificationPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = new NotificationListFragment();;
+        Fragment fragment = new NotificationListFragment();
         Bundle args = new Bundle();
         switch (position) {
             case 0:

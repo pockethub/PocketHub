@@ -79,6 +79,7 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         adapter.add(mainSection)
         adapter.setOnItemClickListener(this)
         repository = activity!!.intent.getParcelableExtra(EXTRA_REPOSITORY)

@@ -114,6 +114,7 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         val args = arguments!!
         base = args.getString(EXTRA_BASE)

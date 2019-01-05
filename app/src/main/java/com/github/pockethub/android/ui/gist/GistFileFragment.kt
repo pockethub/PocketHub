@@ -71,6 +71,7 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         file = arguments!!.get(EXTRA_GIST_FILE) as GistFile
         gist = store.getGist(gistId)

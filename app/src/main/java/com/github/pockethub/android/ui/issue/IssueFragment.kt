@@ -171,6 +171,7 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         val args = arguments
         repositoryId = InfoUtils.createRepoFromData(

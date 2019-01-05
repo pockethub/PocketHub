@@ -20,19 +20,23 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.widget.SearchView
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.github.pockethub.android.Intents.*
+import androidx.appcompat.widget.SearchView
+import com.github.pockethub.android.Intents.EXTRA_ISSUE
+import com.github.pockethub.android.Intents.EXTRA_ISSUE_FILTER
+import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.ItemListHandler
 import com.github.pockethub.android.PagedListFetcher
 import com.github.pockethub.android.PagedScrollListener
 import com.github.pockethub.android.R
-import com.github.pockethub.android.RequestCodes.*
+import com.github.pockethub.android.RequestCodes.ISSUE_CREATE
+import com.github.pockethub.android.RequestCodes.ISSUE_FILTER_EDIT
+import com.github.pockethub.android.RequestCodes.ISSUE_VIEW
 import com.github.pockethub.android.core.issue.IssueFilter
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.persistence.AccountDataManager
@@ -107,6 +111,7 @@ class IssuesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true);
         itemListHandler = ItemListHandler(
             view.list,
             view.empty,
@@ -149,6 +154,7 @@ class IssuesFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.fragment_issues, menu)
 
         val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
