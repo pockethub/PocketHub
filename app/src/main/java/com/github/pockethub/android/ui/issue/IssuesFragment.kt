@@ -186,7 +186,10 @@ class IssuesFragment : BaseFragment() {
             }
             R.id.m_bookmark -> {
                 cache.addIssueFilter(filter)
-                        .subscribe { _ -> ToastUtils.show(activity, R.string.message_filter_saved) }
+                    .subscribe(
+                        { ToastUtils.show(activity, R.string.message_filter_saved) },
+                        { ToastUtils.show(activity, R.string.message_filter_save_failed) }
+                    )
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

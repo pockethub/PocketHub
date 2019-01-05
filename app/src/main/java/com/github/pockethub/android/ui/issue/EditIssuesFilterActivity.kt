@@ -233,8 +233,9 @@ class EditIssuesFilterActivity : BaseActivity() {
          * @return intent
          */
         fun createIntent(filter: IssueFilter): Intent {
-            return Builder("repo.issues.filter.VIEW").add(EXTRA_ISSUE_FILTER,
-                filter).toIntent()
+            return Builder("repo.issues.filter.VIEW")
+                .add(EXTRA_ISSUE_FILTER, filter)
+                .toIntent()
         }
 
         private val REQUEST_LABELS = 1

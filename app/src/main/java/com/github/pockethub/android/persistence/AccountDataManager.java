@@ -20,15 +20,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
-
 import com.github.pockethub.android.RequestReader;
 import com.github.pockethub.android.RequestWriter;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
+import io.reactivex.Single;
+
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -38,9 +38,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 
 /**
  * Manager cache for an account
@@ -217,7 +214,7 @@ public class AccountDataManager {
             }
 
             return filter;
-        }).doOnError(e -> Log.d(TAG, "Exception adding issue filter", e));
+        });
     }
 
     /**
