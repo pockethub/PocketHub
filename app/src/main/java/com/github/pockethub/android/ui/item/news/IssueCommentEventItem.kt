@@ -32,6 +32,7 @@ class IssueCommentEventItem(
         if (TextUtils.isEmpty(details)) {
             holder.tv_event_details.visibility = View.GONE
         } else {
+            holder.tv_event_details.visibility = View.VISIBLE
             holder.tv_event_details.text = details
         }
 
