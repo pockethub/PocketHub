@@ -135,8 +135,8 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun findFragments() {
-        if (repoFragment == null || userFragment == null) {
-            val fm = supportFragmentManager
+        val fm = supportFragmentManager
+        if (fm.fragments.size > 0 && (repoFragment == null || userFragment == null)) {
             repoFragment = fm.findFragmentByTag(
                 "android:switcher:${vp_pages.id}:0") as SearchRepositoryListFragment
             userFragment = fm.findFragmentByTag(
