@@ -1,28 +1,27 @@
 .markdown-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     font-size: 16px;
-    padding: 15px;
     line-height: 1.5;
     word-wrap: break-word
 }
 
-.markdown-body::before {
-    display: table;
-    content: ""
+.markdown-body:before {
+    content: "";
+    display: table
 }
 
-.markdown-body::after {
-    display: table;
+.markdown-body:after {
     clear: both;
-    content: ""
+    content: "";
+    display: table
 }
 
 .markdown-body>:first-child {
-    margin-top: 0!important
+    margin-top: 0 !important
 }
 
 .markdown-body>:last-child {
-    margin-bottom: 0!important
+    margin-bottom: 0 !important
 }
 
 .markdown-body a:not([href]) {
@@ -31,37 +30,43 @@
 }
 
 .markdown-body .absent {
-    color: #c00
+    color: #cb2431
 }
 
 .markdown-body .anchor {
     float: left;
-    padding-right: 4px;
+    line-height: 1;
     margin-left: -20px;
-    line-height: 1
+    padding-right: 4px
 }
 
 .markdown-body .anchor:focus {
     outline: none
 }
 
-.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre {
-    margin-top: 0;
-    margin-bottom: 16px
+.markdown-body blockquote,
+.markdown-body dl,
+.markdown-body ol,
+.markdown-body p,
+.markdown-body pre,
+.markdown-body table,
+.markdown-body ul {
+    margin-bottom: 16px;
+    margin-top: 0
 }
 
 .markdown-body hr {
+    background-color: #e1e4e8;
+    border: 0;
     height: .25em;
-    padding: 0;
     margin: 24px 0;
-    background-color: #e7e7e7;
-    border: 0
+    padding: 0
 }
 
 .markdown-body blockquote {
-    padding: 0 1em;
-    color: #777;
-    border-left: .25em solid #ddd
+    border-left: .25em solid #dfe2e5;
+    color: #6a737d;
+    padding: 0 1em
 }
 
 .markdown-body blockquote>:first-child {
@@ -73,58 +78,87 @@
 }
 
 .markdown-body kbd {
+    background-color: #fafbfc;
+    border: 1px solid #c6cbd1;
+    border-bottom-color: #959da5;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #959da5;
+    color: #444d56;
     display: inline-block;
-    padding: 3px 5px;
     font-size: 11px;
     line-height: 10px;
-    color: #555;
-    vertical-align: middle;
-    background-color: #fcfcfc;
-    border: solid 1px #ccc;
-    border-bottom-color: #bbb;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #bbb
+    padding: 3px 5px;
+    vertical-align: middle
 }
 
-.markdown-body .loweralpha {
-    list-style-type: lower-alpha
-}
-
-.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
     font-weight: 600;
-    line-height: 1.25
+    line-height: 1.25;
+    margin-bottom: 16px;
+    margin-top: 24px
 }
 
-.markdown-body h1 .octicon-link, .markdown-body h2 .octicon-link, .markdown-body h3 .octicon-link, .markdown-body h4 .octicon-link, .markdown-body h5 .octicon-link, .markdown-body h6 .octicon-link {
-    color: #000;
+.markdown-body h1 .octicon-link,
+.markdown-body h2 .octicon-link,
+.markdown-body h3 .octicon-link,
+.markdown-body h4 .octicon-link,
+.markdown-body h5 .octicon-link,
+.markdown-body h6 .octicon-link {
+    color: #1b1f23;
     vertical-align: middle;
     visibility: hidden
 }
 
-.markdown-body h1:hover .anchor, .markdown-body h2:hover .anchor, .markdown-body h3:hover .anchor, .markdown-body h4:hover .anchor, .markdown-body h5:hover .anchor, .markdown-body h6:hover .anchor {
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor,
+.markdown-body h5:hover .anchor,
+.markdown-body h6:hover .anchor {
     text-decoration: none
 }
 
-.markdown-body h1:hover .anchor .octicon-link, .markdown-body h2:hover .anchor .octicon-link, .markdown-body h3:hover .anchor .octicon-link, .markdown-body h4:hover .anchor .octicon-link, .markdown-body h5:hover .anchor .octicon-link, .markdown-body h6:hover .anchor .octicon-link {
+.markdown-body h1:hover .anchor .octicon-link,
+.markdown-body h2:hover .anchor .octicon-link,
+.markdown-body h3:hover .anchor .octicon-link,
+.markdown-body h4:hover .anchor .octicon-link,
+.markdown-body h5:hover .anchor .octicon-link,
+.markdown-body h6:hover .anchor .octicon-link {
     visibility: visible
 }
 
-.markdown-body h1 tt, .markdown-body h1 code, .markdown-body h2 tt, .markdown-body h2 code, .markdown-body h3 tt, .markdown-body h3 code, .markdown-body h4 tt, .markdown-body h4 code, .markdown-body h5 tt, .markdown-body h5 code, .markdown-body h6 tt, .markdown-body h6 code {
+.markdown-body h1 code,
+.markdown-body h1 tt,
+.markdown-body h2 code,
+.markdown-body h2 tt,
+.markdown-body h3 code,
+.markdown-body h3 tt,
+.markdown-body h4 code,
+.markdown-body h4 tt,
+.markdown-body h5 code,
+.markdown-body h5 tt,
+.markdown-body h6 code,
+.markdown-body h6 tt {
     font-size: inherit
 }
 
 .markdown-body h1 {
-    padding-bottom: .3em;
-    font-size: 2em;
-    border-bottom: 1px solid #eee
+    font-size: 2em
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+    border-bottom: 1px solid #eaecef;
+    padding-bottom: .3em
 }
 
 .markdown-body h2 {
-    padding-bottom: .3em;
-    font-size: 1.5em;
-    border-bottom: 1px solid #eee
+    font-size: 1.5em
 }
 
 .markdown-body h3 {
@@ -140,22 +174,31 @@
 }
 
 .markdown-body h6 {
-    font-size: .85em;
-    color: #777
+    color: #6a737d;
+    font-size: .85em
 }
 
-.markdown-body ul, .markdown-body ol {
+.markdown-body ol,
+.markdown-body ul {
     padding-left: 2em
 }
 
-.markdown-body ul.no-list, .markdown-body ol.no-list {
-    padding: 0;
-    list-style-type: none
+.markdown-body ol.no-list,
+.markdown-body ul.no-list {
+    list-style-type: none;
+    padding: 0
 }
 
-.markdown-body ul ul, .markdown-body ul ol, .markdown-body ol ol, .markdown-body ol ul {
-    margin-top: 0;
-    margin-bottom: 0
+.markdown-body ol ol,
+.markdown-body ol ul,
+.markdown-body ul ol,
+.markdown-body ul ul {
+    margin-bottom: 0;
+    margin-top: 0
+}
+
+.markdown-body li {
+    word-wrap: break-all
 }
 
 .markdown-body li>p {
@@ -171,46 +214,51 @@
 }
 
 .markdown-body dl dt {
-    padding: 0;
-    margin-top: 16px;
     font-size: 1em;
     font-style: italic;
-    font-weight: 700
+    font-weight: 600;
+    margin-top: 16px;
+    padding: 0
 }
 
 .markdown-body dl dd {
-    padding: 0 16px;
-    margin-bottom: 16px
+    margin-bottom: 16px;
+    padding: 0 16px
 }
 
 .markdown-body table {
     display: block;
-    width: 100%;
-    overflow: auto
+    overflow: auto;
+    width: 100%
 }
 
 .markdown-body table th {
-    font-weight: 700
+    font-weight: 600
 }
 
-.markdown-body table th, .markdown-body table td {
-    padding: 6px 13px;
-    border: 1px solid #ddd
+.markdown-body table td,
+.markdown-body table th {
+    border: 4px solid #dfe2e5;
+    padding: 6px 13px
 }
 
 .markdown-body table tr {
     background-color: #fff;
-    border-top: 1px solid #ccc
+    border-top: 1px solid #c6cbd1
 }
 
 .markdown-body table tr:nth-child(2n) {
-    background-color: #f8f8f8
+    background-color: #f6f8fa
+}
+
+.markdown-body table img {
+    background-color: transparent
 }
 
 .markdown-body img {
-    max-width: 100%;
+    background-color: #fff;
     box-sizing: content-box;
-    background-color: #fff
+    max-width: 100%
 }
 
 .markdown-body img[align=right] {
@@ -222,9 +270,9 @@
 }
 
 .markdown-body .emoji {
+    background-color: transparent;
     max-width: none;
-    vertical-align: text-top;
-    background-color: transparent
+    vertical-align: text-top
 }
 
 .markdown-body span.frame {
@@ -233,13 +281,13 @@
 }
 
 .markdown-body span.frame>span {
+    border: 1px solid #dfe2e5;
     display: block;
     float: left;
-    width: auto;
-    padding: 7px;
     margin: 13px 0 0;
     overflow: hidden;
-    border: 1px solid #ddd
+    padding: 7px;
+    width: auto
 }
 
 .markdown-body span.frame span img {
@@ -248,16 +296,16 @@
 }
 
 .markdown-body span.frame span span {
-    display: block;
-    padding: 5px 0 0;
     clear: both;
-    color: #333
+    color: #24292e;
+    display: block;
+    padding: 5px 0 0
 }
 
 .markdown-body span.align-center {
+    clear: both;
     display: block;
-    overflow: hidden;
-    clear: both
+    overflow: hidden
 }
 
 .markdown-body span.align-center>span {
@@ -273,9 +321,9 @@
 }
 
 .markdown-body span.align-right {
+    clear: both;
     display: block;
-    overflow: hidden;
-    clear: both
+    overflow: hidden
 }
 
 .markdown-body span.align-right>span {
@@ -315,22 +363,17 @@
     text-align: right
 }
 
-.markdown-body code, .markdown-body tt {
-    padding: 0;
-    padding-top: .2em;
-    padding-bottom: .2em;
-    margin: 0;
+.markdown-body code,
+.markdown-body tt {
+    background-color: rgba(27, 31, 35, .05);
+    border-radius: 3px;
     font-size: 85%;
-    background-color: rgba(0, 0, 0, 0.04);
-    border-radius: 3px
+    margin: 0;
+    padding: .2em .4em
 }
 
-.markdown-body code::before, .markdown-body code::after, .markdown-body tt::before, .markdown-body tt::after {
-    letter-spacing: -.2em;
-    content: "\00a0"
-}
-
-.markdown-body code br, .markdown-body tt br {
+.markdown-body code br,
+.markdown-body tt br {
     display: none
 }
 
@@ -343,13 +386,13 @@
 }
 
 .markdown-body pre>code {
-    padding: 0;
-    margin: 0;
-    font-size: 100%;
-    word-break: normal;
-    white-space: pre;
     background: transparent;
-    border: 0
+    border: 0;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    word-break: normal
 }
 
 .markdown-body .highlight {
@@ -361,45 +404,44 @@
     word-break: normal
 }
 
-.markdown-body .highlight pre, .markdown-body pre {
-    padding: 16px;
-    overflow: auto;
+.markdown-body .highlight pre,
+.markdown-body pre {
+    background-color: #f6f8fa;
+    border-radius: 3px;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #f7f7f7;
-    border-radius: 3px
+    overflow: auto;
+    padding: 16px
 }
 
-.markdown-body pre code, .markdown-body pre tt {
-    display: inline;
-    max-width: auto;
-    padding: 0;
-    margin: 0;
-    overflow: visible;
-    line-height: inherit;
-    word-wrap: normal;
+.markdown-body pre code,
+.markdown-body pre tt {
     background-color: transparent;
-    border: 0
+    border: 0;
+    display: inline;
+    line-height: inherit;
+    margin: 0;
+    max-width: auto;
+    overflow: visible;
+    padding: 0;
+    word-wrap: normal
 }
 
-.markdown-body pre code::before, .markdown-body pre code::after, .markdown-body pre tt::before, .markdown-body pre tt::after {
-    content: normal
-}
-
-.markdown-body .csv-data td, .markdown-body .csv-data th {
-    padding: 5px;
-    overflow: hidden;
+.markdown-body .csv-data td,
+.markdown-body .csv-data th {
     font-size: 12px;
     line-height: 1;
+    overflow: hidden;
+    padding: 5px;
     text-align: left;
     white-space: nowrap
 }
 
 .markdown-body .csv-data .blob-num {
-    padding: 10px 8px 9px;
-    text-align: right;
     background: #fff;
-    border: 0
+    border: 0;
+    padding: 10px 8px 9px;
+    text-align: right
 }
 
 .markdown-body .csv-data tr {
@@ -407,151 +449,469 @@
 }
 
 .markdown-body .csv-data th {
-    font-weight: 700;
-    background: #f8f8f8;
-    border-top: 0
+    background: #f6f8fa;
+    border-top: 0;
+    font-weight: 600
 }
 
-.markdown-body {
-    font-size: 15px
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-family: sans-serif
 }
 
-.markdown-body blockquote {
-    margin-right: 0;
-    margin-left: 0
+body {
+    margin: 0
 }
 
-.markdown-body code {
-    white-space: normal
-}
-
-.markdown-body.email-format {
-    line-height: 1.5em!important
-}
-
-.markdown-body.email-format div {
-    white-space: pre-wrap
-}
-
-.markdown-body .email-hidden-reply {
-    display: none;
-    white-space: pre-wrap
-}
-
-.markdown-body .email-hidden-reply.expanded {
+article, aside, details, figcaption, figure, footer, header, main, menu, nav, section {
     display: block
 }
 
-.markdown-body .email-quoted-reply, .markdown-body .email-signature-reply {
-    padding: 0 15px;
-    margin-bottom: 15px;
-    color: #767676;
-    border-left: 4px solid #ddd
+summary {
+    display: list-item
 }
 
+audio, canvas, progress, video {
+    display: inline-block
+}
+
+audio:not([controls]) {
+    display: none;
+    height: 0
+}
+
+progress {
+    vertical-align: baseline
+}
+
+[hidden], template {
+    display: none!important
+}
+
+a {
+    background-color: transparent
+}
+
+a:active, a:hover {
+    outline-width: 0
+}
+
+abbr[title] {
+    -webkit-text-decoration: underline dotted;
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration: underline dotted
+}
+
+b, strong {
+    font-weight: inherit;
+    font-weight: bolder
+}
+
+dfn {
+    font-style: italic
+}
+
+h1 {
+    font-size: 2em;
+    margin: .67em 0
+}
+
+mark {
+    background-color: #ff0;
+    color: #000
+}
+
+small {
+    font-size: 80%
+}
+
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline
+}
+
+sub {
+    bottom: -.25em
+}
+
+sup {
+    top: -.5em
+}
+
+img {
+    border-style: none
+}
+
+svg:not(:root) {
+    overflow: hidden
+}
+
+code, kbd, pre, samp {
+    font-family: monospace, monospace;
+    font-size: 1em
+}
+
+figure {
+    margin: 1em 40px
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible
+}
+
+button, input, select, textarea {
+    font: inherit;
+    margin: 0
+}
+
+optgroup {
+    font-weight: 700
+}
+
+button, input {
+    overflow: visible
+}
+
+button, select {
+    text-transform: none
+}
+
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: button
+}
+
+[type=button]::-moz-focus-inner, [type=reset]::-moz-focus-inner, [type=submit]::-moz-focus-inner, button::-moz-focus-inner {
+    border-style: none;
+    padding: 0
+}
+
+[type=button]:-moz-focusring, [type=reset]:-moz-focusring, [type=submit]:-moz-focusring, button:-moz-focusring {
+    outline: 1px dotted ButtonText
+}
+
+fieldset {
+    border: 1px solid silver;
+    margin: 0 2px;
+    padding: .35em .625em .75em
+}
+
+legend {
+    box-sizing: border-box;
+    color: inherit;
+    display: table;
+    max-width: 100%;
+    padding: 0;
+    white-space: normal
+}
+
+textarea {
+    overflow: auto
+}
+
+[type=checkbox], [type=radio] {
+    box-sizing: border-box;
+    padding: 0
+}
+
+[type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
+    height: auto
+}
+
+[type=search] {
+    -webkit-appearance: textfield;
+    outline-offset: -2px
+}
+
+[type=search]::-webkit-search-cancel-button, [type=search]::-webkit-search-decoration {
+    -webkit-appearance: none
+}
+
+::-webkit-input-placeholder {
+    color: inherit;
+    opacity: .54
+}
+
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit
+}
+
+* {
+    box-sizing: border-box
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit
+}
+
+body {
+    background-color: #fff;
+    color: #24292e;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-size: 14px;
+    line-height: 1.5
+}
+
+a {
+    color: #0366d6;
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+b, strong {
+    font-weight: 600
+}
+
+.rule, hr {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #dfe2e5;
+    height: 0;
+    margin: 15px 0;
+    overflow: hidden
+}
+
+.rule:before, hr:before {
+    content: "";
+    display: table
+}
+
+.rule:after, hr:after {
+    clear: both;
+    content: "";
+    display: table
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+td, th {
+    padding: 0
+}
+
+button {
+    border-radius: 0;
+    cursor: pointer
+}
+
+[hidden][hidden] {
+    display: none!important
+}
+
+details summary {
+    cursor: pointer
+}
+
+details:not([open])>:not(summary) {
+    display: none!important
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
+    margin-top: 0
+}
+
+h1 {
+    font-size: 32px
+}
+
+h1, h2 {
+    font-weight: 600
+}
+
+h2 {
+    font-size: 24px
+}
+
+h3 {
+    font-size: 20px
+}
+
+h3, h4 {
+    font-weight: 600
+}
+
+h4 {
+    font-size: 16px
+}
+
+h5 {
+    font-size: 14px
+}
+
+h5, h6 {
+    font-weight: 600
+}
+
+h6 {
+    font-size: 12px
+}
+
+p {
+    margin-bottom: 10px;
+    margin-top: 0
+}
+
+small {
+    font-size: 90%
+}
+
+blockquote {
+    margin: 0
+}
+
+ol, ul {
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0
+}
+
+ol ol, ul ol {
+    list-style-type: lower-roman
+}
+
+ol ol ol, ol ul ol, ul ol ol, ul ul ol {
+    list-style-type: lower-alpha
+}
+
+dd {
+    margin-left: 0
+}
+
+code, pre, tt {
+    font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+    font-size: 12px
+}
+
+pre {
+    margin-bottom: 0;
+    margin-top: 0
+}
+
+.octicon {
+    vertical-align: text-bottom
+}
 .pl-c {
-    color: #969896
+    color: #6a737d
 }
 
 .pl-c1, .pl-s .pl-v {
-    color: #0086b3
+    color: #005cc5
 }
 
 .pl-e, .pl-en {
-    color: #795da3
+    color: #6f42c1
 }
 
-.pl-smi, .pl-s .pl-s1 {
-    color: #333
+.pl-s .pl-s1, .pl-smi {
+    color: #24292e
 }
 
 .pl-ent {
-    color: #63a35c
+    color: #22863a
 }
 
 .pl-k {
-    color: #a71d5d
+    color: #d73a49
 }
 
-.pl-s, .pl-pds, .pl-s .pl-pse .pl-s1, .pl-sr, .pl-sr .pl-cce, .pl-sr .pl-sre, .pl-sr .pl-sra {
-    color: #183691
+.pl-pds, .pl-s, .pl-s .pl-pse .pl-s1, .pl-sr, .pl-sr .pl-cce, .pl-sr .pl-sra, .pl-sr .pl-sre {
+    color: #032f62
 }
 
-.pl-v {
-    color: #ed6a43
+.pl-smw, .pl-v {
+    color: #e36209
 }
 
-.pl-id {
-    color: #b52a1d
+.pl-bu {
+    color: #b31d28
 }
 
 .pl-ii {
-    color: #f8f8f8;
-    background-color: #b52a1d
+    background-color: #b31d28;
+    color: #fafbfc
+}
+
+.pl-c2 {
+    background-color: #d73a49;
+    color: #fafbfc
+}
+
+.pl-c2:before {
+    content: "^M"
 }
 
 .pl-sr .pl-cce {
-    font-weight: 700;
-    color: #63a35c
+    color: #22863a;
+    font-weight: 700
 }
 
 .pl-ml {
-    color: #693a17
+    color: #735c0f
 }
 
 .pl-mh, .pl-mh .pl-en, .pl-ms {
-    font-weight: 700;
-    color: #1d3e81
-}
-
-.pl-mq {
-    color: teal
+    color: #005cc5;
+    font-weight: 700
 }
 
 .pl-mi {
-    font-style: italic;
-    color: #333
+    color: #24292e;
+    font-style: italic
 }
 
 .pl-mb {
-    font-weight: 700;
-    color: #333
+    color: #24292e;
+    font-weight: 700
 }
 
 .pl-md {
-    color: #bd2c00;
-    background-color: #ffecec
+    background-color: #ffeef0;
+    color: #b31d28
 }
 
 .pl-mi1 {
-    color: #55a532;
-    background-color: #eaffea
+    background-color: #f0fff4;
+    color: #22863a
+}
+
+.pl-mc {
+    background-color: #ffebda;
+    color: #e36209
+}
+
+.pl-mi2 {
+    background-color: #005cc5;
+    color: #f6f8fa
 }
 
 .pl-mdr {
-    font-weight: 700;
-    color: #795da3
-}
-
-.pl-mo {
-    color: #1d3e81
-}
-
-kbd {
-    display: inline-block;
-    padding: 3px 5px;
-    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    line-height: 10px;
-    color: #555;
-    vertical-align: middle;
-    background-color: #fcfcfc;
-    border: solid 1px #ccc;
-    border-bottom-color: #bbb;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #bbb
-}
-
-.badmono {
-    font-family: sans-serif;
+    color: #6f42c1;
     font-weight: 700
+}
+
+.pl-ba {
+    color: #586069
+}
+
+.pl-sg {
+    color: #959da5
+}
+
+.pl-corl {
+    color: #032f62;
+    text-decoration: underline
 }
