@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.commit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
@@ -104,7 +104,7 @@ public class CreateCommentActivity extends
         actionBar.setTitle(getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner());
+        getAvatars().bind(actionBar, repository.owner());
     }
 
     @Override

@@ -15,21 +15,27 @@
  */
 package com.github.pockethub.android.tests.issue;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
+import com.github.pockethub.android.core.issue.IssueFilter;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.core.issue.IssueFilter;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests of {@link IssueFilter}
  */
-public class IssueFilterTest extends AndroidTestCase {
+@SmallTest
+public class IssueFilterTest {
 
     /**
      * Verify {@link IssueFilter#equals(Object)}
      */
+    @Test
     public void testEqualFilter() {
         Repository repo = Repository.builder()
                 .id(1L)

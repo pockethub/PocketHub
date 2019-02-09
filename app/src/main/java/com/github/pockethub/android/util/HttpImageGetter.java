@@ -21,7 +21,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.DimenRes;
+import androidx.annotation.DimenRes;
 import android.text.Html.ImageGetter;
 import android.text.TextUtils;
 import android.util.Base64;

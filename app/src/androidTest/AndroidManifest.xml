@@ -7,5 +7,4 @@
     <application>
         <uses-library android:name="android.test.runner" />
     </application>
-
 </manifest>

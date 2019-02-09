@@ -4,7 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.text.buildSpannedString
+import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.R
 import com.meisolsson.githubsdk.model.Gist
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -32,7 +32,7 @@ class GistHeaderItem(
         val updatedAt = gist.updatedAt()
         if (updatedAt != null && updatedAt != createdAt) {
             holder.tv_gist_updated.text = buildSpannedString {
-                append("$context.getString(R.string.prefix_updated)}$updatedAt")
+                append("${context.getString(R.string.prefix_updated)}$updatedAt")
             }
             holder.tv_gist_updated.visibility = VISIBLE
         } else {

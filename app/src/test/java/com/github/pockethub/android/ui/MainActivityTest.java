@@ -16,23 +16,9 @@
 
 package com.github.pockethub.android.ui;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Context;
 import android.os.Build;
 import android.view.MenuItem;
-
 import com.github.pockethub.android.AccountManagerShadow;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
@@ -40,10 +26,6 @@ import com.github.pockethub.android.ui.issue.FilterListFragment;
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment;
 import com.github.pockethub.android.ui.user.HomePagerFragment;
 import com.meisolsson.githubsdk.model.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,9 +34,15 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.annotation.Implementation;
-import org.robolectric.annotation.Implements;
-import org.robolectric.shadows.ShadowAccountManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(shadows = AccountManagerShadow.class)
@@ -116,10 +104,10 @@ public class MainActivityTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             verify(AccountManagerShadow.mockManager, times(2)).removeAccount(argumentCaptor.capture(), eq(mainActivity),
-                    anyObject(), anyObject());
+                    any(), any());
         } else {
             verify(AccountManagerShadow.mockManager, times(2)).removeAccount(argumentCaptor.capture(),
-                    anyObject(), anyObject());
+                    any(), any());
         }
 
         List<Account> values = argumentCaptor.getAllValues();
@@ -128,7 +116,7 @@ public class MainActivityTest {
     }
 
     private void assertFragmentInstanceAndSupportActionBarTitle(Class expectedInstance, String expectedSupportActionBarTitle) {
-        assertThat(mainActivity.currentFragment, is(instanceOf(expectedInstance)));
+        assertThat(mainActivity.getCurrentFragment(), is(instanceOf(expectedInstance)));
         assertThat(mainActivity.getSupportActionBar().getTitle().toString(), is(equalTo(expectedSupportActionBarTitle)));
     }
 

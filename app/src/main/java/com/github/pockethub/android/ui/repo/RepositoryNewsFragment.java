@@ -70,13 +70,13 @@ public class RepositoryNewsFragment extends NewsFragment {
 
     @Override
     protected void viewIssue(Issue issue, Repository repository) {
-        startActivity(IssuesViewActivity.createIntent(issue, repo));
+        startActivity(IssuesViewActivity.Companion.createIntent(issue, repo));
     }
 
     @Override
     protected boolean viewUser(User user) {
         if (repo.owner().id() != user.id()) {
-            startActivity(UserViewActivity.createIntent(user));
+            startActivity(UserViewActivity.Companion.createIntent(user));
             return true;
         }
         return false;

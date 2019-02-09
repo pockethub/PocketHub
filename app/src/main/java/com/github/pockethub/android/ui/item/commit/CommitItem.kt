@@ -1,7 +1,7 @@
 package com.github.pockethub.android.ui.item.commit
 
-import androidx.text.bold
-import androidx.text.buildSpannedString
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
 import com.github.pockethub.android.util.AvatarLoader

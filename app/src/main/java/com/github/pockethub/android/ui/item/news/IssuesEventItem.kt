@@ -2,8 +2,8 @@ package com.github.pockethub.android.ui.item.news
 
 import android.text.TextUtils
 import android.view.View
-import androidx.text.bold
-import androidx.text.buildSpannedString
+import androidx.core.text.bold
+import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubEvent
@@ -22,6 +22,7 @@ class IssuesEventItem(
         val action = payload?.action()
 
         if (action != null) {
+            holder.tv_event_icon.visibility = View.VISIBLE
             when (action) {
                 IssuesPayload.Action.Opened ->
                     holder.tv_event_icon.text = OcticonTextView.ICON_ISSUE_OPEN
@@ -42,6 +43,7 @@ class IssuesEventItem(
         if (TextUtils.isEmpty(details)) {
             holder.tv_event_details.visibility = View.GONE
         } else {
+            holder.tv_event_details.visibility = View.VISIBLE
             holder.tv_event_details.text = details
         }
 

@@ -1,8 +1,8 @@
 package com.github.pockethub.android.ui.repo;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +24,7 @@ public class RepositoryReadmeFragment extends BaseFragment {
 
     private static final String PAGE_START = "<!DOCTYPE html><html lang=\"en\"> <head> <title></title>" +
             "<meta charset=\"UTF-8\"> " +
-            "<meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
+            "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\"/>" +
             "<script src=\"intercept.js\"></script>" +
             "<link href=\"github.css\" rel=\"stylesheet\"> </head> <body>";
 

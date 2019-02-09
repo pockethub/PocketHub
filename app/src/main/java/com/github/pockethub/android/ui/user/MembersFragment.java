@@ -16,17 +16,17 @@
 package com.github.pockethub.android.ui.user;
 
 import android.os.Bundle;
-
+import androidx.annotation.NonNull;
+import com.github.pockethub.android.R;
+import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
 import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.User;
-import com.github.pockethub.android.R;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.meisolsson.githubsdk.service.organizations.OrganizationMemberService;
-import javax.inject.Inject;
-
 import io.reactivex.Single;
 import retrofit2.Response;
+
+import javax.inject.Inject;
 
 import static com.github.pockethub.android.Intents.EXTRA_USER;
 
@@ -43,9 +43,8 @@ public class MembersFragment extends PagedUserFragment {
     protected AvatarLoader avatars;
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         if (org != null) {
             outState.putParcelable(EXTRA_USER, org);
         }
@@ -57,15 +56,21 @@ public class MembersFragment extends PagedUserFragment {
         if (org == null && savedInstanceState != null) {
             org = savedInstanceState.getParcelable(EXTRA_USER);
         }
-        setEmptyText(R.string.no_members);
 
         super.onActivityCreated(savedInstanceState);
     }
 
+    @NonNull
     @Override
     protected Single<Response<Page<User>>> loadData(int page) {
         return service.getMembers(org.login(), page);
     }
+
+    @Override
+    protected int getEmptyText() {
+        return R.string.no_members;
+    }
+
 
     @Override
     protected int getLoadingMessage() {

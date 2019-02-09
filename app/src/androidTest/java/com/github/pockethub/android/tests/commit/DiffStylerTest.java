@@ -15,10 +15,10 @@
  */
 package com.github.pockethub.android.tests.commit;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.ui.commit.DiffStyler;
 import com.meisolsson.githubsdk.model.GitHubFile;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,15 +26,21 @@ import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+
 /**
  * Tests of {@link DiffStyler}
  */
-public class DiffStylerTest extends AndroidTestCase {
+@SmallTest
+public class DiffStylerTest {
 
     private void compareStyled(String patch) throws IOException {
         assertNotNull(patch);
         String fileName = "file.txt";
-        DiffStyler styler = new DiffStyler(getContext().getResources());
+        DiffStyler styler = new DiffStyler(getTargetContext().getResources());
         GitHubFile file = GitHubFile.builder()
                 .filename(fileName)
                 .patch(patch)
@@ -57,8 +63,9 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler with empty files
      */
+    @Test
     public void testEmptyFiles() {
-        DiffStyler styler = new DiffStyler(getContext().getResources());
+        DiffStyler styler = new DiffStyler(getTargetContext().getResources());
         styler.setFiles(null);
         assertTrue(styler.get("navigation_drawer_header_background").isEmpty());
         styler.setFiles(Collections.emptyList());
@@ -68,8 +75,9 @@ public class DiffStylerTest extends AndroidTestCase {
     /**
      * Test styler with empty patch
      */
+    @Test
     public void testEmptyPatch() {
-        DiffStyler styler = new DiffStyler(getContext().getResources());
+        DiffStyler styler = new DiffStyler(getTargetContext().getResources());
         GitHubFile file = GitHubFile.builder()
                 .filename("file.txt")
                 .build();
@@ -86,6 +94,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testOnlyNewline() throws IOException {
         compareStyled("\n");
     }
@@ -95,6 +104,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testEmptyPatchLineWithOtherValidLines() throws IOException {
         compareStyled("@@ 0,1 0,1 @@\n\n-navigation_drawer_header_background\n");
     }
@@ -104,6 +114,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testTrailingEmptyLine() throws IOException {
         compareStyled("@@ 0,1 0,1 @@\n-navigation_drawer_header_background\n\n");
     }
@@ -113,6 +124,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testOnlyNewlines() throws IOException {
         compareStyled("\n\n\n");
     }
@@ -122,6 +134,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testNoTrailingNewlineAfterSecondLine() throws IOException {
         compareStyled("@@ 1,2 1,2 @@\n+navigation_drawer_header_background");
     }
@@ -131,6 +144,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testNoTrailingNewline() throws IOException {
         compareStyled("@@ 1,2 1,2 @@");
     }
@@ -140,6 +154,7 @@ public class DiffStylerTest extends AndroidTestCase {
      *
      * @throws IOException
      */
+    @Test
     public void testFormattedPatch() throws IOException {
         compareStyled("@@ 1,2 1,2 @@\n+navigation_drawer_header_background\n");
     }

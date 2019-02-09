@@ -16,19 +16,24 @@
 package com.github.pockethub.android.tests.user;
 
 import android.accounts.Account;
-import android.test.AndroidTestCase;
-
-import com.meisolsson.githubsdk.model.User;
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.user.UserComparator;
+import com.meisolsson.githubsdk.model.User;
+import org.junit.Test;
+
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Unit tests of {@link UserComparator}
  */
-public class UserComparatorTest extends AndroidTestCase {
+@SmallTest
+public class UserComparatorTest {
 
     /**
      * Test sorting of users that match login
      */
+    @Test
     public void testLoginMatch() {
         Account account = new Account("m", "t");
         UserComparator comparator = new UserComparator(account);
@@ -50,6 +55,7 @@ public class UserComparatorTest extends AndroidTestCase {
     /**
      * Test sorting of users that don't match login
      */
+    @Test
     public void testNoLoginMatch() {
         Account account = new Account("m", "t");
         UserComparator comparator = new UserComparator(account);

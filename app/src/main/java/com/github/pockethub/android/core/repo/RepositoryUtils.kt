@@ -33,9 +33,10 @@ object RepositoryUtils {
      * @return true if complete, false otherwise
      */
     @JvmStatic
-    fun Repository.isComplete() = isPrivate == true || isFork == true || hasIssues() == true
-            || forksCount() != null && forksCount()!! > 0
-            || watchersCount() != null && watchersCount()!! > 0
+    fun isComplete(repository: Repository) =
+        repository.isPrivate == true || repository.isFork == true || repository.hasIssues() == true
+            || repository.forksCount() != null && repository.forksCount()!! > 0
+            || repository.watchersCount() != null && repository.watchersCount()!! > 0
 
     /**
      * Is the given owner name valid?

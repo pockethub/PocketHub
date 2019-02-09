@@ -15,21 +15,25 @@
  */
 package com.github.pockethub.android.tests.gist;
 
-import android.test.AndroidTestCase;
-
+import androidx.test.filters.SmallTest;
 import com.github.pockethub.android.core.gist.GistStore;
 import com.meisolsson.githubsdk.model.Gist;
+import org.junit.Test;
 
-import static android.test.MoreAsserts.assertNotEqual;
+import static junit.framework.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Unit tests of {@link GistStore}
  */
-public class GistStoreTest extends AndroidTestCase {
+@SmallTest
+public class GistStoreTest {
 
     /**
      * Verify issue is updated when re-added
      */
+    @Test
     public void testReuseIssue() {
         GistStore store = new GistStore();
         assertNull(store.getGist("abcd"));
@@ -49,8 +53,8 @@ public class GistStoreTest extends AndroidTestCase {
                 .build();
 
         // The gist has now been updated and should not return the same gist
-        assertNotEqual(gist, store.addGist(gist2));
-        assertNotEqual(gist.description(), gist2.description());
-        assertNotEqual(gist, store.getGist("abcd"));
+        assertNotEquals(gist, store.addGist(gist2));
+        assertNotEquals(gist.description(), gist2.description());
+        assertNotEquals(gist, store.getGist("abcd"));
     }
 }

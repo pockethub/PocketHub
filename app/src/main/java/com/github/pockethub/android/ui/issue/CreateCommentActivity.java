@@ -17,7 +17,7 @@ package com.github.pockethub.android.ui.issue;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -76,7 +76,7 @@ public class CreateCommentActivity extends
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.issue_title) + issueNumber);
         actionBar.setSubtitle(InfoUtils.createRepoId(repositoryId));
-        avatars.bind(actionBar, (User) getIntent().getParcelableExtra(EXTRA_USER));
+        getAvatars().bind(actionBar, (User) getIntent().getParcelableExtra(EXTRA_USER));
     }
 
     @Override

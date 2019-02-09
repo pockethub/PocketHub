@@ -2,8 +2,8 @@ package com.github.pockethub.android.ui.item.commit
 
 import android.content.Context
 import android.view.View
-import androidx.text.buildSpannedString
-import androidx.text.color
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
 import com.github.pockethub.android.R
 import com.meisolsson.githubsdk.model.GitHubFile
 import com.xwray.groupie.kotlinandroidextensions.Item

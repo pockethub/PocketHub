@@ -87,14 +87,14 @@ public abstract class UserNewsFragment extends NewsFragment implements
         org = organization;
         // Only hard refresh if view already created and org is changing
         if (previousOrgId != org.id()) {
-            refreshWithProgress();
+            pagedListFetcher.refresh();
         }
     }
 
     @Override
     protected boolean viewUser(User user) {
         if (org.id() != user.id()) {
-            startActivity(UserViewActivity.createIntent(user));
+            startActivity(UserViewActivity.Companion.createIntent(user));
             return true;
         }
         return false;

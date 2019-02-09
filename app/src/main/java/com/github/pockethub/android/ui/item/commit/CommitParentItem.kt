@@ -1,8 +1,8 @@
 package com.github.pockethub.android.ui.item.commit
 
 import android.content.Context
-import androidx.text.buildSpannedString
-import androidx.text.underline
+import androidx.core.text.buildSpannedString
+import androidx.core.text.underline
 import com.github.pockethub.android.R
 import com.github.pockethub.android.util.android.text.monospace
 import com.github.pockethub.android.core.commit.CommitUtils

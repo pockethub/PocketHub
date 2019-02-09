@@ -66,7 +66,6 @@ gen/
 # Gradle files
 .gradle/
 .gradletasknamecache
-gradle.properties
 build/
 
 # Local configuration file (sdk path, etc)

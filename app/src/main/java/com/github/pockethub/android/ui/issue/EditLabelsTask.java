@@ -15,8 +15,7 @@
  */
 package com.github.pockethub.android.ui.issue;
 
-import android.app.Activity;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
@@ -29,8 +28,6 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.ui.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
-
-import javax.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.List;

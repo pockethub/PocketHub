@@ -16,19 +16,23 @@
 package com.github.pockethub.android.tests.user;
 
 import android.net.Uri;
-import android.test.AndroidTestCase;
-
-import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.user.UserUriMatcher;
+import com.meisolsson.githubsdk.model.User;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests of {@link UserUriMatcher}
  */
-public class UserUriMatcherTest extends AndroidTestCase {
+public class UserUriMatcherTest {
 
     /**
      * Verify empty URI
      */
+    @Test
     public void testEmptyUri() {
         assertNull(UserUriMatcher.getUser(Uri.parse("")));
     }
@@ -36,6 +40,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     /**
      * Verify no name
      */
+    @Test
     public void testUriWithNoName() {
         assertNull(UserUriMatcher.getUser(Uri.parse("http://github.com")));
         assertNull(UserUriMatcher.getUser(Uri.parse("https://github.com")));
@@ -46,6 +51,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with name
      */
+    @Test
     public void testHttpUriWithName() {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt"));
@@ -56,6 +62,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with name
      */
+    @Test
     public void testHttpsUriWithName() {
         User user = UserUriMatcher.getUser(Uri
                 .parse("https://github.com/mojombo"));
@@ -66,6 +73,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with name
      */
+    @Test
     public void testUriWithTrailingSlash() {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt/"));
@@ -76,6 +84,7 @@ public class UserUriMatcherTest extends AndroidTestCase {
     /**
      * Verify URI with name
      */
+    @Test
     public void testUriWithTrailingSlashes() {
         User user = UserUriMatcher.getUser(Uri
                 .parse("http://github.com/defunkt//"));

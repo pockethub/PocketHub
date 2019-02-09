@@ -329,6 +329,7 @@ Read the README.md: https://github.com/pockethub/PocketHub#setup-environment</st
     <string name="sort_updated">Updated</string>
     <string name="sort_comments">Comments</string>
     <string name="parent_repo">Parent repository</string>
+    <string name="message_filter_save_failed">Failed to add issue filter</string>
 
 
 </resources>

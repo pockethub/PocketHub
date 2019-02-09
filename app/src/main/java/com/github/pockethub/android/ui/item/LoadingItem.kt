@@ -1,6 +1,6 @@
 package com.github.pockethub.android.ui.item
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import com.github.pockethub.android.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
