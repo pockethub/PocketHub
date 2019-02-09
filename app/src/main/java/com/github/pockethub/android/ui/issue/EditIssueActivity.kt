@@ -365,7 +365,7 @@ class EditIssueActivity : BaseActivity() {
                 }
 
                 if (issue!!.milestone() != null) {
-                    request.milestone(issue!!.milestone()!!.number()!!.toLong())
+                    request.milestone(issue!!.milestone()!!.number()!!)
                 }
 
                 val labels = ArrayList<String>()

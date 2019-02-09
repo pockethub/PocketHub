@@ -146,7 +146,7 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
             val defaultBranch = repo!!.defaultBranch()
             refSingle = if (TextUtils.isEmpty(defaultBranch)) {
                 repoService.getRepository(repo!!.owner()!!.login(), repo!!.name())
-                    .map { it.body().defaultBranch() }
+                    .map { it.body()!!.defaultBranch() }
                     .map {
                         return@map if (TextUtils.isEmpty(it)) {
                             "master"

@@ -132,7 +132,7 @@ class RepositoryContributorsFragment : BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .`as`(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe { response -> startActivity(UserViewActivity.createIntent(response.body())) }
+                .subscribe { response -> startActivity(UserViewActivity.createIntent(response.body()!!)) }
         }
     }
 }

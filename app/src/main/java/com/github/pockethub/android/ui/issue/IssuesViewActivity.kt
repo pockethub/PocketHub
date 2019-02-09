@@ -97,7 +97,7 @@ class IssuesViewActivity : BaseActivity() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .`as`(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe { response -> repositoryLoaded(response.body()) }
+                .subscribe { response -> repositoryLoaded(response.body()!!) }
         } else {
             repositoryLoaded(repo!!)
         }

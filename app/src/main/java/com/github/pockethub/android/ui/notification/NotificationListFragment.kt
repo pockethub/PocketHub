@@ -126,7 +126,7 @@ class NotificationListFragment : BaseFragment(), NotificationReadListener {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .flatMapObservable { response ->
-                val page = response.body()
+                val page = response.body()!!
                 if (page.next() == null) {
                     return@flatMapObservable notificationService
                         .getNotifications(filters, i.toLong())

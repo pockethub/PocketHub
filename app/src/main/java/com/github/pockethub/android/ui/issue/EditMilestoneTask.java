@@ -88,7 +88,7 @@ public class EditMilestoneTask {
      */
     public EditMilestoneTask edit(Milestone milestone) {
         if (milestone != null) {
-            IssueRequest editedIssue = IssueRequest.builder().milestone(milestone.number().longValue()).build();
+            IssueRequest editedIssue = IssueRequest.builder().milestone(milestone.number()).build();
 
             store.editIssue(repositoryId, issueNumber, editedIssue)
                     .subscribeOn(Schedulers.io())

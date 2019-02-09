@@ -7,7 +7,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
@@ -17,6 +17,7 @@ allprojects {
     repositories {
         jcenter()
         google()
+        mavenLocal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }

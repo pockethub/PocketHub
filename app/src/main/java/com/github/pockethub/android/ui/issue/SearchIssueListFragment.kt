@@ -132,7 +132,7 @@ class SearchIssueListFragment : BaseFragment() {
         val searchQuery = query + "+repo:" + InfoUtils.createRepoId(repository!!)
         return service.searchIssues(searchQuery, null, null, page.toLong())
             .map { response ->
-                val issueSearchPage = response.body()
+                val issueSearchPage = response.body()!!
 
                 Response.success(Page.builder<Issue>()
                     .first(issueSearchPage.first())

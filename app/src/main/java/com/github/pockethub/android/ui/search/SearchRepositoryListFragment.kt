@@ -125,7 +125,7 @@ class SearchRepositoryListFragment : BaseFragment() {
                     MessageFormat.format(getString(R.string.opening_repository),
                         InfoUtils.createRepoId(result))))
                 .`as`(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe { response -> startActivity(RepositoryViewActivity.createIntent(response.body())) }
+                .subscribe { response -> startActivity(RepositoryViewActivity.createIntent(response.body()!!)) }
         }
     }
 
@@ -147,7 +147,7 @@ class SearchRepositoryListFragment : BaseFragment() {
             .getRepository(repoId.owner()!!.login(), repoId.name())
             .subscribe { response ->
                 if (response.isSuccessful) {
-                    startActivity(RepositoryViewActivity.createIntent(response.body()))
+                    startActivity(RepositoryViewActivity.createIntent(response.body()!!))
                     val activity = activity
                     activity?.finish()
                 }
@@ -160,7 +160,7 @@ class SearchRepositoryListFragment : BaseFragment() {
     private fun loadData(page: Int): Single<Response<Page<Repository>>> {
         return service.searchRepositories(getStringExtra(QUERY), null, null, page.toLong())
             .map { response ->
-                val repositorySearchPage = response.body()
+                val repositorySearchPage = response.body()!!
                 Response.success(Page.builder<Repository>()
                     .first(repositorySearchPage.first())
                     .last(repositorySearchPage.last())

@@ -106,7 +106,7 @@ class SearchUserListFragment : BaseFragment() {
     private fun loadData(page: Int): Single<Response<Page<User>>> {
         return service.searchUsers(getStringExtra(SearchManager.QUERY), null, null, page.toLong())
             .map { response ->
-                val repositorySearchPage = response.body()
+                val repositorySearchPage = response.body()!!
 
                 Response.success(Page.builder<User>()
                     .first(repositorySearchPage.first())
@@ -130,7 +130,7 @@ class SearchUserListFragment : BaseFragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .`as`(AutoDisposeUtils.bindToLifecycle(this))
-                .subscribe { response -> startActivity(UserViewActivity.createIntent(response.body())) }
+                .subscribe { response -> startActivity(UserViewActivity.createIntent(response.body()!!)) }
         }
     }
 }

@@ -86,14 +86,14 @@ class GistsPagerFragment : BaseFragment() {
         service.getPublicGists(1)
             .flatMap { response ->
                 val firstPage = response.body()
-                var randomPage = (Math.random() * (firstPage.last()!! - 1)).toInt()
+                var randomPage = (Math.random() * (firstPage!!.last()!! - 1)).toInt()
                 randomPage = Math.max(1, randomPage)
 
                 return@flatMap service.getPublicGists(randomPage.toLong())
             }
             .flatMap { response ->
                 val gistPage = response.body()
-                if (gistPage.items().isEmpty()) {
+                if (gistPage!!.items().isEmpty()) {
                     var randomPage = (Math.random() * (gistPage.last()!! - 1)).toInt()
                     randomPage = Math.max(1, randomPage)
                     return@flatMap service.getPublicGists(randomPage.toLong())
@@ -102,7 +102,7 @@ class GistsPagerFragment : BaseFragment() {
                 return@flatMap Single.just(response)
             }
             .map<Gist> { response ->
-                val gistPage = response.body()
+                val gistPage = response.body()!!
                 if (response.isSuccessful) {
                     val size = gistPage.items().size
                     if (size > 0) {

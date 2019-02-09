@@ -191,7 +191,7 @@ class RepositoryViewActivity : BaseActivity() {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe { response ->
-                            val parent = response.body().parent()
+                            val parent = response.body()!!.parent()
                             startActivity(RepositoryViewActivity.createIntent(parent!!))
                         }
                 } else {
@@ -271,7 +271,7 @@ class RepositoryViewActivity : BaseActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .`as`(AutoDisposeUtils.bindToLifecycle(this))
             .subscribe({ response ->
-                val repo = response.body()
+                val repo = response.body()!!
                 UriLauncherActivity.launchUri(this, Uri.parse(repo.htmlUrl()))
             }, { e -> ToastUtils.show(this, R.string.error_forking_repository) })
     }

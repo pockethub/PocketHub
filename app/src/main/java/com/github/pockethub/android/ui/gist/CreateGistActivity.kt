@@ -164,7 +164,7 @@ class CreateGistActivity : BaseActivity() {
             .compose(RxProgress.bindToLifecycle(this, R.string.creating_gist))
             .`as`(AutoDisposeUtils.bindToLifecycle(this))
             .subscribe({ response ->
-                startActivity(GistsViewActivity.createIntent(response.body()))
+                startActivity(GistsViewActivity.createIntent(response.body()!!))
                 setResult(RESULT_OK)
                 finish()
             }, { e ->

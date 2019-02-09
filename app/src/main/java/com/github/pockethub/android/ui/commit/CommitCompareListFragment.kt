@@ -147,7 +147,7 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
             .`as`(AutoDisposeUtils.bindToLifecycle(this))
             .subscribe({ response ->
                 val compareCommit = response.body()
-                val files = compareCommit.files()
+                val files = compareCommit!!.files()
                 diffStyler!!.setFiles(files)
                 Collections.sort(files, CommitFileComparator())
                 updateList(compareCommit)
