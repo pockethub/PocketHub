@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId 'com.github.pockethub.android'
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
