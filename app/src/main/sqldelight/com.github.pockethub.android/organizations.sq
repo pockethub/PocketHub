@@ -1,0 +1,31 @@
+-- This contains Users and Organizations
+CREATE TABLE organizations (
+    id INTEGER PRIMARY KEY
+);
+
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    login TEXT,
+    name TEXT,
+    avatarurl TEXT
+);
+
+selectUserAndOrgs:
+SELECT users.id, login, name, avatarurl
+FROM organizations
+JOIN users
+USING (id);
+
+clearOrgs:
+DELETE FROM organizations;
+
+clearUsers:
+DELETE FROM users;
+
+replaceUser:
+REPLACE INTO users(id, login, name, avatarurl)
+VALUES (?, ?, ?, ?);
+
+insertOrg:
+INSERT INTO organizations(id)
+VALUES (?);

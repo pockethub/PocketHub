@@ -18,17 +18,13 @@ package com.github.pockethub.android.sync;
 import android.content.SyncResult;
 import android.database.SQLException;
 import android.util.Log;
-
 import com.github.pockethub.android.persistence.DatabaseCache;
-import com.github.pockethub.android.persistence.OrganizationRepositories;
 import com.github.pockethub.android.persistence.OrganizationRepositoriesFactory;
 import com.github.pockethub.android.persistence.Organizations;
 import com.google.auto.factory.AutoFactory;
-import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.User;
-import javax.inject.Inject;
 
-import java.io.IOException;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -67,7 +63,7 @@ public class SyncCampaign implements Runnable {
         try {
             orgs = cache.requestAndStore(persistedOrgs);
             syncResult.stats.numUpdates++;
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             syncResult.stats.numIoExceptions++;
             Log.d(TAG, "Exception requesting users and orgs", e);
             return;
@@ -83,7 +79,7 @@ public class SyncCampaign implements Runnable {
             try {
                 cache.requestAndStore(repos.create(org));
                 syncResult.stats.numUpdates++;
-            } catch (IOException | SQLException e) {
+            } catch (SQLException e) {
                 syncResult.stats.numIoExceptions++;
                 Log.d(TAG, "Exception requesting repositories", e);
             }

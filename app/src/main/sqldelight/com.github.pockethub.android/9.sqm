@@ -1,0 +1,4 @@
+ALTER TABLE orgs RENAME TO organizations;
+ALTER TABLE users ADD COLUMN login TEXT;
+UPDATE users SET login = name;
+UPDATE users SET name = NULL;

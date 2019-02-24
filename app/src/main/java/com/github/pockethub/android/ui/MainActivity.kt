@@ -37,13 +37,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import com.github.pockethub.android.Database
 import com.github.pockethub.android.R
 import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.accounts.AccountsHelper
 import com.github.pockethub.android.accounts.LoginActivity
 import com.github.pockethub.android.core.user.UserComparator
 import com.github.pockethub.android.persistence.AccountDataManager
-import com.github.pockethub.android.persistence.CacheHelper
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.gist.GistsPagerFragment
@@ -71,6 +71,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     @Inject
     lateinit var accountDataManager: AccountDataManager
+
+    @Inject
+    lateinit var database: Database
 
     @Inject
     lateinit var userComparatorProvider: Provider<UserComparator>
@@ -325,10 +328,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
         // Clear all of the cached data
-        val helper = CacheHelper(this)
-        helper.writableDatabase.delete("orgs", null, null)
-        helper.writableDatabase.delete("users", null, null)
-        helper.writableDatabase.delete("repos", null, null)
+        database.repositoriesQueries.clearRepositories()
+        database.organizationsQueries.clearOrgs()
+        database.organizationsQueries.clearUsers()
 
         // Remove the account
         val accountManager = accountManager

@@ -15,8 +15,7 @@
  */
 package com.github.pockethub.android.persistence;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import com.github.pockethub.android.Database;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,25 +30,20 @@ import java.util.List;
 public interface PersistableResource<E> {
 
     /**
-     * @param readableDatabase
-     * @return a cursor capable of reading the required information out of the
-     *         database.
+     * Load items from the database
+     *
+     * @param database
+     * @return Item from the database
      */
-    Cursor getCursor(SQLiteDatabase readableDatabase);
-
-    /**
-     * @param cursor
-     * @return a single item, read from this row of the cursor
-     */
-    E loadFrom(Cursor cursor);
+    List<E> loadItems(Database database);
 
     /**
      * Store supplied items in DB, removing or updating prior entries
      *
-     * @param writableDatabase
+     * @param database
      * @param items
      */
-    void store(SQLiteDatabase writableDatabase, List<E> items);
+    void store(Database database, List<E> items);
 
     /**
      * Request the data directly from the GitHub API, rather than attempting to
