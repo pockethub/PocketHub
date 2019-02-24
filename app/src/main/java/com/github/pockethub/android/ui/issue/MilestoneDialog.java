@@ -20,7 +20,7 @@ import android.util.Log;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.GitHubRequest;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.util.RxPageUtil;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;

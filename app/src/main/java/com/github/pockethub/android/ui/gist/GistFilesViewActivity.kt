@@ -28,8 +28,8 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.gist.GistStore
 import com.github.pockethub.android.core.gist.RefreshGistTaskFactory
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Gist
 import io.reactivex.android.schedulers.AndroidSchedulers

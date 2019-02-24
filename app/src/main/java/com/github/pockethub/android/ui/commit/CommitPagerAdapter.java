@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.meisolsson.githubsdk.model.Repository;
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentStatePagerAdapter;
 
 import static com.github.pockethub.android.Intents.EXTRA_BASE;
 import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;

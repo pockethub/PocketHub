@@ -19,7 +19,7 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
 import com.github.pockethub.android.rx.AutoDisposeUtils;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.ConfirmDialogFragment;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;

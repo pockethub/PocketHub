@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.ui;
+package com.github.pockethub.android.ui.base;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

@@ -17,16 +17,12 @@ package com.github.pockethub.android.ui.commit
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.widget.Toolbar
 import android.text.TextUtils
 import android.util.Base64
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.webkit.WebView
-import android.widget.ProgressBar
 
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
@@ -35,8 +31,8 @@ import com.meisolsson.githubsdk.model.Repository
 import com.github.pockethub.android.Intents.Builder
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.MarkdownLoader
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.util.MarkdownLoader
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.HttpImageGetter
 import com.github.pockethub.android.util.InfoUtils

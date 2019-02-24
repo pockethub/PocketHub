@@ -30,7 +30,7 @@ import com.github.pockethub.android.RequestCodes.GIST_VIEW
 import com.github.pockethub.android.core.gist.GistStore
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.util.ToastUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator

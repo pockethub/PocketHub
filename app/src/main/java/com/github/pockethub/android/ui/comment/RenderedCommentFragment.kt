@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.MarkdownLoader
+import com.github.pockethub.android.util.MarkdownLoader
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.util.HttpImageGetter
 import com.github.pockethub.android.util.ToastUtils

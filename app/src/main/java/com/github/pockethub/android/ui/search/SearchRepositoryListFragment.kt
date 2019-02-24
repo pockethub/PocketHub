@@ -22,9 +22,9 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.pockethub.android.ItemListHandler
-import com.github.pockethub.android.PagedListFetcher
-import com.github.pockethub.android.PagedScrollListener
+import com.github.pockethub.android.ui.helpers.ItemListHandler
+import com.github.pockethub.android.ui.helpers.PagedListFetcher
+import com.github.pockethub.android.ui.helpers.PagedScrollListener
 import com.github.pockethub.android.R
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
@@ -91,7 +91,7 @@ class SearchRepositoryListFragment : BaseFragment() {
             view.swipe_item,
             lifecycle,
             itemListHandler,
-            { t -> ToastUtils.show(activity, errorMessage)},
+            { t -> ToastUtils.show(activity, errorMessage) },
             this::loadData,
             this::createItem
         )

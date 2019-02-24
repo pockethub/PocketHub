@@ -25,7 +25,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
 import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;

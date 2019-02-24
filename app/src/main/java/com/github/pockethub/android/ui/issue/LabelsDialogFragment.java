@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseActivity;
-import com.github.pockethub.android.ui.DialogFragmentHelper;
+import com.github.pockethub.android.ui.base.BaseActivity;
+import com.github.pockethub.android.ui.base.DialogFragmentHelper;
 import com.github.pockethub.android.ui.item.dialog.LabelDialogItem;
 import com.meisolsson.githubsdk.model.Label;
 import com.xwray.groupie.GroupAdapter;

@@ -24,9 +24,8 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
-import javax.inject.Inject;
 
 import java.util.Collections;
 

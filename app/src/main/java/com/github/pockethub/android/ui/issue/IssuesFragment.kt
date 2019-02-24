@@ -30,9 +30,9 @@ import androidx.appcompat.widget.SearchView
 import com.github.pockethub.android.Intents.EXTRA_ISSUE
 import com.github.pockethub.android.Intents.EXTRA_ISSUE_FILTER
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
-import com.github.pockethub.android.ItemListHandler
-import com.github.pockethub.android.PagedListFetcher
-import com.github.pockethub.android.PagedScrollListener
+import com.github.pockethub.android.ui.helpers.ItemListHandler
+import com.github.pockethub.android.ui.helpers.PagedListFetcher
+import com.github.pockethub.android.ui.helpers.PagedScrollListener
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.ISSUE_CREATE
 import com.github.pockethub.android.RequestCodes.ISSUE_FILTER_EDIT
@@ -124,7 +124,7 @@ class IssuesFragment : BaseFragment() {
             view.swipe_item,
             lifecycle,
             itemListHandler,
-            { t -> ToastUtils.show(activity, errorMessage)},
+            { t -> ToastUtils.show(activity, errorMessage) },
             this::loadData,
             this::createItem
         )

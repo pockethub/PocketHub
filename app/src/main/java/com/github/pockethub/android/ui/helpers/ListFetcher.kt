@@ -1,9 +1,10 @@
-package com.github.pockethub.android
+package com.github.pockethub.android.ui.helpers
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.pockethub.android.R
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.xwray.groupie.Item
 import io.reactivex.Observable

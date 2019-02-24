@@ -28,9 +28,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.MainActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.util.ToastUtils
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 import kotlinx.android.synthetic.main.tabbed_progress_pager.*

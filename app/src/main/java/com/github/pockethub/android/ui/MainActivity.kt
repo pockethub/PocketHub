@@ -45,6 +45,7 @@ import com.github.pockethub.android.core.user.UserComparator
 import com.github.pockethub.android.persistence.AccountDataManager
 import com.github.pockethub.android.persistence.CacheHelper
 import com.github.pockethub.android.rx.AutoDisposeUtils
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.gist.GistsPagerFragment
 import com.github.pockethub.android.ui.issue.FilterListFragment
 import com.github.pockethub.android.ui.issue.IssueDashboardPagerFragment

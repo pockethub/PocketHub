@@ -19,7 +19,7 @@ import android.content.res.Resources;
 import androidx.fragment.app.Fragment;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.FragmentPagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentPagerAdapter;
 
 /**
  * Pager adapter for different Gist queries

@@ -26,8 +26,8 @@ import com.github.pockethub.android.Intents.EXTRA_POSITION
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.item.commit.CommitItem
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.util.AvatarLoader

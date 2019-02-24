@@ -25,7 +25,7 @@ import com.meisolsson.githubsdk.model.Page;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.service.issues.IssueAssigneeService;
 

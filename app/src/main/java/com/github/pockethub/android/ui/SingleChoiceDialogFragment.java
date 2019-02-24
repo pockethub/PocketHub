@@ -20,6 +20,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import android.view.View;
 
+import com.github.pockethub.android.ui.base.BaseActivity;
+import com.github.pockethub.android.ui.base.DialogFragmentHelper;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 

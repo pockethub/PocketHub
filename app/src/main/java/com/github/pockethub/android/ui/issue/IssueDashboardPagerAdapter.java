@@ -19,7 +19,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentStatePagerAdapter;
 
 import java.io.Serializable;
 import java.util.HashMap;

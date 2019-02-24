@@ -26,7 +26,7 @@ import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.meisolsson.githubsdk.model.request.issue.IssueRequest;
 
 import java.util.ArrayList;

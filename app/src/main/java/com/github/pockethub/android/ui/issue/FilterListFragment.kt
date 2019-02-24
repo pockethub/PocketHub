@@ -21,8 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
-import com.github.pockethub.android.ItemListHandler
-import com.github.pockethub.android.ListFetcher
+import com.github.pockethub.android.ui.helpers.ItemListHandler
+import com.github.pockethub.android.ui.helpers.ListFetcher
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueFilter
 import com.github.pockethub.android.persistence.AccountDataManager
@@ -82,7 +82,7 @@ class FilterListFragment : BaseFragment(), Comparator<IssueFilter> {
             view.swipe_item,
             lifecycle,
             itemListHandler,
-            { t -> ToastUtils.show(activity, errorMessage)},
+            { t -> ToastUtils.show(activity, errorMessage) },
             this::loadData,
             this::createItem
         )
