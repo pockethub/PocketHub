@@ -25,8 +25,8 @@ import android.view.ViewGroup
 import androidx.annotation.Nullable
 import com.github.pockethub.android.R
 import com.github.pockethub.android.accounts.AccountUtils
-import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.base.BaseFragment
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.util.PreferenceUtils
 import com.meisolsson.githubsdk.model.User
 import kotlinx.android.synthetic.main.pager_with_tabs.*
@@ -73,7 +73,9 @@ class HomePagerFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        lifecycle.removeObserver(pagerHandler!!)
+        if (pagerHandler != null) {
+            lifecycle.removeObserver(pagerHandler!!)
+        }
     }
 
     companion object {
