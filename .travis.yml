@@ -5,6 +5,7 @@ android:
    - tools #Running this twice get's the latest build tools (https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI)
    - platform-tools
    - android-28
+   - android-22
    - build-tools-28.0.3
    - extra
    - sys-img-armeabi-v7a-google_apis-22
