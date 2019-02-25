@@ -28,9 +28,9 @@ import com.github.pockethub.android.Intents.EXTRA_USER
 import com.github.pockethub.android.R
 import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.MainActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ToastUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator

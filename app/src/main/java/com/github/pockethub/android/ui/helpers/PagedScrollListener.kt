@@ -1,10 +1,9 @@
-package com.github.pockethub.android
+package com.github.pockethub.android.ui.helpers
 
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
-import com.github.pockethub.android.ui.ResourceLoadingIndicator
 import com.xwray.groupie.Section
 
 class PagedScrollListener(

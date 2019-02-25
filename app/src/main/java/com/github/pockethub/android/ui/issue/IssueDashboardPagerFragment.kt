@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.MainActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 import kotlinx.android.synthetic.main.pager_with_tabs.view.*

@@ -19,7 +19,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.pockethub.android.ui.FragmentPagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentPagerAdapter;
 import com.meisolsson.githubsdk.model.Gist;
 import com.meisolsson.githubsdk.model.GistFile;
 

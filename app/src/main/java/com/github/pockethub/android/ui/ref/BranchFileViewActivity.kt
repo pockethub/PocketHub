@@ -27,8 +27,8 @@ import com.github.pockethub.android.Intents.*
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.MarkdownLoader
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.util.MarkdownLoader
 import com.github.pockethub.android.util.*
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Repository

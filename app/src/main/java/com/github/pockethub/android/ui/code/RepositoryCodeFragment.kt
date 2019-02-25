@@ -36,7 +36,7 @@ import com.github.pockethub.android.core.code.FullTree.Folder
 import com.github.pockethub.android.core.code.RefreshTreeTask
 import com.github.pockethub.android.core.ref.RefUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.ui.item.code.BlobItem

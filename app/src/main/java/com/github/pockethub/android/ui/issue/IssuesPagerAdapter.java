@@ -25,7 +25,7 @@ import com.meisolsson.githubsdk.model.Issue;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.core.issue.IssueStore;
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentStatePagerAdapter;
 
 import java.util.List;
 

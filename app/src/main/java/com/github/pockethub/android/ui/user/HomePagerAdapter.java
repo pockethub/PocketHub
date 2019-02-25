@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 
 import com.meisolsson.githubsdk.model.User;
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.FragmentPagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentPagerAdapter;
 import com.github.pockethub.android.ui.repo.RepositoryListFragment;
 
 import java.util.HashSet;

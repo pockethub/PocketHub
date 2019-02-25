@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import com.github.pockethub.android.ui.FragmentStatePagerAdapter;
+import com.github.pockethub.android.ui.base.FragmentStatePagerAdapter;
 
 import static com.github.pockethub.android.Intents.EXTRA_GIST_ID;
 

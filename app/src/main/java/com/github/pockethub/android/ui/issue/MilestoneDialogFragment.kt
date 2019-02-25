@@ -20,7 +20,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment
 import com.github.pockethub.android.ui.item.dialog.MilestoneDialogItem
 import com.meisolsson.githubsdk.model.Milestone

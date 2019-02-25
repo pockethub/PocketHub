@@ -25,15 +25,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.pockethub.android.Intents.EXTRA_REPOSITORY
-import com.github.pockethub.android.ItemListHandler
-import com.github.pockethub.android.PagedListFetcher
-import com.github.pockethub.android.PagedScrollListener
+import com.github.pockethub.android.ui.helpers.ItemListHandler
+import com.github.pockethub.android.ui.helpers.PagedListFetcher
+import com.github.pockethub.android.ui.helpers.PagedScrollListener
 import com.github.pockethub.android.R
 import com.github.pockethub.android.RequestCodes.COMMIT_VIEW
 import com.github.pockethub.android.RequestCodes.REF_UPDATE
 import com.github.pockethub.android.core.commit.CommitStore
 import com.github.pockethub.android.core.ref.RefUtils
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.github.pockethub.android.ui.item.commit.CommitItem
@@ -122,7 +122,7 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
             view.swipe_item,
             lifecycle,
             itemListHandler,
-            { t -> ToastUtils.show(activity, errorMessage)},
+            { t -> ToastUtils.show(activity, errorMessage) },
             this::loadData,
             this::createItem
         )

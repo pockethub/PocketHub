@@ -25,7 +25,7 @@ import android.view.View.OnFocusChangeListener
 import com.github.pockethub.android.R
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.TextWatcherAdapter
 import com.github.pockethub.android.util.ShareUtils
 import com.github.pockethub.android.util.ToastUtils

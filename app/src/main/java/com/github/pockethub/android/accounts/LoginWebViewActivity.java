@@ -22,22 +22,20 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebViewClient;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.WebView;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class LoginWebViewActivity extends AppCompatActivity {
 
@@ -45,13 +43,14 @@ public class LoginWebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WebView webView = new WebView(this);
+        WebView.setWebContentsDebuggingEnabled(true);
 
         // Needs the be activated to allow GitHub to perform their requests.
         webView.getSettings().setJavaScriptEnabled(true);
 
         String userAgent = webView.getSettings().getUserAgentString();
         // Remove chrome from the user agent since GitHub checks it incorrectly
-        userAgent = userAgent.replaceAll("Chrome/\\d{2}\\.\\d\\.\\d\\.\\d", "");
+        userAgent = userAgent.replaceAll("Chrome/\\d{2}\\.\\d+\\.\\d+\\.\\d+", "");
         webView.getSettings().setUserAgentString(userAgent);
 
         String url = getIntent().getStringExtra(LoginActivity.INTENT_EXTRA_URL);

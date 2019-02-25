@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.ui;
+package com.github.pockethub.android.ui.base;
 
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.ViewGroup;
+import com.github.pockethub.android.ui.FragmentProvider;
 
 /**
  * Pager that stores current fragment
  */
 public abstract class FragmentStatePagerAdapter extends
         androidx.fragment.app.FragmentStatePagerAdapter implements
-    FragmentProvider {
+        FragmentProvider {
 
     private final AppCompatActivity activity;
 

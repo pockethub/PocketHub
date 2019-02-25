@@ -25,7 +25,7 @@ import com.github.pockethub.android.Intents.Builder
 import com.github.pockethub.android.Intents.EXTRA_ISSUE_FILTER
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueFilter
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
 import kotlinx.android.synthetic.main.activity_issues_filter_edit.*

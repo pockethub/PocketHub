@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.ben-manes.versions'   // ./gradlew dependencyUpdates -Drevision=release
+apply plugin: 'com.squareup.sqldelight'
 //apply from: 'quality.gradle'
 
 repositories {
@@ -13,7 +14,7 @@ repositories {
 
 // Manifest version information!
 def versionMajor = 0
-def versionMinor = 4
+def versionMinor = 5
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
@@ -38,6 +39,7 @@ android {
         targetSdkVersion 28
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testOptions.unitTests.includeAndroidResources = true
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -159,6 +161,7 @@ dependencies {
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation "com.squareup.sqldelight:android-driver:1.0.3"
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
@@ -190,6 +193,7 @@ dependencies {
     //Libs for testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "androidx.test:core:1.1.0"
     testImplementation "org.mockito:mockito-core:2.18.3"
-    testImplementation "org.robolectric:robolectric:3.7.1"
+    testImplementation "org.robolectric:robolectric:4.2"
 }

@@ -1,4 +1,4 @@
-package com.github.pockethub.android
+package com.github.pockethub.android.ui.helpers
 
 import android.content.Context
 import android.view.View

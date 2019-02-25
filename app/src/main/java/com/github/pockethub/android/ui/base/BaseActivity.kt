@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.ui
+package com.github.pockethub.android.ui.base
 
 import android.os.Bundle
 import android.os.Parcelable
 import com.github.pockethub.android.R
+import com.github.pockethub.android.ui.DialogResultListener
 import dagger.android.support.DaggerAppCompatActivity
 
 /**

@@ -31,8 +31,8 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED
 import com.github.pockethub.android.core.repo.RepositoryUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader

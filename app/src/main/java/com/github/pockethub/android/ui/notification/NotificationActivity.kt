@@ -3,8 +3,8 @@ package com.github.pockethub.android.ui.notification
 import android.os.Bundle
 import android.view.MenuItem
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 
 class NotificationActivity : BaseActivity() {

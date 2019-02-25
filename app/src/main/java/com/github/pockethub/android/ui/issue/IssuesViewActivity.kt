@@ -29,8 +29,8 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
-import com.github.pockethub.android.ui.BaseActivity
-import com.github.pockethub.android.ui.PagerHandler
+import com.github.pockethub.android.ui.base.BaseActivity
+import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.util.AvatarLoader

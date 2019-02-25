@@ -1,10 +1,12 @@
-package com.github.pockethub.android.ui
+package com.github.pockethub.android.ui.helpers
 
 import android.app.Activity
 import android.view.View
 import androidx.lifecycle.LifecycleObserver
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.github.pockethub.android.ui.FragmentProvider
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.base.BaseFragment
 import com.google.android.material.tabs.TabLayout
 

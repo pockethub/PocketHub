@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.github.pockethub.android.R;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.SingleChoiceDialogFragment;
 import com.github.pockethub.android.ui.item.dialog.RefDialogItem;
 import com.meisolsson.githubsdk.model.git.GitReference;

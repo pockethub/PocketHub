@@ -52,7 +52,7 @@ import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.core.issue.RefreshIssueTaskFactory
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
-import com.github.pockethub.android.ui.BaseActivity
+import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.ConfirmDialogFragment
 import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseFragment

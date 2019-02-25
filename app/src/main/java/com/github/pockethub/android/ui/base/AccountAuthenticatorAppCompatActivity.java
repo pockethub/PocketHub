@@ -20,10 +20,6 @@ import android.accounts.AccountAuthenticatorResponse;
 import android.accounts.AccountManager;
 import android.os.Bundle;
 
-import com.github.pockethub.android.ui.BaseActivity;
-
-import dagger.android.support.DaggerAppCompatActivity;
-
 /**
  * Base class for implementing an Activity that is used to help implement an
  * AbstractAccountAuthenticator. If the AbstractAccountAuthenticator needs to use an activity

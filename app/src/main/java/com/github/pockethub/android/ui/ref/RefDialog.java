@@ -21,7 +21,7 @@ import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.GitHubRequest;
 import com.github.pockethub.android.core.ref.RefUtils;
 import com.github.pockethub.android.rx.RxProgress;
-import com.github.pockethub.android.ui.BaseActivity;
+import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.util.RxPageUtil;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.core.ServiceGenerator;
@@ -35,8 +35,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
