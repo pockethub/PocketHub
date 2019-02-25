@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.android.ui.comment
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -34,8 +33,6 @@ import javax.inject.Inject
  * Base activity for creating comments
  */
 abstract class CreateCommentActivity : BaseActivity() {
-
-    private var applyItem: MenuItem? = null
 
     /**
      * Avatar loader
@@ -67,12 +64,6 @@ abstract class CreateCommentActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         lifecycle.removeObserver(pagerHandler!!)
-    }
-
-    override fun invalidateOptionsMenu() {
-        super.invalidateOptionsMenu()
-        applyItem?.isEnabled =
-            pagerHandler?.adapter != null && pagerHandler?.adapter!!.commentText.isNotEmpty()
     }
 
     /**
@@ -119,11 +110,15 @@ abstract class CreateCommentActivity : BaseActivity() {
         return CommentPreviewPagerAdapter(this, null)
     }
 
-    // For some reason we can't call the super method since that makes invalidateOptionsMenu weird
-    @SuppressLint("MissingSuperCall")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.activity_comment, menu)
-        applyItem = menu.findItem(R.id.m_apply)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val applyItem = menu?.findItem(R.id.m_apply)
+        applyItem?.isEnabled =
+            pagerHandler?.adapter != null && pagerHandler?.adapter!!.commentText.isNotEmpty()
         return true
     }
 }
