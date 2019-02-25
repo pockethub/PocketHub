@@ -5,10 +5,8 @@ android:
    - tools #Running this twice get's the latest build tools (https://github.com/codepath/android_guides/wiki/Setting-up-Travis-CI)
    - platform-tools
    - android-28
-   - android-22
    - build-tools-28.0.3
    - extra
-   - sys-img-armeabi-v7a-google_apis-22
    licenses:
    - 'android-sdk-license-.+'
 
@@ -22,13 +20,6 @@ sudo: required #The build runs out of memory and is killed if we use the contain
 before_install:
   - yes | sdkmanager "platforms;android-28"
 
-before_script:
-  - echo no | android create avd --force -n test -t android-22 --abi google_apis/armeabi-v7a -c 100M
-  - emulator -avd test -noaudio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-
 script:
   - ./gradlew clean build
   - ./gradlew test
-  - ./gradlew connectedCheck
