@@ -32,14 +32,12 @@ public class ConvertUtilsTest {
 	private static final String REPO_NAME = REPO_NAME_FIRST_PART + "/" + REPO_NAME_SECOND_PART;
 
 	private GitHubEvent event;
-	private GitHubEvent.RepoIdentifier repo;
 
 	@Before
 	public void setup() {
-
-	    repo = GitHubEvent.RepoIdentifier.builder()
-                .repoWithUserName(REPO_NAME)
-                .build();
+		GitHubEvent.RepoIdentifier repo = GitHubEvent.RepoIdentifier.builder()
+				.repoWithUserName(REPO_NAME)
+				.build();
 
 		event = GitHubEvent.builder()
                 .repo(repo)
@@ -47,13 +45,13 @@ public class ConvertUtilsTest {
 	}
 
 	@Test
-	public void testOriginalRepoIsNotChanged() throws Exception {
+	public void testOriginalRepoIsNotChanged() {
 		ConvertUtils.eventRepoToRepo(event.repo());
 		assertThat(event.repo().repoWithUserName(), equalTo(REPO_NAME));
 	}
 
 	@Test
-	public void testNewRepoIsCreated() throws Exception {
+	public void testNewRepoIsCreated() {
 		Repository newRepo = ConvertUtils.eventRepoToRepo(event.repo());
 		assertThat(newRepo.owner().login(), equalTo(REPO_NAME_FIRST_PART));
 		assertThat(newRepo.name(), equalTo(REPO_NAME_SECOND_PART));

@@ -19,6 +19,7 @@ package com.github.pockethub.android.ui;
 import android.accounts.Account;
 import android.os.Build;
 import android.view.MenuItem;
+import androidx.test.core.app.ApplicationProvider;
 import com.github.pockethub.android.AccountManagerShadow;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.gist.GistsPagerFragment;
@@ -32,7 +33,6 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
@@ -40,7 +40,6 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
 
@@ -73,7 +72,7 @@ public class MainActivityTest {
     public void testNavigationDrawerClickListenerPos1_ShouldReplaceHomePagerFragmentToContainer() {
         mainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_home, "HomeTitle"));
 
-        String expectedString = RuntimeEnvironment.application.getString(R.string.app_name);
+        String expectedString = ApplicationProvider.getApplicationContext().getString(R.string.app_name);
         assertFragmentInstanceAndSupportActionBarTitle(HomePagerFragment.class, expectedString);
     }
 

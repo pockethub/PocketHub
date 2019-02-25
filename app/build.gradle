@@ -193,6 +193,7 @@ dependencies {
     //Libs for testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "androidx.test:core:1.1.0"
     testImplementation "org.mockito:mockito-core:2.18.3"
     testImplementation "org.robolectric:robolectric:4.2"
 }
