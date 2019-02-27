@@ -41,7 +41,7 @@ import javax.inject.Provider
 /**
  * Create repositories cache for a given organization
  *
- * @param orgs
+ * @param org
  * @param context
  * @param accountProvider
  */
@@ -116,8 +116,8 @@ class OrganizationRepositories(
 
             database.organizationsQueries.replaceUser(
                 owner.id(),
-                owner.name(),
                 owner.login(),
+                owner.name(),
                 owner.avatarUrl()
             )
         }
