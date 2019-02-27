@@ -39,7 +39,7 @@ open class DatabaseCache @Inject constructor() {
     @Throws(IOException::class)
     fun <E> loadOrRequest(persistableResource: PersistableResource<E>): List<E> {
         val items = loadFromDB(persistableResource)
-        if (items != null) {
+        if (items != null && items.isNotEmpty()) {
             Log.d(TAG, "CACHE HIT: Found ${items.size} items for $persistableResource")
             return items
         }
