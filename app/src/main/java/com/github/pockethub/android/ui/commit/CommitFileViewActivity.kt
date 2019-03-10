@@ -109,7 +109,6 @@ class CommitFileViewActivity : BaseActivity() {
             actionBar.title = path
         }
         actionBar.subtitle = getString(R.string.commit_prefix) + CommitUtils.abbreviate(commit)!!
-        avatars.bind(actionBar, repo!!.owner()!!)
 
         loadContent()
     }

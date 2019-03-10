@@ -62,7 +62,6 @@ public class FiltersViewActivity extends BaseActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.bookmarks);
-        actionBar.setIcon(R.drawable.ic_bookmark_white_24dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         fragment = (FilterListFragment) getSupportFragmentManager()

@@ -93,7 +93,6 @@ class BranchFileViewActivity : BaseActivity() {
         val actionBar = supportActionBar!!
         actionBar.title = file
         actionBar.subtitle = branch
-        avatars.bind(actionBar, repo!!.owner()!!)
 
         loadContent()
     }

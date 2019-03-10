@@ -97,7 +97,6 @@ class GistFilesViewActivity : BaseActivity() {
         val author = gist!!.owner()
         if (author != null) {
             actionBar.subtitle = author.login()
-            avatars.bind(actionBar, author)
         } else {
             actionBar.setSubtitle(R.string.anonymous)
         }

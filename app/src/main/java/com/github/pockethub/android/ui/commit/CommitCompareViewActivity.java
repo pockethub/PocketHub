@@ -76,7 +76,6 @@ public class CommitCompareViewActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        avatars.bind(actionBar, repository.owner());
 
         fragment = getSupportFragmentManager()
             .findFragmentById(R.id.list);
