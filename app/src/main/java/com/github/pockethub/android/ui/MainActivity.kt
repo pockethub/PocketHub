@@ -132,8 +132,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val tokenStore = TokenStore.getInstance(this)
 
         if (tokenStore.token == null) {
-            val manager = AccountManager.get(this)
-            val accounts = manager.getAccountsByType(getString(R.string.account_type))
+            val accounts = accountManager.getAccountsByType(getString(R.string.account_type))
             if (accounts.isNotEmpty()) {
                 val account = accounts[0]
                 AccountsHelper.getUserToken(this, account)
@@ -165,7 +164,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun reloadOrgs() {
         Single.fromCallable { AccountUtils.getAccount(accountManager, this) }
-            .map { account -> accountDataManager.getOrgs(false) }
+            .map { account -> accountDataManager.getOrgs(true) }
             .map { orgs ->
                 Collections.sort(orgs, userComparatorProvider.get())
                 orgs
@@ -188,6 +187,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         org = orgs[0]
         this.orgs = orgs
+
+        val accounts = accountManager.getAccountsByType(getString(R.string.account_type))
+        val account = accounts[0]
+        LoginActivity.configureSyncFor(account)
+        if (org!!.login() != AccountUtils.getLogin(this)) {
+            AccountUtils.renameAccount(org!!.login(), account, accountManager, this)
+        }
 
         setUpNavigationView()
 
@@ -339,7 +345,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         for (account in allGitHubAccounts) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                accountManager.removeAccount(account, this, { bool -> startLoginActivity() }, null)
+                accountManager.removeAccountExplicitly(account)
             } else {
                 accountManager.removeAccount(account, { bundle -> startLoginActivity() }, null)
             }

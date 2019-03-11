@@ -22,9 +22,9 @@ import com.github.pockethub.android.persistence.DatabaseCache;
 import com.github.pockethub.android.persistence.OrganizationRepositoriesFactory;
 import com.github.pockethub.android.persistence.Organizations;
 import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 import com.meisolsson.githubsdk.model.User;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -35,13 +35,10 @@ public class SyncCampaign implements Runnable {
 
     private static final String TAG = "SyncCampaign";
 
-    @Inject
     protected DatabaseCache cache;
 
-    @Inject
     protected OrganizationRepositoriesFactory repos;
 
-    @Inject
     protected Organizations persistedOrgs;
 
     private final SyncResult syncResult;
@@ -53,7 +50,13 @@ public class SyncCampaign implements Runnable {
      *
      * @param syncResult
      */
-    public SyncCampaign(SyncResult syncResult) {
+    public SyncCampaign(@Provided DatabaseCache cache,
+                        @Provided OrganizationRepositoriesFactory repos,
+                        @Provided Organizations persistedOrgs,
+                        SyncResult syncResult) {
+        this.cache = cache;
+        this.repos = repos;
+        this.persistedOrgs = persistedOrgs;
         this.syncResult = syncResult;
     }
 

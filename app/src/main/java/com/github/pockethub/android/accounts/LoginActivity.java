@@ -19,14 +19,13 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.PeriodicSync;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.R;
@@ -39,14 +38,13 @@ import com.meisolsson.githubsdk.model.GitHubToken;
 import com.meisolsson.githubsdk.model.User;
 import com.meisolsson.githubsdk.model.request.RequestToken;
 import com.meisolsson.githubsdk.service.users.UserService;
-
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
+
+import javax.inject.Inject;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Activity to login
@@ -81,8 +79,20 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
 
         ContentResolver.setIsSyncable(account, BuildConfig.PROVIDER_AUTHORITY_SYNC, 1);
         ContentResolver.setSyncAutomatically(account, BuildConfig.PROVIDER_AUTHORITY_SYNC, true);
-        ContentResolver.addPeriodicSync(account, BuildConfig.PROVIDER_AUTHORITY_SYNC,
-                new Bundle(), SYNC_PERIOD);
+
+        List<PeriodicSync> syncs = ContentResolver.getPeriodicSyncs(
+                account,
+                BuildConfig.PROVIDER_AUTHORITY_SYNC
+        );
+
+        if (syncs.isEmpty()) {
+            ContentResolver.addPeriodicSync(
+                    account,
+                    BuildConfig.PROVIDER_AUTHORITY_SYNC,
+                    new Bundle(),
+                    SYNC_PERIOD
+            );
+        }
     }
 
     private AccountManager accountManager;
@@ -228,6 +238,7 @@ public class LoginActivity extends AccountAuthenticatorAppCompatActivity {
                     result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
                     result.putString(AccountManager.KEY_AUTHTOKEN, accessToken);
 
+                    configureSyncFor(account);
                     setAccountAuthenticatorResult(result);
 
                     finish();
