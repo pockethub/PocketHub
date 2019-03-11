@@ -15,19 +15,13 @@
  */
 package com.github.pockethub.android.accounts;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.accounts.AccountsException;
-import android.accounts.AuthenticatorDescription;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
+import android.accounts.*;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.pockethub.android.BuildConfig;
 import com.github.pockethub.android.R;
@@ -139,6 +133,41 @@ public class AccountUtils {
             return getPasswordAccessibleAccounts(manager, accounts);
         } else {
             return new Account[0];
+        }
+    }
+
+    public static boolean renameAccount(String newName, Account account,
+            AccountManager accountManager, Context context) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            accountManager.renameAccount(account, newName, null, null);
+        } else {
+            Account newAccount = new Account(newName, account.type);
+            Bundle userData = AccountsHelper.buildBundle(
+                    AccountsHelper.getUserName(context, account),
+                    AccountsHelper.getUserMail(context, account),
+                    AccountsHelper.getUserAvatar(context, account),
+                    AccountsHelper.getUrl(context, account)
+            );
+
+            String authToken = accountManager.getUserData(account, AccountManager.KEY_AUTHTOKEN);
+            userData.putString(AccountManager.KEY_AUTHTOKEN, authToken);
+
+            removeAccount(account, accountManager);
+
+            accountManager.addAccountExplicitly(newAccount, null, userData);
+            accountManager.setAuthToken(newAccount, account.type, authToken);
+            LoginActivity.configureSyncFor(newAccount);
+        }
+
+        return true;
+    }
+
+    private static void removeAccount(Account account, AccountManager accountManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            accountManager.removeAccountExplicitly(account);
+        } else {
+            accountManager.removeAccount(account, null, null);
         }
     }
 

@@ -102,8 +102,7 @@ public class MainActivityTest {
         mainActivity.onNavigationItemSelected(getMockMenuItem(R.id.navigation_log_out, "Logout"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            verify(AccountManagerShadow.mockManager, times(2)).removeAccount(argumentCaptor.capture(), eq(mainActivity),
-                    any(), any());
+            verify(AccountManagerShadow.mockManager, times(2)).removeAccountExplicitly(argumentCaptor.capture());
         } else {
             verify(AccountManagerShadow.mockManager, times(2)).removeAccount(argumentCaptor.capture(),
                     any(), any());

@@ -18,8 +18,6 @@ package com.github.pockethub.android.persistence
 import android.accounts.Account
 import android.content.Context
 import com.github.pockethub.android.Database
-import com.google.auto.factory.AutoFactory
-import com.google.auto.factory.Provided
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Page
 import com.meisolsson.githubsdk.model.Permissions
@@ -45,11 +43,10 @@ import javax.inject.Provider
  * @param context
  * @param accountProvider
  */
-@AutoFactory
 class OrganizationRepositories(
     private val org: User,
-    @param:Provided private val context: Context,
-    @param:Provided private val accountProvider: Provider<Account>
+    private val context: Context,
+    private val accountProvider: Provider<Account>
 ) : PersistableResource<Repository> {
 
     override fun loadItems(database: Database): List<Repository> {
