@@ -171,16 +171,13 @@ class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
             gist == null -> {
                 actionBar.subtitle = null
                 actionBar.setLogo(null)
-                actionBar.setIcon(R.drawable.app_icon)
             }
             gist.owner() != null -> {
-                avatars.bind(actionBar, gist.owner()!!)
                 actionBar.subtitle = gist.owner()!!.login()
             }
             else -> {
                 actionBar.setSubtitle(R.string.anonymous)
                 actionBar.setLogo(null)
-                actionBar.setIcon(R.drawable.app_icon)
             }
         }
         actionBar.title = getString(R.string.gist_title) + gistId

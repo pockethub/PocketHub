@@ -65,7 +65,6 @@ public class IssueBrowseActivity extends BaseActivity {
         actionBar.setTitle(repo.name());
         actionBar.setSubtitle(repo.owner().login());
         actionBar.setDisplayHomeAsUpEnabled(true);
-        avatars.bind(actionBar, repo.owner());
     }
 
     @Override

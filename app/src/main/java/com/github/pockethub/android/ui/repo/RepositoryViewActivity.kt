@@ -86,7 +86,6 @@ class RepositoryViewActivity : BaseActivity() {
         if (owner.avatarUrl() != null && RepositoryUtils.isComplete(repository!!)) {
             checkReadme()
         } else {
-            avatars.bind(supportActionBar!!, owner)
             pb_loading.visibility = View.VISIBLE
             ServiceGenerator.createService(this, RepositoryService::class.java)
                 .getRepository(repository!!.owner()!!.login(), repository!!.name())
@@ -149,8 +148,6 @@ class RepositoryViewActivity : BaseActivity() {
     }
 
     private fun configurePager() {
-        avatars.bind(supportActionBar!!, repository!!.owner()!!)
-
         val adapter = RepositoryPagerAdapter(this, repository!!.hasIssues()!!, hasReadme)
         pagerHandler = PagerHandler(this, vp_pages, adapter)
         lifecycle.addObserver(pagerHandler!!)

@@ -128,7 +128,6 @@ class EditIssueActivity : BaseActivity() {
             actionBar!!.setTitle(R.string.new_issue)
         }
         actionBar.subtitle = InfoUtils.createRepoId(repository)
-        avatars.bind(actionBar, intent.getParcelableExtra<Parcelable>(EXTRA_USER) as User)
 
         updateSaveMenu()
         et_issue_title.setText(issue!!.title())

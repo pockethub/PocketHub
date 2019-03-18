@@ -65,7 +65,6 @@ public class RepositoryContributorsActivity extends BaseActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         User owner = repository.owner();
-        avatars.bind(getSupportActionBar(), owner);
     }
 
     @Override

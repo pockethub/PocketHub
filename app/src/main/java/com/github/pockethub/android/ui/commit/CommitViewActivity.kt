@@ -72,7 +72,6 @@ class CommitViewActivity : BaseActivity() {
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.subtitle = InfoUtils.createRepoId(repository!!)
-        avatars.bind(actionBar, repository!!.owner()!!)
     }
 
     override fun onDestroy() {

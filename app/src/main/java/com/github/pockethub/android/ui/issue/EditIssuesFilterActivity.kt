@@ -64,7 +64,6 @@ class EditIssuesFilterActivity : BaseActivity() {
         val actionBar = supportActionBar!!
         actionBar.setTitle(R.string.filter_issues_title)
         actionBar.subtitle = InfoUtils.createRepoId(repository)
-        avatars.bind(actionBar, repository.owner()!!)
 
         updateAssignee()
         updateMilestone()

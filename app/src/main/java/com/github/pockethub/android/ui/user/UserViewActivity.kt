@@ -123,8 +123,6 @@ class UserViewActivity : BaseActivity(), OrganizationSelectionProvider {
     }
 
     private fun configurePager() {
-        avatars.bind(supportActionBar!!, user!!)
-
         val adapter = UserPagerAdapter(this)
         pagerHandler = PagerHandler(this, vp_pages, adapter)
         lifecycle.addObserver(pagerHandler!!)

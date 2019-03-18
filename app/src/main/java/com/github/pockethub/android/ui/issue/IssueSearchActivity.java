@@ -102,7 +102,6 @@ public class IssueSearchActivity extends BaseActivity {
             if (repository != null) {
                 actionBar.setSubtitle(InfoUtils.createRepoId(repository));
                 actionBar.setDisplayHomeAsUpEnabled(true);
-                avatars.bind(actionBar, repository.owner());
             }
         }
 

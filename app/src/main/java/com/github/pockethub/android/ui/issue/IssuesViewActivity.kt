@@ -85,7 +85,6 @@ class IssuesViewActivity : BaseActivity() {
         if (repo != null) {
             actionBar.subtitle = InfoUtils.createRepoId(repo!!)
             user = repo!!.owner()
-            avatars.bind(actionBar, user!!)
         }
 
         // Load avatar if single issue and user is currently unset or missing
@@ -109,10 +108,6 @@ class IssuesViewActivity : BaseActivity() {
     }
 
     private fun repositoryLoaded(repo: Repository) {
-        if (issueNumbers!!.size == 1 && (user == null || user!!.avatarUrl() == null)) {
-            avatars.bind(supportActionBar!!, repo.owner()!!)
-        }
-
         val permission = repo.permissions()
         canWrite = permission != null && (permission.admin()!! || permission.push()!!)
 
@@ -166,7 +161,6 @@ class IssuesViewActivity : BaseActivity() {
                 val fullRepo = issue.repository()
                 if (fullRepo?.owner() != null) {
                     user = fullRepo.owner()
-                    avatars.bind(actionBar, user!!)
                 } else {
                     actionBar.setLogo(null)
                 }
