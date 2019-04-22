@@ -87,7 +87,9 @@ public class FiltersViewActivity extends BaseActivity implements DialogResultLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposables.dispose();
+        if (disposables != null) {
+            disposables.dispose();
+        }
     }
 
     @Override

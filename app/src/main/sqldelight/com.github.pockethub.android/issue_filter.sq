@@ -1,0 +1,97 @@
+import java.lang.Boolean;
+import com.meisolsson.githubsdk.model.IssueState;
+
+CREATE TABLE labels (
+    repo_id INTEGER,
+    name TEXT,
+    color TEXT,
+    PRIMARY KEY (repo_id, name)
+);
+
+CREATE TABLE milestones (
+    repo_id INTEGER,
+    title TEXT,
+    state TEXT AS IssueState,
+    milestone_id INTEGER,
+    number INTEGER,
+    PRIMARY KEY (repo_id, milestone_id)
+);
+
+CREATE TABLE issue_filters (
+    id TEXT PRIMARY KEY,
+    repo_id INTEGER,
+    milestone_id INTEGER,
+    assignee_id INTEGER,
+    open INTEGER AS Boolean,
+    direction TEXT,
+    sort_type TEXT,
+
+    FOREIGN KEY (repo_id) REFERENCES repositories(repoId),
+    FOREIGN KEY (repo_id, milestone_id) REFERENCES milestones(repo_id, milestone_id),
+    FOREIGN KEY (assignee_id) REFERENCES users(id)
+);
+
+CREATE TABLE issue_filter_labels (
+    issue_filter_id TEXT,
+    repo_id INTEGER,
+    name TEXT,
+
+    FOREIGN KEY (issue_filter_id) REFERENCES issue_filters(id),
+    FOREIGN KEY (repo_id, name) REFERENCES labels(repo_id, name)
+);
+
+insertOrReplaceIssueFilter:
+INSERT OR REPLACE
+INTO issue_filters(id, repo_id, milestone_id, assignee_id, open, direction, sort_type)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+insertOrReplaceLabel:
+INSERT OR REPLACE
+INTO labels(repo_id, name, color)
+VALUES (?, ?, ?);
+
+insertOrReplaceIssueFilterLabel:
+INSERT OR REPLACE
+INTO issue_filter_labels(issue_filter_id, repo_id, name)
+VALUES (?, ?, ?);
+
+insertOrReplaceMilestone:
+INSERT OR REPLACE
+INTO milestones(repo_id, title, state, milestone_id, number)
+VALUES (?, ?, ?, ?, ?);
+
+removeIssueFilter:
+DELETE FROM issue_filters WHERE id = ?;
+
+removeIssueFilterLabel:
+DELETE FROM issue_filter_labels WHERE issue_filter_id = ? AND repo_id = ? AND name = ?;
+
+clearIssueFilters:
+DELETE FROM issue_filter_labels;
+
+clearMilestones:
+DELETE FROM issue_filters;
+
+clearLabels:
+DELETE FROM labels;
+
+clearIssueFilterLabels:
+DELETE FROM issue_filter_labels;
+
+getFilters:
+SELECT *
+FROM issue_filters
+LEFT JOIN milestones
+USING (repo_id, milestone_id)
+LEFT JOIN repositories
+ON repositories.repoId = issue_filters.repo_id
+LEFT JOIN users
+ON users.id = issue_filters.assignee_id;
+
+getFilterLabels:
+SELECT *
+FROM issue_filter_labels
+JOIN labels
+ON issue_filter_labels.repo_id = labels.repo_id AND issue_filter_labels.name = labels.name
+WHERE issue_filter_id = ?;
+

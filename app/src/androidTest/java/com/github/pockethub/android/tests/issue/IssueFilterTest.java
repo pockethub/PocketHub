@@ -22,6 +22,8 @@ import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -41,13 +43,13 @@ public class IssueFilterTest {
                 .id(1L)
                 .build();
 
-        IssueFilter filter1 = new IssueFilter(repo);
+        IssueFilter filter1 = new IssueFilter(repo, UUID.randomUUID().toString());
 
         assertFalse(filter1.equals(null));
         assertFalse(filter1.equals(""));
         assertTrue(filter1.equals(filter1));
 
-        IssueFilter filter2 = new IssueFilter(repo);
+        IssueFilter filter2 = new IssueFilter(repo, UUID.randomUUID().toString());
         assertEquals(filter1, filter2);
         assertEquals(filter1.hashCode(), filter2.hashCode());
 
