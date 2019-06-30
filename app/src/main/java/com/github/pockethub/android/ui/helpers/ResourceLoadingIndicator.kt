@@ -22,12 +22,11 @@ import com.xwray.groupie.Section
  * Helper for showing more items are being loaded at the bottom of a list via a
  * custom footer view
  *
- * @param loadingResId string resource id to show when loading
  * @param section the adapter that this indicator should be added as a footer to.
  */
-class ResourceLoadingIndicator(loadingResId: Int, private val section: Section) {
+class ResourceLoadingIndicator(private val section: Section) {
 
-    private val loadingItem = LoadingItem(loadingResId)
+    private val loadingItem = LoadingItem()
 
     /**
      * Visibility of entire indicator view.

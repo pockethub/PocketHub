@@ -63,9 +63,6 @@ class SearchRepositoryListFragment : BaseFragment() {
 
     private lateinit var pagedScrollListener: PagedScrollListener
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_repositories
-
     protected val errorMessage: Int
         get() = R.string.error_repos_load
 
@@ -99,8 +96,7 @@ class SearchRepositoryListFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_repositories)
     }

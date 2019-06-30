@@ -64,9 +64,6 @@ class DashboardIssueFragment : BaseFragment() {
 
     private var filterData: Map<String, Any>? = null
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_issues
-
     protected val errorMessage: Int
         get() = R.string.error_issues_load
 
@@ -105,8 +102,7 @@ class DashboardIssueFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_repositories)
     }

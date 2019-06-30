@@ -58,9 +58,6 @@ class UserRepositoryListFragment : BaseFragment() {
 
     private var user: User? = null
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_repositories
-
     protected val errorMessage: Int
         get() = R.string.error_repos_load
 
@@ -100,8 +97,7 @@ class UserRepositoryListFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_repositories)
     }

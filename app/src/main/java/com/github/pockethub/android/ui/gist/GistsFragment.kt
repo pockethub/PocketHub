@@ -67,9 +67,6 @@ abstract class GistsFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_gists_load
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_gists
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -100,8 +97,7 @@ abstract class GistsFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_gists)
     }

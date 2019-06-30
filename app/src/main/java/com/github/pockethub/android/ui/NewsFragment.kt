@@ -79,9 +79,6 @@ abstract class NewsFragment : BaseFragment() {
 
     private lateinit var pagedScrollListener: PagedScrollListener
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_news
-
     protected val errorMessage: Int
         get() = R.string.error_news_load
 
@@ -116,8 +113,7 @@ abstract class NewsFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_news)
     }

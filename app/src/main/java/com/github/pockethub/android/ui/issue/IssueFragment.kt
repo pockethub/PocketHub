@@ -203,7 +203,7 @@ class IssueFragment : BaseFragment(), IssueHeaderItem.OnIssueHeaderActionListene
         issue = store.getIssue(repositoryId, issueNumber)
 
         if (issue == null || issue!!.comments()!! > 0 && items.isEmpty()) {
-            mainSection.setFooter(LoadingItem(R.string.loading_comments))
+            mainSection.setFooter(LoadingItem())
         }
 
         if (issue != null && items.isNotEmpty()) {
