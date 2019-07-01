@@ -38,12 +38,12 @@ class HomePagerAdapter(
     private val resources = fragment.resources
 
     override fun getItem(position: Int): Fragment? {
-        var fragment: Fragment? = null
-        when (position) {
-            0 -> fragment = if (defaultUser) UserReceivedNewsFragment() else OrganizationNewsFragment()
-            1 -> fragment = RepositoryListFragment()
-            2 -> fragment = if (defaultUser) MyFollowersFragment() else MembersFragment()
-            3 -> fragment = MyFollowingFragment()
+        val fragment: Fragment? = when (position) {
+            0 -> if (defaultUser) UserReceivedNewsFragment() else OrganizationNewsFragment()
+            1 -> RepositoryListFragment()
+            2 -> if (defaultUser) MyFollowersFragment() else MembersFragment()
+            3 -> MyFollowingFragment()
+            else -> null
         }
 
         if (fragment != null) {
