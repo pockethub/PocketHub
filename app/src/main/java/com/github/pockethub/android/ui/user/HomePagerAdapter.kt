@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.android.ui.user
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -38,13 +37,9 @@ class HomePagerAdapter(
         private val org: User
 ) : FragmentPagerAdapter(fragment) {
 
-    private val resources: Resources
+    private val resources = fragment.resources
 
     private val tags = HashSet<String?>()
-
-    init {
-        resources = fragment.resources
-    }
 
     override fun getItem(position: Int): Fragment? {
         var fragment: Fragment? = null
