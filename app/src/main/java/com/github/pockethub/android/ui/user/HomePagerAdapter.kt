@@ -23,7 +23,6 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.base.FragmentPagerAdapter
 import com.github.pockethub.android.ui.repo.RepositoryListFragment
 import com.meisolsson.githubsdk.model.User
-import java.util.*
 
 /**
  * Pager adapter for a user's different views
@@ -38,8 +37,6 @@ class HomePagerAdapter(
 ) : FragmentPagerAdapter(fragment) {
 
     private val resources = fragment.resources
-
-    private val tags = HashSet<String?>()
 
     override fun getItem(position: Int): Fragment? {
         var fragment: Fragment? = null
@@ -64,9 +61,6 @@ class HomePagerAdapter(
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position)
-        if (fragment is Fragment) {
-            tags.add(fragment.tag)
-        }
         return fragment
     }
 
