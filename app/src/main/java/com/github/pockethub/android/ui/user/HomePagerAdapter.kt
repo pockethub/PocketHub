@@ -37,20 +37,19 @@ class HomePagerAdapter(
 
     private val resources = fragment.resources
 
-    override fun getItem(position: Int): Fragment? {
-        val fragment: Fragment? = when (position) {
+    override fun getItem(position: Int): Fragment {
+        val fragment = when (position) {
             0 -> if (defaultUser) UserReceivedNewsFragment() else OrganizationNewsFragment()
             1 -> RepositoryListFragment()
             2 -> if (defaultUser) MyFollowersFragment() else MembersFragment()
             3 -> MyFollowingFragment()
-            else -> null
+            else -> error("Unknown position: $position")
         }
 
-        if (fragment != null) {
-            val args = Bundle()
-            args.putParcelable("org", org)
-            fragment.arguments = args
-        }
+        val args = Bundle()
+        args.putParcelable("org", org)
+        fragment.arguments = args
+
         return fragment
     }
 
@@ -62,7 +61,7 @@ class HomePagerAdapter(
         return if (defaultUser) 4 else 3
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
             0 -> resources.getString(R.string.tab_news)
             1 -> resources.getString(R.string.tab_repositories)
@@ -70,7 +69,7 @@ class HomePagerAdapter(
                     if (defaultUser) R.string.tab_followers_self else R.string.tab_members
             )
             3 -> resources.getString(R.string.tab_following_self)
-            else -> null
+            else -> error("Unknown position: $position")
         }
     }
 }
