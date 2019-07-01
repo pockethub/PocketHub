@@ -13,28 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.github.pockethub.android.ui.user;
+package com.github.pockethub.android.ui.user
 
-import com.github.pockethub.android.R;
-
+import com.github.pockethub.android.R
 
 /**
- * Fragment to display a list of followers
+ * Fragment to display a list of users being followed
  */
-public abstract class FollowersFragment extends PagedUserFragment {
+abstract class FollowingFragment : PagedUserFragment() {
 
-    @Override
-    protected int getEmptyText() {
-        return R.string.no_followers;
-    }
+    override val emptyText: Int = R.string.no_people
 
-    @Override
-    protected int getLoadingMessage() {
-        return R.string.loading_followers;
-    }
-
-    @Override
-    protected int getErrorMessage() {
-        return R.string.error_followers_load;
-    }
+    override val errorMessage: Int = R.string.error_people_load
 }

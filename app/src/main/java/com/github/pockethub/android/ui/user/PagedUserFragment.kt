@@ -53,8 +53,6 @@ abstract class PagedUserFragment : BaseFragment() {
 
     private lateinit var pagedScrollListener: PagedScrollListener
 
-    protected abstract val loadingMessage: Int
-
     protected abstract val errorMessage: Int
 
     protected abstract val emptyText: Int
@@ -89,8 +87,7 @@ abstract class PagedUserFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(emptyText)
     }

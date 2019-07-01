@@ -1,20 +1,17 @@
 package com.github.pockethub.android.ui.helpers
 
-import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.Section
 
 class PagedScrollListener(
     private val section: Section,
     private val listFetcher: PagedListFetcher<*>,
-    recyclerView: RecyclerView,
-    @StringRes loadingMessage: Int
+    recyclerView: RecyclerView
 ) : RecyclerView.OnScrollListener() {
 
     private val loadingIndicator: ResourceLoadingIndicator =
-        ResourceLoadingIndicator(loadingMessage, section)
+        ResourceLoadingIndicator(section)
 
     init {
         recyclerView.addOnScrollListener(this)

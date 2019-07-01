@@ -133,7 +133,7 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
         commit = store.getCommit(repository, base)
 
         if (files == null || commit != null && commit!!.commit()!!.commentCount()!! > 0 && comments == null) {
-            mainSection.setFooter(LoadingItem(R.string.loading_files_and_comments))
+            mainSection.setFooter(LoadingItem())
         }
 
         if (commit != null && comments != null && files != null) {

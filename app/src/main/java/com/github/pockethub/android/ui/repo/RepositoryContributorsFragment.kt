@@ -71,9 +71,6 @@ class RepositoryContributorsFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_contributors_load
 
-    protected val loadingMessage: Int
-        get() = R.string.loading
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
@@ -110,8 +107,7 @@ class RepositoryContributorsFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_contributors)
     }

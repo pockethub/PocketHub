@@ -65,9 +65,6 @@ class SearchIssueListFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_issues_load
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_issues
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -107,8 +104,7 @@ class SearchIssueListFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_issues)
     }

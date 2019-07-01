@@ -82,8 +82,6 @@ class IssuesFragment : BaseFragment() {
     private var filter: IssueFilter? = null
     private var repository: Repository? = null
 
-    val loadingMessage = R.string.loading_issues
-
     val errorMessage= R.string.error_issues_load
 
     override fun onAttach(context: Context?) {
@@ -132,8 +130,7 @@ class IssuesFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_issues)
         itemListHandler.mainSection.setHeader(IssueFilterHeaderItem(avatars, filter!!))

@@ -87,9 +87,6 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
 
     private var ref: String? = null
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_commits
-
     protected val errorMessage: Int
         get() = R.string.error_commits_load
 
@@ -131,8 +128,7 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_commits)
 

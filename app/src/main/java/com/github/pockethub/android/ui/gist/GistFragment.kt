@@ -182,7 +182,7 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
         }
 
         if (gist == null || gist!!.comments()!! > 0 && comments == null) {
-            mainSection.setFooter(LoadingItem(R.string.loading_comments))
+            mainSection.setFooter(LoadingItem())
         }
 
         if (gist != null && comments != null) {

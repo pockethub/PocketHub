@@ -61,9 +61,6 @@ class SearchUserListFragment : BaseFragment() {
 
     private lateinit var pagedScrollListener: PagedScrollListener
 
-    protected val loadingMessage: Int
-        get() = R.string.loading_user
-
     protected val errorMessage: Int
         get() = R.string.error_users_search
 
@@ -97,8 +94,7 @@ class SearchUserListFragment : BaseFragment() {
         pagedScrollListener = PagedScrollListener(
             itemListHandler.mainSection,
             pagedListFetcher,
-            view.list,
-            loadingMessage
+            view.list
         )
         itemListHandler.setEmptyText(R.string.no_people)
     }
