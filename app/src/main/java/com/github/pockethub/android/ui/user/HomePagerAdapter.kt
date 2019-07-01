@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui.user
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.PagerAdapter
 import com.github.pockethub.android.R
@@ -57,11 +56,6 @@ class HomePagerAdapter(
 
     override fun getItemPosition(`object`: Any): Int {
         return PagerAdapter.POSITION_NONE
-    }
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val fragment = super.instantiateItem(container, position)
-        return fragment
     }
 
     override fun getCount(): Int {
