@@ -19,7 +19,6 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.PagerAdapter
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.base.FragmentPagerAdapter
@@ -39,14 +38,11 @@ class HomePagerAdapter(
         private val org: User
 ) : FragmentPagerAdapter(fragment) {
 
-    private val fragmentManager: FragmentManager
-
     private val resources: Resources
 
     private val tags = HashSet<String?>()
 
     init {
-        fragmentManager = fragment.childFragmentManager
         resources = fragment.resources
     }
 
