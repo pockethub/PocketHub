@@ -24,10 +24,7 @@ import com.github.pockethub.android.ui.repo.RepositoryListFragment
 import com.meisolsson.githubsdk.model.User
 
 /**
- * Pager adapter for a user's different views
- *
- * @param fragment
- * @param defaultUser
+ * Pager adapter for a user's different views.
  */
 class HomePagerAdapter(
         fragment: Fragment,
