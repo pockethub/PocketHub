@@ -79,7 +79,7 @@ public class AssigneeDialogFragment extends SingleChoiceDialogFragment {
         for (User user : getChoices()) {
             adapter.add(new AssigneeDialogItem(avatars, user, selected));
         }
-
+        adapter.setOnItemClickListener(this);
 
         return createDialogBuilder()
                 .adapter(adapter, null)
