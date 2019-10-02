@@ -65,7 +65,7 @@ class HomePagerFragment : BaseFragment() {
     }
 
     private fun configurePager() {
-        val adapter = HomePagerAdapter(this, isDefaultUser, org)
+        val adapter = HomePagerAdapter(this, isDefaultUser, org!!)
         pagerHandler = PagerHandler(this, vp_pages, adapter)
         lifecycle.addObserver(pagerHandler!!)
         pagerHandler!!.tabs = sliding_tabs_layout
