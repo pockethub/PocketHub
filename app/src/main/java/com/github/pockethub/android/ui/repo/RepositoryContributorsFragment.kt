@@ -64,8 +64,6 @@ class RepositoryContributorsFragment : BaseFragment() {
 
     private lateinit var itemListHandler: ItemListHandler
 
-    private lateinit var pagedScrollListener: PagedScrollListener
-
     private var repo: Repository? = null
 
     protected val errorMessage: Int
@@ -104,10 +102,8 @@ class RepositoryContributorsFragment : BaseFragment() {
             this::createItem
         )
 
-        pagedScrollListener = PagedScrollListener(
-            itemListHandler.mainSection,
-            pagedListFetcher,
-            view.list
+        view.list.addOnScrollListener(
+            PagedScrollListener(itemListHandler.mainSection, pagedListFetcher)
         )
         itemListHandler.setEmptyText(R.string.no_contributors)
     }

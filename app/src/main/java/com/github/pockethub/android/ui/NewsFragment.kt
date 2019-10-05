@@ -77,8 +77,6 @@ abstract class NewsFragment : BaseFragment() {
 
     private lateinit var itemListHandler: ItemListHandler
 
-    private lateinit var pagedScrollListener: PagedScrollListener
-
     protected val errorMessage: Int
         get() = R.string.error_news_load
 
@@ -110,10 +108,8 @@ abstract class NewsFragment : BaseFragment() {
             this::createItem
         )
 
-        pagedScrollListener = PagedScrollListener(
-            itemListHandler.mainSection,
-            pagedListFetcher,
-            view.list
+        view.list.addOnScrollListener(
+            PagedScrollListener(itemListHandler.mainSection, pagedListFetcher)
         )
         itemListHandler.setEmptyText(R.string.no_news)
     }
