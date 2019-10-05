@@ -27,9 +27,7 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
-import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -60,9 +58,6 @@ public class CommitCompareViewActivity extends BaseActivity {
     }
 
     private Repository repository;
-
-    @Inject
-    protected AvatarLoader avatars;
 
     private Fragment fragment;
 

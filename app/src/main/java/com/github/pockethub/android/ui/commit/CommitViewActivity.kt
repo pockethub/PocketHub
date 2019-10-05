@@ -30,21 +30,16 @@ import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.item.commit.CommitItem
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
 import com.meisolsson.githubsdk.model.Repository
 import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_pager.*
-import javax.inject.Inject
 
 /**
  * Activity to display a commit
  */
 class CommitViewActivity : BaseActivity() {
-    
-    @Inject
-    lateinit var avatars: AvatarLoader
-    
+
     private var repository: Repository? = null
 
     private var ids: Array<CharSequence>? = null

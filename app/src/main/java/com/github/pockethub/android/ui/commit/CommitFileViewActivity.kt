@@ -33,7 +33,6 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.util.MarkdownLoader
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.HttpImageGetter
 import com.github.pockethub.android.util.InfoUtils
 import com.github.pockethub.android.util.MarkdownUtils
@@ -60,9 +59,6 @@ import kotlinx.android.synthetic.main.activity_commit_file_view.*
  * Activity to display the contents of a file in a commit
  */
 class CommitFileViewActivity : BaseActivity() {
-    
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     @Inject
     lateinit var imageGetter: HttpImageGetter

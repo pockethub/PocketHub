@@ -31,7 +31,6 @@ import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.MainActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ToastUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.User
@@ -43,15 +42,11 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 import kotlinx.android.synthetic.main.tabbed_progress_pager.*
 import retrofit2.Response
-import javax.inject.Inject
 
 /**
  * Activity to view a user's various pages
  */
 class UserViewActivity : BaseActivity(), OrganizationSelectionProvider {
-
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     private var user: User? = null
 

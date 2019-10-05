@@ -27,12 +27,9 @@ import androidx.core.view.MenuItemCompat;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity;
-import com.github.pockethub.android.util.AvatarLoader;
 import com.github.pockethub.android.util.InfoUtils;
 import com.github.pockethub.android.util.ToastUtils;
 import com.meisolsson.githubsdk.model.Repository;
-
-import javax.inject.Inject;
 
 import static android.app.SearchManager.APP_DATA;
 import static android.app.SearchManager.QUERY;
@@ -43,9 +40,6 @@ import static com.github.pockethub.android.Intents.EXTRA_REPOSITORY;
  * Activity to search issues
  */
 public class IssueSearchActivity extends BaseActivity {
-
-    @Inject
-    protected AvatarLoader avatars;
 
     private Repository repository;
 
