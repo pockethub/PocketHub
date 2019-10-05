@@ -17,17 +17,11 @@ package com.github.pockethub.android.util
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.InsetDrawable
-import androidx.appcompat.app.ActionBar
-import android.util.TypedValue
 import android.widget.ImageView
 import com.github.pockethub.android.R
 import com.jakewharton.picasso.OkHttp3Downloader
 import com.meisolsson.githubsdk.model.User
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 import com.squareup.picasso.Transformation
 import okhttp3.Cache
 import okhttp3.HttpUrl
@@ -56,8 +50,6 @@ class AvatarLoader @Inject constructor(context: Context) {
          */
         private var avatarSize = 0
     }
-
-    private val context = context.applicationContext
 
     private val p: Picasso
 
@@ -89,29 +81,6 @@ class AvatarLoader @Inject constructor(context: Context) {
         if (avatarDir.isDirectory) {
             deleteCache(avatarDir)
         }
-    }
-
-    /**
-     * Sets the logo on the [ActionBar] to the user's avatar.
-     *
-     * @param actionBar An ActionBar object on which you're placing the user's avatar.
-     * @param user
-     */
-    fun bind(actionBar: ActionBar, user: User) {
-        var avatarUrl = user.avatarUrl()
-        if (avatarUrl.isNullOrEmpty()) {
-            return
-        }
-
-        // Remove the URL params as they are not needed and break cache
-        if (avatarUrl!!.contains("?") && !avatarUrl.contains("gravatar")) {
-            avatarUrl = avatarUrl.substring(0, avatarUrl.indexOf("?"))
-        }
-
-        p.load(avatarUrl)
-                .resize(avatarSize, avatarSize)
-                .transform(RoundedCornersTransformation())
-                .into(ActionBarTarget(context, actionBar))
     }
 
     /**
@@ -183,30 +152,6 @@ class AvatarLoader @Inject constructor(context: Context) {
             }
         }
         return cache.delete()
-    }
-
-    inner class ActionBarTarget(private val context: Context, private val actionBar: ActionBar) : Target {
-
-        override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
-            val res = context.resources
-            val drawable = BitmapDrawable(res, bitmap)
-
-            val insetPx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8f, res.displayMetrics).toInt()
-
-            actionBar.setLogo(InsetDrawable(drawable, 0, 0, insetPx, 0))
-        }
-
-        override fun onBitmapFailed(errorDrawable: Drawable?) {
-            if (errorDrawable != null) {
-                actionBar.setLogo(errorDrawable)
-            }
-        }
-
-        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-            if (placeHolderDrawable != null) {
-                actionBar.setLogo(placeHolderDrawable)
-            }
-        }
     }
 
     inner class RoundedCornersTransformation : Transformation {

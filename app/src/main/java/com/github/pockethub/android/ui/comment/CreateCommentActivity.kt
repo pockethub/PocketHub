@@ -23,22 +23,14 @@ import com.github.pockethub.android.Intents.EXTRA_COMMENT
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
-import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.GitHubComment
 import com.meisolsson.githubsdk.model.git.GitComment
 import kotlinx.android.synthetic.main.pager_with_tabs.*
-import javax.inject.Inject
 
 /**
  * Base activity for creating comments
  */
 abstract class CreateCommentActivity : BaseActivity() {
-
-    /**
-     * Avatar loader
-     */
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     private var pagerHandler: PagerHandler<CommentPreviewPagerAdapter>? = null
 
