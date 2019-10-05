@@ -15,7 +15,6 @@
  */
 package com.github.pockethub.android.ui.gist
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -26,6 +25,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import com.github.pockethub.android.Intents.EXTRA_GIST_FILE
 import com.github.pockethub.android.Intents.EXTRA_GIST_ID
 import com.github.pockethub.android.R
@@ -106,7 +106,6 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
         }
     }
 
-    @SuppressLint("CommitPrefEdits")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.m_wrap -> {
@@ -117,8 +116,9 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
                     item.setTitle(R.string.disable_wrapping)
                     editor.wrap = true
                 }
-                PreferenceUtils.save(codePrefs!!.edit().putBoolean(WRAP,
-                    editor.wrap))
+                codePrefs!!.edit {
+                    putBoolean(WRAP, editor.wrap)
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

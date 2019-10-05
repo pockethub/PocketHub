@@ -17,7 +17,6 @@ package com.github.pockethub.android.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -44,14 +43,5 @@ public class PreferenceUtils {
      */
     public static SharedPreferences getCodePreferences(final Context context) {
         return context.getSharedPreferences("code", MODE_PRIVATE);
-    }
-
-    /**
-     * Save preferences in given editor
-     *
-     * @param editor
-     */
-    public static void save(final Editor editor) {
-        editor.apply();
     }
 }
