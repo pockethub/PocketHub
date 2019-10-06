@@ -41,7 +41,6 @@
     <!--  -->
     <!-- Loading messages -->
     <string name="loading_gist">正在載入 Gist…</string>
-    <string name="random_gist">正在載入隨機 Gist…</string>
     <string name="loading_more_issues">正在載入更多的 Issue…</string>
     <string name="loading_issues">正在載入 Issue 列表…</string>
     <string name="loading_comments">正在載入評論…</string>

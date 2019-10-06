@@ -53,7 +53,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Sækir Gist…</string>
-    <string name="random_gist">Sækir Gist að handahófi…</string>
     <string name="loading_more_issues">Sækir fleiri vandamál…</string>
     <string name="loading_issues">Sækir vandamál…</string>
     <string name="loading_comments">Sækir athugasemdir…</string>

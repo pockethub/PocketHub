@@ -55,7 +55,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Laddar gist&#8230;</string>
-    <string name="random_gist">Laddar slumpvald gist&#8230;</string>
     <string name="loading_more_issues">Laddar fler ärenden&#8230;</string>
     <string name="loading_issues">Laddar ärenden&#8230;</string>
     <string name="loading_comments">Laddar kommentarer&#8230;</string>

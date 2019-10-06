@@ -42,7 +42,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Gist betöltése…</string>
-    <string name="random_gist">Véletlenszerű Gist betöltése…</string>
     <string name="loading_more_issues">További hibajegyek betöltése…</string>
     <string name="loading_issues">Hibajegyek betöltése…</string>
     <string name="loading_comments">Hozzászólások betöltése…</string>

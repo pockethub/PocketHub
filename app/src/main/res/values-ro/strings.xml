@@ -54,7 +54,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Încărcare Gist…</string>
-    <string name="random_gist">Se încarcă Gist aleator…</string>
     <string name="loading_more_issues">Încărcare mai multe probleme…</string>
     <string name="loading_issues">Încărcare probleme…</string>
     <string name="loading_comments">Încărcare comentarii…</string>

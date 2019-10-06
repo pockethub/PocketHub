@@ -53,7 +53,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Загружаем Gist…</string>
-    <string name="random_gist">Загружаем случайный Gist…</string>
     <string name="loading_more_issues">Загружаем больше задач…</string>
     <string name="loading_issues">Загружаем задачи…</string>
     <string name="loading_comments">Загружаем комментарии…</string>

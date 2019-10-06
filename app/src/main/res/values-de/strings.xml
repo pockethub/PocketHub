@@ -54,7 +54,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Lade Gist…</string>
-    <string name="random_gist">Lade zufälligen Gist…</string>
     <string name="loading_more_issues">Lade weitere Tickets…</string>
     <string name="loading_issues">Lade Tickets…</string>
     <string name="loading_comments">Lade Kommentare…</string>

@@ -54,7 +54,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Gist yükleniyor…</string>
-    <string name="random_gist">Rastgele Gist yükleniyor…</string>
     <string name="loading_more_issues">Daha fazla sorun yükleniyor…</string>
     <string name="loading_issues">Sorunlar yükleniyor…</string>
     <string name="loading_comments">Yorumlar yükleniyor…</string>

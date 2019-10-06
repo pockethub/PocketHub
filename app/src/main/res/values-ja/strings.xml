@@ -53,7 +53,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Gist をロードしています…</string>
-    <string name="random_gist">ランダムな Gist をロードしています…</string>
     <string name="loading_more_issues">課題をさらにロードしています…</string>
     <string name="loading_issues">課題をロードしています…</string>
     <string name="loading_comments">コメントをロードしています…</string>

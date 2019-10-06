@@ -51,7 +51,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Завантаження Gist…</string>
-    <string name="random_gist">Завантаження випадкового Gist…</string>
     <string name="loading_more_issues">Завантаження завдань…</string>
     <string name="loading_issues">Завантаження завдань…</string>
     <string name="loading_comments">Завантаження коментарів…</string>
