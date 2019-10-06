@@ -23,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
+import androidx.core.content.edit
 import com.github.pockethub.android.R
 import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.ui.base.BaseFragment
@@ -58,7 +59,9 @@ class HomePagerFragment : BaseFragment() {
     }
 
     private fun setOrg(org: User) {
-        PreferenceUtils.save(sharedPreferences!!.edit().putInt(PREF_ORG_ID, org.id()!!.toInt()))
+        sharedPreferences!!.edit {
+            putInt(PREF_ORG_ID, org.id()!!.toInt())
+        }
         this.org = org
         this.isDefaultUser = AccountUtils.isUser(activity, org)
         configurePager()

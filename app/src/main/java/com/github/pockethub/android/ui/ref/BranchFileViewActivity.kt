@@ -23,6 +23,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.edit
 import com.github.pockethub.android.Intents.*
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.commit.CommitUtils
@@ -131,8 +132,9 @@ class BranchFileViewActivity : BaseActivity() {
                     item.setTitle(R.string.disable_wrapping)
                 }
                 editor.toggleWrap()
-                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(WRAP, editor.wrap))
+                PreferenceUtils.getCodePreferences(this).edit {
+                    putBoolean(WRAP, editor.wrap)
+                }
                 return true
             }
 
@@ -155,8 +157,9 @@ class BranchFileViewActivity : BaseActivity() {
                         loadMarkdown()
                     }
                 }
-                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown))
+                PreferenceUtils.getCodePreferences(this).edit {
+                    putBoolean(RENDER_MARKDOWN, editor.isMarkdown)
+                }
                 return true
             }
 

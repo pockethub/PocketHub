@@ -23,6 +23,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.edit
 
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
@@ -147,8 +148,9 @@ class CommitFileViewActivity : BaseActivity() {
                     item.setTitle(R.string.disable_wrapping)
                 }
                 editor.toggleWrap()
-                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(WRAP, editor.wrap))
+                PreferenceUtils.getCodePreferences(this).edit {
+                    putBoolean(WRAP, editor.wrap)
+                }
                 return true
             }
 
@@ -171,8 +173,9 @@ class CommitFileViewActivity : BaseActivity() {
                         loadMarkdown()
                     }
                 }
-                PreferenceUtils.save(PreferenceUtils.getCodePreferences(this)
-                    .edit().putBoolean(RENDER_MARKDOWN, editor.isMarkdown))
+                PreferenceUtils.getCodePreferences(this).edit {
+                    putBoolean(RENDER_MARKDOWN, editor.isMarkdown)
+                }
                 return true
             }
 

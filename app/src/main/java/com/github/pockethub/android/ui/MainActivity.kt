@@ -35,6 +35,7 @@ import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.edit
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.github.pockethub.android.Database
@@ -117,7 +118,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 super.onDrawerOpened(drawerView)
 
                 if (!userLearnedDrawer) {
-                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply()
+                    sp.edit {
+                        putBoolean(PREF_USER_LEARNED_DRAWER, true)
+                    }
                     userLearnedDrawer = true
                     Log.d(TAG, "User learned drawer")
                 }
