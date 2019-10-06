@@ -79,8 +79,6 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
 
     protected lateinit var itemListHandler: ItemListHandler
 
-    protected lateinit var pagedScrollListener: PagedScrollListener
-
     private var repo: Repository? = null
 
     private var dialog: RefDialog? = null
@@ -125,10 +123,8 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
         )
         pagedListFetcher.onPageLoaded = this::onPageLoaded
 
-        pagedScrollListener = PagedScrollListener(
-            itemListHandler.mainSection,
-            pagedListFetcher,
-            view.list
+        view.list.addOnScrollListener(
+            PagedScrollListener(itemListHandler.mainSection, pagedListFetcher)
         )
         itemListHandler.setEmptyText(R.string.no_commits)
 

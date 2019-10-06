@@ -6,16 +6,11 @@ import com.xwray.groupie.Section
 
 class PagedScrollListener(
     private val section: Section,
-    private val listFetcher: PagedListFetcher<*>,
-    recyclerView: RecyclerView
+    private val listFetcher: PagedListFetcher<*>
 ) : RecyclerView.OnScrollListener() {
 
     private val loadingIndicator: ResourceLoadingIndicator =
         ResourceLoadingIndicator(section)
-
-    init {
-        recyclerView.addOnScrollListener(this)
-    }
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)

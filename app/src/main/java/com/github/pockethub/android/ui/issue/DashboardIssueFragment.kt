@@ -60,8 +60,6 @@ class DashboardIssueFragment : BaseFragment() {
 
     private lateinit var itemListHandler: ItemListHandler
 
-    private lateinit var pagedScrollListener: PagedScrollListener
-
     private var filterData: Map<String, Any>? = null
 
     protected val errorMessage: Int
@@ -99,10 +97,8 @@ class DashboardIssueFragment : BaseFragment() {
             this::createItem
         )
 
-        pagedScrollListener = PagedScrollListener(
-            itemListHandler.mainSection,
-            pagedListFetcher,
-            view.list
+        view.list.addOnScrollListener(
+            PagedScrollListener(itemListHandler.mainSection, pagedListFetcher)
         )
         itemListHandler.setEmptyText(R.string.no_repositories)
     }
