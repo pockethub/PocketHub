@@ -205,18 +205,14 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        val owner = isOwner
-        if (!owner) {
-            menu.removeItem(R.id.m_delete)
-            val starItem = menu.findItem(R.id.m_star)
-            starItem.isEnabled = loadFinished && !owner
-            if (starred) {
-                starItem.setTitle(R.string.unstar)
-            } else {
-                starItem.setTitle(R.string.star)
-            }
+        menu.findItem(R.id.m_delete).isVisible = isOwner
+
+        val starItem = menu.findItem(R.id.m_star)
+        starItem.isEnabled = loadFinished
+        if (starred) {
+            starItem.setTitle(R.string.unstar)
         } else {
-            menu.removeItem(R.id.m_star)
+            starItem.setTitle(R.string.star)
         }
     }
 
