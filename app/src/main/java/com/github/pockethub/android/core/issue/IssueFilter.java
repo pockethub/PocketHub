@@ -480,7 +480,7 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(repository, flags);
-        dest.writeTypedList(labels);
+        dest.writeList(labels);
         dest.writeParcelable(milestone, flags);
         dest.writeParcelable(assignee, flags);
         dest.writeByte((byte) (open ? 1 : 0));
