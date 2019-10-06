@@ -65,6 +65,11 @@ abstract class GistsFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_gists_load
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
