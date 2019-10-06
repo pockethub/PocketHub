@@ -46,7 +46,7 @@ import com.github.pockethub.android.ui.ref.BranchFileViewActivity
 import com.github.pockethub.android.ui.ref.RefDialog
 import com.github.pockethub.android.ui.ref.RefDialogFragment
 import com.github.pockethub.android.util.ToastUtils
-import com.github.pockethub.android.util.android.text.url
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.Repository
 import com.meisolsson.githubsdk.model.git.GitReference
 import com.xwray.groupie.GroupAdapter
@@ -240,7 +240,7 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
             val segments = folder.entry.path()!!.split("/")
             val text = buildSpannedString {
                 bold {
-                    url(repository!!.name()!!, onClick = {
+                    clickable(onClick = {
                         setFolder(tree, tree.root)
                     }) {
                         append(repository!!.name()!!)
@@ -252,12 +252,12 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
                 }
                 append(' ')
                 for (i in 0 until segments.size - 1) {
-                    url(segments[i], onClick = {
+                    clickable(onClick = {
                         var clicked: Folder? = folder
                         for (i1 in i until segments.size - 1) {
                             clicked = clicked!!.parent
                             if (clicked == null) {
-                                return@url
+                                return@clickable
                             }
                         }
                         setFolder(tree, clicked!!)

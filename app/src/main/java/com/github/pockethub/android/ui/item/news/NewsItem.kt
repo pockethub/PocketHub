@@ -11,7 +11,7 @@ import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ConvertUtils
 import com.github.pockethub.android.util.TimeUtils
-import com.github.pockethub.android.util.android.text.url
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CommitCommentEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CreateEvent
@@ -58,10 +58,10 @@ open class NewsItem(
 
     protected fun boldUser(context: Context, text: SpannableStringBuilder, user: User?) {
         text.bold {
-            url(user!!.login()!!, onClick = {
-                context.startActivity(UserViewActivity.createIntent(user))
+            clickable(onClick = {
+                context.startActivity(UserViewActivity.createIntent(user!!))
             }) {
-                append(user.login())
+                append(user!!.login())
             }
         }
     }
@@ -69,7 +69,7 @@ open class NewsItem(
     protected fun boldRepo(context: Context, text: SpannableStringBuilder, event: GitHubEvent?) {
         text.bold {
             val eventRepo = event?.repo()!!
-            url(eventRepo.repoWithUserName()!!, onClick = {
+            clickable(onClick = {
                 val repository = ConvertUtils.eventRepoToRepo(eventRepo)
                 context.startActivity(RepositoryViewActivity.createIntent(repository))
             }) {
@@ -89,7 +89,7 @@ open class NewsItem(
             val slash: Int = name!!.indexOf('/')
             if (slash != -1 && slash + 1 < name.length) {
                 text.bold {
-                    url("", onClick = {
+                    clickable(onClick = {
                         val repository = ConvertUtils.eventRepoToRepo(repo)
                         context.startActivity(RepositoryViewActivity.createIntent(repository))
                     }) {

@@ -6,7 +6,7 @@ import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
-import com.github.pockethub.android.util.android.text.url
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.TeamAddPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -30,7 +30,7 @@ class TeamAddEventItem(
             val repoName = repo?.name()
             if (repoName != null) {
                 bold {
-                    url("", onClick = {
+                    clickable(onClick = {
                         val user = gitHubEvent.actor()!!
                         context.startActivity(UserViewActivity.createIntent(user))
                     }) {

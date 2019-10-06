@@ -10,7 +10,7 @@ import com.github.pockethub.android.ui.issue.IssuesViewActivity
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ConvertUtils
-import com.github.pockethub.android.util.android.text.url
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.GitHubComment
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.IssueCommentPayload
@@ -45,7 +45,7 @@ class IssueCommentEventItem(
             append(" commented on ")
             bold {
                 val issue = payload?.issue()
-                url("", onClick = {
+                clickable(onClick = {
                     val repository = ConvertUtils.eventRepoToRepo(gitHubEvent.repo())
                     context.startActivity(IssuesViewActivity.createIntent(issue!!, repository))
                 }) {
