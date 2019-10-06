@@ -39,7 +39,7 @@ class MilestoneDialogFragment : SingleChoiceDialogFragment() {
          * Get selected milestone from results bundle
          */
         @JvmStatic
-        fun getSelected(arguments: Bundle): Milestone {
+        fun getSelected(arguments: Bundle): Milestone? {
             return arguments.getParcelable(SingleChoiceDialogFragment.ARG_SELECTED)
         }
 
