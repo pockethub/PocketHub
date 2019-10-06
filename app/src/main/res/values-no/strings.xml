@@ -53,7 +53,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Laster Gist…</string>
-    <string name="random_gist">Laster tilfeldig Gist…</string>
     <string name="loading_more_issues">Laster flere Issues…</string>
     <string name="loading_issues">Laster saker…</string>
     <string name="loading_comments">Laster kommentarer…</string>

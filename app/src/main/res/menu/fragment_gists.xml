@@ -18,11 +18,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/m_random"
-        android:icon="@drawable/ic_shuffle_white_24dp"
-        app:showAsAction="never"
-        android:title="@string/random"/>
-    <item
         android:id="@+id/m_create"
         android:icon="@drawable/ic_add_white_24dp"
         app:showAsAction="ifRoom"

@@ -50,7 +50,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Gist in caricamento…</string>
-    <string name="random_gist">Gist Random in caricamento…</string>
     <string name="loading_more_issues">Altre segnalazioni in caricamento…</string>
     <string name="loading_issues">Segnalazioni in caricamento…</string>
     <string name="loading_comments">Commenti in caricamento…</string>

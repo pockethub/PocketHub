@@ -54,7 +54,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Načítavam Gist…</string>
-    <string name="random_gist">Načítavam náhodný Gist…</string>
     <string name="loading_more_issues">Načítavam viac issues…</string>
     <string name="loading_issues">Načítavam issues…</string>
     <string name="loading_comments">Načítavam komentáre…</string>

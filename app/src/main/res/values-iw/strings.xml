@@ -47,7 +47,6 @@
   <string name="error_rendering_markdown">עיבוד הוזלה נכשל</string>
   <string name="error_users_search">חיפוש משתמשים נכשל</string>
   <string name="loading_gist">טוען תמצית…</string>
-  <string name="random_gist">טוען תמצית אקראית…</string>
   <string name="loading_more_issues">טוען עוד סוגיות…</string>
   <string name="loading_issues">טוען סוגיות…</string>
   <string name="loading_comments">טוען תגובות…</string>

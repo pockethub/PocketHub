@@ -44,7 +44,6 @@
 
     <!-- Съобщения за зареждане -->
     <string name="loading_gist">Зарежда се Gist…</string>
-    <string name="random_gist">Зарежда се произволен Gist…</string>
     <string name="loading_more_issues">Зареждат се още задания…</string>
     <string name="loading_issues">Зареждат се заданията…</string>
     <string name="loading_comments">Зареждат се коментарите…</string>

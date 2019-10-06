@@ -52,7 +52,6 @@
 
     <!-- Mensagens de carregamento -->
     <string name="loading_gist">Carregando Gist…</string>
-    <string name="random_gist">Carregando Gist Aleatório…</string>
     <string name="loading_more_issues">Carregando Mais Incidentes…</string>
     <string name="loading_issues">Carregando Incidentes…</string>
     <string name="loading_comments">Carregando Comentários…</string>

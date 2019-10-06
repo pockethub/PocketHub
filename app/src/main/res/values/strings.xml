@@ -54,7 +54,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Loading Gist…</string>
-    <string name="random_gist">Loading Random Gist…</string>
     <string name="loading_more_issues">Loading More Issues…</string>
     <string name="loading_issues">Loading Issues…</string>
     <string name="loading_comments">Loading Comments…</string>

@@ -53,7 +53,6 @@
 
     <!-- Loading messages -->
     <string name="loading_gist">Ładowanie Gistu…</string>
-    <string name="random_gist">Ładowanie losowego Gistu…</string>
     <string name="loading_more_issues">Ładowanie więcej uwag…</string>
     <string name="loading_issues">Ładowanie uwag…</string>
     <string name="loading_comments">Ładowanie komentarzy…</string>
