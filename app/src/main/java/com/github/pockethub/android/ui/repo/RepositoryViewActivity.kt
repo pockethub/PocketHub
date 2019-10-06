@@ -35,7 +35,6 @@ import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.user.UriLauncherActivity
 import com.github.pockethub.android.ui.user.UserViewActivity
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
 import com.github.pockethub.android.util.ShareUtils
 import com.github.pockethub.android.util.ToastUtils
@@ -51,15 +50,11 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.pager_with_tabs.*
 import kotlinx.android.synthetic.main.tabbed_progress_pager.*
 import retrofit2.Response
-import javax.inject.Inject
 
 /**
  * Activity to view a repository
  */
 class RepositoryViewActivity : BaseActivity() {
-
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     private var repository: Repository? = null
 

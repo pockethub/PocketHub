@@ -30,7 +30,6 @@ import com.github.pockethub.android.core.gist.RefreshGistTaskFactory
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
-import com.github.pockethub.android.util.AvatarLoader
 import com.meisolsson.githubsdk.model.Gist
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -50,9 +49,6 @@ class GistFilesViewActivity : BaseActivity() {
 
     @Inject
     lateinit var store: GistStore
-
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     @Inject
     lateinit var refreshGistTaskFactory: RefreshGistTaskFactory

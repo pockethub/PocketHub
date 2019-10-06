@@ -25,8 +25,6 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.ui.base.BaseActivity;
-import com.github.pockethub.android.util.AvatarLoader;
-import javax.inject.Inject;
 
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
@@ -50,9 +48,6 @@ public class IssueBrowseActivity extends BaseActivity {
     }
 
     private Repository repo;
-
-    @Inject
-    protected AvatarLoader avatars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

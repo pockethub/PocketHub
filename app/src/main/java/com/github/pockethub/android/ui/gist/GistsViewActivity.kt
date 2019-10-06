@@ -37,7 +37,6 @@ import com.github.pockethub.android.ui.MainActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.item.gist.GistItem
 import com.github.pockethub.android.ui.user.UriLauncherActivity
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.ToastUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Gist
@@ -56,9 +55,6 @@ class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
 
     @Inject
     lateinit var store: GistStore
-
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     private var gists: Array<String>? = null
 

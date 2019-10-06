@@ -80,7 +80,6 @@ public class EditCommentActivity extends
         if (user != null) {
             actionBar.setSubtitle(user.login());
         }
-        getAvatars().bind(actionBar, user);
     }
 
     @Override

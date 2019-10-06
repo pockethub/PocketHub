@@ -104,7 +104,6 @@ public class CreateCommentActivity extends
         actionBar.setTitle(getString(R.string.commit_prefix)
                 + CommitUtils.abbreviate(commit));
         actionBar.setSubtitle(InfoUtils.createRepoId(repository));
-        getAvatars().bind(actionBar, repository.owner());
     }
 
     @Override

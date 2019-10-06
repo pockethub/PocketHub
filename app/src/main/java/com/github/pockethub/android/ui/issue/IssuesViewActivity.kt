@@ -33,7 +33,6 @@ import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
 import com.github.pockethub.android.ui.user.UriLauncherActivity
-import com.github.pockethub.android.util.AvatarLoader
 import com.github.pockethub.android.util.InfoUtils
 import com.meisolsson.githubsdk.core.ServiceGenerator
 import com.meisolsson.githubsdk.model.Issue
@@ -50,9 +49,6 @@ import javax.inject.Inject
  * Activity to display a collection of issues or pull requests in a pager
  */
 class IssuesViewActivity : BaseActivity() {
-
-    @Inject
-    lateinit var avatars: AvatarLoader
 
     @Inject
     lateinit var store: IssueStore

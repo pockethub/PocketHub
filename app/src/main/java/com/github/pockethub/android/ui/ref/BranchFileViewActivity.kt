@@ -49,9 +49,6 @@ import kotlinx.android.synthetic.main.activity_commit_file_view.*
 class BranchFileViewActivity : BaseActivity() {
 
     @Inject
-    lateinit var avatars: AvatarLoader
-
-    @Inject
     lateinit var imageGetter: HttpImageGetter
 
     private var repo: Repository? = null
