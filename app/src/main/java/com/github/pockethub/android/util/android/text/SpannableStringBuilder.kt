@@ -1,9 +1,9 @@
 package com.github.pockethub.android.util.android.text
 
 import android.text.SpannableStringBuilder
+import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.text.style.TypefaceSpan
-import android.text.style.URLSpan
 import android.view.View
 import androidx.core.text.inSpans
 import com.github.pockethub.android.util.TimeUtils
@@ -19,6 +19,11 @@ fun SpannableStringBuilder.clickable(
 ) = inSpans(object : ClickableSpan() {
     override fun onClick(widget: View) {
         onClick(widget)
+    }
+
+    override fun updateDrawState(ds: TextPaint) {
+        super.updateDrawState(ds)
+        ds.isUnderlineText = false
     }
 }, builderAction = builderAction)
 
