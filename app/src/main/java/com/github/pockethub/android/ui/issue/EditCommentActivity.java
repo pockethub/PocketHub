@@ -81,7 +81,7 @@ public class EditCommentActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         comment = getIntent().getParcelableExtra(EXTRA_COMMENT);
-        issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
+        issueNumber = getIntent().getIntExtra(EXTRA_ISSUE_NUMBER, -1);
         repositoryId = getIntent().getParcelableExtra(Intents.EXTRA_REPOSITORY);
 
         super.onCreate(savedInstanceState);

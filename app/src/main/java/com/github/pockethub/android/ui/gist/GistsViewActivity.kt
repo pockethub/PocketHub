@@ -70,7 +70,7 @@ class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS)
         gist = intent.getParcelableExtra(EXTRA_GIST)
-        initialPosition = getIntExtra(EXTRA_POSITION)
+        initialPosition = intent.getIntExtra(EXTRA_POSITION, -1)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 

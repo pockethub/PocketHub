@@ -112,7 +112,7 @@ class IssuesViewActivity : BaseActivity() {
     }
 
     private fun configurePager() {
-        val initialPosition = getIntExtra(EXTRA_POSITION)
+        val initialPosition = intent.getIntExtra(EXTRA_POSITION, -1)
 
         val adapter = if (repo != null) {
             IssuesPagerAdapter(this, repo, issueNumbers, canWrite)

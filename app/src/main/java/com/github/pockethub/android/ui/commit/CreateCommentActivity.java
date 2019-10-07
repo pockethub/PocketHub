@@ -94,7 +94,7 @@ public class CreateCommentActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
         commit = getStringExtra(EXTRA_BASE);
-        position = getIntExtra(EXTRA_POSITION);
+        position = getIntent().getIntExtra(EXTRA_POSITION, -1);
         path = getStringExtra(EXTRA_PATH);
 
         super.onCreate(savedInstanceState);
