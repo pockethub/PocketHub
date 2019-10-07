@@ -30,16 +30,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
         setSupportActionBar(findViewById(R.id.toolbar))
     }
 
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return char sequence array
-     */
-    protected fun getCharSequenceArrayExtra(name: String): Array<CharSequence>? {
-        return intent.getCharSequenceArrayExtra(name)
-    }
-
     override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {
         // Intentionally left blank
     }
