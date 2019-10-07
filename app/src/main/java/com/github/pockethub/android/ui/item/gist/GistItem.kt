@@ -19,8 +19,6 @@ class GistItem(
     override fun getLayout() = R.layout.gist_item
 
     override fun bind(holder: ViewHolder, position: Int) {
-        holder.tv_gist_id.text = gist.id()
-
         val description = gist.description()
         if (!TextUtils.isEmpty(description)) {
             holder.tv_gist_title.text = description
