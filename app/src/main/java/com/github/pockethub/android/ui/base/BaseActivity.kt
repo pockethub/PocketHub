@@ -34,16 +34,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
      * Get intent extra
      *
      * @param name
-     * @return boolean array
-     */
-    protected fun getBooleanArrayExtra(name: String): BooleanArray? {
-        return intent.getBooleanArrayExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
      * @return string
      */
     protected fun getStringExtra(name: String): String? {

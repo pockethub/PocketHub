@@ -72,7 +72,7 @@ class IssuesViewActivity : BaseActivity() {
         setContentView(R.layout.activity_pager)
 
         issueNumbers = intent.getIntArrayExtra(EXTRA_ISSUE_NUMBERS)
-        pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS)
+        pullRequests = intent.getBooleanArrayExtra(EXTRA_PULL_REQUESTS)
         repoIds = intent.getParcelableArrayListExtra(EXTRA_REPOSITORIES)
         repo = intent.getParcelableExtra(EXTRA_REPOSITORY)
 
