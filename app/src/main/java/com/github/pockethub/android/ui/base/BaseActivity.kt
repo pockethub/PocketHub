@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui.base
 
 import android.os.Bundle
-import android.os.Parcelable
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.DialogResultListener
 import dagger.android.support.DaggerAppCompatActivity
@@ -29,16 +28,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
     override fun onContentChanged() {
         super.onContentChanged()
         setSupportActionBar(findViewById(R.id.toolbar))
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return parcelable
-     */
-    protected fun <V : Parcelable> getParcelableExtra(name: String): V? {
-        return intent.getParcelableExtra(name)
     }
 
     /**

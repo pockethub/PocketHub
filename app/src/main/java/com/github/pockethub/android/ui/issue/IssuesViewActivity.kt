@@ -74,7 +74,7 @@ class IssuesViewActivity : BaseActivity() {
         issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS)
         pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS)
         repoIds = intent.getParcelableArrayListExtra(EXTRA_REPOSITORIES)
-        repo = getParcelableExtra(EXTRA_REPOSITORY)
+        repo = intent.getParcelableExtra(EXTRA_REPOSITORY)
 
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)

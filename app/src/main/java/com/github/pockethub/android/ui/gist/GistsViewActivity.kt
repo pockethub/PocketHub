@@ -69,7 +69,7 @@ class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
         setContentView(R.layout.activity_pager)
 
         gists = getStringArrayExtra(EXTRA_GIST_IDS)
-        gist = getParcelableExtra(EXTRA_GIST)
+        gist = intent.getParcelableExtra(EXTRA_GIST)
         initialPosition = getIntExtra(EXTRA_POSITION)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)

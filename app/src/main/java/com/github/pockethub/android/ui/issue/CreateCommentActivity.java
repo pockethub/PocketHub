@@ -68,7 +68,7 @@ public class CreateCommentActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
-        repositoryId = getParcelableExtra(Intents.EXTRA_REPOSITORY);
+        repositoryId = getIntent().getParcelableExtra(Intents.EXTRA_REPOSITORY);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_with_tabs);

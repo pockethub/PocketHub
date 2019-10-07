@@ -52,7 +52,7 @@ public class RepositoryContributorsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_contributors);
 
-        repository = getParcelableExtra(EXTRA_REPOSITORY);
+        repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repository.name());

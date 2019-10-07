@@ -70,7 +70,7 @@ class RepositoryViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tabbed_progress_pager)
 
-        repository = getParcelableExtra(EXTRA_REPOSITORY)
+        repository = intent.getParcelableExtra(EXTRA_REPOSITORY)
         val owner = repository!!.owner()!!
 
         val actionBar = supportActionBar!!
