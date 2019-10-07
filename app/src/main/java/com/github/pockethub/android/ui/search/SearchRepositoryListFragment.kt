@@ -103,7 +103,7 @@ class SearchRepositoryListFragment : BaseFragment() {
     }
 
     private fun start() {
-        openRepositoryMatch(getStringExtra(QUERY))
+        openRepositoryMatch(activity?.intent?.getStringExtra(QUERY))
     }
 
     fun onItemClick(item: Item<*>, view: View) {
@@ -150,7 +150,7 @@ class SearchRepositoryListFragment : BaseFragment() {
 
 
     private fun loadData(page: Int): Single<Response<Page<Repository>>> {
-        return service.searchRepositories(getStringExtra(QUERY), null, null, page.toLong())
+        return service.searchRepositories(activity?.intent?.getStringExtra(QUERY), null, null, page.toLong())
             .map { response ->
                 val repositorySearchPage = response.body()!!
                 Response.success(Page.builder<Repository>()

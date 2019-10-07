@@ -66,7 +66,7 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        gistId = getStringExtra(EXTRA_GIST_ID)
+        gistId = activity?.intent?.getStringExtra(EXTRA_GIST_ID)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

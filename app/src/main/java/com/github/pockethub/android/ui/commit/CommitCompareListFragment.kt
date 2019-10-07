@@ -88,10 +88,10 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        val activity = context as Activity?
-        repository = activity!!.intent.getParcelableExtra(EXTRA_REPOSITORY)
-        base = getStringExtra(EXTRA_BASE)!!.substring(0, 7)
-        head = getStringExtra(EXTRA_HEAD)!!.substring(0, 7)
+        val activity = context as Activity
+        repository = activity.intent.getParcelableExtra(EXTRA_REPOSITORY)
+        base = activity.intent.getStringExtra(EXTRA_BASE).substring(0, 7)
+        head = activity.intent.getStringExtra(EXTRA_HEAD).substring(0, 7)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
