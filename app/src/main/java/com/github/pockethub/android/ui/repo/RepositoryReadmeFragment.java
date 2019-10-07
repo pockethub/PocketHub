@@ -42,7 +42,7 @@ public class RepositoryReadmeFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         webview = (WebView) view;
 
-        final Repository repo = getParcelableExtra(Intents.EXTRA_REPOSITORY);
+        final Repository repo = requireActivity().getIntent().getParcelableExtra(Intents.EXTRA_REPOSITORY);
         WebSettings settings = webview.getSettings();
         settings.setJavaScriptEnabled(true);
         webview.addJavascriptInterface(this, "Readme");

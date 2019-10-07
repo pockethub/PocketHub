@@ -85,8 +85,9 @@ class IssuesFragment : BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        filter = getParcelableExtra(EXTRA_ISSUE_FILTER)
-        repository = getParcelableExtra(EXTRA_REPOSITORY)
+        val intent = activity?.intent
+        filter = intent?.getParcelableExtra(EXTRA_ISSUE_FILTER)
+        repository = intent?.getParcelableExtra(EXTRA_REPOSITORY)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -72,7 +72,7 @@ class RepositoryContributorsFragment : BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        repo = getParcelableExtra(EXTRA_REPOSITORY)
+        repo = activity?.intent?.getParcelableExtra(EXTRA_REPOSITORY)
     }
 
     override fun onCreateView(

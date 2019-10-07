@@ -48,7 +48,7 @@ public class RepositoryNewsFragment extends NewsFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        repo = getParcelableExtra(EXTRA_REPOSITORY);
+        repo = requireActivity().getIntent().getParcelableExtra(EXTRA_REPOSITORY);
     }
 
     @Override
