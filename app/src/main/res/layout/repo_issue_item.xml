@@ -15,7 +15,6 @@
   ~ limitations under the License.
   -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/ListItem"
     android:paddingStart="0dp">
 
@@ -30,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/ll_issue_number"
         android:layout_toEndOf="@id/ll_issue_number"
+        android:ellipsize="end"
+        android:maxLines="2"
         android:paddingStart="10dp" />
 
     <LinearLayout
