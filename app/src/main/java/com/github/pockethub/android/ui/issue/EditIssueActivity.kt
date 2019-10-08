@@ -45,6 +45,7 @@ import com.github.pockethub.android.accounts.AccountUtils
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
+import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.TextWatcherAdapter
 import com.github.pockethub.android.util.AvatarLoader
@@ -71,7 +72,7 @@ import javax.inject.Inject
 /**
  * Activity to edit or create an issue
  */
-class EditIssueActivity : BaseActivity() {
+class EditIssueActivity : BaseActivity(), DialogResultListener {
 
     @Inject
     lateinit var avatars: AvatarLoader

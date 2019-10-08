@@ -31,6 +31,7 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.ResultCodes.RESOURCE_CHANGED
 import com.github.pockethub.android.core.repo.RepositoryUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
+import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.user.UriLauncherActivity
@@ -54,7 +55,7 @@ import retrofit2.Response
 /**
  * Activity to view a repository
  */
-class RepositoryViewActivity : BaseActivity() {
+class RepositoryViewActivity : BaseActivity(), DialogResultListener {
 
     private var repository: Repository? = null
 

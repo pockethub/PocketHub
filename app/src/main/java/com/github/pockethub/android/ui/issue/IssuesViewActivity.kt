@@ -29,6 +29,7 @@ import com.github.pockethub.android.R
 import com.github.pockethub.android.core.issue.IssueStore
 import com.github.pockethub.android.core.issue.IssueUtils
 import com.github.pockethub.android.rx.AutoDisposeUtils
+import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.repo.RepositoryViewActivity
@@ -48,7 +49,7 @@ import javax.inject.Inject
 /**
  * Activity to display a collection of issues or pull requests in a pager
  */
-class IssuesViewActivity : BaseActivity() {
+class IssuesViewActivity : BaseActivity(), DialogResultListener {
 
     @Inject
     lateinit var store: IssueStore

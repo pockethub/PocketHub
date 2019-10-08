@@ -23,6 +23,7 @@ import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
 import com.github.pockethub.android.core.issue.IssueFilter;
 import com.github.pockethub.android.persistence.AccountDataManager;
+import com.github.pockethub.android.ui.DialogResultListener;
 import com.github.pockethub.android.ui.base.BaseActivity;
 import com.github.pockethub.android.ui.MainActivity;
 import io.reactivex.disposables.CompositeDisposable;
@@ -37,7 +38,7 @@ import static com.github.pockethub.android.ui.issue.FilterListFragment.REQUEST_D
 /**
  * Activity to display a list of saved {@link IssueFilter} objects
  */
-public class FiltersViewActivity extends BaseActivity {
+public class FiltersViewActivity extends BaseActivity implements DialogResultListener {
 
     private CompositeDisposable disposables;
 
@@ -80,10 +81,7 @@ public class FiltersViewActivity extends BaseActivity {
                                 }
                             })
             );
-            return;
         }
-
-        super.onDialogResult(requestCode, resultCode, arguments);
     }
 
     @Override

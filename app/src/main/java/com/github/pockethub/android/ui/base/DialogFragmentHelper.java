@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.pockethub.android.ui.DialogResultListener;
 
 import dagger.android.support.DaggerAppCompatDialogFragment;
 
@@ -93,11 +94,11 @@ public abstract class DialogFragmentHelper extends DaggerAppCompatDialogFragment
      * @param resultCode
      */
     protected void onResult(final int resultCode) {
-        final BaseActivity activity = (BaseActivity) getActivity();
-        if (activity != null) {
+        final DialogResultListener dialogResultListener = (DialogResultListener) getActivity();
+        if (dialogResultListener != null) {
             final Bundle arguments = getArguments();
             if (arguments != null) {
-                activity.onDialogResult(arguments.getInt(ARG_REQUEST_CODE), resultCode, arguments);
+                dialogResultListener.onDialogResult(arguments.getInt(ARG_REQUEST_CODE), resultCode, arguments);
             }
         }
     }

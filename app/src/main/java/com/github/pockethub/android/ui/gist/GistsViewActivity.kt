@@ -33,6 +33,7 @@ import com.github.pockethub.android.rx.AutoDisposeUtils
 import com.github.pockethub.android.rx.RxProgress
 import com.github.pockethub.android.ui.base.BaseActivity
 import com.github.pockethub.android.ui.ConfirmDialogFragment
+import com.github.pockethub.android.ui.DialogResultListener
 import com.github.pockethub.android.ui.MainActivity
 import com.github.pockethub.android.ui.helpers.PagerHandler
 import com.github.pockethub.android.ui.item.gist.GistItem
@@ -51,7 +52,7 @@ import javax.inject.Inject
 /**
  * Activity to display a collection of Gists in a pager
  */
-class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
+class GistsViewActivity : BaseActivity(), DialogResultListener, OnLoadListener<Gist> {
 
     @Inject
     lateinit var store: GistStore
@@ -142,8 +143,6 @@ class GistsViewActivity : BaseActivity(), OnLoadListener<Gist> {
 
         pagerHandler!!.adapter
             .onDialogResult(vp_pages.currentItem, requestCode, resultCode, arguments)
-
-        super.onDialogResult(requestCode, resultCode, arguments)
     }
 
     private fun onPageChanged(position: Int) {
