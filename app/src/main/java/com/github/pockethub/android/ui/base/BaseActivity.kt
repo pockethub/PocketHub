@@ -15,22 +15,13 @@
  */
 package com.github.pockethub.android.ui.base
 
-import android.os.Bundle
 import com.github.pockethub.android.R
-import com.github.pockethub.android.ui.DialogResultListener
 import dagger.android.support.DaggerAppCompatActivity
 
-/**
- * Activity that display dialogs
- */
-abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
+abstract class BaseActivity : DaggerAppCompatActivity() {
 
     override fun onContentChanged() {
         super.onContentChanged()
         setSupportActionBar(findViewById(R.id.toolbar))
-    }
-
-    override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {
-        // Intentionally left blank
     }
 }
