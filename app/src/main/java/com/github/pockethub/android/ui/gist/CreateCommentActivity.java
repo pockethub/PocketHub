@@ -62,7 +62,7 @@ public class CreateCommentActivity extends
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_with_tabs);
 
-        gist = getParcelableExtra(EXTRA_GIST);
+        gist = getIntent().getParcelableExtra(EXTRA_GIST);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getString(R.string.gist_title) + gist.id());

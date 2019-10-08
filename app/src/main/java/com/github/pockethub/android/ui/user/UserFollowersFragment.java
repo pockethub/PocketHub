@@ -40,7 +40,7 @@ public class UserFollowersFragment extends FollowersFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        user = getParcelableExtra(EXTRA_USER);
+        user = requireActivity().getIntent().getParcelableExtra(EXTRA_USER);
     }
 
     @Override

@@ -59,8 +59,8 @@ class GistFilesViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pager_with_title)
 
-        gistId = getStringExtra(EXTRA_GIST_ID)
-        initialPosition = getIntExtra(EXTRA_POSITION)
+        gistId = intent.getStringExtra(EXTRA_GIST_ID)
+        initialPosition = intent.getIntExtra(EXTRA_POSITION, -1)
 
         if (initialPosition < 0) {
             initialPosition = 0

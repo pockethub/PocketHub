@@ -69,7 +69,7 @@ public class EditCommentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        gist = getParcelableExtra(EXTRA_GIST);
+        gist = getIntent().getParcelableExtra(EXTRA_GIST);
         comment = getIntent().getParcelableExtra(EXTRA_COMMENT);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_with_tabs);

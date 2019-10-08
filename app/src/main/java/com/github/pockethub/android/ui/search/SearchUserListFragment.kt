@@ -96,7 +96,7 @@ class SearchUserListFragment : BaseFragment() {
     }
 
     private fun loadData(page: Int): Single<Response<Page<User>>> {
-        return service.searchUsers(getStringExtra(SearchManager.QUERY), null, null, page.toLong())
+        return service.searchUsers(activity?.intent?.getStringExtra(SearchManager.QUERY), null, null, page.toLong())
             .map { response ->
                 val repositorySearchPage = response.body()!!
 

@@ -16,7 +16,6 @@
 package com.github.pockethub.android.ui.base
 
 import android.os.Bundle
-import android.os.Parcelable
 import com.github.pockethub.android.R
 import com.github.pockethub.android.ui.DialogResultListener
 import dagger.android.support.DaggerAppCompatActivity
@@ -29,76 +28,6 @@ abstract class BaseActivity : DaggerAppCompatActivity(), DialogResultListener {
     override fun onContentChanged() {
         super.onContentChanged()
         setSupportActionBar(findViewById(R.id.toolbar))
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return parcelable
-     */
-    protected fun <V : Parcelable> getParcelableExtra(name: String): V? {
-        return intent.getParcelableExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return int
-     */
-    protected fun getIntExtra(name: String): Int {
-        return intent.getIntExtra(name, -1)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return int array
-     */
-    protected fun getIntArrayExtra(name: String): IntArray? {
-        return intent.getIntArrayExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return boolean array
-     */
-    protected fun getBooleanArrayExtra(name: String): BooleanArray? {
-        return intent.getBooleanArrayExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return string
-     */
-    protected fun getStringExtra(name: String): String? {
-        return intent.getStringExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return string array
-     */
-    protected fun getStringArrayExtra(name: String): Array<String>? {
-        return intent.getStringArrayExtra(name)
-    }
-
-    /**
-     * Get intent extra
-     *
-     * @param name
-     * @return char sequence array
-     */
-    protected fun getCharSequenceArrayExtra(name: String): Array<CharSequence>? {
-        return intent.getCharSequenceArrayExtra(name)
     }
 
     override fun onDialogResult(requestCode: Int, resultCode: Int, arguments: Bundle) {

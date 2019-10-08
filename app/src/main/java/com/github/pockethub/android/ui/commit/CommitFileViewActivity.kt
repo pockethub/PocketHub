@@ -89,9 +89,9 @@ class CommitFileViewActivity : BaseActivity() {
         setContentView(R.layout.activity_commit_file_view)
 
         repo = intent.getParcelableExtra(EXTRA_REPOSITORY)
-        commit = getStringExtra(EXTRA_HEAD)
-        sha = getStringExtra(EXTRA_BASE)
-        path = getStringExtra(EXTRA_PATH)
+        commit = intent.getStringExtra(EXTRA_HEAD)
+        sha = intent.getStringExtra(EXTRA_BASE)
+        path = intent.getStringExtra(EXTRA_PATH)
 
         file = CommitUtils.getName(path)
         isMarkdownFile = MarkdownUtils.isMarkdown(file)

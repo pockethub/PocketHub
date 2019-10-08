@@ -71,10 +71,10 @@ class IssuesViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pager)
 
-        issueNumbers = getIntArrayExtra(EXTRA_ISSUE_NUMBERS)
-        pullRequests = getBooleanArrayExtra(EXTRA_PULL_REQUESTS)
+        issueNumbers = intent.getIntArrayExtra(EXTRA_ISSUE_NUMBERS)
+        pullRequests = intent.getBooleanArrayExtra(EXTRA_PULL_REQUESTS)
         repoIds = intent.getParcelableArrayListExtra(EXTRA_REPOSITORIES)
-        repo = getParcelableExtra(EXTRA_REPOSITORY)
+        repo = intent.getParcelableExtra(EXTRA_REPOSITORY)
 
         val actionBar = supportActionBar!!
         actionBar.setDisplayHomeAsUpEnabled(true)
@@ -112,7 +112,7 @@ class IssuesViewActivity : BaseActivity() {
     }
 
     private fun configurePager() {
-        val initialPosition = getIntExtra(EXTRA_POSITION)
+        val initialPosition = intent.getIntExtra(EXTRA_POSITION, -1)
 
         val adapter = if (repo != null) {
             IssuesPagerAdapter(this, repo, issueNumbers, canWrite)

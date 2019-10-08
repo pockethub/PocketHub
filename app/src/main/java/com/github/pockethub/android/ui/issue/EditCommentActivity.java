@@ -80,9 +80,9 @@ public class EditCommentActivity extends
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        comment = getParcelableExtra(EXTRA_COMMENT);
-        issueNumber = getIntExtra(EXTRA_ISSUE_NUMBER);
-        repositoryId = getParcelableExtra(Intents.EXTRA_REPOSITORY);
+        comment = getIntent().getParcelableExtra(EXTRA_COMMENT);
+        issueNumber = getIntent().getIntExtra(EXTRA_ISSUE_NUMBER, -1);
+        repositoryId = getIntent().getParcelableExtra(Intents.EXTRA_REPOSITORY);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_with_tabs);

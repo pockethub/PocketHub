@@ -53,8 +53,8 @@ class CommitViewActivity : BaseActivity() {
         setContentView(R.layout.activity_pager)
 
         repository = intent.getParcelableExtra(EXTRA_REPOSITORY)
-        ids = getCharSequenceArrayExtra(EXTRA_BASES)
-        initialPosition = getIntExtra(EXTRA_POSITION)
+        ids = intent.getCharSequenceArrayExtra(EXTRA_BASES)
+        initialPosition = intent.getIntExtra(EXTRA_POSITION, -1)
 
         val adapter = CommitPagerAdapter(this, repository, ids)
         pagerHandler = PagerHandler(this, vp_pages, adapter)

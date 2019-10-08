@@ -93,9 +93,9 @@ public class CreateCommentActivity extends
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         repository = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
-        commit = getStringExtra(EXTRA_BASE);
-        position = getIntExtra(EXTRA_POSITION);
-        path = getStringExtra(EXTRA_PATH);
+        commit = getIntent().getStringExtra(EXTRA_BASE);
+        position = getIntent().getIntExtra(EXTRA_POSITION, -1);
+        path = getIntent().getStringExtra(EXTRA_PATH);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pager_with_tabs);

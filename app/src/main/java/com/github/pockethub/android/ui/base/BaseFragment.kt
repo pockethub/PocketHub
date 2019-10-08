@@ -16,22 +16,6 @@
 
 package com.github.pockethub.android.ui.base
 
-import android.os.Parcelable
 import dagger.android.support.DaggerFragment
 
-abstract class BaseFragment : DaggerFragment() {
-
-    /**
-     * Get parcelable extra from activity's intent
-     */
-    protected fun <V : Parcelable> getParcelableExtra(name: String): V? {
-        return activity?.intent?.getParcelableExtra(name)
-    }
-
-    /**
-     * Get string extra from activity's intent
-     */
-    protected fun getStringExtra(name: String): String? {
-        return activity?.intent?.getStringExtra(name)
-    }
-}
+abstract class BaseFragment : DaggerFragment()

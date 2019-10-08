@@ -62,7 +62,7 @@ class UserRepositoryListFragment : BaseFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        user = getParcelableExtra(EXTRA_USER)
+        user = activity?.intent?.getParcelableExtra(EXTRA_USER)
     }
 
     override fun onCreateView(

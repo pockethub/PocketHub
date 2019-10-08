@@ -54,7 +54,7 @@ public class IssueBrowseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_issue_list);
 
-        repo = getParcelableExtra(EXTRA_REPOSITORY);
+        repo = getIntent().getParcelableExtra(EXTRA_REPOSITORY);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(repo.name());

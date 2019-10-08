@@ -75,10 +75,10 @@ class BranchFileViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_commit_file_view)
 
-        repo = getParcelableExtra(EXTRA_REPOSITORY)
-        sha = getStringExtra(EXTRA_BASE)
-        path = getStringExtra(EXTRA_PATH)
-        branch = getStringExtra(EXTRA_HEAD)
+        repo = intent.getParcelableExtra(EXTRA_REPOSITORY)
+        sha = intent.getStringExtra(EXTRA_BASE)
+        path = intent.getStringExtra(EXTRA_PATH)
+        branch = intent.getStringExtra(EXTRA_HEAD)
 
         wv_code.settings.builtInZoomControls = true
         wv_code.settings.useWideViewPort = true
