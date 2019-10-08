@@ -26,19 +26,11 @@
         android:contentDescription="@string/avatar" />
 
     <TextView
-        android:id="@+id/tv_gist_id"
-        style="@style/ListSubtitleText"
-        android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/iv_avatar"
-        android:singleLine="true" />
-
-    <TextView
         android:id="@+id/tv_gist_title"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:layout_alignStart="@id/tv_gist_id"
-        android:layout_below="@id/tv_gist_id"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/iv_avatar"
         android:singleLine="true" />
 
     <LinearLayout
