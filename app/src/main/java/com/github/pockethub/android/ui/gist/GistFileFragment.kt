@@ -35,7 +35,6 @@ import com.github.pockethub.android.util.PreferenceUtils
 import com.github.pockethub.android.util.PreferenceUtils.WRAP
 import com.github.pockethub.android.util.SourceEditor
 import com.github.pockethub.android.util.ToastUtils
-import com.meisolsson.githubsdk.model.Gist
 import com.meisolsson.githubsdk.model.GistFile
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -55,8 +54,6 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
 
     private var file: GistFile? = null
 
-    private var gist: Gist? = null
-
     private lateinit var editor: SourceEditor
 
     private var codePrefs: SharedPreferences? = null
@@ -74,10 +71,6 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
         setHasOptionsMenu(true)
 
         file = arguments!!.get(EXTRA_GIST_FILE) as GistFile
-        gist = store.getGist(gistId)
-        if (gist == null) {
-            gist = Gist.builder().id(gistId).build()
-        }
 
         codePrefs = PreferenceUtils.getCodePreferences(activity)
         codePrefs!!.registerOnSharedPreferenceChangeListener(this)
