@@ -327,23 +327,16 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
             return
         }
 
-        val fileItems = ArrayList<GistFileItem>()
-        for (file in files.values) {
-            fileItems.add(GistFileItem(file))
-        }
+        val fileItems = files.values.map { GistFileItem(it) }
         filesSection.update(fileItems)
     }
 
     private fun updateList(gist: Gist?, comments: List<GitHubComment>) {
-        val items = ArrayList<GitHubCommentItem>()
         val username = AccountUtils.getLogin(activity)
         val isOwner = isOwner
 
-        for (comment in comments) {
-            items.add(
-                GitHubCommentItem(avatars, imageGetter, editCommentListener,
-                    deleteCommentListener, username!!, isOwner, comment)
-            )
+        val items = comments.map {
+            GitHubCommentItem(avatars, imageGetter, editCommentListener, deleteCommentListener, username!!, isOwner, it)
         }
         commentsSection.update(items)
         mainSection.removeFooter()

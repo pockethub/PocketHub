@@ -208,11 +208,7 @@ class GistsViewActivity : BaseActivity(), DialogResultListener, OnLoadListener<G
          * @return intent
          */
         fun createIntent(items: List<Item<*>>, position: Int): Intent {
-            val ids = arrayOfNulls<String>(items.size)
-            for ((index, item) in items.withIndex()) {
-                val gist = (item as GistItem).gist
-                ids[index] = gist.id()
-            }
+            val ids = items.map { (it as GistItem).gist.id() }.toTypedArray()
             return Builder("gists.VIEW")
                 .add(EXTRA_GIST_IDS, ids as Serializable)
                 .add(EXTRA_POSITION, position).toIntent()

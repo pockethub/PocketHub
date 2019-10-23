@@ -24,7 +24,7 @@ import com.meisolsson.githubsdk.model.Commit
 import com.meisolsson.githubsdk.model.GitHubFile
 import com.meisolsson.githubsdk.model.git.GitCommit
 import java.text.NumberFormat
-import java.util.Date
+import java.util.*
 
 /**
  * Utilities for working with commits
@@ -209,16 +209,9 @@ object CommitUtils {
     @JvmStatic
     fun formatStats(files: Collection<GitHubFile>?): SpannedString {
         return buildSpannedString {
-            var added = 0
-            var deleted = 0
-            var changed = 0
-            if (files != null) {
-                for (file in files) {
-                    added += file.additions()!!
-                    deleted += file.deletions()!!
-                    changed++
-                }
-            }
+            val added = files.orEmpty().sumBy { it.additions()!! }
+            val deleted = files.orEmpty().sumBy { it.deletions()!! }
+            val changed = files.orEmpty().count()
 
             if (changed != 1) {
                 append("${FORMAT.format(changed.toLong())} changed files")

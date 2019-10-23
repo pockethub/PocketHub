@@ -88,8 +88,6 @@ constructor(private val context: Context) : PersistableResource<User> {
             .blockingGet()
             .body()
 
-        val all = allOrgs
-        all.add(user!!)
-        return all
+        return allOrgs + user!!
     }
 }

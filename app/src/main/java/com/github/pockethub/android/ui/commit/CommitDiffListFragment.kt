@@ -69,7 +69,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.diff_line_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_commit_diff_list.*
-import java.util.ArrayList
 import java.util.Collections
 import javax.inject.Inject
 
@@ -267,10 +266,7 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
             return
         }
 
-        val items = ArrayList<CommitParentItem>()
-        for (parent in parents) {
-            items.add(CommitParentItem(activity!!, parent))
-        }
+        val items = parents.map { CommitParentItem(activity!!, it) }
         commitSection.update(items)
     }
 
@@ -304,16 +300,12 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
     private fun updateItems(comments: List<GitComment>, files: List<FullCommitFile>) {
         filesSection.update(createFileSections(files))
 
-        val items = ArrayList<CommitCommentItem>()
-        for (comment in comments) {
-            items.add(CommitCommentItem(avatars, commentImageGetter, comment))
-        }
+        val items = comments.map { CommitCommentItem(avatars, commentImageGetter, it) }
         commentSection.update(items)
     }
 
     private fun createFileSections(files: List<FullCommitFile>): List<Section> {
-        val sections = ArrayList<Section>()
-        for (file in files) {
+        return files.map { file ->
             val section = Section(CommitFileHeaderItem(activity!!, file.file))
             val lines = diffStyler!!.get(file.file.filename())
             for ((number, line) in lines.withIndex()) {
@@ -322,11 +314,8 @@ class CommitDiffListFragment : BaseFragment(), OnItemClickListener {
                     section.add(CommitCommentItem(avatars, commentImageGetter, comment, true))
                 }
             }
-
-            sections.add(section)
+            section
         }
-
-        return sections
     }
 
     private fun showFileOptions(line: CharSequence, position: Int, file: GitHubFile) {
