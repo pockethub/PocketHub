@@ -321,12 +321,7 @@ class GistFragment : BaseFragment(), OnItemClickListener, DialogResultListener {
             return
         }
 
-        val files = gist!!.files()
-        if (files == null || files.isEmpty()) {
-            filesSection.update(emptyList())
-            return
-        }
-
+        val files = gist!!.files().orEmpty()
         val fileItems = files.values.map { GistFileItem(it) }
         filesSection.update(fileItems)
     }

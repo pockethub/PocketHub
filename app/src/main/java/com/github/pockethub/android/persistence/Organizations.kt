@@ -66,9 +66,6 @@ constructor(private val context: Context) : PersistableResource<User> {
 
     override fun store(db: Database, orgs: List<User>) {
         db.organizationsQueries.clearOrgs()
-        if (orgs.isEmpty()) {
-            return
-        }
 
         for (user in orgs) {
             db.organizationsQueries.insertOrg(user.id())

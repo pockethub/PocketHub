@@ -320,8 +320,8 @@ class EditIssueActivity : BaseActivity(), DialogResultListener {
     }
 
     private fun updateLabels() {
-        val labels = issue!!.labels()
-        if (labels != null && !labels.isEmpty()) {
+        val labels = issue!!.labels().orEmpty()
+        if (labels.isNotEmpty()) {
             LabelDrawableSpan.setText(tv_labels, labels)
         } else {
             tv_labels.setText(R.string.none)
