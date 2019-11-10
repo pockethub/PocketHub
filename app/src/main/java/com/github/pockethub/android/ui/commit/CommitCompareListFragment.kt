@@ -55,8 +55,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_commit_diff_list.*
 import java.text.MessageFormat
-import java.util.ArrayList
-import java.util.Collections
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -172,11 +171,7 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
                 TextItem(R.layout.commit_details_header, R.id.tv_commit_summary, text)
             )
 
-            val items = ArrayList<CommitItem>()
-            for (commit in commits) {
-                items.add(CommitItem(avatars!!, commit))
-            }
-
+            val items = commits.map { CommitItem(avatars, it) }
             commitsSection.update(items)
         }
 
@@ -191,37 +186,20 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
     }
 
     private fun createFileSections(files: List<GitHubFile>): List<Section> {
-        val sections = ArrayList<Section>()
-
-        for (file in files) {
-            val section = Section(CommitFileHeaderItem(activity!!, file))
+        return files.map { file ->
             val lines = diffStyler!!.get(file.filename())
-            for (line in lines) {
-                section.add(CommitFileLineItem(diffStyler!!, line))
-            }
-
-            sections.add(section)
+            Section(CommitFileHeaderItem(activity!!, file), lines.map { CommitFileLineItem(diffStyler!!, it) })
         }
-
-        return sections
     }
 
     private fun openCommit(commit: Commit) {
         if (compare != null) {
-            var commitPosition = 0
             val commits = compare!!.commits()
-            for (candidate in commits) {
-                if (commit === candidate) {
-                    break
-                } else {
-                    commitPosition++
-                }
-            }
+            val commitPosition = commits
+                .takeWhile { commit !== it }
+                .count()
             if (commitPosition < commits.size) {
-                val ids = arrayOfNulls<String>(commits.size) as Array<String>
-                for (i in commits.indices) {
-                    ids[i] = commits[i].sha()!!
-                }
+                val ids = commits.map { it.sha()!! }.toTypedArray()
                 startActivity(CommitViewActivity.createIntent(repository!!, commitPosition, *ids))
             }
         } else {

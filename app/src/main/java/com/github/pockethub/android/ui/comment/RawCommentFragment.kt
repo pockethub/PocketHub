@@ -104,13 +104,8 @@ class RawCommentFragment : BaseFragment() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == READ_PERMISSION_REQUEST) {
-
-            var result = true
-            for (i in permissions.indices) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    result = false
-                }
-            }
+            val result = permissions.indices
+                .none { grantResults[it] != PackageManager.PERMISSION_GRANTED }
 
             if (result) {
                 startImagePicker()

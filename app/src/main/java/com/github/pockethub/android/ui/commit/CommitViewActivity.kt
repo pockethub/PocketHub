@@ -118,11 +118,7 @@ class CommitViewActivity : BaseActivity() {
             position: Int,
             commits: Collection<Item<*>>
         ): Intent {
-            val ids = arrayOfNulls<String>(commits.size) as Array<String>
-            for ((index, item) in commits.withIndex()) {
-                val commit = (item as CommitItem).commit
-                ids[index] = commit.sha()!!
-            }
+            val ids = commits.map { (it as CommitItem).commit.sha()!! }.toTypedArray()
             return createIntent(repository, position, *ids)
         }
 

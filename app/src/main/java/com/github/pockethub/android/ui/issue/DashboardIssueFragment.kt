@@ -119,12 +119,9 @@ class DashboardIssueFragment : BaseFragment() {
     private fun onItemClick(clickedItem: Item<*>, view: View) {
         if (clickedItem is IssueDashboardItem) {
             val position = itemListHandler.getItemPosition(clickedItem)
-            val issues = ArrayList<Issue>()
-            for (item in itemListHandler.items) {
-                if (item is IssueDashboardItem) {
-                    issues.add((item as IssueItem).issue)
-                }
-            }
+            val issues = itemListHandler.items
+                .filterIsInstance<IssueDashboardItem>()
+                .map { (it as IssueItem).issue }
             startActivityForResult(IssuesViewActivity.createIntent(issues, position), ISSUE_VIEW)
         }
     }

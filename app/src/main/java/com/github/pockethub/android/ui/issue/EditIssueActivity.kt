@@ -150,13 +150,8 @@ class EditIssueActivity : BaseActivity(), DialogResultListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == READ_PERMISSION_REQUEST) {
-
-            var result = true
-            for (i in permissions.indices) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    result = false
-                }
-            }
+            val result = permissions.indices
+                .none { grantResults[it] != PackageManager.PERMISSION_GRANTED }
 
             if (result) {
                 startImagePicker()
@@ -325,8 +320,8 @@ class EditIssueActivity : BaseActivity(), DialogResultListener {
     }
 
     private fun updateLabels() {
-        val labels = issue!!.labels()
-        if (labels != null && !labels.isEmpty()) {
+        val labels = issue!!.labels().orEmpty()
+        if (labels.isNotEmpty()) {
             LabelDrawableSpan.setText(tv_labels, labels)
         } else {
             tv_labels.setText(R.string.none)
@@ -368,12 +363,7 @@ class EditIssueActivity : BaseActivity(), DialogResultListener {
                     request.milestone(issue!!.milestone()!!.number()!!)
                 }
 
-                val labels = ArrayList<String>()
-                if (issue!!.labels() != null) {
-                    for (label in issue!!.labels()!!) {
-                        labels.add(label.name()!!)
-                    }
-                }
+                val labels = issue!!.labels().orEmpty().map { it.name()!! }
                 request.labels(labels)
 
                 val service = ServiceGenerator.createService(this, IssueService::class.java)

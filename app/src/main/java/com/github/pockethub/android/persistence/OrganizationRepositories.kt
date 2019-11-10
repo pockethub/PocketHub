@@ -87,9 +87,6 @@ class OrganizationRepositories(
 
     override fun store(database: Database, repos: List<Repository>) {
         database.repositoriesQueries.clearUserRepositories(org.id())
-        if (repos.isEmpty()) {
-            return
-        }
 
         for (repo in repos) {
             val owner = repo.owner()

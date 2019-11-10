@@ -92,10 +92,6 @@ class NotificationListFragment : BaseFragment(), NotificationReadListener {
     }
 
     private fun updateHeaders(notifications: MutableList<Item<*>>) {
-        if (notifications.isEmpty()) {
-            return
-        }
-
         notifications.sortWith(Comparator { i1, i2 ->
             val r1 = (i1 as NotificationItem).notificationThread.repository()
             val r2 = (i2 as NotificationItem).notificationThread.repository()

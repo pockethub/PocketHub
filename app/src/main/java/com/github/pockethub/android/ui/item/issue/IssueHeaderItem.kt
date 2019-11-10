@@ -99,7 +99,7 @@ class IssueHeaderItem(
         }
 
         val labels = issue.labels()
-        if (labels != null && !labels.isEmpty()) {
+        if (!labels.isNullOrEmpty()) {
             LabelDrawableSpan.setText(holder.tv_labels, labels)
             holder.tv_labels.visibility = VISIBLE
         } else {

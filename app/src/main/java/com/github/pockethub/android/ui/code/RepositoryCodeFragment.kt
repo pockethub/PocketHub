@@ -286,15 +286,9 @@ class RepositoryCodeFragment : BaseFragment(), OnItemClickListener, DialogResult
         }
 
 
-        val items = mutableListOf<Item<*>>()
-
-        for (folder1 in folder.folders.values) {
-            items.add(FolderItem(folder1))
-        }
-
-        for (blob in folder.files.values) {
-            items.add(BlobItem(activity!!, blob))
-        }
+        val items: List<Item<*>> =
+            folder.folders.values.map { FolderItem(it) } +
+            folder.files.values.map { BlobItem(activity!!, it) }
 
         mainSection.update(items)
     }

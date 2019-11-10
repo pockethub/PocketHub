@@ -58,14 +58,6 @@ object ImageBinPoster {
 
     @JvmStatic
     fun getUrl(body: String): String? {
-        var url: String? = null
-        val pairs = body.split("\n")
-        for (string in pairs) {
-            if (string.startsWith("url")) {
-                val index = string.indexOf(":")
-                url = string.substring(index + 1)
-            }
-        }
-        return url
+        return body.split("\n").last { it.startsWith("url") }.substringAfter(':')
     }
 }
