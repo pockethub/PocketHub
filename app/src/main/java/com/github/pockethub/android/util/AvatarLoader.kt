@@ -16,17 +16,13 @@
 package com.github.pockethub.android.util
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.github.pockethub.android.R
-import com.jakewharton.picasso.OkHttp3Downloader
 import com.meisolsson.githubsdk.model.User
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Transformation
-import okhttp3.Cache
 import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -51,35 +47,20 @@ class AvatarLoader @Inject constructor(context: Context) {
         private var avatarSize = 0
     }
 
-    private val p: Picasso
+    private val requestManager: RequestManager = Glide.with(context)
 
-    private val cornerRadius: Float
+    private val cornerRadius: Int
 
-    private val transformation = RoundedCornersTransformation()
+    private val transformation: RoundedCorners
 
     init {
-        // Install an HTTP cache in the application cache directory.
-        val cacheDir = File(context.cacheDir, "http")
-        val cache = Cache(cacheDir, DISK_CACHE_SIZE.toLong())
-
-        val client = OkHttpClient.Builder()
-                .cache(cache)
-                .build()
-
-        p = Picasso.Builder(context).downloader(OkHttp3Downloader(client)).build()
 
         val density = context.resources.displayMetrics.density
-        cornerRadius = CORNER_RADIUS_IN_DIP * density
+        cornerRadius = (CORNER_RADIUS_IN_DIP * density).toInt()
+        transformation = RoundedCorners(cornerRadius)
 
         if (avatarSize == 0) {
             avatarSize = getMaxAvatarSize(context)
-        }
-
-        // TODO remove this eventually
-        // Delete the old cache
-        val avatarDir = File(context.cacheDir, "avatars/github.com")
-        if (avatarDir.isDirectory) {
-            deleteCache(avatarDir)
         }
     }
 
@@ -94,19 +75,19 @@ class AvatarLoader @Inject constructor(context: Context) {
     }
 
     private fun bind(view: ImageView, url: String?) {
-        var url = url
-        if (url == null) {
-            p.load(R.drawable.spinner_inner).resize(avatarSize, avatarSize).into(view)
+        var localUrl = url
+        if (localUrl == null) {
+            requestManager.load(R.drawable.spinner_inner).override(avatarSize, avatarSize).into(view)
             return
         }
 
-        if (url.contains("?") && !url.contains("gravatar")) {
-            url = url.substring(0, url.indexOf("?"))
+        if (localUrl.contains("?") && !localUrl.contains("gravatar")) {
+            localUrl = localUrl.substring(0, localUrl.indexOf("?"))
         }
 
-        p.load(url)
+        requestManager.load(localUrl)
                 .placeholder(R.drawable.gravatar_icon)
-                .resize(avatarSize, avatarSize)
+                .override(avatarSize, avatarSize)
                 .transform(transformation)
                 .into(view)
     }
@@ -143,25 +124,5 @@ class AvatarLoader @Inject constructor(context: Context) {
         val size = array.getLayoutDimension(0, 100)
         array.recycle()
         return size
-    }
-
-    private fun deleteCache(cache: File): Boolean {
-        if (cache.isDirectory) {
-            for (f in cache.listFiles()) {
-                deleteCache(f)
-            }
-        }
-        return cache.delete()
-    }
-
-    inner class RoundedCornersTransformation : Transformation {
-
-        override fun transform(source: Bitmap): Bitmap {
-            return ImageUtils.roundCorners(source, cornerRadius)
-        }
-
-        override fun key(): String {
-            return "RoundedCornersTransformation"
-        }
     }
 }

@@ -124,6 +124,10 @@ android {
         }
     }
 
+    configurations {
+        implementation.exclude group: 'org.jetbrains', module: 'annotations'
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -163,13 +167,31 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'androidx.core:core-ktx:1.2.0'
+    final def markwon_version = '4.3.0'
+    implementation "io.noties.markwon:core:$markwon_version"
+    implementation "io.noties.markwon:ext-strikethrough:$markwon_version"
+    implementation "io.noties.markwon:ext-tasklist:$markwon_version"
+    implementation "io.noties.markwon:html:$markwon_version"
+    implementation "io.noties.markwon:image:$markwon_version"
+    implementation "io.noties.markwon:image-glide:$markwon_version"
+    implementation "io.noties.markwon:linkify:$markwon_version"
+    implementation "io.noties.markwon:recycler-table:$markwon_version"
+    implementation "io.noties.markwon:syntax-highlight:$markwon_version"
 
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation "com.caverock:androidsvg:1.4"
+    implementation "pl.droidsonroids.gif:android-gif-drawable:1.2.19"
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    kapt 'io.noties:prism4j-bundler:2.0.0'
+
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation "com.squareup.sqldelight:android-driver:1.2.2"
 
@@ -190,7 +212,7 @@ dependencies {
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
     kapt 'com.google.auto.factory:auto-factory:1.0-beta7'
 
-    implementation 'com.github.meisolsson:githubsdk:0.6.3'
+    implementation 'com.github.meisolsson:githubsdk:0.7.0'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.xwray:groupie:2.3.0'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
