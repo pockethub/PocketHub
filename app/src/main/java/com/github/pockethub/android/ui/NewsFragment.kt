@@ -24,7 +24,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.afollestad.materialdialogs.MaterialDialog
 import com.github.pockethub.android.R
 import com.github.pockethub.android.core.gist.GistEventMatcher
 import com.github.pockethub.android.core.issue.IssueEventMatcher
@@ -58,10 +57,8 @@ import com.meisolsson.githubsdk.model.payload.PushPayload
 import com.meisolsson.githubsdk.model.payload.ReleasePayload
 import com.xwray.groupie.Item
 import com.xwray.groupie.OnItemClickListener
-import com.xwray.groupie.OnItemLongClickListener
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
-import kotlinx.android.synthetic.main.nav_dialog.view.*
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -95,8 +92,7 @@ abstract class NewsFragment : BaseFragment() {
             view.empty,
             lifecycle,
             activity,
-            OnItemClickListener(this::onItemClick),
-            OnItemLongClickListener(this::onItemLongClick)
+            OnItemClickListener(this::onItemClick)
         )
 
         pagedListFetcher = PagedListFetcher(
@@ -160,52 +156,6 @@ abstract class NewsFragment : BaseFragment() {
         if (users != null) {
             viewUser(users)
         }
-    }
-
-    private fun onItemLongClick(item: Item<*>, view: View): Boolean {
-        if (!isAdded) {
-            return false
-        }
-
-        if (item !is NewsItem) {
-            return false
-        }
-
-        val event = item.gitHubEvent
-        val repo = ConvertUtils.eventRepoToRepo(event.repo()!!)
-        val user = event.actor()
-
-        if (repo != null && user != null) {
-            val builder = MaterialDialog.Builder(activity!!)
-                .title(R.string.navigate_to)
-
-            // Hacky but necessary since material dialogs has a different API
-            val dialogHolder = arrayOfNulls<MaterialDialog>(1)
-
-            val dialogView = layoutInflater.inflate(R.layout.nav_dialog, null)
-            avatars.bind(dialogView.iv_user_avatar, user)
-            avatars.bind(dialogView.iv_repo_avatar, repo.owner())
-            dialogView.tv_login.text = user.login()
-            dialogView.tv_repo_name.text = InfoUtils.createRepoId(repo)
-            dialogView.ll_user_area.setOnClickListener { v1 ->
-                dialogHolder[0]!!.dismiss()
-                viewUser(user)
-            }
-            dialogView.ll_repo_area.setOnClickListener { v1 ->
-                dialogHolder[0]!!.dismiss()
-                viewRepository(repo)
-            }
-            builder.customView(dialogView, false)
-
-            val dialog = builder.build()
-            dialogHolder[0] = dialog
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.show()
-
-            return true
-        }
-
-        return false
     }
 
     // https://developer.github.com/v3/repos/downloads/#downloads-api-is-deprecated

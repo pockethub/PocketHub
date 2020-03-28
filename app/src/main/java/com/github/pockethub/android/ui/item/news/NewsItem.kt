@@ -1,12 +1,17 @@
 package com.github.pockethub.android.ui.item.news
 
+import android.content.Context
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.util.Log
 import androidx.core.text.bold
 import com.github.pockethub.android.R
+import com.github.pockethub.android.ui.repo.RepositoryViewActivity
+import com.github.pockethub.android.ui.user.UserViewActivity
 import com.github.pockethub.android.util.AvatarLoader
+import com.github.pockethub.android.util.ConvertUtils
 import com.github.pockethub.android.util.TimeUtils
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CommitCommentEvent
 import com.meisolsson.githubsdk.model.GitHubEventType.CreateEvent
@@ -40,33 +45,56 @@ open class NewsItem(
 
     override fun bind(holder: ViewHolder, position: Int) {
         avatarLoader.bind(holder.iv_avatar, gitHubEvent.actor())
+        holder.iv_avatar.setOnClickListener {
+            val context = holder.root.context
+            val user = gitHubEvent.actor()!!
+            context.startActivity(UserViewActivity.createIntent(user))
+        }
         holder.tv_event_date.text = TimeUtils.getRelativeTime(gitHubEvent.createdAt())
     }
 
-    protected fun boldActor(text: SpannableStringBuilder, event: GitHubEvent?) =
-            boldUser(text, event?.actor())
+    protected fun boldActor(context: Context, text: SpannableStringBuilder, event: GitHubEvent?) =
+            boldUser(context, text, event?.actor())
 
-    protected fun boldUser(text: SpannableStringBuilder, user: User?) {
+    protected fun boldUser(context: Context, text: SpannableStringBuilder, user: User?) {
         text.bold {
-            append(user?.login())
+            clickable(onClick = {
+                context.startActivity(UserViewActivity.createIntent(user!!))
+            }) {
+                append(user!!.login())
+            }
         }
     }
 
-    protected fun boldRepo(text: SpannableStringBuilder, event: GitHubEvent?) {
-        val repo = event?.repo()
+    protected fun boldRepo(context: Context, text: SpannableStringBuilder, event: GitHubEvent?) {
         text.bold {
-            append(repo?.repoWithUserName())
+            val eventRepo = event?.repo()!!
+            clickable(onClick = {
+                val repository = ConvertUtils.eventRepoToRepo(eventRepo)
+                context.startActivity(RepositoryViewActivity.createIntent(repository))
+            }) {
+                append(eventRepo.repoWithUserName())
+            }
         }
     }
 
-    protected fun boldRepoName(text: SpannableStringBuilder, event: GitHubEvent?) {
+    protected fun boldRepoName(
+            context: Context,
+            text: SpannableStringBuilder,
+            event: GitHubEvent?
+    ) {
         val repo = event?.repo()
         val name = repo?.repoWithUserName()
         if (!TextUtils.isEmpty(name)) {
             val slash: Int = name!!.indexOf('/')
             if (slash != -1 && slash + 1 < name.length) {
                 text.bold {
-                    append(name.substring(slash + 1))
+                    clickable(onClick = {
+                        val repository = ConvertUtils.eventRepoToRepo(repo)
+                        context.startActivity(RepositoryViewActivity.createIntent(repository))
+                    }) {
+                        append(name.substring(slash + 1))
+                    }
                 }
             }
         }

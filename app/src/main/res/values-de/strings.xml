@@ -254,7 +254,6 @@
     <string name="unstarring_repository">Defavorisiere Repository…</string>
     <string name="forking_repository">Forking…</string>
     <string name="deleting_repository">Löschen…</string>
-    <string name="navigate_to">Navigiere zu…</string>
     <string name="navigate_to_user">Navigiere zu %s</string>
     <string name="contributions">%d Commits</string>
 

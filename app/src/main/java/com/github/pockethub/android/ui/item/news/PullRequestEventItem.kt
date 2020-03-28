@@ -4,8 +4,12 @@ import android.text.TextUtils
 import android.view.View
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import com.github.pockethub.android.core.issue.IssueEventMatcher
+import com.github.pockethub.android.ui.issue.IssuesViewActivity
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
+import com.github.pockethub.android.util.ConvertUtils
+import com.github.pockethub.android.util.android.text.clickable
 import com.meisolsson.githubsdk.model.GitHubEvent
 import com.meisolsson.githubsdk.model.payload.PullRequestPayload
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -24,16 +28,23 @@ class PullRequestEventItem(
         val action = payload.action()
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             if (PullRequestPayload.Action.Synchronized == action) {
                 append("updated")
             }
             append(" ${action?.name?.toLowerCase()} ")
             bold {
-                append("pull request " + payload.number())
+                clickable(onClick = {
+                    val issue = IssueEventMatcher.getIssue(gitHubEvent)
+                    val repository = ConvertUtils.eventRepoToRepo(gitHubEvent.repo())
+                    context.startActivity(IssuesViewActivity.createIntent(issue, repository))
+                }) {
+                    append("pull request " + payload.number())
+                }
             }
             append(" on ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
 
         val details = buildSpannedString {

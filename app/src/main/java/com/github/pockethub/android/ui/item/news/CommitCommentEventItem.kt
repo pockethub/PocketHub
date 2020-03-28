@@ -23,9 +23,10 @@ class CommitCommentEventItem(
         holder.tv_event_icon.text = OcticonTextView.ICON_COMMENT
 
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" commented on ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
 
         val details = buildSpannedString {

@@ -209,7 +209,6 @@
     <string name="unfollowing_user">팔로윙 취소…</string>
     <string name="starring_repository">즐겨찾기…</string>
     <string name="unstarring_repository">즐겨찾기 해제…</string>
-    <string name="navigate_to">Navigate to…</string>
     <string name="navigate_to_user">Navigate to %s</string>
     <string name="contributions">%d 커밋</string>
 

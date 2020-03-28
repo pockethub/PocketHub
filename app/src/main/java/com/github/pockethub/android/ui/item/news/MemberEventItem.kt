@@ -1,7 +1,6 @@
 package com.github.pockethub.android.ui.item.news
 
 import android.view.View
-import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import com.github.pockethub.android.ui.view.OcticonTextView
 import com.github.pockethub.android.util.AvatarLoader
@@ -19,14 +18,13 @@ class MemberEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_ADD_MEMBER
         holder.tv_event.text = buildSpannedString {
+            val context = holder.root.context
             val payload = gitHubEvent.payload() as MemberPayload?
-            boldActor(this, gitHubEvent)
+            boldActor(context, this, gitHubEvent)
             append(" added ")
-            bold {
-                append(payload?.member()?.login())
-            }
+            boldUser(context, this, payload?.member())
             append(" as a collaborator to ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
         holder.tv_event_details.visibility = View.GONE
     }

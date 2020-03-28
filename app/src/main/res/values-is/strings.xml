@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Hættir að fylgjast með…</string>
     <string name="starring_repository">Stjörnumerkir…</string>
     <string name="unstarring_repository">Tekur stjörnumerkingu af…</string>
-    <string name="navigate_to">Fer til…</string>
     <string name="navigate_to_user">Fara til %s</string>
     <string name="contributions">%d færslur</string>
 

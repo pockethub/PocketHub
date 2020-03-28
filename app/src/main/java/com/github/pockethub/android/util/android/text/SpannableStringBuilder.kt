@@ -1,8 +1,9 @@
 package com.github.pockethub.android.util.android.text
 
 import android.text.SpannableStringBuilder
+import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.text.style.TypefaceSpan
-import android.text.style.URLSpan
 import android.view.View
 import androidx.core.text.inSpans
 import com.github.pockethub.android.util.TimeUtils
@@ -12,13 +13,17 @@ fun SpannableStringBuilder.monospace(builderAction: SpannableStringBuilder.() ->
     inSpans(TypefaceSpan("monospace"), builderAction = builderAction)
 }
 
-fun SpannableStringBuilder.url(
-        url: String,
-        onClick: (View) -> Unit,
-        builderAction: SpannableStringBuilder.() -> Unit
-) = inSpans(object : URLSpan(url) {
+fun SpannableStringBuilder.clickable(
+    onClick: (View) -> Unit,
+    builderAction: SpannableStringBuilder.() -> Unit
+) = inSpans(object : ClickableSpan() {
     override fun onClick(widget: View) {
         onClick(widget)
+    }
+
+    override fun updateDrawState(ds: TextPaint) {
+        super.updateDrawState(ds)
+        ds.isUnderlineText = false
     }
 }, builderAction = builderAction)
 

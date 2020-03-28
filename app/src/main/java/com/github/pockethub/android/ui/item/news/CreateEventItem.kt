@@ -18,7 +18,8 @@ class CreateEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_CREATE
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             val payload = gitHubEvent.payload() as CreatePayload?
 
             val refType: String? = payload?.refType()?.name?.toLowerCase()
@@ -26,9 +27,9 @@ class CreateEventItem(
 
             if ("repository" != refType) {
                 append("${payload?.ref()} at ")
-                boldRepo(this, gitHubEvent)
+                boldRepo(context, this, gitHubEvent)
             } else {
-                boldRepoName(this, gitHubEvent)
+                boldRepoName(context, this, gitHubEvent)
             }
         }
         holder.tv_event_details.visibility = View.GONE

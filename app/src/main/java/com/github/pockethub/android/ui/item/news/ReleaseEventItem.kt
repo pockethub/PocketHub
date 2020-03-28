@@ -20,9 +20,10 @@ class ReleaseEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_UPLOAD
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" uploaded a file to ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
 
         val details = buildSpannedString {

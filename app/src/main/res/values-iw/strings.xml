@@ -217,8 +217,7 @@
   <string name="unfollowing_user">לא עוקב…</string>
   <string name="starring_repository">מסמן בכוכב…</string>
   <string name="unstarring_repository">מבטל סימון בכוכב…</string>
-  <string name="navigate_to">נווט אל…</string>
-  <string name="navigate_to_user">נווט אל %s</string>
+    <string name="navigate_to_user">נווט אל %s</string>
   <string name="tab_repositories">מאגרים</string>
   <string name="tab_users">משתמשים</string>
   <string name="tab_news">חדשות</string>

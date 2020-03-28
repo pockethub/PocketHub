@@ -17,9 +17,10 @@ class WatchEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_STAR
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" starred ")
-            boldRepo(this, gitHubEvent)
+            boldRepo(context, this, gitHubEvent)
         }
         holder.tv_event_details.visibility = View.GONE
     }

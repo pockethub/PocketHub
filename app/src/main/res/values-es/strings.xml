@@ -239,7 +239,6 @@
     <string name="unfollowing_user">Dejando de seguir&#8230;</string>
     <string name="starring_repository">Marcando como destacado&#8230;</string>
     <string name="unstarring_repository">Desmarcando como destacado&#8230;</string>
-    <string name="navigate_to">Ir a&#8230;</string>
     <string name="navigate_to_user">Ir a %s</string>
     <string name="contributions">%d commits</string>
     <!-- Titulos de las pestañas, lo mas cortos posible -->

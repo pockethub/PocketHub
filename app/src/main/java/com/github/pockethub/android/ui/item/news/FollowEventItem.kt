@@ -18,9 +18,10 @@ class FollowEventItem(
         super.bind(holder, position)
         holder.tv_event_icon.text = OcticonTextView.ICON_FOLLOW
         holder.tv_event.text = buildSpannedString {
-            boldActor(this, gitHubEvent)
+            val context = holder.root.context
+            boldActor(context, this, gitHubEvent)
             append(" started following ")
-            boldUser(this, (gitHubEvent.payload() as FollowPayload?)?.target())
+            boldUser(context, this, (gitHubEvent.payload() as FollowPayload?)?.target())
         }
         holder.tv_event_details.visibility = View.GONE
     }

@@ -232,7 +232,6 @@
     <string name="unfollowing_user">フォローを解除しています…</string>
     <string name="starring_repository">スターしています…</string>
     <string name="unstarring_repository">スターを解除しています…</string>
-    <string name="navigate_to">移動します…</string>
     <string name="navigate_to_user">%s に移動します</string>
     <string name="contributions">%d コミット</string>
 

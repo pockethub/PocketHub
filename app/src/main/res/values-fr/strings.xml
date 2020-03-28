@@ -234,7 +234,6 @@
     <string name="unfollowing_user">Désabonnement…</string>
     <string name="starring_repository">Ajout aux favoris…</string>
     <string name="unstarring_repository">Supprimer des favoris…</string>
-    <string name="navigate_to">Aller à…</string>
 
     <!-- Titres des onglets, doivent être aussi courts que possible -->
     <string name="tab_repositories">dépôts</string>
