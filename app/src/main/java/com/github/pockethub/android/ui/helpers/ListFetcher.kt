@@ -49,6 +49,15 @@ class ListFetcher<E>(
         refresh()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private fun onPause() {
+
+        isLoading = false
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
     private fun refresh(force: Boolean) {
         if (isLoading) {
             return
@@ -99,7 +108,7 @@ class ListFetcher<E>(
     private fun onDataLoadError(throwable: Throwable) {
         isLoading = false
         swipeRefreshLayout!!.isRefreshing = false
-
+throwable.printStackTrace()
         showError(throwable)
     }
 }
