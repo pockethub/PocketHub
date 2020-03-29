@@ -60,7 +60,7 @@ class GistFileFragment : BaseFragment(), OnSharedPreferenceChangeListener {
 
     private var wrapItem: MenuItem? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         gistId = activity?.intent?.getStringExtra(EXTRA_GIST_ID)

@@ -88,7 +88,7 @@ class CommitListFragment : BaseFragment(), DialogResultListener {
     protected val errorMessage: Int
         get() = R.string.error_commits_load
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val activity = context as Activity?

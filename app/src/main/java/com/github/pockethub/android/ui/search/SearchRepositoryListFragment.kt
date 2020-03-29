@@ -97,7 +97,7 @@ class SearchRepositoryListFragment : BaseFragment() {
         itemListHandler.setEmptyText(R.string.no_repositories)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         start()
     }

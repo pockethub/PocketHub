@@ -84,7 +84,7 @@ class CommitCompareListFragment : BaseFragment(), OnItemClickListener {
 
     private var compare: CommitCompare? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val activity = context as Activity

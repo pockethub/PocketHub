@@ -69,7 +69,7 @@ class RepositoryContributorsFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_contributors_load
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         repo = activity?.intent?.getParcelableExtra(EXTRA_REPOSITORY)

@@ -30,6 +30,12 @@ def addConfigValues = { name, isDebug, suffix = "" ->
     android.defaultConfig.resValue "string", name.toLowerCase(), value
 }
 
+sqldelight {
+    Database {
+        packageName = "com.github.pockethub.android"
+    }
+}
+
 android {
     compileSdkVersion 28
 
@@ -107,6 +113,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     testOptions {
         animationsDisabled = true
         unitTests {
@@ -153,14 +163,15 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
 
-    implementation 'androidx.core:core-ktx:1.0.1'
+    implementation 'androidx.core:core-ktx:1.2.0'
 
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
-    implementation "com.squareup.sqldelight:android-driver:1.0.3"
+    implementation "com.squareup.sqldelight:android-driver:1.2.2"
 
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
@@ -169,17 +180,17 @@ dependencies {
 
     implementation 'com.bugsnag:bugsnag-android:4.3.1'
 
-    implementation 'com.google.dagger:dagger:2.16'
-    implementation 'com.google.dagger:dagger-android:2.16'
-    implementation 'com.google.dagger:dagger-android-support:2.16'
+    implementation 'com.google.dagger:dagger:2.27'
+    implementation 'com.google.dagger:dagger-android:2.27'
+    implementation 'com.google.dagger:dagger-android-support:2.27'
     
-    kapt 'com.google.dagger:dagger-compiler:2.16'
-    kapt 'com.google.dagger:dagger-android-processor:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.27'
+    kapt 'com.google.dagger:dagger-android-processor:2.27'
 
     compileOnly 'com.episode6.hackit.auto.factory:auto-factory-annotations:1.0-beta5'
-    kapt 'com.google.auto.factory:auto-factory:1.0-beta5'
+    kapt 'com.google.auto.factory:auto-factory:1.0-beta7'
 
-    implementation 'com.github.meisolsson:githubsdk:0.6.1'
+    implementation 'com.github.meisolsson:githubsdk:0.6.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.xwray:groupie:2.3.0'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.3.0'
@@ -192,7 +203,7 @@ dependencies {
     //Libs for testing
     testImplementation 'junit:junit:4.12'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
-    testImplementation "androidx.test:core:1.1.0"
+    testImplementation "androidx.test:core:1.2.0"
     testImplementation "org.mockito:mockito-core:2.18.3"
-    testImplementation "org.robolectric:robolectric:4.2"
+    testImplementation "org.robolectric:robolectric:4.2.1"
 }
