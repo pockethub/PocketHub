@@ -15,12 +15,12 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 
 class ListFetcher<E>(
-    private val swipeRefreshLayout: SwipeRefreshLayout?,
-    private val lifecycle: Lifecycle,
-    private val itemListHandler: ItemListHandler,
-    private val showError: (Throwable) -> Unit,
-    private val loadData: (force: Boolean) -> Single<List<E>>,
-    private val createItem: (item: E) -> Item<*>
+        private val swipeRefreshLayout: SwipeRefreshLayout?,
+        private val lifecycle: Lifecycle,
+        private val itemListHandler: ItemListHandler,
+        private val showError: (Throwable) -> Unit,
+        private val loadData: (force: Boolean) -> Single<List<E>>,
+        private val createItem: (item: E) -> Item<*>
 ): LifecycleObserver {
 
     /**

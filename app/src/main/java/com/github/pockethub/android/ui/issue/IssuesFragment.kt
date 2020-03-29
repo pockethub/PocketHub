@@ -82,7 +82,7 @@ class IssuesFragment : BaseFragment() {
 
     val errorMessage= R.string.error_issues_load
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         val intent = activity?.intent

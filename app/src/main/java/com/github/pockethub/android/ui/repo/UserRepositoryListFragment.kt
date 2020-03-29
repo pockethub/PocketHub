@@ -59,7 +59,7 @@ class UserRepositoryListFragment : BaseFragment() {
     protected val errorMessage: Int
         get() = R.string.error_repos_load
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
 
         user = activity?.intent?.getParcelableExtra(EXTRA_USER)

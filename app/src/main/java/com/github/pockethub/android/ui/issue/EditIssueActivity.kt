@@ -328,7 +328,7 @@ class EditIssueActivity : BaseActivity(), DialogResultListener {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         outState!!.putParcelable(EXTRA_ISSUE, issue)
