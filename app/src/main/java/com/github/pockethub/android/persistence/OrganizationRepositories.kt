@@ -28,6 +28,8 @@ import com.meisolsson.githubsdk.service.repositories.RepositoryService
 import io.reactivex.Single
 import retrofit2.Response
 import java.io.IOException
+import java.io.InterruptedIOException
+import java.lang.RuntimeException
 import java.util.ArrayList
 import java.util.TreeSet
 import javax.inject.Provider
@@ -155,11 +157,19 @@ class OrganizationRepositories(
         var current = 1
         var last = -1
 
-        while (current != last) {
-            val page = request(current).blockingGet().body()
-            repos.addAll(page!!.items())
-            last = if (page.last() != null) page.last()!! else -1
-            current = if (page.next() != null) page.next()!! else -1
+        try {
+            while (current != last) {
+                val page = request(current).blockingGet().body()
+                repos.addAll(page!!.items())
+                last = if (page.last() != null) page.last()!! else -1
+                current = if (page.next() != null) page.next()!! else -1
+            }
+        } catch (e: RuntimeException) {
+            if (e.cause is InterruptedIOException) {
+                return repos
+            } else {
+                throw e
+            }
         }
 
         return repos

@@ -58,6 +58,15 @@ class PagedListFetcher<E>(
         refresh()
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    private fun onPause() {
+
+        isLoading = false
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.isRefreshing = false
+        }
+    }
+
     fun refresh() {
         page = 1
         hasMore = true

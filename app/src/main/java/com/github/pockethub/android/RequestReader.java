@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -73,10 +74,7 @@ public class RequestReader {
                 return null;
             }
             return (V) input.readObject();
-        } catch (IOException e) {
-            Log.d(TAG, "Exception reading cache " + handle.getName(), e);
-            return null;
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | OverlappingFileLockException | ClassNotFoundException e) {
             Log.d(TAG, "Exception reading cache " + handle.getName(), e);
             return null;
         } finally {
