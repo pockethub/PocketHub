@@ -23,6 +23,8 @@ import com.meisolsson.githubsdk.model.Repository;
 import org.junit.Before;
 import org.junit.Rule;
 
+import java.util.UUID;
+
 /**
  * Tests of {@link EditIssuesFilterActivity}
  */
@@ -35,7 +37,7 @@ public class EditIssuesFilterActivityTest {
     @Before
     public void setUp() {
         Repository repo = InfoUtils.createRepoFromData("owner", "name");
-        IssueFilter filter = new IssueFilter(repo);
+        IssueFilter filter = new IssueFilter(repo, UUID.randomUUID().toString());
         activityTestRule.launchActivity(EditIssuesFilterActivity.Companion.createIntent(filter));
     }
 }

@@ -349,6 +349,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         for (account in allGitHubAccounts) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 accountManager.removeAccountExplicitly(account)
+                startLoginActivity()
             } else {
                 accountManager.removeAccount(account, { bundle -> startLoginActivity() }, null)
             }

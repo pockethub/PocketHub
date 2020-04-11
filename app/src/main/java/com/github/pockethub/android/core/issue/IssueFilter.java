@@ -17,19 +17,12 @@ package com.github.pockethub.android.core.issue;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.meisolsson.githubsdk.model.Label;
 import com.meisolsson.githubsdk.model.Milestone;
 import com.meisolsson.githubsdk.model.Repository;
 import com.meisolsson.githubsdk.model.User;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -143,12 +136,11 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
      */
     public static final String SORT_COMMENTS = "comments";
 
-    /** serialVersionUID */
-    private static final long serialVersionUID = 7310646589186299063L;
-
     private final Repository repository;
 
-    private List<Label> labels;
+    private final String id;
+
+    private List<Label> labels = new ArrayList<>();
 
     private Milestone milestone;
 
@@ -165,7 +157,8 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
      *
      * @param repository
      */
-    public IssueFilter(final Repository repository) {
+    public IssueFilter(final Repository repository, String id) {
+        this.id = id;
         this.repository = repository;
         open = true;
         direction = DIRECTION_DESCENDING;
@@ -173,6 +166,7 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
     }
 
     protected IssueFilter(Parcel in) {
+        id = in.readString();
         repository = in.readParcelable(Repository.class.getClassLoader());
         labels = new ArrayList<>();
         in.readList(labels, Label.class.getClassLoader());
@@ -479,6 +473,7 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeParcelable(repository, flags);
         dest.writeList(labels);
         dest.writeParcelable(milestone, flags);
@@ -486,5 +481,9 @@ public class IssueFilter implements Parcelable, Cloneable, Comparator<Label> {
         dest.writeByte((byte) (open ? 1 : 0));
         dest.writeString(direction);
         dest.writeString(sortType);
+    }
+
+    public String getId() {
+        return id;
     }
 }

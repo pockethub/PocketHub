@@ -92,7 +92,7 @@ class OrganizationRepositories(
 
         for (repo in repos) {
             val owner = repo.owner()
-            database.repositoriesQueries.insertRepo(
+            database.repositoriesQueries.replaceRepo(
                 repo.id(),
                 repo.name(),
                 org.id(),

@@ -16,6 +16,11 @@ FROM organizations
 JOIN users
 USING (id);
 
+selectUser:
+SELECT *
+FROM users
+WHERE id = ?;
+
 clearOrgs:
 DELETE FROM organizations;
 

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import android.view.MenuItem;
 
+import com.github.pockethub.android.ui.MainActivity;
 import com.meisolsson.githubsdk.model.Repository;
 import com.github.pockethub.android.Intents.Builder;
 import com.github.pockethub.android.R;
@@ -66,7 +67,8 @@ public class IssueBrowseActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = FiltersViewActivity.createIntent();
+                finish();
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 return true;

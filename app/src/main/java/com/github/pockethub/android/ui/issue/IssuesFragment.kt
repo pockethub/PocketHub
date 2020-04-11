@@ -54,6 +54,7 @@ import com.xwray.groupie.OnItemClickListener
 import io.reactivex.Single
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import retrofit2.Response
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -94,7 +95,7 @@ class IssuesFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         if (filter == null) {
-            filter = IssueFilter(repository)
+            filter = IssueFilter(repository, UUID.randomUUID().toString())
         }
     }
 

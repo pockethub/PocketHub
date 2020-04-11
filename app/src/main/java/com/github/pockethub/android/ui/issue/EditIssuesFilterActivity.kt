@@ -17,6 +17,7 @@ package com.github.pockethub.android.ui.issue
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
@@ -116,7 +117,7 @@ class EditIssuesFilterActivity : BaseActivity(), DialogResultListener {
         return when (item.itemId) {
             R.id.m_apply -> {
                 val intent = Intent()
-                intent.putExtra(EXTRA_ISSUE_FILTER, filter)
+                intent.putExtra(EXTRA_ISSUE_FILTER, filter as Parcelable)
                 setResult(RESULT_OK, intent)
                 finish()
                 true
@@ -234,7 +235,7 @@ class EditIssuesFilterActivity : BaseActivity(), DialogResultListener {
          */
         fun createIntent(filter: IssueFilter): Intent {
             return Builder("repo.issues.filter.VIEW")
-                .add(EXTRA_ISSUE_FILTER, filter)
+                .add(EXTRA_ISSUE_FILTER, filter as Parcelable)
                 .toIntent()
         }
 
