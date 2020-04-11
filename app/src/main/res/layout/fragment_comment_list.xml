@@ -23,8 +23,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:clipToPadding="false"
-        android:paddingBottom="10dp"
-        android:visibility="gone" />
+        android:paddingBottom="10dp" />
 
     <ProgressBar
         android:id="@+id/pb_loading"

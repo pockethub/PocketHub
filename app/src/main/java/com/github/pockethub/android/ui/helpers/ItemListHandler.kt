@@ -26,11 +26,6 @@ class ItemListHandler(
 ): LifecycleObserver {
 
     /**
-     * Is the list currently shown?.
-     */
-    private var listShown: Boolean = false
-
-    /**
      * The adapter used by the [RecyclerView] to display [com.xwray.groupie.Group]:s
      * from Groupie.
      */
@@ -100,52 +95,25 @@ class ItemListHandler(
     }
 
     /**
-     * Set list shown or progress bar show.
+     * Update
      *
-     * @param shown
      * @param animate
      * @return this fragment
      */
-    fun setListShown(shown: Boolean, animate: Boolean = false) {
-        if (shown == listShown) {
-            if (shown) {
-                // List has already been shown so hide/show the empty view with
-                // no fade effect
-                if (items.isEmpty()) {
-                    hide(recyclerView)
-                    show(emptyView)
-                } else {
-                    hide(emptyView)
-                    show(recyclerView)
-                }
-            }
-            return
-        }
-
-        listShown = shown
-        if (shown) {
-            if (!items.isEmpty()) {
-                hide(emptyView)
-                fadeIn(recyclerView, animate)
-                show(recyclerView)
-            } else {
-                hide(recyclerView)
-                fadeIn(emptyView, animate)
-                show(emptyView)
-            }
-        } else {
-            hide(recyclerView)
+    private fun updateEmptyView(animate: Boolean = false) {
+        if (items.isNotEmpty()) {
             hide(emptyView)
+        } else {
+            fadeIn(emptyView, animate)
+            show(emptyView)
         }
-
-        return
     }
 
     fun addItems(newItems: List<Item<*>>) {
         items.addAll(newItems)
         mainSection.update(items)
 
-        setListShown(true, lifecycle.currentState == Lifecycle.State.RESUMED)
+        updateEmptyView(lifecycle.currentState == Lifecycle.State.RESUMED)
     }
 
     fun update(newItems: List<Item<*>>) {
@@ -153,7 +121,7 @@ class ItemListHandler(
         items.addAll(newItems)
         mainSection.update(items)
 
-        setListShown(true, lifecycle.currentState == Lifecycle.State.RESUMED)
+        updateEmptyView(lifecycle.currentState == Lifecycle.State.RESUMED)
     }
 
     fun isEmpty(): Boolean = items.isEmpty()
