@@ -10,6 +10,7 @@ This is the *same* repository as the now-defunct official GitHub Android app.
 
 GitHub didn't want to maintain the app anymore, so it's been released to the community and maintained as a public project.
 We are actively working towards a re-release to the Play Store, and this app will be the spiritual successor to the original GitHub app.
+Hope you all will be as satisfied as before.
 
 > What's PocketHub?
 
