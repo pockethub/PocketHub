@@ -4,7 +4,7 @@ This repository contains the source code for the PocketHub Android app.
 
 This is the *same* repository as the now-defunct official GitHub Android app.
 
-## What's going on here?
+## What's adjactly going on here?
 
 > What happened to the old app?
 
