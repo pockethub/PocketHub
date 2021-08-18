@@ -23,3 +23,8 @@ before_install:
 script:
   - ./gradlew clean build
   - ./gradlew test
+
+cache:
+  directories:
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
