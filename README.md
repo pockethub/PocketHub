@@ -1,5 +1,7 @@
 # PocketHub [![Build Status](https://travis-ci.org/pockethub/PocketHub.svg?branch=master)](https://travis-ci.org/pockethub/PocketHub) <a style="margin-bottom: 0;" href='https://play.google.com/store/apps/details?id=com.github.pockethub.android&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a>
 
+[![Maintainability](https://cloud.quality-gate.com/dashboard/api/badge?projectName=pockethub_PocketHub&branchName=master)](https://cloud.quality-gate.com/dashboard/branches/123701#overview)
+
 This repository contains the source code for the PocketHub Android app.
 
 This is the *same* repository as the now-defunct official GitHub Android app.
